@@ -2,113 +2,34 @@
 
 import Link from "next/link";
 import Image from "next/image";
-import { useRef, useState, useEffect, useCallback } from "react";
-import { Play, Pause } from "lucide-react";
 
 function MediumVideoNews({
   title,
   description,
-  video,
-  duration,
-  videoAriaLabelPlay = "پخش ویدیو",
-  videoAriaLabelPause = "توقف ویدیو",
   suggestedLabel,
   suggestedVideoThumbnail,
   suggestedVideoTitle,
   suggestedVideoHref,
-  suggestedVideoDuration,
   suggestedVideoAlt,
-  suggestedVideoAriaLabel = "مشاهده ویدیوی پیشنهادی",
 }) {
-  const videoRef = useRef(null);
-  const [isPlaying, setIsPlaying] = useState(false);
-  const [isHovered, setIsHovered] = useState(false); // 👈 اضافه شد
-
-  useEffect(() => {
-    const vid = videoRef.current;
-    if (!vid) return;
-
-    const onPlay = () => setIsPlaying(true);
-    const onPause = () => setIsPlaying(false);
-    const onEnded = () => setIsPlaying(false);
-
-    vid.addEventListener("play", onPlay);
-    vid.addEventListener("pause", onPause);
-    vid.addEventListener("ended", onEnded);
-
-    return () => {
-      vid.removeEventListener("play", onPlay);
-      vid.removeEventListener("pause", onPause);
-      vid.removeEventListener("ended", onEnded);
-    };
-  }, []);
-
-  const toggle = useCallback(async () => {
-    const vid = videoRef.current;
-    if (!vid) return;
-
-    try {
-      if (vid.paused) await vid.play();
-      else vid.pause();
-    } catch (error) {
-      console.error("Video play/pause failed:", error);
-    }
-  }, []);
-
   const hasSuggestedVideo =
     suggestedVideoThumbnail && suggestedVideoTitle && suggestedVideoHref;
 
-  const showControl = isHovered || !isPlaying;
-  // اگر پلی نیست همیشه نشان بده، اگر پلی هست فقط موقع hover
+  const videoSrc =
+    "https://pixie3.cdn.asset.aparat.com/aparat-short/2059588054035513344.mp4?wmsAuthSign=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbiI6InA9MjA1OTU4ODEyMjMyMjIxMDgxNlx1MDAyNnU9MTYwMTgxNzRcdTAwMjZmPTIwNTk1ODgwNTQwMzU1MTMzNDQubXA0XHUwMDI2aT0xXHUwMDI2Y3Q9d2ViIiwiZXhwIjoxNzgwMDY4MjgzLCJpc3MiOiJTYWJhIElkZWEgR1NJRyJ9.jf8ftzmJx-I1o8ayuPg6DZ3OobfDQzDCsNw5UzDanVY";
 
   return (
     <article className="flex w-full justify-center bg-white" dir="rtl">
       <div className="flex w-full max-w-60 flex-col space-y-4">
-
-        {video && (
-          <div
-            className="relative w-full overflow-hidden rounded-2xl bg-black"
-            onMouseEnter={() => setIsHovered(true)}
-            onMouseLeave={() => setIsHovered(false)}
-          >
-            <div className="relative aspect-9/16 w-full">
-              <video
-                ref={videoRef}
-                src={video}
-                playsInline
-                preload="metadata"
-                controls={false}
-                onClick={toggle}
-                className="h-full w-full object-cover"
-              />
-
-              <div className="pointer-events-none absolute inset-0 bg-linear-to-t from-black/70 via-black/10 to-transparent" />
-
-              {/* 👇 دکمه کنترل */}
-              <button
-                type="button"
-                onClick={toggle}
-                aria-label={isPlaying ? videoAriaLabelPause : videoAriaLabelPlay}
-                className={`absolute inset-0 z-10 flex items-center justify-center transition-opacity duration-200 ${showControl ? "opacity-100" : "opacity-0 pointer-events-none"
-                  }`}
-              >
-                <div className="flex h-12 w-12 items-center justify-center rounded-full bg-white/90 shadow-md transition-transform duration-150 ease-out hover:scale-110 active:scale-95">
-                  {isPlaying ? (
-                    <Pause className="h-5 w-5 text-red-600" />
-                  ) : (
-                    <Play className="h-5 w-5 text-red-600" fill="currentColor" />
-                  )}
-                </div>
-              </button>
-
-              {duration && (
-                <div className="absolute bottom-3 left-3 rounded bg-black/70 px-2 py-1 text-[10px] text-white">
-                  {duration}
-                </div>
-              )}
-            </div>
-          </div>
-        )}
+        <div className="relative w-full overflow-hidden rounded-2xl bg-black">
+          <video
+            src={videoSrc}
+            preload="auto"
+            playsInline
+            controls
+            className="h-full w-full object-cover"
+          />
+        </div>
 
         {(title || description) && (
           <div className="space-y-3">
