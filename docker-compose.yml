@@ -7,10 +7,10 @@ services:
       POSTGRES_DB: mydb
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: postgres
-    ports:
-      - "5432:5432"
     volumes:
       - postgres_data:/var/lib/postgresql/data
+    ports:
+      - "5432:5432"
 
   backend:
     build:
@@ -19,20 +19,33 @@ services:
     command: sh -c "python manage.py migrate && python manage.py runserver 0.0.0.0:8000"
     volumes:
       - ./backend:/app
-    ports:
-      - "8000:8000"
+    expose:
+      - "8000"
     depends_on:
       - db
 
   frontend:
     build:
       context: ./frontend
-    container_name: react_app
-    ports:
-      - "3000:3000"
+    container_name: next_app
+    command: npm run dev
     volumes:
       - ./frontend:/app
-    command: npm run dev
+    expose:
+      - "3000"
+    depends_on:
+      - backend
+
+  nginx:
+    image: nginx:latest
+    container_name: nginx_proxy
+    ports:
+      - "80:80"
+    volumes:
+      - ./nginx/default.conf:/etc/nginx/conf.d/default.conf
+    depends_on:
+      - frontend
+      - backend
 
 volumes:
   postgres_data:
