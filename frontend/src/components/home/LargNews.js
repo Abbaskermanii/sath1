@@ -2,24 +2,45 @@ import Image from "next/image";
 
 function LargNews({ title, description, image, categoryText, categoryTitle }) {
   return (
-    <div className="bg-white p-8" dir="rtl">
-      <div className="mx-auto flex max-w-5xl items-stretch gap-6">
+    <article className="bg-white p-8" dir="rtl">
+      <div className="mx-auto flex max-w-5xl items-stretch gap-6 group">
         {image && (
           <div className="relative aspect-16/10 w-90 shrink-0 overflow-hidden rounded-lg">
-            <Image src={image} alt={title || "image"} fill className="object-cover" />
+            <Image
+              src={image}
+              alt={title || "image"}
+              fill
+              className="
+                object-cover
+                transition-transform duration-300
+                group-hover:scale-105
+              "
+            />
           </div>
         )}
 
         <div className="flex min-w-0 flex-1 flex-col gap-5">
           <div className="space-y-4">
             {title && (
-              <h2 className="text-right text-2xl font-bold leading-tight">
+              <h2
+                className="
+                  text-right text-2xl font-bold leading-tight text-neutral-900
+                  transition-colors duration-200
+                  group-hover:text-neutral-700
+                "
+              >
                 {title}
               </h2>
             )}
 
             {description && (
-              <p className="text-right text-base font-medium leading-relaxed text-neutral-600">
+              <p
+                className="
+                  text-right text-base font-medium leading-relaxed text-neutral-600
+                  transition-colors duration-200
+                  group-hover:text-neutral-800
+                "
+              >
                 {description}
               </p>
             )}
@@ -42,7 +63,7 @@ function LargNews({ title, description, image, categoryText, categoryTitle }) {
           )}
         </div>
       </div>
-    </div>
+    </article>
   );
 }
 

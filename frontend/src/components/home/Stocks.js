@@ -18,24 +18,44 @@ function Stocks() {
   const loopData = [...data, ...data];
 
   return (
-    <div className="w-full bg- py-4 overflow-hidden">
+    <div className="w-full py-4 overflow-hidden bg-transparent">
+
       <Swiper
         modules={[Autoplay, FreeMode]}
         loop={true}
         slidesPerView="auto"
         spaceBetween={12}
-        speed={9000}
         freeMode={true}
         freeModeMomentum={false}
+
+        // 🔥 مهم‌ترین بخش برای smooth واقعی
+        speed={8000}
+
         autoplay={{
           delay: 0,
           disableOnInteraction: false,
           pauseOnMouseEnter: true,
         }}
+
+        // 🔥 جلوگیری از jerk
+        className="[&_.swiper-wrapper]:transition-timing-function_linear"
       >
         {loopData.map((item, i) => (
           <SwiperSlide key={i} style={{ width: "auto" }}>
-            <div className="flex items-center gap-2.5 bg-neutral-800 px-5 py-2 rounded-xl whitespace-nowrap text-[12px] text-gray-200 border border-gray-800">
+            <div
+              className="
+                flex items-center gap-2.5
+                bg-neutral-800 px-5 py-2
+                rounded-xl whitespace-nowrap
+                text-[12px] text-gray-200
+                border border-gray-800
+
+                transform-gpu
+                will-change-transform
+                transition-all duration-300 ease-out
+                hover:scale-[1.02]
+              "
+            >
               <span className="font-semibold">{item.name}</span>
 
               <span className="text-gray-400">{item.value}</span>

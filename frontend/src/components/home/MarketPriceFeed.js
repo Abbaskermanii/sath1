@@ -2,10 +2,7 @@ import { ChevronLeft } from "lucide-react";
 
 export default function MarketPriceFeed({ title, filterLabel, items }) {
   return (
-    <section
-      dir="rtl"
-      className="w-full max-w-125 border-y border-neutral-300 bg-white px-4 py-4"
-    >
+    <section dir="rtl" className="w-full max-w-125">
       <div className="mb-4 flex items-center justify-between gap-3">
         <h2 className="text-[20px] font-extrabold leading-none text-red-600">
           {title}
@@ -30,23 +27,46 @@ export default function MarketPriceFeed({ title, filterLabel, items }) {
         {items.map((item) => (
           <article
             key={item.id}
-            className="grid grid-cols-[64px_1fr] items-start gap-3 py-3"
+            className="
+              group
+              grid grid-cols-[64px_1fr] items-start gap-3 py-3
+              transition-all duration-200
+              hover:bg-neutral-50
+            "
           >
             <div
-              className={`text-right text-[13px] font-bold leading-5 ${
-                item.active ? "text-red-600" : "text-neutral-400"
-              }`}
+              className={`
+                text-right text-[13px] font-bold leading-5
+                transition-colors duration-200
+                ${
+                  item.active
+                    ? "text-red-600 group-hover:text-red-700"
+                    : "text-neutral-400 group-hover:text-neutral-600"
+                }
+              `}
             >
               {item.value}
             </div>
 
             <div className="text-right">
-              <h3 className="text-[14px] font-extrabold leading-[1.45] text-neutral-900">
+              <h3
+                className="
+                  text-[14px] font-extrabold leading-[1.45] text-neutral-900
+                  transition-colors duration-200
+                  group-hover:text-neutral-700
+                "
+              >
                 {item.title}
               </h3>
 
               {item.subtitle && (
-                <p className="mt-1 text-[11px] leading-4 text-neutral-500">
+                <p
+                  className="
+                    mt-1 text-[11px] leading-4 text-neutral-500
+                    transition-colors duration-200
+                    group-hover:text-neutral-700
+                  "
+                >
                   {item.subtitle}
                 </p>
               )}
@@ -58,10 +78,19 @@ export default function MarketPriceFeed({ title, filterLabel, items }) {
       <div className="mt-3 flex justify-start">
         <a
           href="#"
-          className="inline-flex items-center gap-1 text-[13px] text-neutral-600 transition hover:text-neutral-900"
+          className="
+            inline-flex items-center gap-1 text-[13px] text-neutral-600
+            transition-all duration-200
+            hover:text-neutral-900
+            hover:gap-2
+          "
         >
           <span>مشاهده همه</span>
-          <ChevronLeft size={14} strokeWidth={2} />
+          <ChevronLeft
+            size={14}
+            strokeWidth={2}
+            className="transition-transform duration-200 hover:-translate-x-1"
+          />
         </a>
       </div>
     </section>

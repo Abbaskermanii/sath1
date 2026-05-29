@@ -11,6 +11,11 @@ const eslintConfig = defineConfig([
     "build/**",
     "next-env.d.ts",
   ]),
+  {
+  "editor.codeActionsOnSave": {
+    "source.fixAll": true
+  }
+}
 ]);
 
 export default eslintConfig;
