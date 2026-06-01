@@ -106,6 +106,17 @@ class PostViewSet(viewsets.ModelViewSet):
         )
         return Response(serializer.data)
 
+    @action(detail=False, methods=["get"], permission_classes=[IsAuthenticated])
+    def mine(self, request):
+        qs = (
+            Post.objects.filter(author=request.user)
+            .select_related("author", "category")
+            .prefetch_related("tags", "comments")
+            .annotate(comments_count=Count("comments", filter=Q(comments__is_approved=True)))
+            .order_by("-created_at")
+        )
+        serializer = PostListSerializer(qs, many=True, context={"request": request})
+        return Response(serializer.data)
 
 class CommentViewSet(
     mixins.CreateModelMixin,

@@ -22,14 +22,18 @@ export default function DashboardPage() {
   useEffect(() => {
     dashboardApi
       .getOverview()
-      .then(setStats)
+      .then((res) => {
+        console.log("Overview Data:", res); // برای اطمینان در کنسول
+        setStats(res);
+      })
       .catch(console.error)
       .finally(() => setLoading(false));
   }, []);
 
-  const posts = stats?.posts_count ?? 0;
-  const pending = stats?.pending_comments ?? 0;
-  const views = stats?.total_views ?? 0;
+  // استخراج مقادیر بر اساس ساختار واقعی API (خروجی Swagger)
+  const postsCount = stats?.posts?.total ?? 0;
+  const pendingComments = stats?.comments?.pending_total ?? 0;
+  const totalViews = stats?.posts?.views_sum ?? 0;
 
   return (
     <div className="space-y-6" dir="rtl">
@@ -45,7 +49,7 @@ export default function DashboardPage() {
           {[1, 2, 3].map((i) => (
             <div
               key={i}
-              className="h-[130px] rounded-2xl border border-zinc-800 bg-zinc-900 animate-pulse"
+              className="h-32.5 rounded-2xl border border-zinc-800 bg-zinc-900 animate-pulse"
             />
           ))}
         </div>
@@ -53,23 +57,22 @@ export default function DashboardPage() {
         <div className="grid grid-cols-1 md:grid-cols-3 gap-3 sm:gap-4">
           <Stat
             title="کل پست‌ها"
-            value={posts}
+            value={postsCount}
             hint="تعداد کل پست‌های منتشرشده/ذخیره‌شده"
           />
           <Stat
             title="کامنت‌های منتظر تایید"
-            value={pending}
+            value={pendingComments}
             hint="نیاز به بررسی توسط ادمین/نویسنده"
           />
           <Stat
             title="بازدید کل"
-            value={views}
+            value={totalViews}
             hint="مجموع بازدیدها (طبق گزارش سیستم)"
           />
         </div>
       )}
 
-      {/* یه بخش ساده برای اکشن‌ها */}
       <div className="grid grid-cols-1 md:grid-cols-2 gap-3 sm:gap-4">
         <div className="rounded-2xl border border-zinc-800 bg-zinc-900 p-5">
           <p className="text-sm text-zinc-300 font-semibold">اکشن سریع</p>
@@ -81,7 +84,7 @@ export default function DashboardPage() {
         <div className="rounded-2xl border border-zinc-800 bg-zinc-900 p-5">
           <p className="text-sm text-zinc-300 font-semibold">وضعیت دسترسی</p>
           <p className="mt-1 text-[13px] text-zinc-400">
-            اگر نقش شما author/admin باشد، همه بخش‌ها فعال است.
+            شما با دسترسی مدیریت/نویسنده وارد شده‌اید.
           </p>
         </div>
       </div>

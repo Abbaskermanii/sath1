@@ -1,0 +1,2424 @@
+[
+    {
+        "label": "django.contrib.auth.models",
+        "kind": 6,
+        "isExtraImport": true,
+        "importPath": "django.contrib.auth.models",
+        "description": "django.contrib.auth.models",
+        "detail": "django.contrib.auth.models",
+        "documentation": {}
+    },
+    {
+        "label": "AbstractUser",
+        "importPath": "django.contrib.auth.models",
+        "description": "django.contrib.auth.models",
+        "isExtraImport": true,
+        "detail": "django.contrib.auth.models",
+        "documentation": {}
+    },
+    {
+        "label": "django.contrib.auth.validators",
+        "kind": 6,
+        "isExtraImport": true,
+        "importPath": "django.contrib.auth.validators",
+        "description": "django.contrib.auth.validators",
+        "detail": "django.contrib.auth.validators",
+        "documentation": {}
+    },
+    {
+        "label": "django.db.models.deletion",
+        "kind": 6,
+        "isExtraImport": true,
+        "importPath": "django.db.models.deletion",
+        "description": "django.db.models.deletion",
+        "detail": "django.db.models.deletion",
+        "documentation": {}
+    },
+    {
+        "label": "django.utils.timezone",
+        "kind": 6,
+        "isExtraImport": true,
+        "importPath": "django.utils.timezone",
+        "description": "django.utils.timezone",
+        "detail": "django.utils.timezone",
+        "documentation": {}
+    },
+    {
+        "label": "settings",
+        "importPath": "django.conf",
+        "description": "django.conf",
+        "isExtraImport": true,
+        "detail": "django.conf",
+        "documentation": {}
+    },
+    {
+        "label": "settings",
+        "importPath": "django.conf",
+        "description": "django.conf",
+        "isExtraImport": true,
+        "detail": "django.conf",
+        "documentation": {}
+    },
+    {
+        "label": "settings",
+        "importPath": "django.conf",
+        "description": "django.conf",
+        "isExtraImport": true,
+        "detail": "django.conf",
+        "documentation": {}
+    },
+    {
+        "label": "settings",
+        "importPath": "django.conf",
+        "description": "django.conf",
+        "isExtraImport": true,
+        "detail": "django.conf",
+        "documentation": {}
+    },
+    {
+        "label": "settings",
+        "importPath": "django.conf",
+        "description": "django.conf",
+        "isExtraImport": true,
+        "detail": "django.conf",
+        "documentation": {}
+    },
+    {
+        "label": "settings",
+        "importPath": "django.conf",
+        "description": "django.conf",
+        "isExtraImport": true,
+        "detail": "django.conf",
+        "documentation": {}
+    },
+    {
+        "label": "settings",
+        "importPath": "django.conf",
+        "description": "django.conf",
+        "isExtraImport": true,
+        "detail": "django.conf",
+        "documentation": {}
+    },
+    {
+        "label": "migrations",
+        "importPath": "django.db",
+        "description": "django.db",
+        "isExtraImport": true,
+        "detail": "django.db",
+        "documentation": {}
+    },
+    {
+        "label": "models",
+        "importPath": "django.db",
+        "description": "django.db",
+        "isExtraImport": true,
+        "detail": "django.db",
+        "documentation": {}
+    },
+    {
+        "label": "migrations",
+        "importPath": "django.db",
+        "description": "django.db",
+        "isExtraImport": true,
+        "detail": "django.db",
+        "documentation": {}
+    },
+    {
+        "label": "models",
+        "importPath": "django.db",
+        "description": "django.db",
+        "isExtraImport": true,
+        "detail": "django.db",
+        "documentation": {}
+    },
+    {
+        "label": "models",
+        "importPath": "django.db",
+        "description": "django.db",
+        "isExtraImport": true,
+        "detail": "django.db",
+        "documentation": {}
+    },
+    {
+        "label": "models",
+        "importPath": "django.db",
+        "description": "django.db",
+        "isExtraImport": true,
+        "detail": "django.db",
+        "documentation": {}
+    },
+    {
+        "label": "models",
+        "importPath": "django.db",
+        "description": "django.db",
+        "isExtraImport": true,
+        "detail": "django.db",
+        "documentation": {}
+    },
+    {
+        "label": "models",
+        "importPath": "django.db",
+        "description": "django.db",
+        "isExtraImport": true,
+        "detail": "django.db",
+        "documentation": {}
+    },
+    {
+        "label": "migrations",
+        "importPath": "django.db",
+        "description": "django.db",
+        "isExtraImport": true,
+        "detail": "django.db",
+        "documentation": {}
+    },
+    {
+        "label": "models",
+        "importPath": "django.db",
+        "description": "django.db",
+        "isExtraImport": true,
+        "detail": "django.db",
+        "documentation": {}
+    },
+    {
+        "label": "migrations",
+        "importPath": "django.db",
+        "description": "django.db",
+        "isExtraImport": true,
+        "detail": "django.db",
+        "documentation": {}
+    },
+    {
+        "label": "models",
+        "importPath": "django.db",
+        "description": "django.db",
+        "isExtraImport": true,
+        "detail": "django.db",
+        "documentation": {}
+    },
+    {
+        "label": "models",
+        "importPath": "django.db",
+        "description": "django.db",
+        "isExtraImport": true,
+        "detail": "django.db",
+        "documentation": {}
+    },
+    {
+        "label": "migrations",
+        "importPath": "django.db",
+        "description": "django.db",
+        "isExtraImport": true,
+        "detail": "django.db",
+        "documentation": {}
+    },
+    {
+        "label": "models",
+        "importPath": "django.db",
+        "description": "django.db",
+        "isExtraImport": true,
+        "detail": "django.db",
+        "documentation": {}
+    },
+    {
+        "label": "models",
+        "importPath": "django.db",
+        "description": "django.db",
+        "isExtraImport": true,
+        "detail": "django.db",
+        "documentation": {}
+    },
+    {
+        "label": "admin",
+        "importPath": "django.contrib",
+        "description": "django.contrib",
+        "isExtraImport": true,
+        "detail": "django.contrib",
+        "documentation": {}
+    },
+    {
+        "label": "admin",
+        "importPath": "django.contrib",
+        "description": "django.contrib",
+        "isExtraImport": true,
+        "detail": "django.contrib",
+        "documentation": {}
+    },
+    {
+        "label": "admin",
+        "importPath": "django.contrib",
+        "description": "django.contrib",
+        "isExtraImport": true,
+        "detail": "django.contrib",
+        "documentation": {}
+    },
+    {
+        "label": "admin",
+        "importPath": "django.contrib",
+        "description": "django.contrib",
+        "isExtraImport": true,
+        "detail": "django.contrib",
+        "documentation": {}
+    },
+    {
+        "label": "admin",
+        "importPath": "django.contrib",
+        "description": "django.contrib",
+        "isExtraImport": true,
+        "detail": "django.contrib",
+        "documentation": {}
+    },
+    {
+        "label": "admin",
+        "importPath": "django.contrib",
+        "description": "django.contrib",
+        "isExtraImport": true,
+        "detail": "django.contrib",
+        "documentation": {}
+    },
+    {
+        "label": "admin",
+        "importPath": "django.contrib",
+        "description": "django.contrib",
+        "isExtraImport": true,
+        "detail": "django.contrib",
+        "documentation": {}
+    },
+    {
+        "label": "UserAdmin",
+        "importPath": "django.contrib.auth.admin",
+        "description": "django.contrib.auth.admin",
+        "isExtraImport": true,
+        "detail": "django.contrib.auth.admin",
+        "documentation": {}
+    },
+    {
+        "label": "AppConfig",
+        "importPath": "django.apps",
+        "description": "django.apps",
+        "isExtraImport": true,
+        "detail": "django.apps",
+        "documentation": {}
+    },
+    {
+        "label": "AppConfig",
+        "importPath": "django.apps",
+        "description": "django.apps",
+        "isExtraImport": true,
+        "detail": "django.apps",
+        "documentation": {}
+    },
+    {
+        "label": "AppConfig",
+        "importPath": "django.apps",
+        "description": "django.apps",
+        "isExtraImport": true,
+        "detail": "django.apps",
+        "documentation": {}
+    },
+    {
+        "label": "AppConfig",
+        "importPath": "django.apps",
+        "description": "django.apps",
+        "isExtraImport": true,
+        "detail": "django.apps",
+        "documentation": {}
+    },
+    {
+        "label": "AppConfig",
+        "importPath": "django.apps",
+        "description": "django.apps",
+        "isExtraImport": true,
+        "detail": "django.apps",
+        "documentation": {}
+    },
+    {
+        "label": "AppConfig",
+        "importPath": "django.apps",
+        "description": "django.apps",
+        "isExtraImport": true,
+        "detail": "django.apps",
+        "documentation": {}
+    },
+    {
+        "label": "gettext_lazy",
+        "importPath": "django.utils.translation",
+        "description": "django.utils.translation",
+        "isExtraImport": true,
+        "detail": "django.utils.translation",
+        "documentation": {}
+    },
+    {
+        "label": "BasePermission",
+        "importPath": "rest_framework.permissions",
+        "description": "rest_framework.permissions",
+        "isExtraImport": true,
+        "detail": "rest_framework.permissions",
+        "documentation": {}
+    },
+    {
+        "label": "AllowAny",
+        "importPath": "rest_framework.permissions",
+        "description": "rest_framework.permissions",
+        "isExtraImport": true,
+        "detail": "rest_framework.permissions",
+        "documentation": {}
+    },
+    {
+        "label": "BasePermission",
+        "importPath": "rest_framework.permissions",
+        "description": "rest_framework.permissions",
+        "isExtraImport": true,
+        "detail": "rest_framework.permissions",
+        "documentation": {}
+    },
+    {
+        "label": "IsAuthenticated",
+        "importPath": "rest_framework.permissions",
+        "description": "rest_framework.permissions",
+        "isExtraImport": true,
+        "detail": "rest_framework.permissions",
+        "documentation": {}
+    },
+    {
+        "label": "BasePermission",
+        "importPath": "rest_framework.permissions",
+        "description": "rest_framework.permissions",
+        "isExtraImport": true,
+        "detail": "rest_framework.permissions",
+        "documentation": {}
+    },
+    {
+        "label": "SAFE_METHODS",
+        "importPath": "rest_framework.permissions",
+        "description": "rest_framework.permissions",
+        "isExtraImport": true,
+        "detail": "rest_framework.permissions",
+        "documentation": {}
+    },
+    {
+        "label": "AllowAny",
+        "importPath": "rest_framework.permissions",
+        "description": "rest_framework.permissions",
+        "isExtraImport": true,
+        "detail": "rest_framework.permissions",
+        "documentation": {}
+    },
+    {
+        "label": "AllowAny",
+        "importPath": "rest_framework.permissions",
+        "description": "rest_framework.permissions",
+        "isExtraImport": true,
+        "detail": "rest_framework.permissions",
+        "documentation": {}
+    },
+    {
+        "label": "IsAuthenticated",
+        "importPath": "rest_framework.permissions",
+        "description": "rest_framework.permissions",
+        "isExtraImport": true,
+        "detail": "rest_framework.permissions",
+        "documentation": {}
+    },
+    {
+        "label": "authenticate",
+        "importPath": "django.contrib.auth",
+        "description": "django.contrib.auth",
+        "isExtraImport": true,
+        "detail": "django.contrib.auth",
+        "documentation": {}
+    },
+    {
+        "label": "get_user_model",
+        "importPath": "django.contrib.auth",
+        "description": "django.contrib.auth",
+        "isExtraImport": true,
+        "detail": "django.contrib.auth",
+        "documentation": {}
+    },
+    {
+        "label": "serializers",
+        "importPath": "rest_framework",
+        "description": "rest_framework",
+        "isExtraImport": true,
+        "detail": "rest_framework",
+        "documentation": {}
+    },
+    {
+        "label": "generics",
+        "importPath": "rest_framework",
+        "description": "rest_framework",
+        "isExtraImport": true,
+        "detail": "rest_framework",
+        "documentation": {}
+    },
+    {
+        "label": "permissions",
+        "importPath": "rest_framework",
+        "description": "rest_framework",
+        "isExtraImport": true,
+        "detail": "rest_framework",
+        "documentation": {}
+    },
+    {
+        "label": "status",
+        "importPath": "rest_framework",
+        "description": "rest_framework",
+        "isExtraImport": true,
+        "detail": "rest_framework",
+        "documentation": {}
+    },
+    {
+        "label": "serializers",
+        "importPath": "rest_framework",
+        "description": "rest_framework",
+        "isExtraImport": true,
+        "detail": "rest_framework",
+        "documentation": {}
+    },
+    {
+        "label": "viewsets",
+        "importPath": "rest_framework",
+        "description": "rest_framework",
+        "isExtraImport": true,
+        "detail": "rest_framework",
+        "documentation": {}
+    },
+    {
+        "label": "serializers",
+        "importPath": "rest_framework",
+        "description": "rest_framework",
+        "isExtraImport": true,
+        "detail": "rest_framework",
+        "documentation": {}
+    },
+    {
+        "label": "filters",
+        "importPath": "rest_framework",
+        "description": "rest_framework",
+        "isExtraImport": true,
+        "detail": "rest_framework",
+        "documentation": {}
+    },
+    {
+        "label": "mixins",
+        "importPath": "rest_framework",
+        "description": "rest_framework",
+        "isExtraImport": true,
+        "detail": "rest_framework",
+        "documentation": {}
+    },
+    {
+        "label": "status",
+        "importPath": "rest_framework",
+        "description": "rest_framework",
+        "isExtraImport": true,
+        "detail": "rest_framework",
+        "documentation": {}
+    },
+    {
+        "label": "viewsets",
+        "importPath": "rest_framework",
+        "description": "rest_framework",
+        "isExtraImport": true,
+        "detail": "rest_framework",
+        "documentation": {}
+    },
+    {
+        "label": "post_save",
+        "importPath": "django.db.models.signals",
+        "description": "django.db.models.signals",
+        "isExtraImport": true,
+        "detail": "django.db.models.signals",
+        "documentation": {}
+    },
+    {
+        "label": "receiver",
+        "importPath": "django.dispatch",
+        "description": "django.dispatch",
+        "isExtraImport": true,
+        "detail": "django.dispatch",
+        "documentation": {}
+    },
+    {
+        "label": "TestCase",
+        "importPath": "django.test",
+        "description": "django.test",
+        "isExtraImport": true,
+        "detail": "django.test",
+        "documentation": {}
+    },
+    {
+        "label": "TestCase",
+        "importPath": "django.test",
+        "description": "django.test",
+        "isExtraImport": true,
+        "detail": "django.test",
+        "documentation": {}
+    },
+    {
+        "label": "TestCase",
+        "importPath": "django.test",
+        "description": "django.test",
+        "isExtraImport": true,
+        "detail": "django.test",
+        "documentation": {}
+    },
+    {
+        "label": "TestCase",
+        "importPath": "django.test",
+        "description": "django.test",
+        "isExtraImport": true,
+        "detail": "django.test",
+        "documentation": {}
+    },
+    {
+        "label": "TestCase",
+        "importPath": "django.test",
+        "description": "django.test",
+        "isExtraImport": true,
+        "detail": "django.test",
+        "documentation": {}
+    },
+    {
+        "label": "TestCase",
+        "importPath": "django.test",
+        "description": "django.test",
+        "isExtraImport": true,
+        "detail": "django.test",
+        "documentation": {}
+    },
+    {
+        "label": "path",
+        "importPath": "django.urls",
+        "description": "django.urls",
+        "isExtraImport": true,
+        "detail": "django.urls",
+        "documentation": {}
+    },
+    {
+        "label": "path",
+        "importPath": "django.urls",
+        "description": "django.urls",
+        "isExtraImport": true,
+        "detail": "django.urls",
+        "documentation": {}
+    },
+    {
+        "label": "path",
+        "importPath": "django.urls",
+        "description": "django.urls",
+        "isExtraImport": true,
+        "detail": "django.urls",
+        "documentation": {}
+    },
+    {
+        "label": "path",
+        "importPath": "django.urls",
+        "description": "django.urls",
+        "isExtraImport": true,
+        "detail": "django.urls",
+        "documentation": {}
+    },
+    {
+        "label": "path",
+        "importPath": "django.urls",
+        "description": "django.urls",
+        "isExtraImport": true,
+        "detail": "django.urls",
+        "documentation": {}
+    },
+    {
+        "label": "include",
+        "importPath": "django.urls",
+        "description": "django.urls",
+        "isExtraImport": true,
+        "detail": "django.urls",
+        "documentation": {}
+    },
+    {
+        "label": "TokenRefreshView",
+        "importPath": "rest_framework_simplejwt.views",
+        "description": "rest_framework_simplejwt.views",
+        "isExtraImport": true,
+        "detail": "rest_framework_simplejwt.views",
+        "documentation": {}
+    },
+    {
+        "label": "Response",
+        "importPath": "rest_framework.response",
+        "description": "rest_framework.response",
+        "isExtraImport": true,
+        "detail": "rest_framework.response",
+        "documentation": {}
+    },
+    {
+        "label": "Response",
+        "importPath": "rest_framework.response",
+        "description": "rest_framework.response",
+        "isExtraImport": true,
+        "detail": "rest_framework.response",
+        "documentation": {}
+    },
+    {
+        "label": "Response",
+        "importPath": "rest_framework.response",
+        "description": "rest_framework.response",
+        "isExtraImport": true,
+        "detail": "rest_framework.response",
+        "documentation": {}
+    },
+    {
+        "label": "Response",
+        "importPath": "rest_framework.response",
+        "description": "rest_framework.response",
+        "isExtraImport": true,
+        "detail": "rest_framework.response",
+        "documentation": {}
+    },
+    {
+        "label": "Response",
+        "importPath": "rest_framework.response",
+        "description": "rest_framework.response",
+        "isExtraImport": true,
+        "detail": "rest_framework.response",
+        "documentation": {}
+    },
+    {
+        "label": "APIView",
+        "importPath": "rest_framework.views",
+        "description": "rest_framework.views",
+        "isExtraImport": true,
+        "detail": "rest_framework.views",
+        "documentation": {}
+    },
+    {
+        "label": "APIView",
+        "importPath": "rest_framework.views",
+        "description": "rest_framework.views",
+        "isExtraImport": true,
+        "detail": "rest_framework.views",
+        "documentation": {}
+    },
+    {
+        "label": "APIView",
+        "importPath": "rest_framework.views",
+        "description": "rest_framework.views",
+        "isExtraImport": true,
+        "detail": "rest_framework.views",
+        "documentation": {}
+    },
+    {
+        "label": "RefreshToken",
+        "importPath": "rest_framework_simplejwt.tokens",
+        "description": "rest_framework_simplejwt.tokens",
+        "isExtraImport": true,
+        "detail": "rest_framework_simplejwt.tokens",
+        "documentation": {}
+    },
+    {
+        "label": "extend_schema",
+        "importPath": "drf_spectacular.utils",
+        "description": "drf_spectacular.utils",
+        "isExtraImport": true,
+        "detail": "drf_spectacular.utils",
+        "documentation": {}
+    },
+    {
+        "label": "Category",
+        "importPath": "apps.news.models",
+        "description": "apps.news.models",
+        "isExtraImport": true,
+        "detail": "apps.news.models",
+        "documentation": {}
+    },
+    {
+        "label": "Post",
+        "importPath": "apps.news.models",
+        "description": "apps.news.models",
+        "isExtraImport": true,
+        "detail": "apps.news.models",
+        "documentation": {}
+    },
+    {
+        "label": "PostStatus",
+        "importPath": "apps.news.models",
+        "description": "apps.news.models",
+        "isExtraImport": true,
+        "detail": "apps.news.models",
+        "documentation": {}
+    },
+    {
+        "label": "Post",
+        "importPath": "apps.news.models",
+        "description": "apps.news.models",
+        "isExtraImport": true,
+        "detail": "apps.news.models",
+        "documentation": {}
+    },
+    {
+        "label": "Comment",
+        "importPath": "apps.news.models",
+        "description": "apps.news.models",
+        "isExtraImport": true,
+        "detail": "apps.news.models",
+        "documentation": {}
+    },
+    {
+        "label": "Category",
+        "importPath": "apps.news.models",
+        "description": "apps.news.models",
+        "isExtraImport": true,
+        "detail": "apps.news.models",
+        "documentation": {}
+    },
+    {
+        "label": "Tag",
+        "importPath": "apps.news.models",
+        "description": "apps.news.models",
+        "isExtraImport": true,
+        "detail": "apps.news.models",
+        "documentation": {}
+    },
+    {
+        "label": "Category",
+        "importPath": "apps.news.models",
+        "description": "apps.news.models",
+        "isExtraImport": true,
+        "detail": "apps.news.models",
+        "documentation": {}
+    },
+    {
+        "label": "Tag",
+        "importPath": "apps.news.models",
+        "description": "apps.news.models",
+        "isExtraImport": true,
+        "detail": "apps.news.models",
+        "documentation": {}
+    },
+    {
+        "label": "Bookmark",
+        "importPath": "apps.news.models",
+        "description": "apps.news.models",
+        "isExtraImport": true,
+        "detail": "apps.news.models",
+        "documentation": {}
+    },
+    {
+        "label": "Category",
+        "importPath": "apps.news.models",
+        "description": "apps.news.models",
+        "isExtraImport": true,
+        "detail": "apps.news.models",
+        "documentation": {}
+    },
+    {
+        "label": "Comment",
+        "importPath": "apps.news.models",
+        "description": "apps.news.models",
+        "isExtraImport": true,
+        "detail": "apps.news.models",
+        "documentation": {}
+    },
+    {
+        "label": "Post",
+        "importPath": "apps.news.models",
+        "description": "apps.news.models",
+        "isExtraImport": true,
+        "detail": "apps.news.models",
+        "documentation": {}
+    },
+    {
+        "label": "Tag",
+        "importPath": "apps.news.models",
+        "description": "apps.news.models",
+        "isExtraImport": true,
+        "detail": "apps.news.models",
+        "documentation": {}
+    },
+    {
+        "label": "Bookmark",
+        "importPath": "apps.news.models",
+        "description": "apps.news.models",
+        "isExtraImport": true,
+        "detail": "apps.news.models",
+        "documentation": {}
+    },
+    {
+        "label": "Category",
+        "importPath": "apps.news.models",
+        "description": "apps.news.models",
+        "isExtraImport": true,
+        "detail": "apps.news.models",
+        "documentation": {}
+    },
+    {
+        "label": "Comment",
+        "importPath": "apps.news.models",
+        "description": "apps.news.models",
+        "isExtraImport": true,
+        "detail": "apps.news.models",
+        "documentation": {}
+    },
+    {
+        "label": "Post",
+        "importPath": "apps.news.models",
+        "description": "apps.news.models",
+        "isExtraImport": true,
+        "detail": "apps.news.models",
+        "documentation": {}
+    },
+    {
+        "label": "PostStatus",
+        "importPath": "apps.news.models",
+        "description": "apps.news.models",
+        "isExtraImport": true,
+        "detail": "apps.news.models",
+        "documentation": {}
+    },
+    {
+        "label": "Tag",
+        "importPath": "apps.news.models",
+        "description": "apps.news.models",
+        "isExtraImport": true,
+        "detail": "apps.news.models",
+        "documentation": {}
+    },
+    {
+        "label": "CategoryListSerializer",
+        "importPath": "apps.news.serializers",
+        "description": "apps.news.serializers",
+        "isExtraImport": true,
+        "detail": "apps.news.serializers",
+        "documentation": {}
+    },
+    {
+        "label": "PostSimpleSerializer",
+        "importPath": "apps.news.serializers",
+        "description": "apps.news.serializers",
+        "isExtraImport": true,
+        "detail": "apps.news.serializers",
+        "documentation": {}
+    },
+    {
+        "label": "BookmarkSerializer",
+        "importPath": "apps.news.serializers",
+        "description": "apps.news.serializers",
+        "isExtraImport": true,
+        "detail": "apps.news.serializers",
+        "documentation": {}
+    },
+    {
+        "label": "CategoryListSerializer",
+        "importPath": "apps.news.serializers",
+        "description": "apps.news.serializers",
+        "isExtraImport": true,
+        "detail": "apps.news.serializers",
+        "documentation": {}
+    },
+    {
+        "label": "CommentSerializer",
+        "importPath": "apps.news.serializers",
+        "description": "apps.news.serializers",
+        "isExtraImport": true,
+        "detail": "apps.news.serializers",
+        "documentation": {}
+    },
+    {
+        "label": "CommentWriteSerializer",
+        "importPath": "apps.news.serializers",
+        "description": "apps.news.serializers",
+        "isExtraImport": true,
+        "detail": "apps.news.serializers",
+        "documentation": {}
+    },
+    {
+        "label": "PostDetailSerializer",
+        "importPath": "apps.news.serializers",
+        "description": "apps.news.serializers",
+        "isExtraImport": true,
+        "detail": "apps.news.serializers",
+        "documentation": {}
+    },
+    {
+        "label": "PostListSerializer",
+        "importPath": "apps.news.serializers",
+        "description": "apps.news.serializers",
+        "isExtraImport": true,
+        "detail": "apps.news.serializers",
+        "documentation": {}
+    },
+    {
+        "label": "PostWriteSerializer",
+        "importPath": "apps.news.serializers",
+        "description": "apps.news.serializers",
+        "isExtraImport": true,
+        "detail": "apps.news.serializers",
+        "documentation": {}
+    },
+    {
+        "label": "TagListSerializer",
+        "importPath": "apps.news.serializers",
+        "description": "apps.news.serializers",
+        "isExtraImport": true,
+        "detail": "apps.news.serializers",
+        "documentation": {}
+    },
+    {
+        "label": "Video",
+        "importPath": "apps.media.models",
+        "description": "apps.media.models",
+        "isExtraImport": true,
+        "detail": "apps.media.models",
+        "documentation": {}
+    },
+    {
+        "label": "Podcast",
+        "importPath": "apps.media.models",
+        "description": "apps.media.models",
+        "isExtraImport": true,
+        "detail": "apps.media.models",
+        "documentation": {}
+    },
+    {
+        "label": "Video",
+        "importPath": "apps.media.models",
+        "description": "apps.media.models",
+        "isExtraImport": true,
+        "detail": "apps.media.models",
+        "documentation": {}
+    },
+    {
+        "label": "Podcast",
+        "importPath": "apps.media.models",
+        "description": "apps.media.models",
+        "isExtraImport": true,
+        "detail": "apps.media.models",
+        "documentation": {}
+    },
+    {
+        "label": "MediaFile",
+        "importPath": "apps.media.models",
+        "description": "apps.media.models",
+        "isExtraImport": true,
+        "detail": "apps.media.models",
+        "documentation": {}
+    },
+    {
+        "label": "Video",
+        "importPath": "apps.media.models",
+        "description": "apps.media.models",
+        "isExtraImport": true,
+        "detail": "apps.media.models",
+        "documentation": {}
+    },
+    {
+        "label": "Podcast",
+        "importPath": "apps.media.models",
+        "description": "apps.media.models",
+        "isExtraImport": true,
+        "detail": "apps.media.models",
+        "documentation": {}
+    },
+    {
+        "label": "Video",
+        "importPath": "apps.media.models",
+        "description": "apps.media.models",
+        "isExtraImport": true,
+        "detail": "apps.media.models",
+        "documentation": {}
+    },
+    {
+        "label": "Podcast",
+        "importPath": "apps.media.models",
+        "description": "apps.media.models",
+        "isExtraImport": true,
+        "detail": "apps.media.models",
+        "documentation": {}
+    },
+    {
+        "label": "VideoListSerializer",
+        "importPath": "apps.media.serializers",
+        "description": "apps.media.serializers",
+        "isExtraImport": true,
+        "detail": "apps.media.serializers",
+        "documentation": {}
+    },
+    {
+        "label": "PodcastListSerializer",
+        "importPath": "apps.media.serializers",
+        "description": "apps.media.serializers",
+        "isExtraImport": true,
+        "detail": "apps.media.serializers",
+        "documentation": {}
+    },
+    {
+        "label": "VideoListSerializer",
+        "importPath": "apps.media.serializers",
+        "description": "apps.media.serializers",
+        "isExtraImport": true,
+        "detail": "apps.media.serializers",
+        "documentation": {}
+    },
+    {
+        "label": "VideoDetailSerializer",
+        "importPath": "apps.media.serializers",
+        "description": "apps.media.serializers",
+        "isExtraImport": true,
+        "detail": "apps.media.serializers",
+        "documentation": {}
+    },
+    {
+        "label": "PodcastListSerializer",
+        "importPath": "apps.media.serializers",
+        "description": "apps.media.serializers",
+        "isExtraImport": true,
+        "detail": "apps.media.serializers",
+        "documentation": {}
+    },
+    {
+        "label": "PodcastDetailSerializer",
+        "importPath": "apps.media.serializers",
+        "description": "apps.media.serializers",
+        "isExtraImport": true,
+        "detail": "apps.media.serializers",
+        "documentation": {}
+    },
+    {
+        "label": "Sum",
+        "importPath": "django.db.models",
+        "description": "django.db.models",
+        "isExtraImport": true,
+        "detail": "django.db.models",
+        "documentation": {}
+    },
+    {
+        "label": "Count",
+        "importPath": "django.db.models",
+        "description": "django.db.models",
+        "isExtraImport": true,
+        "detail": "django.db.models",
+        "documentation": {}
+    },
+    {
+        "label": "Q",
+        "importPath": "django.db.models",
+        "description": "django.db.models",
+        "isExtraImport": true,
+        "detail": "django.db.models",
+        "documentation": {}
+    },
+    {
+        "label": "F",
+        "importPath": "django.db.models",
+        "description": "django.db.models",
+        "isExtraImport": true,
+        "detail": "django.db.models",
+        "documentation": {}
+    },
+    {
+        "label": "Count",
+        "importPath": "django.db.models",
+        "description": "django.db.models",
+        "isExtraImport": true,
+        "detail": "django.db.models",
+        "documentation": {}
+    },
+    {
+        "label": "Q",
+        "importPath": "django.db.models",
+        "description": "django.db.models",
+        "isExtraImport": true,
+        "detail": "django.db.models",
+        "documentation": {}
+    },
+    {
+        "label": "render",
+        "importPath": "django.shortcuts",
+        "description": "django.shortcuts",
+        "isExtraImport": true,
+        "detail": "django.shortcuts",
+        "documentation": {}
+    },
+    {
+        "label": "django_filters",
+        "kind": 6,
+        "isExtraImport": true,
+        "importPath": "django_filters",
+        "description": "django_filters",
+        "detail": "django_filters",
+        "documentation": {}
+    },
+    {
+        "label": "slugify",
+        "importPath": "django.utils.text",
+        "description": "django.utils.text",
+        "isExtraImport": true,
+        "detail": "django.utils.text",
+        "documentation": {}
+    },
+    {
+        "label": "slugify",
+        "importPath": "django.utils.text",
+        "description": "django.utils.text",
+        "isExtraImport": true,
+        "detail": "django.utils.text",
+        "documentation": {}
+    },
+    {
+        "label": "slugify",
+        "importPath": "django.utils.text",
+        "description": "django.utils.text",
+        "isExtraImport": true,
+        "detail": "django.utils.text",
+        "documentation": {}
+    },
+    {
+        "label": "DefaultRouter",
+        "importPath": "rest_framework.routers",
+        "description": "rest_framework.routers",
+        "isExtraImport": true,
+        "detail": "rest_framework.routers",
+        "documentation": {}
+    },
+    {
+        "label": "DefaultRouter",
+        "importPath": "rest_framework.routers",
+        "description": "rest_framework.routers",
+        "isExtraImport": true,
+        "detail": "rest_framework.routers",
+        "documentation": {}
+    },
+    {
+        "label": "PublicVideoViewSet",
+        "importPath": "apps.media.views",
+        "description": "apps.media.views",
+        "isExtraImport": true,
+        "detail": "apps.media.views",
+        "documentation": {}
+    },
+    {
+        "label": "PublicPodcastViewSet",
+        "importPath": "apps.media.views",
+        "description": "apps.media.views",
+        "isExtraImport": true,
+        "detail": "apps.media.views",
+        "documentation": {}
+    },
+    {
+        "label": "SearchFilter",
+        "importPath": "rest_framework.filters",
+        "description": "rest_framework.filters",
+        "isExtraImport": true,
+        "detail": "rest_framework.filters",
+        "documentation": {}
+    },
+    {
+        "label": "OrderingFilter",
+        "importPath": "rest_framework.filters",
+        "description": "rest_framework.filters",
+        "isExtraImport": true,
+        "detail": "rest_framework.filters",
+        "documentation": {}
+    },
+    {
+        "label": "re",
+        "kind": 6,
+        "isExtraImport": true,
+        "importPath": "re",
+        "description": "re",
+        "detail": "re",
+        "documentation": {}
+    },
+    {
+        "label": "BookmarkViewSet",
+        "importPath": "apps.news.views",
+        "description": "apps.news.views",
+        "isExtraImport": true,
+        "detail": "apps.news.views",
+        "documentation": {}
+    },
+    {
+        "label": "CategoryViewSet",
+        "importPath": "apps.news.views",
+        "description": "apps.news.views",
+        "isExtraImport": true,
+        "detail": "apps.news.views",
+        "documentation": {}
+    },
+    {
+        "label": "CommentViewSet",
+        "importPath": "apps.news.views",
+        "description": "apps.news.views",
+        "isExtraImport": true,
+        "detail": "apps.news.views",
+        "documentation": {}
+    },
+    {
+        "label": "PostViewSet",
+        "importPath": "apps.news.views",
+        "description": "apps.news.views",
+        "isExtraImport": true,
+        "detail": "apps.news.views",
+        "documentation": {}
+    },
+    {
+        "label": "TagViewSet",
+        "importPath": "apps.news.views",
+        "description": "apps.news.views",
+        "isExtraImport": true,
+        "detail": "apps.news.views",
+        "documentation": {}
+    },
+    {
+        "label": "action",
+        "importPath": "rest_framework.decorators",
+        "description": "rest_framework.decorators",
+        "isExtraImport": true,
+        "detail": "rest_framework.decorators",
+        "documentation": {}
+    },
+    {
+        "label": "os",
+        "kind": 6,
+        "isExtraImport": true,
+        "importPath": "os",
+        "description": "os",
+        "detail": "os",
+        "documentation": {}
+    },
+    {
+        "label": "get_asgi_application",
+        "importPath": "django.core.asgi",
+        "description": "django.core.asgi",
+        "isExtraImport": true,
+        "detail": "django.core.asgi",
+        "documentation": {}
+    },
+    {
+        "label": "Path",
+        "importPath": "pathlib",
+        "description": "pathlib",
+        "isExtraImport": true,
+        "detail": "pathlib",
+        "documentation": {}
+    },
+    {
+        "label": "timedelta",
+        "importPath": "datetime",
+        "description": "datetime",
+        "isExtraImport": true,
+        "detail": "datetime",
+        "documentation": {}
+    },
+    {
+        "label": "static",
+        "importPath": "django.conf.urls.static",
+        "description": "django.conf.urls.static",
+        "isExtraImport": true,
+        "detail": "django.conf.urls.static",
+        "documentation": {}
+    },
+    {
+        "label": "SpectacularAPIView",
+        "importPath": "drf_spectacular.views",
+        "description": "drf_spectacular.views",
+        "isExtraImport": true,
+        "detail": "drf_spectacular.views",
+        "documentation": {}
+    },
+    {
+        "label": "SpectacularSwaggerView",
+        "importPath": "drf_spectacular.views",
+        "description": "drf_spectacular.views",
+        "isExtraImport": true,
+        "detail": "drf_spectacular.views",
+        "documentation": {}
+    },
+    {
+        "label": "SpectacularRedocView",
+        "importPath": "drf_spectacular.views",
+        "description": "drf_spectacular.views",
+        "isExtraImport": true,
+        "detail": "drf_spectacular.views",
+        "documentation": {}
+    },
+    {
+        "label": "get_wsgi_application",
+        "importPath": "django.core.wsgi",
+        "description": "django.core.wsgi",
+        "isExtraImport": true,
+        "detail": "django.core.wsgi",
+        "documentation": {}
+    },
+    {
+        "label": "sys",
+        "kind": 6,
+        "isExtraImport": true,
+        "importPath": "sys",
+        "description": "sys",
+        "detail": "sys",
+        "documentation": {}
+    },
+    {
+        "label": "Migration",
+        "kind": 6,
+        "importPath": "apps.accounts.migrations.0001_initial",
+        "description": "apps.accounts.migrations.0001_initial",
+        "peekOfCode": "class Migration(migrations.Migration):\n    initial = True\n    dependencies = [\n        ('auth', '0012_alter_user_first_name_max_length'),\n    ]\n    operations = [\n        migrations.CreateModel(\n            name='User',\n            fields=[\n                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),",
+        "detail": "apps.accounts.migrations.0001_initial",
+        "documentation": {}
+    },
+    {
+        "label": "Migration",
+        "kind": 6,
+        "importPath": "apps.accounts.migrations.0002_remove_user_otp_remove_user_reset_token_and_more",
+        "description": "apps.accounts.migrations.0002_remove_user_otp_remove_user_reset_token_and_more",
+        "peekOfCode": "class Migration(migrations.Migration):\n    dependencies = [\n        ('accounts', '0001_initial'),\n    ]\n    operations = [\n        migrations.RemoveField(\n            model_name='user',\n            name='otp',\n        ),\n        migrations.RemoveField(",
+        "detail": "apps.accounts.migrations.0002_remove_user_otp_remove_user_reset_token_and_more",
+        "documentation": {}
+    },
+    {
+        "label": "UserAdmin",
+        "kind": 6,
+        "importPath": "apps.accounts.admin",
+        "description": "apps.accounts.admin",
+        "peekOfCode": "class UserAdmin(BaseUserAdmin):\n    list_display = (\n        \"id\",\n        \"username\",\n        \"email\",\n        \"full_name\",\n        \"role\",\n        \"is_staff\",\n        \"is_active\",\n    )",
+        "detail": "apps.accounts.admin",
+        "documentation": {}
+    },
+    {
+        "label": "ProfileAdmin",
+        "kind": 6,
+        "importPath": "apps.accounts.admin",
+        "description": "apps.accounts.admin",
+        "peekOfCode": "class ProfileAdmin(admin.ModelAdmin):\n    list_display = (\"id\", \"user\", \"full_name\", \"country\", \"created_at\")\n    search_fields = (\"user__username\", \"user__email\", \"full_name\")\n    list_filter = (\"country\", \"created_at\")",
+        "detail": "apps.accounts.admin",
+        "documentation": {}
+    },
+    {
+        "label": "AccountsConfig",
+        "kind": 6,
+        "importPath": "apps.accounts.apps",
+        "description": "apps.accounts.apps",
+        "peekOfCode": "class AccountsConfig(AppConfig):\n    default_auto_field = \"django.db.models.BigAutoField\"\n    name = \"apps.accounts\"\n    def ready(self):\n        from . import signals  # noqa",
+        "detail": "apps.accounts.apps",
+        "documentation": {}
+    },
+    {
+        "label": "UserRole",
+        "kind": 6,
+        "importPath": "apps.accounts.models",
+        "description": "apps.accounts.models",
+        "peekOfCode": "class UserRole(models.TextChoices):\n    ADMIN = \"admin\", _(\"Admin\")\n    AUTHOR = \"author\", _(\"Author\")\n    USER = \"user\", _(\"User\")\nclass User(AbstractUser):\n    ROLE_USER = \"user\"\n    ROLE_AUTHOR = \"author\"\n    ROLE_ADMIN = \"admin\"\n    ROLE_CHOICES = (\n        (ROLE_USER, \"User\"),",
+        "detail": "apps.accounts.models",
+        "documentation": {}
+    },
+    {
+        "label": "User",
+        "kind": 6,
+        "importPath": "apps.accounts.models",
+        "description": "apps.accounts.models",
+        "peekOfCode": "class User(AbstractUser):\n    ROLE_USER = \"user\"\n    ROLE_AUTHOR = \"author\"\n    ROLE_ADMIN = \"admin\"\n    ROLE_CHOICES = (\n        (ROLE_USER, \"User\"),\n        (ROLE_AUTHOR, \"Author\"),\n        (ROLE_ADMIN, \"Admin\"),\n    )\n    email = models.EmailField(unique=True)",
+        "detail": "apps.accounts.models",
+        "documentation": {}
+    },
+    {
+        "label": "Profile",
+        "kind": 6,
+        "importPath": "apps.accounts.models",
+        "description": "apps.accounts.models",
+        "peekOfCode": "class Profile(models.Model):\n    user = models.OneToOneField(\n        \"accounts.User\", on_delete=models.CASCADE, related_name=\"profile\"\n    )\n    image = models.ImageField(upload_to=\"profiles/\", blank=True, null=True)\n    full_name = models.CharField(max_length=255, blank=True)\n    bio = models.CharField(max_length=255, blank=True)\n    about = models.TextField(blank=True)\n    country = models.CharField(max_length=100, blank=True)\n    instagram = models.URLField(blank=True)",
+        "detail": "apps.accounts.models",
+        "documentation": {}
+    },
+    {
+        "label": "IsAdmin",
+        "kind": 6,
+        "importPath": "apps.accounts.permissions",
+        "description": "apps.accounts.permissions",
+        "peekOfCode": "class IsAdmin(BasePermission):\n    def has_permission(self, request, view):\n        user = request.user\n        return bool(\n            user and user.is_authenticated and getattr(user, \"role\", None) == \"admin\"\n        )\nclass IsAuthor(BasePermission):\n    def has_permission(self, request, view):\n        user = request.user\n        return bool(",
+        "detail": "apps.accounts.permissions",
+        "documentation": {}
+    },
+    {
+        "label": "IsAuthor",
+        "kind": 6,
+        "importPath": "apps.accounts.permissions",
+        "description": "apps.accounts.permissions",
+        "peekOfCode": "class IsAuthor(BasePermission):\n    def has_permission(self, request, view):\n        user = request.user\n        return bool(\n            user and user.is_authenticated and getattr(user, \"role\", None) == \"author\"\n        )\nclass IsAdminOrAuthor(BasePermission):\n    def has_permission(self, request, view):\n        user = request.user\n        return bool(",
+        "detail": "apps.accounts.permissions",
+        "documentation": {}
+    },
+    {
+        "label": "IsAdminOrAuthor",
+        "kind": 6,
+        "importPath": "apps.accounts.permissions",
+        "description": "apps.accounts.permissions",
+        "peekOfCode": "class IsAdminOrAuthor(BasePermission):\n    def has_permission(self, request, view):\n        user = request.user\n        return bool(\n            user\n            and user.is_authenticated\n            and getattr(user, \"role\", None) in [\"admin\", \"author\"]\n        )",
+        "detail": "apps.accounts.permissions",
+        "documentation": {}
+    },
+    {
+        "label": "RegisterSerializer",
+        "kind": 6,
+        "importPath": "apps.accounts.serializers",
+        "description": "apps.accounts.serializers",
+        "peekOfCode": "class RegisterSerializer(serializers.ModelSerializer):\n    password = serializers.CharField(write_only=True, min_length=6)\n    class Meta:\n        model = User\n        fields = (\"username\", \"email\", \"full_name\", \"password\")\n    def create(self, validated_data):\n        password = validated_data.pop(\"password\")\n        user = User(**validated_data)\n        user.role = \"user\"  # همه ثبت‌نامی‌ها پیش‌فرض user\n        user.set_password(password)",
+        "detail": "apps.accounts.serializers",
+        "documentation": {}
+    },
+    {
+        "label": "LoginSerializer",
+        "kind": 6,
+        "importPath": "apps.accounts.serializers",
+        "description": "apps.accounts.serializers",
+        "peekOfCode": "class LoginSerializer(serializers.Serializer):\n    username = serializers.CharField(required=False, allow_blank=True)\n    email = serializers.EmailField(required=False, allow_blank=True)\n    password = serializers.CharField(write_only=True)\n    def validate(self, attrs):\n        username = attrs.get(\"username\")\n        email = attrs.get(\"email\")\n        password = attrs.get(\"password\")\n        if not username and not email:\n            raise serializers.ValidationError(\"username or email is required.\")",
+        "detail": "apps.accounts.serializers",
+        "documentation": {}
+    },
+    {
+        "label": "ProfileSerializer",
+        "kind": 6,
+        "importPath": "apps.accounts.serializers",
+        "description": "apps.accounts.serializers",
+        "peekOfCode": "class ProfileSerializer(serializers.ModelSerializer):\n    class Meta:\n        model = Profile\n        fields = (\n            \"id\",\n            \"image\",\n            \"full_name\",\n            \"bio\",\n            \"about\",\n            \"country\",",
+        "detail": "apps.accounts.serializers",
+        "documentation": {}
+    },
+    {
+        "label": "MeSerializer",
+        "kind": 6,
+        "importPath": "apps.accounts.serializers",
+        "description": "apps.accounts.serializers",
+        "peekOfCode": "class MeSerializer(serializers.ModelSerializer):\n    profile = ProfileSerializer(read_only=True)\n    class Meta:\n        model = User\n        fields = (\n            \"id\",\n            \"username\",\n            \"email\",\n            \"full_name\",\n            \"role\",",
+        "detail": "apps.accounts.serializers",
+        "documentation": {}
+    },
+    {
+        "label": "User",
+        "kind": 5,
+        "importPath": "apps.accounts.serializers",
+        "description": "apps.accounts.serializers",
+        "peekOfCode": "User = get_user_model()\nclass RegisterSerializer(serializers.ModelSerializer):\n    password = serializers.CharField(write_only=True, min_length=6)\n    class Meta:\n        model = User\n        fields = (\"username\", \"email\", \"full_name\", \"password\")\n    def create(self, validated_data):\n        password = validated_data.pop(\"password\")\n        user = User(**validated_data)\n        user.role = \"user\"  # همه ثبت‌نامی‌ها پیش‌فرض user",
+        "detail": "apps.accounts.serializers",
+        "documentation": {}
+    },
+    {
+        "label": "create_profile",
+        "kind": 2,
+        "importPath": "apps.accounts.signals",
+        "description": "apps.accounts.signals",
+        "peekOfCode": "def create_profile(sender, instance, created, **kwargs):\n    if created:\n        Profile.objects.create(user=instance, full_name=instance.full_name or \"\")",
+        "detail": "apps.accounts.signals",
+        "documentation": {}
+    },
+    {
+        "label": "urlpatterns",
+        "kind": 5,
+        "importPath": "apps.accounts.urls",
+        "description": "apps.accounts.urls",
+        "peekOfCode": "urlpatterns = [\n    path(\"register/\", RegisterView.as_view(), name=\"register\"),\n    path(\"login/\", LoginView.as_view(), name=\"login\"),\n    path(\"token/refresh/\", TokenRefreshView.as_view(), name=\"token_refresh\"),\n    path(\"me/\", MeView.as_view(), name=\"me\"),\n    path(\"me/profile/\", UpdateProfileView.as_view(), name=\"me_profile\"),\n]",
+        "detail": "apps.accounts.urls",
+        "documentation": {}
+    },
+    {
+        "label": "RegisterView",
+        "kind": 6,
+        "importPath": "apps.accounts.views",
+        "description": "apps.accounts.views",
+        "peekOfCode": "class RegisterView(generics.CreateAPIView):\n    permission_classes = [permissions.AllowAny]\n    serializer_class = RegisterSerializer\nclass LoginView(APIView):\n    permission_classes = [permissions.AllowAny]\n    @extend_schema(request=LoginSerializer, responses={200: dict})\n    def post(self, request):\n        serializer = LoginSerializer(data=request.data)\n        serializer.is_valid(raise_exception=True)\n        user = serializer.validated_data[\"user\"]",
+        "detail": "apps.accounts.views",
+        "documentation": {}
+    },
+    {
+        "label": "LoginView",
+        "kind": 6,
+        "importPath": "apps.accounts.views",
+        "description": "apps.accounts.views",
+        "peekOfCode": "class LoginView(APIView):\n    permission_classes = [permissions.AllowAny]\n    @extend_schema(request=LoginSerializer, responses={200: dict})\n    def post(self, request):\n        serializer = LoginSerializer(data=request.data)\n        serializer.is_valid(raise_exception=True)\n        user = serializer.validated_data[\"user\"]\n        refresh = RefreshToken.for_user(user)\n        return Response(\n            {",
+        "detail": "apps.accounts.views",
+        "documentation": {}
+    },
+    {
+        "label": "MeView",
+        "kind": 6,
+        "importPath": "apps.accounts.views",
+        "description": "apps.accounts.views",
+        "peekOfCode": "class MeView(generics.RetrieveAPIView):\n    permission_classes = [permissions.IsAuthenticated]\n    serializer_class = MeSerializer\n    def get_object(self):\n        return self.request.user\nclass UpdateProfileView(generics.UpdateAPIView):\n    permission_classes = [permissions.IsAuthenticated]\n    serializer_class = ProfileSerializer\n    def get_object(self):\n        return self.request.user.profile",
+        "detail": "apps.accounts.views",
+        "documentation": {}
+    },
+    {
+        "label": "UpdateProfileView",
+        "kind": 6,
+        "importPath": "apps.accounts.views",
+        "description": "apps.accounts.views",
+        "peekOfCode": "class UpdateProfileView(generics.UpdateAPIView):\n    permission_classes = [permissions.IsAuthenticated]\n    serializer_class = ProfileSerializer\n    def get_object(self):\n        return self.request.user.profile",
+        "detail": "apps.accounts.views",
+        "documentation": {}
+    },
+    {
+        "label": "CoreConfig",
+        "kind": 6,
+        "importPath": "apps.core.apps",
+        "description": "apps.core.apps",
+        "peekOfCode": "class CoreConfig(AppConfig):\n    default_auto_field = 'django.db.models.BigAutoField'\n    name = 'apps.core'",
+        "detail": "apps.core.apps",
+        "documentation": {}
+    },
+    {
+        "label": "urlpatterns",
+        "kind": 5,
+        "importPath": "apps.core.urls",
+        "description": "apps.core.urls",
+        "peekOfCode": "urlpatterns = [\n    path(\"home/\", HomeAPIView.as_view(), name=\"api-home\"),\n]",
+        "detail": "apps.core.urls",
+        "documentation": {}
+    },
+    {
+        "label": "HomeAPIView",
+        "kind": 6,
+        "importPath": "apps.core.views",
+        "description": "apps.core.views",
+        "peekOfCode": "class HomeAPIView(APIView):\n    permission_classes = [AllowAny]\n    def get(self, request, *args, **kwargs):\n        latest_news = Post.objects.filter(status=PostStatus.PUBLISHED).order_by(\n            \"-published_at\", \"-created_at\"\n        )[:10]\n        featured_videos = Video.objects.filter(\n            status=\"published\", is_featured=True\n        ).order_by(\"-published_at\", \"-created_at\")[:6]\n        latest_videos = Video.objects.filter(status=\"published\").order_by(",
+        "detail": "apps.core.views",
+        "documentation": {}
+    },
+    {
+        "label": "DashboardConfig",
+        "kind": 6,
+        "importPath": "apps.dashboard.apps",
+        "description": "apps.dashboard.apps",
+        "peekOfCode": "class DashboardConfig(AppConfig):\n    default_auto_field = \"django.db.models.BigAutoField\"\n    name = \"apps.dashboard\"",
+        "detail": "apps.dashboard.apps",
+        "documentation": {}
+    },
+    {
+        "label": "IsAdminOrAuthor",
+        "kind": 6,
+        "importPath": "apps.dashboard.permissions",
+        "description": "apps.dashboard.permissions",
+        "peekOfCode": "class IsAdminOrAuthor(BasePermission):\n    def has_permission(self, request, view):\n        user = request.user\n        return bool(\n            user\n            and user.is_authenticated\n            and getattr(user, \"role\", None) in [\"admin\", \"author\"]\n        )",
+        "detail": "apps.dashboard.permissions",
+        "documentation": {}
+    },
+    {
+        "label": "app_name",
+        "kind": 5,
+        "importPath": "apps.dashboard.urls",
+        "description": "apps.dashboard.urls",
+        "peekOfCode": "app_name = \"dashboard\"\nurlpatterns = [\n    path(\"overview/\", OverviewView.as_view(), name=\"overview\"),\n    path(\"my-content/\", MyContentView.as_view(), name=\"my-content\"),\n    path(\n        \"moderation/comments/\",\n        PendingCommentsModerationView.as_view(),\n        name=\"pending-comments\",\n    ),\n]",
+        "detail": "apps.dashboard.urls",
+        "documentation": {}
+    },
+    {
+        "label": "urlpatterns",
+        "kind": 5,
+        "importPath": "apps.dashboard.urls",
+        "description": "apps.dashboard.urls",
+        "peekOfCode": "urlpatterns = [\n    path(\"overview/\", OverviewView.as_view(), name=\"overview\"),\n    path(\"my-content/\", MyContentView.as_view(), name=\"my-content\"),\n    path(\n        \"moderation/comments/\",\n        PendingCommentsModerationView.as_view(),\n        name=\"pending-comments\",\n    ),\n]",
+        "detail": "apps.dashboard.urls",
+        "documentation": {}
+    },
+    {
+        "label": "OverviewView",
+        "kind": 6,
+        "importPath": "apps.dashboard.views",
+        "description": "apps.dashboard.views",
+        "peekOfCode": "class OverviewView(APIView):\n    permission_classes = [IsAuthenticated, IsAdminOrAuthor]\n    def get(self, request):\n        user = request.user\n        is_admin = getattr(user, \"role\", None) == \"admin\"\n        posts = Post.objects.all()\n        videos = Video.objects.all()\n        podcasts = Podcast.objects.all()\n        if not is_admin:\n            posts = posts.filter(author=user)",
+        "detail": "apps.dashboard.views",
+        "documentation": {}
+    },
+    {
+        "label": "MyContentView",
+        "kind": 6,
+        "importPath": "apps.dashboard.views",
+        "description": "apps.dashboard.views",
+        "peekOfCode": "class MyContentView(APIView):\n    \"\"\"\n    یک endpoint یکپارچه برای محتواهای کاربر.\n    Query params:\n      - type: post|video|podcast|all (default=all)\n      - status: draft|published|archived (اختیاری)\n    \"\"\"\n    permission_classes = [IsAuthenticated, IsAdminOrAuthor]\n    def get(self, request):\n        user = request.user",
+        "detail": "apps.dashboard.views",
+        "documentation": {}
+    },
+    {
+        "label": "PendingCommentsModerationView",
+        "kind": 6,
+        "importPath": "apps.dashboard.views",
+        "description": "apps.dashboard.views",
+        "peekOfCode": "class PendingCommentsModerationView(APIView):\n    \"\"\"\n    کامنت‌های در انتظار تایید.\n    - ادمین: همه pending ها\n    - نویسنده: pending های پست‌های خودش\n    \"\"\"\n    permission_classes = [IsAuthenticated, IsAdminOrAuthor]\n    def get(self, request):\n        user = request.user\n        is_admin = getattr(user, \"role\", None) == \"admin\"",
+        "detail": "apps.dashboard.views",
+        "documentation": {}
+    },
+    {
+        "label": "MarketingConfig",
+        "kind": 6,
+        "importPath": "apps.marketing.apps",
+        "description": "apps.marketing.apps",
+        "peekOfCode": "class MarketingConfig(AppConfig):\n    default_auto_field = \"django.db.models.BigAutoField\"\n    name = \"apps.marketing\"",
+        "detail": "apps.marketing.apps",
+        "documentation": {}
+    },
+    {
+        "label": "urlpatterns",
+        "kind": 5,
+        "importPath": "apps.marketing.urls",
+        "description": "apps.marketing.urls",
+        "peekOfCode": "urlpatterns = []",
+        "detail": "apps.marketing.urls",
+        "documentation": {}
+    },
+    {
+        "label": "Migration",
+        "kind": 6,
+        "importPath": "apps.media.migrations.0001_initial",
+        "description": "apps.media.migrations.0001_initial",
+        "peekOfCode": "class Migration(migrations.Migration):\n    initial = True\n    dependencies = [\n        migrations.swappable_dependency(settings.AUTH_USER_MODEL),\n    ]\n    operations = [\n        migrations.CreateModel(\n            name='MediaFile',\n            fields=[\n                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),",
+        "detail": "apps.media.migrations.0001_initial",
+        "documentation": {}
+    },
+    {
+        "label": "Migration",
+        "kind": 6,
+        "importPath": "apps.media.migrations.0002_mediafile_mime_type_alter_mediafile_file_type_and_more",
+        "description": "apps.media.migrations.0002_mediafile_mime_type_alter_mediafile_file_type_and_more",
+        "peekOfCode": "class Migration(migrations.Migration):\n    dependencies = [\n        ('media', '0001_initial'),\n        ('news', '0001_initial'),\n        migrations.swappable_dependency(settings.AUTH_USER_MODEL),\n    ]\n    operations = [\n        migrations.AddField(\n            model_name='mediafile',\n            name='mime_type',",
+        "detail": "apps.media.migrations.0002_mediafile_mime_type_alter_mediafile_file_type_and_more",
+        "documentation": {}
+    },
+    {
+        "label": "MediaFileAdmin",
+        "kind": 6,
+        "importPath": "apps.media.admin",
+        "description": "apps.media.admin",
+        "peekOfCode": "class MediaFileAdmin(admin.ModelAdmin):\n    list_display = (\"id\", \"title\", \"file_type\", \"uploaded_by\", \"created_at\")\n    list_filter = (\"file_type\", \"created_at\")\n    search_fields = (\"title\", \"alt_text\", \"mime_type\")\n    readonly_fields = (\"created_at\", \"updated_at\", \"file_size\", \"mime_type\")\n@admin.register(Video)\nclass VideoAdmin(admin.ModelAdmin):\n    list_display = (\n        \"id\",\n        \"title\",",
+        "detail": "apps.media.admin",
+        "documentation": {}
+    },
+    {
+        "label": "VideoAdmin",
+        "kind": 6,
+        "importPath": "apps.media.admin",
+        "description": "apps.media.admin",
+        "peekOfCode": "class VideoAdmin(admin.ModelAdmin):\n    list_display = (\n        \"id\",\n        \"title\",\n        \"category\",\n        \"author\",\n        \"status\",\n        \"is_featured\",\n        \"views_count\",\n        \"published_at\",",
+        "detail": "apps.media.admin",
+        "documentation": {}
+    },
+    {
+        "label": "PodcastAdmin",
+        "kind": 6,
+        "importPath": "apps.media.admin",
+        "description": "apps.media.admin",
+        "peekOfCode": "class PodcastAdmin(admin.ModelAdmin):\n    list_display = (\n        \"id\",\n        \"title\",\n        \"category\",\n        \"author\",\n        \"status\",\n        \"is_featured\",\n        \"listens_count\",\n        \"published_at\",",
+        "detail": "apps.media.admin",
+        "documentation": {}
+    },
+    {
+        "label": "MediaConfig",
+        "kind": 6,
+        "importPath": "apps.media.apps",
+        "description": "apps.media.apps",
+        "peekOfCode": "class MediaConfig(AppConfig):\n    default_auto_field = \"django.db.models.BigAutoField\"\n    name = \"apps.media\"",
+        "detail": "apps.media.apps",
+        "documentation": {}
+    },
+    {
+        "label": "VideoFilter",
+        "kind": 6,
+        "importPath": "apps.media.filters",
+        "description": "apps.media.filters",
+        "peekOfCode": "class VideoFilter(django_filters.FilterSet):\n    category = django_filters.NumberFilter(field_name=\"category__id\")\n    tag = django_filters.NumberFilter(field_name=\"tags__id\")\n    is_featured = django_filters.BooleanFilter(field_name=\"is_featured\")\n    class Meta:\n        model = Video\n        fields = [\"category\", \"tag\", \"is_featured\"]\nclass PodcastFilter(django_filters.FilterSet):\n    category = django_filters.NumberFilter(field_name=\"category__id\")\n    tag = django_filters.NumberFilter(field_name=\"tags__id\")",
+        "detail": "apps.media.filters",
+        "documentation": {}
+    },
+    {
+        "label": "PodcastFilter",
+        "kind": 6,
+        "importPath": "apps.media.filters",
+        "description": "apps.media.filters",
+        "peekOfCode": "class PodcastFilter(django_filters.FilterSet):\n    category = django_filters.NumberFilter(field_name=\"category__id\")\n    tag = django_filters.NumberFilter(field_name=\"tags__id\")\n    is_featured = django_filters.BooleanFilter(field_name=\"is_featured\")\n    class Meta:\n        model = Podcast\n        fields = [\"category\", \"tag\", \"is_featured\"]",
+        "detail": "apps.media.filters",
+        "documentation": {}
+    },
+    {
+        "label": "MediaFile",
+        "kind": 6,
+        "importPath": "apps.media.models",
+        "description": "apps.media.models",
+        "peekOfCode": "class MediaFile(models.Model):\n    FILE_TYPE_CHOICES = (\n        (\"image\", \"Image\"),\n        (\"audio\", \"Audio\"),\n        (\"video\", \"Video\"),\n        (\"document\", \"Document\"),\n        (\"other\", \"Other\"),\n    )\n    title = models.CharField(max_length=255)\n    file = models.FileField(upload_to=\"uploads/%Y/%m/%d/\")",
+        "detail": "apps.media.models",
+        "documentation": {}
+    },
+    {
+        "label": "Video",
+        "kind": 6,
+        "importPath": "apps.media.models",
+        "description": "apps.media.models",
+        "peekOfCode": "class Video(models.Model):\n    STATUS_CHOICES = (\n        (\"draft\", \"Draft\"),\n        (\"published\", \"Published\"),\n        (\"archived\", \"Archived\"),\n    )\n    title = models.CharField(max_length=255)\n    slug = models.SlugField(max_length=280, unique=True, blank=True)\n    summary = models.TextField(blank=True)\n    content = models.TextField(blank=True)",
+        "detail": "apps.media.models",
+        "documentation": {}
+    },
+    {
+        "label": "Podcast",
+        "kind": 6,
+        "importPath": "apps.media.models",
+        "description": "apps.media.models",
+        "peekOfCode": "class Podcast(models.Model):\n    STATUS_CHOICES = (\n        (\"draft\", \"Draft\"),\n        (\"published\", \"Published\"),\n        (\"archived\", \"Archived\"),\n    )\n    title = models.CharField(max_length=255)\n    slug = models.SlugField(max_length=280, unique=True, blank=True)\n    summary = models.TextField(blank=True)\n    content = models.TextField(blank=True)",
+        "detail": "apps.media.models",
+        "documentation": {}
+    },
+    {
+        "label": "IsOwnerOrAdmin",
+        "kind": 6,
+        "importPath": "apps.media.permissions",
+        "description": "apps.media.permissions",
+        "peekOfCode": "class IsOwnerOrAdmin(BasePermission):\n    def has_object_permission(self, request, view, obj):\n        if request.method in SAFE_METHODS:\n            return True\n        return bool(\n            request.user\n            and request.user.is_authenticated\n            and (request.user.is_staff or obj.author_id == request.user.id)\n        )",
+        "detail": "apps.media.permissions",
+        "documentation": {}
+    },
+    {
+        "label": "CategorySimpleSerializer",
+        "kind": 6,
+        "importPath": "apps.media.serializers",
+        "description": "apps.media.serializers",
+        "peekOfCode": "class CategorySimpleSerializer(serializers.ModelSerializer):\n    name = serializers.CharField(source=\"title\", read_only=True)\n    class Meta:\n        model = Category\n        fields = [\"id\", \"name\", \"title\", \"slug\"]\nclass TagSimpleSerializer(serializers.ModelSerializer):\n    name = serializers.CharField(source=\"title\", read_only=True)\n    class Meta:\n        model = Tag\n        fields = [\"id\", \"name\", \"title\", \"slug\"]",
+        "detail": "apps.media.serializers",
+        "documentation": {}
+    },
+    {
+        "label": "TagSimpleSerializer",
+        "kind": 6,
+        "importPath": "apps.media.serializers",
+        "description": "apps.media.serializers",
+        "peekOfCode": "class TagSimpleSerializer(serializers.ModelSerializer):\n    name = serializers.CharField(source=\"title\", read_only=True)\n    class Meta:\n        model = Tag\n        fields = [\"id\", \"name\", \"title\", \"slug\"]\nclass MediaFileSerializer(serializers.ModelSerializer):\n    url = serializers.SerializerMethodField()\n    class Meta:\n        model = MediaFile\n        fields = [",
+        "detail": "apps.media.serializers",
+        "documentation": {}
+    },
+    {
+        "label": "MediaFileSerializer",
+        "kind": 6,
+        "importPath": "apps.media.serializers",
+        "description": "apps.media.serializers",
+        "peekOfCode": "class MediaFileSerializer(serializers.ModelSerializer):\n    url = serializers.SerializerMethodField()\n    class Meta:\n        model = MediaFile\n        fields = [\n            \"id\",\n            \"title\",\n            \"alt_text\",\n            \"file_type\",\n            \"mime_type\",",
+        "detail": "apps.media.serializers",
+        "documentation": {}
+    },
+    {
+        "label": "VideoListSerializer",
+        "kind": 6,
+        "importPath": "apps.media.serializers",
+        "description": "apps.media.serializers",
+        "peekOfCode": "class VideoListSerializer(serializers.ModelSerializer):\n    category = CategorySimpleSerializer(read_only=True)\n    tags = TagSimpleSerializer(many=True, read_only=True)\n    thumbnail_url = serializers.SerializerMethodField()\n    class Meta:\n        model = Video\n        fields = [\n            \"id\",\n            \"title\",\n            \"slug\",",
+        "detail": "apps.media.serializers",
+        "documentation": {}
+    },
+    {
+        "label": "VideoDetailSerializer",
+        "kind": 6,
+        "importPath": "apps.media.serializers",
+        "description": "apps.media.serializers",
+        "peekOfCode": "class VideoDetailSerializer(serializers.ModelSerializer):\n    category = CategorySimpleSerializer(read_only=True)\n    tags = TagSimpleSerializer(many=True, read_only=True)\n    thumbnail = MediaFileSerializer(read_only=True)\n    video_file = MediaFileSerializer(read_only=True)\n    thumbnail_url = serializers.SerializerMethodField()\n    video_url = serializers.SerializerMethodField()\n    class Meta:\n        model = Video\n        fields = [",
+        "detail": "apps.media.serializers",
+        "documentation": {}
+    },
+    {
+        "label": "PodcastListSerializer",
+        "kind": 6,
+        "importPath": "apps.media.serializers",
+        "description": "apps.media.serializers",
+        "peekOfCode": "class PodcastListSerializer(serializers.ModelSerializer):\n    category = CategorySimpleSerializer(read_only=True)\n    tags = TagSimpleSerializer(many=True, read_only=True)\n    cover_url = serializers.SerializerMethodField()\n    class Meta:\n        model = Podcast\n        fields = [\n            \"id\",\n            \"title\",\n            \"slug\",",
+        "detail": "apps.media.serializers",
+        "documentation": {}
+    },
+    {
+        "label": "PodcastDetailSerializer",
+        "kind": 6,
+        "importPath": "apps.media.serializers",
+        "description": "apps.media.serializers",
+        "peekOfCode": "class PodcastDetailSerializer(serializers.ModelSerializer):\n    category = CategorySimpleSerializer(read_only=True)\n    tags = TagSimpleSerializer(many=True, read_only=True)\n    cover_image = MediaFileSerializer(read_only=True)\n    audio_file = MediaFileSerializer(read_only=True)\n    cover_url = serializers.SerializerMethodField()\n    audio_url = serializers.SerializerMethodField()\n    class Meta:\n        model = Podcast\n        fields = [",
+        "detail": "apps.media.serializers",
+        "documentation": {}
+    },
+    {
+        "label": "router",
+        "kind": 5,
+        "importPath": "apps.media.urls",
+        "description": "apps.media.urls",
+        "peekOfCode": "router = DefaultRouter()\nrouter.register(r\"videos\", PublicVideoViewSet, basename=\"public-videos\")\nrouter.register(r\"podcasts\", PublicPodcastViewSet, basename=\"public-podcasts\")\nurlpatterns = router.urls",
+        "detail": "apps.media.urls",
+        "documentation": {}
+    },
+    {
+        "label": "urlpatterns",
+        "kind": 5,
+        "importPath": "apps.media.urls",
+        "description": "apps.media.urls",
+        "peekOfCode": "urlpatterns = router.urls",
+        "detail": "apps.media.urls",
+        "documentation": {}
+    },
+    {
+        "label": "PublicVideoViewSet",
+        "kind": 6,
+        "importPath": "apps.media.views",
+        "description": "apps.media.views",
+        "peekOfCode": "class PublicVideoViewSet(viewsets.ReadOnlyModelViewSet):\n    permission_classes = [AllowAny]\n    filter_backends = [SearchFilter, OrderingFilter]\n    search_fields = [\"title\", \"summary\", \"content\"]\n    ordering_fields = [\"published_at\", \"created_at\", \"views_count\"]\n    lookup_field = \"slug\"\n    def get_queryset(self):\n        return (\n            Video.objects.filter(status=\"published\")\n            .select_related(\"category\", \"author\", \"thumbnail\", \"video_file\")",
+        "detail": "apps.media.views",
+        "documentation": {}
+    },
+    {
+        "label": "PublicPodcastViewSet",
+        "kind": 6,
+        "importPath": "apps.media.views",
+        "description": "apps.media.views",
+        "peekOfCode": "class PublicPodcastViewSet(viewsets.ReadOnlyModelViewSet):\n    permission_classes = [AllowAny]\n    filter_backends = [SearchFilter, OrderingFilter]\n    search_fields = [\"title\", \"summary\", \"content\"]\n    ordering_fields = [\"published_at\", \"created_at\", \"listens_count\"]\n    lookup_field = \"slug\"\n    def get_queryset(self):\n        return (\n            Podcast.objects.filter(status=\"published\")\n            .select_related(\"category\", \"author\", \"cover_image\", \"audio_file\")",
+        "detail": "apps.media.views",
+        "documentation": {}
+    },
+    {
+        "label": "Migration",
+        "kind": 6,
+        "importPath": "apps.news.migrations.0001_initial",
+        "description": "apps.news.migrations.0001_initial",
+        "peekOfCode": "class Migration(migrations.Migration):\n    initial = True\n    dependencies = [\n        migrations.swappable_dependency(settings.AUTH_USER_MODEL),\n    ]\n    operations = [\n        migrations.CreateModel(\n            name='Category',\n            fields=[\n                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),",
+        "detail": "apps.news.migrations.0001_initial",
+        "documentation": {}
+    },
+    {
+        "label": "CategoryAdmin",
+        "kind": 6,
+        "importPath": "apps.news.admin",
+        "description": "apps.news.admin",
+        "peekOfCode": "class CategoryAdmin(admin.ModelAdmin):\n    list_display = (\"id\", \"title\", \"slug\", \"created_at\")\n    search_fields = (\"title\", \"slug\")\n    prepopulated_fields = {\"slug\": (\"title\",)}\n@admin.register(Tag)\nclass TagAdmin(admin.ModelAdmin):\n    list_display = (\"id\", \"title\", \"slug\", \"created_at\")\n    search_fields = (\"title\", \"slug\")\n    prepopulated_fields = {\"slug\": (\"title\",)}\n@admin.register(Post)",
+        "detail": "apps.news.admin",
+        "documentation": {}
+    },
+    {
+        "label": "TagAdmin",
+        "kind": 6,
+        "importPath": "apps.news.admin",
+        "description": "apps.news.admin",
+        "peekOfCode": "class TagAdmin(admin.ModelAdmin):\n    list_display = (\"id\", \"title\", \"slug\", \"created_at\")\n    search_fields = (\"title\", \"slug\")\n    prepopulated_fields = {\"slug\": (\"title\",)}\n@admin.register(Post)\nclass PostAdmin(admin.ModelAdmin):\n    list_display = (\n        \"id\",\n        \"title\",\n        \"author\",",
+        "detail": "apps.news.admin",
+        "documentation": {}
+    },
+    {
+        "label": "PostAdmin",
+        "kind": 6,
+        "importPath": "apps.news.admin",
+        "description": "apps.news.admin",
+        "peekOfCode": "class PostAdmin(admin.ModelAdmin):\n    list_display = (\n        \"id\",\n        \"title\",\n        \"author\",\n        \"status\",\n        \"category\",\n        \"published_at\",\n        \"created_at\",\n    )",
+        "detail": "apps.news.admin",
+        "documentation": {}
+    },
+    {
+        "label": "CommentAdmin",
+        "kind": 6,
+        "importPath": "apps.news.admin",
+        "description": "apps.news.admin",
+        "peekOfCode": "class CommentAdmin(admin.ModelAdmin):\n    list_display = (\"id\", \"post\", \"user\", \"is_approved\", \"created_at\")\n    list_filter = (\"is_approved\", \"created_at\")\n    search_fields = (\"post__title\", \"user__username\", \"user__email\", \"text\")\n    autocomplete_fields = (\"post\", \"user\")\n    actions = [\"approve_comments\", \"reject_comments\"]\n    @admin.action(description=\"Approve selected comments\")\n    def approve_comments(self, request, queryset):\n        queryset.update(is_approved=True)\n    @admin.action(description=\"Reject selected comments\")",
+        "detail": "apps.news.admin",
+        "documentation": {}
+    },
+    {
+        "label": "BookmarkAdmin",
+        "kind": 6,
+        "importPath": "apps.news.admin",
+        "description": "apps.news.admin",
+        "peekOfCode": "class BookmarkAdmin(admin.ModelAdmin):\n    list_display = (\"id\", \"post\", \"user\", \"created_at\")\n    search_fields = (\"post__title\", \"user__username\", \"user__email\")\n    autocomplete_fields = (\"post\", \"user\")",
+        "detail": "apps.news.admin",
+        "documentation": {}
+    },
+    {
+        "label": "NewsConfig",
+        "kind": 6,
+        "importPath": "apps.news.apps",
+        "description": "apps.news.apps",
+        "peekOfCode": "class NewsConfig(AppConfig):\n    default_auto_field = \"django.db.models.BigAutoField\"\n    name = \"apps.news\"",
+        "detail": "apps.news.apps",
+        "documentation": {}
+    },
+    {
+        "label": "TimeStampedModel",
+        "kind": 6,
+        "importPath": "apps.news.models",
+        "description": "apps.news.models",
+        "peekOfCode": "class TimeStampedModel(models.Model):\n    created_at = models.DateTimeField(auto_now_add=True)\n    updated_at = models.DateTimeField(auto_now=True)\n    class Meta:\n        abstract = True\nclass Category(TimeStampedModel):\n    title = models.CharField(max_length=200, unique=True)\n    slug = models.SlugField(max_length=220, unique=True, blank=True)\n    class Meta:\n        ordering = (\"title\",)",
+        "detail": "apps.news.models",
+        "documentation": {}
+    },
+    {
+        "label": "Category",
+        "kind": 6,
+        "importPath": "apps.news.models",
+        "description": "apps.news.models",
+        "peekOfCode": "class Category(TimeStampedModel):\n    title = models.CharField(max_length=200, unique=True)\n    slug = models.SlugField(max_length=220, unique=True, blank=True)\n    class Meta:\n        ordering = (\"title\",)\n    def save(self, *args, **kwargs):\n        if not self.slug:\n            self.slug = slugify(self.title, allow_unicode=True)\n        super().save(*args, **kwargs)\n    def __str__(self):",
+        "detail": "apps.news.models",
+        "documentation": {}
+    },
+    {
+        "label": "Tag",
+        "kind": 6,
+        "importPath": "apps.news.models",
+        "description": "apps.news.models",
+        "peekOfCode": "class Tag(TimeStampedModel):\n    title = models.CharField(max_length=100, unique=True)\n    slug = models.SlugField(max_length=120, unique=True, blank=True)\n    class Meta:\n        ordering = (\"title\",)\n    def save(self, *args, **kwargs):\n        if not self.slug:\n            self.slug = slugify(self.title, allow_unicode=True)\n        super().save(*args, **kwargs)\n    def __str__(self):",
+        "detail": "apps.news.models",
+        "documentation": {}
+    },
+    {
+        "label": "PostStatus",
+        "kind": 6,
+        "importPath": "apps.news.models",
+        "description": "apps.news.models",
+        "peekOfCode": "class PostStatus(models.TextChoices):\n    DRAFT = \"draft\", \"Draft\"\n    PUBLISHED = \"published\", \"Published\"\nclass Post(TimeStampedModel):\n    author = models.ForeignKey(\n        settings.AUTH_USER_MODEL,\n        on_delete=models.CASCADE,\n        related_name=\"news_posts\",\n    )\n    category = models.ForeignKey(",
+        "detail": "apps.news.models",
+        "documentation": {}
+    },
+    {
+        "label": "Post",
+        "kind": 6,
+        "importPath": "apps.news.models",
+        "description": "apps.news.models",
+        "peekOfCode": "class Post(TimeStampedModel):\n    author = models.ForeignKey(\n        settings.AUTH_USER_MODEL,\n        on_delete=models.CASCADE,\n        related_name=\"news_posts\",\n    )\n    category = models.ForeignKey(\n        Category,\n        on_delete=models.SET_NULL,\n        null=True,",
+        "detail": "apps.news.models",
+        "documentation": {}
+    },
+    {
+        "label": "Comment",
+        "kind": 6,
+        "importPath": "apps.news.models",
+        "description": "apps.news.models",
+        "peekOfCode": "class Comment(TimeStampedModel):\n    post = models.ForeignKey(Post, on_delete=models.CASCADE, related_name=\"comments\")\n    user = models.ForeignKey(\n        settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name=\"news_comments\"\n    )\n    text = models.TextField()\n    is_approved = models.BooleanField(default=True)\n    class Meta:\n        ordering = (\"-created_at\",)\n    def __str__(self):",
+        "detail": "apps.news.models",
+        "documentation": {}
+    },
+    {
+        "label": "Bookmark",
+        "kind": 6,
+        "importPath": "apps.news.models",
+        "description": "apps.news.models",
+        "peekOfCode": "class Bookmark(TimeStampedModel):\n    post = models.ForeignKey(Post, on_delete=models.CASCADE, related_name=\"bookmarks\")\n    user = models.ForeignKey(\n        settings.AUTH_USER_MODEL,\n        on_delete=models.CASCADE,\n        related_name=\"news_bookmarks\",\n    )\n    class Meta:\n        unique_together = (\"post\", \"user\")\n        ordering = (\"-created_at\",)",
+        "detail": "apps.news.models",
+        "documentation": {}
+    },
+    {
+        "label": "AuthorSerializer",
+        "kind": 6,
+        "importPath": "apps.news.serializers",
+        "description": "apps.news.serializers",
+        "peekOfCode": "class AuthorSerializer(serializers.Serializer):\n    id = serializers.IntegerField(read_only=True)\n    email = serializers.EmailField(read_only=True)\n    first_name = serializers.CharField(read_only=True)\n    last_name = serializers.CharField(read_only=True)\n    full_name = serializers.SerializerMethodField()\n    def get_full_name(self, obj):\n        full_name = f\"{obj.first_name} {obj.last_name}\".strip()\n        return full_name or obj.email\nclass CategoryListSerializer(serializers.ModelSerializer):",
+        "detail": "apps.news.serializers",
+        "documentation": {}
+    },
+    {
+        "label": "CategoryListSerializer",
+        "kind": 6,
+        "importPath": "apps.news.serializers",
+        "description": "apps.news.serializers",
+        "peekOfCode": "class CategoryListSerializer(serializers.ModelSerializer):\n    posts_count = serializers.IntegerField(read_only=True)\n    class Meta:\n        model = Category\n        fields = (\n            \"id\",\n            \"title\",\n            \"slug\",\n            \"posts_count\",\n        )",
+        "detail": "apps.news.serializers",
+        "documentation": {}
+    },
+    {
+        "label": "TagListSerializer",
+        "kind": 6,
+        "importPath": "apps.news.serializers",
+        "description": "apps.news.serializers",
+        "peekOfCode": "class TagListSerializer(serializers.ModelSerializer):\n    posts_count = serializers.IntegerField(read_only=True)\n    class Meta:\n        model = Tag\n        fields = (\n            \"id\",\n            \"title\",\n            \"slug\",\n            \"posts_count\",\n        )",
+        "detail": "apps.news.serializers",
+        "documentation": {}
+    },
+    {
+        "label": "CommentSerializer",
+        "kind": 6,
+        "importPath": "apps.news.serializers",
+        "description": "apps.news.serializers",
+        "peekOfCode": "class CommentSerializer(serializers.ModelSerializer):\n    user = AuthorSerializer(read_only=True)\n    class Meta:\n        model = Comment\n        fields = (\n            \"id\",\n            \"post\",\n            \"user\",\n            \"text\",\n            \"is_approved\",",
+        "detail": "apps.news.serializers",
+        "documentation": {}
+    },
+    {
+        "label": "PostListSerializer",
+        "kind": 6,
+        "importPath": "apps.news.serializers",
+        "description": "apps.news.serializers",
+        "peekOfCode": "class PostListSerializer(serializers.ModelSerializer):\n    author = AuthorSerializer(read_only=True)\n    category = CategoryListSerializer(read_only=True)\n    tags = TagListSerializer(many=True, read_only=True)\n    comments_count = serializers.IntegerField(read_only=True)\n    is_bookmarked = serializers.SerializerMethodField()\n    class Meta:\n        model = Post\n        fields = (\n            \"id\",",
+        "detail": "apps.news.serializers",
+        "documentation": {}
+    },
+    {
+        "label": "PostDetailSerializer",
+        "kind": 6,
+        "importPath": "apps.news.serializers",
+        "description": "apps.news.serializers",
+        "peekOfCode": "class PostDetailSerializer(serializers.ModelSerializer):\n    author = AuthorSerializer(read_only=True)\n    category = CategoryListSerializer(read_only=True)\n    tags = TagListSerializer(many=True, read_only=True)\n    comments = serializers.SerializerMethodField()\n    is_bookmarked = serializers.SerializerMethodField()\n    class Meta:\n        model = Post\n        fields = (\n            \"id\",",
+        "detail": "apps.news.serializers",
+        "documentation": {}
+    },
+    {
+        "label": "PostWriteSerializer",
+        "kind": 6,
+        "importPath": "apps.news.serializers",
+        "description": "apps.news.serializers",
+        "peekOfCode": "class PostWriteSerializer(serializers.ModelSerializer):\n    # اجازه می‌دهیم کاربر اسلاگ را وارد کند\n    slug = serializers.CharField(required=False, allow_blank=True)\n    class Meta:\n        model = Post\n        fields = (\n            \"id\",\n            \"title\",\n            \"slug\",\n            \"excerpt\",",
+        "detail": "apps.news.serializers",
+        "documentation": {}
+    },
+    {
+        "label": "CommentWriteSerializer",
+        "kind": 6,
+        "importPath": "apps.news.serializers",
+        "description": "apps.news.serializers",
+        "peekOfCode": "class CommentWriteSerializer(serializers.ModelSerializer):\n    class Meta:\n        model = Comment\n        fields = (\n            \"id\",\n            \"post\",\n            \"text\",\n        )\n        read_only_fields = (\"id\",)\nclass BookmarkSerializer(serializers.ModelSerializer):",
+        "detail": "apps.news.serializers",
+        "documentation": {}
+    },
+    {
+        "label": "BookmarkSerializer",
+        "kind": 6,
+        "importPath": "apps.news.serializers",
+        "description": "apps.news.serializers",
+        "peekOfCode": "class BookmarkSerializer(serializers.ModelSerializer):\n    post = PostListSerializer(read_only=True)\n    class Meta:\n        model = Bookmark\n        fields = (\n            \"id\",\n            \"post\",\n            \"created_at\",\n        )\n        read_only_fields = (",
+        "detail": "apps.news.serializers",
+        "documentation": {}
+    },
+    {
+        "label": "SLUG_RE",
+        "kind": 5,
+        "importPath": "apps.news.serializers",
+        "description": "apps.news.serializers",
+        "peekOfCode": "SLUG_RE = re.compile(r\"^[a-z0-9]+(?:-[a-z0-9]+)*$\")\nSLUG_RE = re.compile(r\"^[a-z0-9]+(?:-[a-z0-9]+)*$\")\nclass PostWriteSerializer(serializers.ModelSerializer):\n    # اجازه می‌دهیم کاربر اسلاگ را وارد کند\n    slug = serializers.CharField(required=False, allow_blank=True)\n    class Meta:\n        model = Post\n        fields = (\n            \"id\",\n            \"title\",",
+        "detail": "apps.news.serializers",
+        "documentation": {}
+    },
+    {
+        "label": "SLUG_RE",
+        "kind": 5,
+        "importPath": "apps.news.serializers",
+        "description": "apps.news.serializers",
+        "peekOfCode": "SLUG_RE = re.compile(r\"^[a-z0-9]+(?:-[a-z0-9]+)*$\")\nclass PostWriteSerializer(serializers.ModelSerializer):\n    # اجازه می‌دهیم کاربر اسلاگ را وارد کند\n    slug = serializers.CharField(required=False, allow_blank=True)\n    class Meta:\n        model = Post\n        fields = (\n            \"id\",\n            \"title\",\n            \"slug\",",
+        "detail": "apps.news.serializers",
+        "documentation": {}
+    },
+    {
+        "label": "router",
+        "kind": 5,
+        "importPath": "apps.news.urls",
+        "description": "apps.news.urls",
+        "peekOfCode": "router = DefaultRouter()\nrouter.register(\"categories\", CategoryViewSet, basename=\"news-category\")\nrouter.register(\"tags\", TagViewSet, basename=\"news-tag\")\nrouter.register(\"posts\", PostViewSet, basename=\"news-post\")\nrouter.register(\"comments\", CommentViewSet, basename=\"news-comment\")\nrouter.register(\"bookmarks\", BookmarkViewSet, basename=\"news-bookmark\")\nurlpatterns = router.urls",
+        "detail": "apps.news.urls",
+        "documentation": {}
+    },
+    {
+        "label": "urlpatterns",
+        "kind": 5,
+        "importPath": "apps.news.urls",
+        "description": "apps.news.urls",
+        "peekOfCode": "urlpatterns = router.urls",
+        "detail": "apps.news.urls",
+        "documentation": {}
+    },
+    {
+        "label": "CategoryViewSet",
+        "kind": 6,
+        "importPath": "apps.news.views",
+        "description": "apps.news.views",
+        "peekOfCode": "class CategoryViewSet(viewsets.ReadOnlyModelViewSet):\n    queryset = Category.objects.annotate(posts_count=Count(\"posts\")).order_by(\"title\")\n    serializer_class = CategoryListSerializer\n    permission_classes = [AllowAny]\n    lookup_field = \"slug\"\n    filter_backends = [filters.SearchFilter, filters.OrderingFilter]\n    search_fields = [\"title\", \"slug\"]\n    ordering_fields = [\"title\", \"created_at\"]\n    ordering = [\"title\"]\nclass TagViewSet(viewsets.ReadOnlyModelViewSet):",
+        "detail": "apps.news.views",
+        "documentation": {}
+    },
+    {
+        "label": "TagViewSet",
+        "kind": 6,
+        "importPath": "apps.news.views",
+        "description": "apps.news.views",
+        "peekOfCode": "class TagViewSet(viewsets.ReadOnlyModelViewSet):\n    queryset = Tag.objects.annotate(posts_count=Count(\"posts\")).order_by(\"title\")\n    serializer_class = TagListSerializer\n    permission_classes = [AllowAny]\n    lookup_field = \"slug\"\n    filter_backends = [filters.SearchFilter, filters.OrderingFilter]\n    search_fields = [\"title\", \"slug\"]\n    ordering_fields = [\"title\", \"created_at\"]\n    ordering = [\"title\"]\nclass PostViewSet(viewsets.ModelViewSet):",
+        "detail": "apps.news.views",
+        "documentation": {}
+    },
+    {
+        "label": "PostViewSet",
+        "kind": 6,
+        "importPath": "apps.news.views",
+        "description": "apps.news.views",
+        "peekOfCode": "class PostViewSet(viewsets.ModelViewSet):\n    lookup_field = \"slug\"\n    filter_backends = [filters.SearchFilter, filters.OrderingFilter]\n    search_fields = [\"title\", \"excerpt\", \"content\"]\n    ordering_fields = [\"created_at\", \"published_at\", \"views\", \"title\"]\n    ordering = [\"-created_at\"]\n    def get_permissions(self):\n        if self.action in [\"list\", \"retrieve\", \"latest\", \"popular\"]:\n            return [AllowAny()]\n        return [IsAuthenticated()]",
+        "detail": "apps.news.views",
+        "documentation": {}
+    },
+    {
+        "label": "CommentViewSet",
+        "kind": 6,
+        "importPath": "apps.news.views",
+        "description": "apps.news.views",
+        "peekOfCode": "class CommentViewSet(\n    mixins.CreateModelMixin,\n    mixins.DestroyModelMixin,\n    mixins.ListModelMixin,\n    viewsets.GenericViewSet,\n):\n    permission_classes = [IsAuthenticated]\n    def get_queryset(self):\n        queryset = Comment.objects.select_related(\"user\", \"post\")\n        post_id = self.request.query_params.get(\"post\")",
+        "detail": "apps.news.views",
+        "documentation": {}
+    },
+    {
+        "label": "BookmarkViewSet",
+        "kind": 6,
+        "importPath": "apps.news.views",
+        "description": "apps.news.views",
+        "peekOfCode": "class BookmarkViewSet(\n    mixins.CreateModelMixin,\n    mixins.DestroyModelMixin,\n    mixins.ListModelMixin,\n    viewsets.GenericViewSet,\n):\n    permission_classes = [IsAuthenticated]\n    serializer_class = BookmarkSerializer\n    def get_queryset(self):\n        return (",
+        "detail": "apps.news.views",
+        "documentation": {}
+    },
+    {
+        "label": "application",
+        "kind": 5,
+        "importPath": "config.asgi",
+        "description": "config.asgi",
+        "peekOfCode": "application = get_asgi_application()",
+        "detail": "config.asgi",
+        "documentation": {}
+    },
+    {
+        "label": "BASE_DIR",
+        "kind": 5,
+        "importPath": "config.settings",
+        "description": "config.settings",
+        "peekOfCode": "BASE_DIR = Path(__file__).resolve().parent.parent\nSECRET_KEY = os.getenv(\"SECRET_KEY\", \"django-insecure-dev-key\")\nDEBUG = os.getenv(\"DEBUG\", \"1\") == \"1\"\nALLOWED_HOSTS = [\"*\"]\nINSTALLED_APPS = [\n    # Django\n    \"django.contrib.admin\",\n    \"django.contrib.auth\",\n    \"django.contrib.contenttypes\",\n    \"django.contrib.sessions\",",
+        "detail": "config.settings",
+        "documentation": {}
+    },
+    {
+        "label": "SECRET_KEY",
+        "kind": 5,
+        "importPath": "config.settings",
+        "description": "config.settings",
+        "peekOfCode": "SECRET_KEY = os.getenv(\"SECRET_KEY\", \"django-insecure-dev-key\")\nDEBUG = os.getenv(\"DEBUG\", \"1\") == \"1\"\nALLOWED_HOSTS = [\"*\"]\nINSTALLED_APPS = [\n    # Django\n    \"django.contrib.admin\",\n    \"django.contrib.auth\",\n    \"django.contrib.contenttypes\",\n    \"django.contrib.sessions\",\n    \"django.contrib.messages\",",
+        "detail": "config.settings",
+        "documentation": {}
+    },
+    {
+        "label": "DEBUG",
+        "kind": 5,
+        "importPath": "config.settings",
+        "description": "config.settings",
+        "peekOfCode": "DEBUG = os.getenv(\"DEBUG\", \"1\") == \"1\"\nALLOWED_HOSTS = [\"*\"]\nINSTALLED_APPS = [\n    # Django\n    \"django.contrib.admin\",\n    \"django.contrib.auth\",\n    \"django.contrib.contenttypes\",\n    \"django.contrib.sessions\",\n    \"django.contrib.messages\",\n    \"django.contrib.staticfiles\",",
+        "detail": "config.settings",
+        "documentation": {}
+    },
+    {
+        "label": "ALLOWED_HOSTS",
+        "kind": 5,
+        "importPath": "config.settings",
+        "description": "config.settings",
+        "peekOfCode": "ALLOWED_HOSTS = [\"*\"]\nINSTALLED_APPS = [\n    # Django\n    \"django.contrib.admin\",\n    \"django.contrib.auth\",\n    \"django.contrib.contenttypes\",\n    \"django.contrib.sessions\",\n    \"django.contrib.messages\",\n    \"django.contrib.staticfiles\",\n    # Third-party",
+        "detail": "config.settings",
+        "documentation": {}
+    },
+    {
+        "label": "INSTALLED_APPS",
+        "kind": 5,
+        "importPath": "config.settings",
+        "description": "config.settings",
+        "peekOfCode": "INSTALLED_APPS = [\n    # Django\n    \"django.contrib.admin\",\n    \"django.contrib.auth\",\n    \"django.contrib.contenttypes\",\n    \"django.contrib.sessions\",\n    \"django.contrib.messages\",\n    \"django.contrib.staticfiles\",\n    # Third-party\n    \"corsheaders\",",
+        "detail": "config.settings",
+        "documentation": {}
+    },
+    {
+        "label": "MIDDLEWARE",
+        "kind": 5,
+        "importPath": "config.settings",
+        "description": "config.settings",
+        "peekOfCode": "MIDDLEWARE = [\n    \"django.middleware.security.SecurityMiddleware\",\n    \"corsheaders.middleware.CorsMiddleware\",\n    \"django.contrib.sessions.middleware.SessionMiddleware\",\n    \"django.middleware.common.CommonMiddleware\",\n    \"django.middleware.csrf.CsrfViewMiddleware\",\n    \"django.contrib.auth.middleware.AuthenticationMiddleware\",\n    \"django.contrib.messages.middleware.MessageMiddleware\",\n    \"django.middleware.clickjacking.XFrameOptionsMiddleware\",\n]",
+        "detail": "config.settings",
+        "documentation": {}
+    },
+    {
+        "label": "ROOT_URLCONF",
+        "kind": 5,
+        "importPath": "config.settings",
+        "description": "config.settings",
+        "peekOfCode": "ROOT_URLCONF = \"config.urls\"\nTEMPLATES = [\n    {\n        \"BACKEND\": \"django.template.backends.django.DjangoTemplates\",\n        \"DIRS\": [],\n        \"APP_DIRS\": True,\n        \"OPTIONS\": {\n            \"context_processors\": [\n                \"django.template.context_processors.request\",\n                \"django.contrib.auth.context_processors.auth\",",
+        "detail": "config.settings",
+        "documentation": {}
+    },
+    {
+        "label": "TEMPLATES",
+        "kind": 5,
+        "importPath": "config.settings",
+        "description": "config.settings",
+        "peekOfCode": "TEMPLATES = [\n    {\n        \"BACKEND\": \"django.template.backends.django.DjangoTemplates\",\n        \"DIRS\": [],\n        \"APP_DIRS\": True,\n        \"OPTIONS\": {\n            \"context_processors\": [\n                \"django.template.context_processors.request\",\n                \"django.contrib.auth.context_processors.auth\",\n                \"django.contrib.messages.context_processors.messages\",",
+        "detail": "config.settings",
+        "documentation": {}
+    },
+    {
+        "label": "WSGI_APPLICATION",
+        "kind": 5,
+        "importPath": "config.settings",
+        "description": "config.settings",
+        "peekOfCode": "WSGI_APPLICATION = \"config.wsgi.application\"\nDATABASES = {\n    \"default\": {\n        \"ENGINE\": \"django.db.backends.postgresql\",\n        \"NAME\": os.getenv(\"DB_NAME\", \"blogdb\"),\n        \"USER\": os.getenv(\"DB_USER\", \"bloguser\"),\n        \"PASSWORD\": os.getenv(\"DB_PASSWORD\", \"blogpass\"),\n        \"HOST\": os.getenv(\"DB_HOST\", \"db\"),\n        \"PORT\": os.getenv(\"DB_PORT\", \"5432\"),\n    }",
+        "detail": "config.settings",
+        "documentation": {}
+    },
+    {
+        "label": "DATABASES",
+        "kind": 5,
+        "importPath": "config.settings",
+        "description": "config.settings",
+        "peekOfCode": "DATABASES = {\n    \"default\": {\n        \"ENGINE\": \"django.db.backends.postgresql\",\n        \"NAME\": os.getenv(\"DB_NAME\", \"blogdb\"),\n        \"USER\": os.getenv(\"DB_USER\", \"bloguser\"),\n        \"PASSWORD\": os.getenv(\"DB_PASSWORD\", \"blogpass\"),\n        \"HOST\": os.getenv(\"DB_HOST\", \"db\"),\n        \"PORT\": os.getenv(\"DB_PORT\", \"5432\"),\n    }\n}",
+        "detail": "config.settings",
+        "documentation": {}
+    },
+    {
+        "label": "AUTH_PASSWORD_VALIDATORS",
+        "kind": 5,
+        "importPath": "config.settings",
+        "description": "config.settings",
+        "peekOfCode": "AUTH_PASSWORD_VALIDATORS = [\n    {\n        \"NAME\": \"django.contrib.auth.password_validation.UserAttributeSimilarityValidator\"\n    },\n    {\"NAME\": \"django.contrib.auth.password_validation.MinimumLengthValidator\"},\n    {\"NAME\": \"django.contrib.auth.password_validation.CommonPasswordValidator\"},\n    {\"NAME\": \"django.contrib.auth.password_validation.NumericPasswordValidator\"},\n]\nLANGUAGE_CODE = \"en-us\"\nTIME_ZONE = \"Asia/Tehran\"",
+        "detail": "config.settings",
+        "documentation": {}
+    },
+    {
+        "label": "LANGUAGE_CODE",
+        "kind": 5,
+        "importPath": "config.settings",
+        "description": "config.settings",
+        "peekOfCode": "LANGUAGE_CODE = \"en-us\"\nTIME_ZONE = \"Asia/Tehran\"\nUSE_I18N = True\nUSE_TZ = True\nSTATIC_URL = \"/static/\"\nSTATIC_ROOT = BASE_DIR / \"staticfiles\"\nMEDIA_URL = \"/media/\"\nMEDIA_ROOT = BASE_DIR / \"media\"\nDEFAULT_AUTO_FIELD = \"django.db.models.BigAutoField\"\nAUTH_USER_MODEL = \"accounts.User\"",
+        "detail": "config.settings",
+        "documentation": {}
+    },
+    {
+        "label": "TIME_ZONE",
+        "kind": 5,
+        "importPath": "config.settings",
+        "description": "config.settings",
+        "peekOfCode": "TIME_ZONE = \"Asia/Tehran\"\nUSE_I18N = True\nUSE_TZ = True\nSTATIC_URL = \"/static/\"\nSTATIC_ROOT = BASE_DIR / \"staticfiles\"\nMEDIA_URL = \"/media/\"\nMEDIA_ROOT = BASE_DIR / \"media\"\nDEFAULT_AUTO_FIELD = \"django.db.models.BigAutoField\"\nAUTH_USER_MODEL = \"accounts.User\"\nCORS_ALLOW_ALL_ORIGINS = True",
+        "detail": "config.settings",
+        "documentation": {}
+    },
+    {
+        "label": "USE_I18N",
+        "kind": 5,
+        "importPath": "config.settings",
+        "description": "config.settings",
+        "peekOfCode": "USE_I18N = True\nUSE_TZ = True\nSTATIC_URL = \"/static/\"\nSTATIC_ROOT = BASE_DIR / \"staticfiles\"\nMEDIA_URL = \"/media/\"\nMEDIA_ROOT = BASE_DIR / \"media\"\nDEFAULT_AUTO_FIELD = \"django.db.models.BigAutoField\"\nAUTH_USER_MODEL = \"accounts.User\"\nCORS_ALLOW_ALL_ORIGINS = True\nREST_FRAMEWORK = {",
+        "detail": "config.settings",
+        "documentation": {}
+    },
+    {
+        "label": "USE_TZ",
+        "kind": 5,
+        "importPath": "config.settings",
+        "description": "config.settings",
+        "peekOfCode": "USE_TZ = True\nSTATIC_URL = \"/static/\"\nSTATIC_ROOT = BASE_DIR / \"staticfiles\"\nMEDIA_URL = \"/media/\"\nMEDIA_ROOT = BASE_DIR / \"media\"\nDEFAULT_AUTO_FIELD = \"django.db.models.BigAutoField\"\nAUTH_USER_MODEL = \"accounts.User\"\nCORS_ALLOW_ALL_ORIGINS = True\nREST_FRAMEWORK = {\n    \"DEFAULT_AUTHENTICATION_CLASSES\": (",
+        "detail": "config.settings",
+        "documentation": {}
+    },
+    {
+        "label": "STATIC_URL",
+        "kind": 5,
+        "importPath": "config.settings",
+        "description": "config.settings",
+        "peekOfCode": "STATIC_URL = \"/static/\"\nSTATIC_ROOT = BASE_DIR / \"staticfiles\"\nMEDIA_URL = \"/media/\"\nMEDIA_ROOT = BASE_DIR / \"media\"\nDEFAULT_AUTO_FIELD = \"django.db.models.BigAutoField\"\nAUTH_USER_MODEL = \"accounts.User\"\nCORS_ALLOW_ALL_ORIGINS = True\nREST_FRAMEWORK = {\n    \"DEFAULT_AUTHENTICATION_CLASSES\": (\n        \"rest_framework_simplejwt.authentication.JWTAuthentication\",",
+        "detail": "config.settings",
+        "documentation": {}
+    },
+    {
+        "label": "STATIC_ROOT",
+        "kind": 5,
+        "importPath": "config.settings",
+        "description": "config.settings",
+        "peekOfCode": "STATIC_ROOT = BASE_DIR / \"staticfiles\"\nMEDIA_URL = \"/media/\"\nMEDIA_ROOT = BASE_DIR / \"media\"\nDEFAULT_AUTO_FIELD = \"django.db.models.BigAutoField\"\nAUTH_USER_MODEL = \"accounts.User\"\nCORS_ALLOW_ALL_ORIGINS = True\nREST_FRAMEWORK = {\n    \"DEFAULT_AUTHENTICATION_CLASSES\": (\n        \"rest_framework_simplejwt.authentication.JWTAuthentication\",\n    ),",
+        "detail": "config.settings",
+        "documentation": {}
+    },
+    {
+        "label": "MEDIA_URL",
+        "kind": 5,
+        "importPath": "config.settings",
+        "description": "config.settings",
+        "peekOfCode": "MEDIA_URL = \"/media/\"\nMEDIA_ROOT = BASE_DIR / \"media\"\nDEFAULT_AUTO_FIELD = \"django.db.models.BigAutoField\"\nAUTH_USER_MODEL = \"accounts.User\"\nCORS_ALLOW_ALL_ORIGINS = True\nREST_FRAMEWORK = {\n    \"DEFAULT_AUTHENTICATION_CLASSES\": (\n        \"rest_framework_simplejwt.authentication.JWTAuthentication\",\n    ),\n    \"DEFAULT_PERMISSION_CLASSES\": (",
+        "detail": "config.settings",
+        "documentation": {}
+    },
+    {
+        "label": "MEDIA_ROOT",
+        "kind": 5,
+        "importPath": "config.settings",
+        "description": "config.settings",
+        "peekOfCode": "MEDIA_ROOT = BASE_DIR / \"media\"\nDEFAULT_AUTO_FIELD = \"django.db.models.BigAutoField\"\nAUTH_USER_MODEL = \"accounts.User\"\nCORS_ALLOW_ALL_ORIGINS = True\nREST_FRAMEWORK = {\n    \"DEFAULT_AUTHENTICATION_CLASSES\": (\n        \"rest_framework_simplejwt.authentication.JWTAuthentication\",\n    ),\n    \"DEFAULT_PERMISSION_CLASSES\": (\n        \"rest_framework.permissions.IsAuthenticatedOrReadOnly\",",
+        "detail": "config.settings",
+        "documentation": {}
+    },
+    {
+        "label": "DEFAULT_AUTO_FIELD",
+        "kind": 5,
+        "importPath": "config.settings",
+        "description": "config.settings",
+        "peekOfCode": "DEFAULT_AUTO_FIELD = \"django.db.models.BigAutoField\"\nAUTH_USER_MODEL = \"accounts.User\"\nCORS_ALLOW_ALL_ORIGINS = True\nREST_FRAMEWORK = {\n    \"DEFAULT_AUTHENTICATION_CLASSES\": (\n        \"rest_framework_simplejwt.authentication.JWTAuthentication\",\n    ),\n    \"DEFAULT_PERMISSION_CLASSES\": (\n        \"rest_framework.permissions.IsAuthenticatedOrReadOnly\",\n    ),",
+        "detail": "config.settings",
+        "documentation": {}
+    },
+    {
+        "label": "AUTH_USER_MODEL",
+        "kind": 5,
+        "importPath": "config.settings",
+        "description": "config.settings",
+        "peekOfCode": "AUTH_USER_MODEL = \"accounts.User\"\nCORS_ALLOW_ALL_ORIGINS = True\nREST_FRAMEWORK = {\n    \"DEFAULT_AUTHENTICATION_CLASSES\": (\n        \"rest_framework_simplejwt.authentication.JWTAuthentication\",\n    ),\n    \"DEFAULT_PERMISSION_CLASSES\": (\n        \"rest_framework.permissions.IsAuthenticatedOrReadOnly\",\n    ),\n    \"DEFAULT_FILTER_BACKENDS\": (",
+        "detail": "config.settings",
+        "documentation": {}
+    },
+    {
+        "label": "CORS_ALLOW_ALL_ORIGINS",
+        "kind": 5,
+        "importPath": "config.settings",
+        "description": "config.settings",
+        "peekOfCode": "CORS_ALLOW_ALL_ORIGINS = True\nREST_FRAMEWORK = {\n    \"DEFAULT_AUTHENTICATION_CLASSES\": (\n        \"rest_framework_simplejwt.authentication.JWTAuthentication\",\n    ),\n    \"DEFAULT_PERMISSION_CLASSES\": (\n        \"rest_framework.permissions.IsAuthenticatedOrReadOnly\",\n    ),\n    \"DEFAULT_FILTER_BACKENDS\": (\n        \"django_filters.rest_framework.DjangoFilterBackend\",",
+        "detail": "config.settings",
+        "documentation": {}
+    },
+    {
+        "label": "REST_FRAMEWORK",
+        "kind": 5,
+        "importPath": "config.settings",
+        "description": "config.settings",
+        "peekOfCode": "REST_FRAMEWORK = {\n    \"DEFAULT_AUTHENTICATION_CLASSES\": (\n        \"rest_framework_simplejwt.authentication.JWTAuthentication\",\n    ),\n    \"DEFAULT_PERMISSION_CLASSES\": (\n        \"rest_framework.permissions.IsAuthenticatedOrReadOnly\",\n    ),\n    \"DEFAULT_FILTER_BACKENDS\": (\n        \"django_filters.rest_framework.DjangoFilterBackend\",\n        \"rest_framework.filters.SearchFilter\",",
+        "detail": "config.settings",
+        "documentation": {}
+    },
+    {
+        "label": "SIMPLE_JWT",
+        "kind": 5,
+        "importPath": "config.settings",
+        "description": "config.settings",
+        "peekOfCode": "SIMPLE_JWT = {\n    \"ACCESS_TOKEN_LIFETIME\": timedelta(days=1),\n    \"REFRESH_TOKEN_LIFETIME\": timedelta(days=7),\n    \"ROTATE_REFRESH_TOKENS\": False,\n    \"BLACKLIST_AFTER_ROTATION\": False,\n    \"AUTH_HEADER_TYPES\": (\"Bearer\",),\n}\nSPECTACULAR_SETTINGS = {\n    \"TITLE\": \"News Blog API\",\n    \"DESCRIPTION\": \"Professional modular Django REST API for News/Blog platform\",",
+        "detail": "config.settings",
+        "documentation": {}
+    },
+    {
+        "label": "SPECTACULAR_SETTINGS",
+        "kind": 5,
+        "importPath": "config.settings",
+        "description": "config.settings",
+        "peekOfCode": "SPECTACULAR_SETTINGS = {\n    \"TITLE\": \"News Blog API\",\n    \"DESCRIPTION\": \"Professional modular Django REST API for News/Blog platform\",\n    \"VERSION\": \"1.0.0\",\n    \"SERVE_INCLUDE_SCHEMA\": False,\n}",
+        "detail": "config.settings",
+        "documentation": {}
+    },
+    {
+        "label": "urlpatterns",
+        "kind": 5,
+        "importPath": "config.urls",
+        "description": "config.urls",
+        "peekOfCode": "urlpatterns = [\n    path(\"admin/\", admin.site.urls),\n    path(\"api/schema/\", SpectacularAPIView.as_view(), name=\"schema\"),\n    path(\n        \"api/docs/\",\n        SpectacularSwaggerView.as_view(url_name=\"schema\"),\n        name=\"swagger-ui\",\n    ),\n    path(\"api/redoc/\", SpectacularRedocView.as_view(url_name=\"schema\"), name=\"redoc\"),\n    path(\"api/accounts/\", include(\"apps.accounts.urls\")),",
+        "detail": "config.urls",
+        "documentation": {}
+    },
+    {
+        "label": "application",
+        "kind": 5,
+        "importPath": "config.wsgi",
+        "description": "config.wsgi",
+        "peekOfCode": "application = get_wsgi_application()",
+        "detail": "config.wsgi",
+        "documentation": {}
+    },
+    {
+        "label": "main",
+        "kind": 2,
+        "importPath": "manage",
+        "description": "manage",
+        "peekOfCode": "def main():\n    \"\"\"Run administrative tasks.\"\"\"\n    os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'config.settings')\n    try:\n        from django.core.management import execute_from_command_line\n    except ImportError as exc:\n        raise ImportError(\n            \"Couldn't import Django. Are you sure it's installed and \"\n            \"available on your PYTHONPATH environment variable? Did you \"\n            \"forget to activate a virtual environment?\"",
+        "detail": "manage",
+        "documentation": {}
+    }
+]

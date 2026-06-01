@@ -2,53 +2,44 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import useMe from "@/app/hooks/useMe";
+
+const navItems = [
+  { href: "/dashboard", label: "داشبورد" },
+  { href: "/dashboard/posts", label: "پست‌ها" },
+  { href: "/dashboard/comments", label: "کامنت‌ها" },
+  { href: "/dashboard/categories", label: "دسته‌بندی‌ها" },
+  { href: "/dashboard/tags", label: "تگ‌ها" },
+  { href: "/dashboard/profile", label: "پروفایل" },
+];
 
 export default function DashboardSidebar() {
   const pathname = usePathname();
-  const { me } = useMe();
-
-  const isAdmin = me?.role === "admin";
-
-  const items = [
-    { href: "/dashboard", label: "نمای کلی" },
-    { href: "/dashboard/posts", label: "پست‌ها" },
-    { href: "/dashboard/comments", label: "کامنت‌ها" },
-  ];
-
-  const adminItems = [
-    { href: "/dashboard/categories", label: "دسته‌بندی‌ها" },
-    { href: "/dashboard/tags", label: "تگ‌ها" },
-  ];
-
-  const all = isAdmin ? [...items, ...adminItems] : items;
 
   return (
-    <nav className="rounded-2xl border border-zinc-800 bg-zinc-900 p-3">
-      <div className="px-2 py-2 text-[12px] text-zinc-400" dir="rtl">
-        منو
+    <aside className="w-72 hidden lg:flex flex-col border-l border-zinc-800 bg-zinc-950">
+      <div className="p-5 border-b border-zinc-800">
+        <h1 className="text-lg font-bold">پنل مدیریت</h1>
+        <p className="text-xs text-zinc-500 mt-1">CMS News Dashboard</p>
       </div>
 
-      <ul className="space-y-1">
-        {all.map((it) => {
-          const active = pathname === it.href;
+      <nav className="p-3 space-y-1">
+        {navItems.map((item) => {
+          const active = pathname === item.href;
           return (
-            <li key={it.href}>
-              <Link
-                href={it.href}
-                className={[
-                  "block rounded-xl px-3 py-2 text-sm transition-colors",
-                  active
-                    ? "bg-white/5 text-white border border-zinc-700"
-                    : "text-zinc-300 hover:bg-white/5 hover:text-white border border-transparent",
-                ].join(" ")}
-              >
-                {it.label}
-              </Link>
-            </li>
+            <Link
+              key={item.href}
+              href={item.href}
+              className={`block rounded-xl px-4 py-3 text-sm transition-colors ${
+                active
+                  ? "bg-white text-black"
+                  : "text-zinc-300 hover:bg-zinc-900 hover:text-white"
+              }`}
+            >
+              {item.label}
+            </Link>
           );
         })}
-      </ul>
-    </nav>
+      </nav>
+    </aside>
   );
 }

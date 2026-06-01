@@ -87,7 +87,9 @@ class Post(TimeStampedModel):
 
     def save(self, *args, **kwargs):
         if not self.slug:
-            base = slugify(self.title, allow_unicode=True)
+            base = slugify(self.title, allow_unicode=False)  # <-- مهم
+            if not base:
+                base = "post"
             self.slug = base
             i = 1
             while Post.objects.filter(slug=self.slug).exclude(pk=self.pk).exists():

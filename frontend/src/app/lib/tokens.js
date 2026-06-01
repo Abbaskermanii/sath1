@@ -1,27 +1,18 @@
 export function getAccessToken() {
   if (typeof window === "undefined") return null;
-  return localStorage.getItem("access") || localStorage.getItem("access_token");
+  return localStorage.getItem("access");
 }
 
 export function getRefreshToken() {
   if (typeof window === "undefined") return null;
-  return (
-    localStorage.getItem("refresh") || localStorage.getItem("refresh_token")
-  );
+  return localStorage.getItem("refresh");
 }
 
 export function setTokens({ access, refresh }) {
   if (typeof window === "undefined") return;
 
-  if (access) {
-    localStorage.setItem("access", access);
-    localStorage.setItem("access_token", access);
-  }
-
-  if (refresh) {
-    localStorage.setItem("refresh", refresh);
-    localStorage.setItem("refresh_token", refresh);
-  }
+  if (access) localStorage.setItem("access", access);
+  if (refresh) localStorage.setItem("refresh", refresh);
 }
 
 export function clearTokens() {
@@ -29,8 +20,6 @@ export function clearTokens() {
 
   localStorage.removeItem("access");
   localStorage.removeItem("refresh");
-  localStorage.removeItem("access_token");
-  localStorage.removeItem("refresh_token");
 }
 
 export function isLoggedIn() {
@@ -40,45 +29,38 @@ export function isLoggedIn() {
 function parseJwt(token) {
   try {
     if (!token) return null;
-    const base64Url = token.split(".")[1];
-    if (!base64Url) return null;
 
-    const base64 = base64Url.replace(/-/g, "+").replace(/_/g, "/");
-    const jsonPayload = decodeURIComponent(
-      atob(base64)
-        .split("")
-        .map((c) => "%" + ("00" + c.charCodeAt(0).toString(16)).slice(-2))
-        .join(""),
-    );
+    const parts = token.split(".");
+    if (parts.length !== 3) return null;
 
-    return JSON.parse(jsonPayload);
+    const base64 = parts[1].replace(/-/g, "+").replace(/_/g, "/");
+
+    const padded = base64 + "=".repeat((4 - (base64.length % 4)) % 4);
+
+    const json =
+      typeof window !== "undefined"
+        ? decodeURIComponent(
+            Array.prototype.map
+              .call(
+                atob(padded),
+                (c) => "%" + ("00" + c.charCodeAt(0).toString(16)).slice(-2),
+              )
+              .join(""),
+          )
+        : atob(padded);
+
+    return JSON.parse(json);
   } catch {
     return null;
   }
 }
 
-export function getAccessPayload() {
-  const token = getAccessToken();
-  return parseJwt(token);
-}
-
 export function getUserIdFromAccess() {
-  const payload = getAccessPayload();
+  const payload = parseJwt(getAccessToken());
   return payload?.user_id ?? payload?.id ?? payload?.sub ?? null;
 }
 
 export function getUserNameFromAccess() {
-  const payload = getAccessPayload();
-  return (
-    payload?.username ??
-    payload?.name ??
-    payload?.full_name ??
-    payload?.email ??
-    null
-  );
-}
-
-export function getUserRoleFromAccess() {
-  const payload = getAccessPayload();
-  return payload?.role ?? null;
+  const payload = parseJwt(getAccessToken());
+  return payload?.username ?? payload?.name ?? payload?.email ?? null;
 }

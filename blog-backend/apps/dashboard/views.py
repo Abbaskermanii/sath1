@@ -1,4 +1,4 @@
-from django.db.models import Sum
+from django.db.models import Sum, Count, Q
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework.permissions import IsAuthenticated
@@ -70,27 +70,60 @@ class MyContentView(APIView):
         is_admin = getattr(user, "role", None) == "admin"
 
         content_type = request.query_params.get("type", "all")
-        status = request.query_params.get("status")
+        status_param = request.query_params.get("status")
 
         result = []
 
         def add_posts():
-            qs = Post.objects.all()
+            qs = (
+                Post.objects.select_related("author", "category")
+                .prefetch_related("tags")
+                .annotate(
+                    comments_count=Count(
+                        "comments", filter=Q(comments__is_approved=True)
+                    )
+                )
+            )
+
             if not is_admin:
                 qs = qs.filter(author=user)
-            if status:
-                qs = qs.filter(status=status)
 
-            for p in qs.order_by("-published_at", "-created_at")[:200]:
+            if status_param:
+                qs = qs.filter(status=status_param)
+
+            qs = qs.order_by("-published_at", "-created_at")[:200]
+
+            for p in qs:
                 result.append(
                     {
                         "type": "post",
                         "id": p.id,
                         "title": p.title,
+                        "slug": p.slug,
+                        "excerpt": p.excerpt,
+                        "cover": p.cover.url if p.cover else None,
                         "status": p.status,
                         "created_at": p.created_at,
                         "published_at": p.published_at,
                         "views": p.views,
+                        "comments_count": p.comments_count,
+                        "category": (
+                            {
+                                "id": p.category.id,
+                                "title": p.category.title,
+                                "slug": p.category.slug,
+                            }
+                            if p.category
+                            else None
+                        ),
+                        "tags": [
+                            {
+                                "id": tag.id,
+                                "title": tag.title,
+                                "slug": tag.slug,
+                            }
+                            for tag in p.tags.all()
+                        ],
                     }
                 )
 
@@ -98,8 +131,8 @@ class MyContentView(APIView):
             qs = Video.objects.all()
             if not is_admin:
                 qs = qs.filter(author=user)
-            if status:
-                qs = qs.filter(status=status)
+            if status_param:
+                qs = qs.filter(status=status_param)
 
             for v in qs.order_by("-published_at", "-created_at")[:200]:
                 result.append(
@@ -118,8 +151,8 @@ class MyContentView(APIView):
             qs = Podcast.objects.all()
             if not is_admin:
                 qs = qs.filter(author=user)
-            if status:
-                qs = qs.filter(status=status)
+            if status_param:
+                qs = qs.filter(status=status_param)
 
             for p in qs.order_by("-published_at", "-created_at")[:200]:
                 result.append(

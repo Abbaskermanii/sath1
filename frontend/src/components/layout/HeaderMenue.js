@@ -12,62 +12,22 @@ import {
   LogOut,
 } from "lucide-react";
 import { useRouter } from "next/navigation";
-import {
-  clearTokens,
-  getUserIdFromAccess,
-  getUserNameFromAccess,
-  isLoggedIn,
-} from "@/app/lib/tokens";
+import { clearTokens, isLoggedIn } from "@/app/lib/tokens";
+import useMe from "@/app/hooks/useMe";
+import { canAccessDashboard } from "@/app/lib/authApi";
+
 
 function HeaderMenue() {
   const router = useRouter();
 
   const [show, setShow] = useState(true);
   const [lastScroll, setLastScroll] = useState(0);
-
-  const [loggedIn, setLoggedIn] = useState(false);
-  const [userName, setUserName] = useState("");
   const [dropdownOpen, setDropdownOpen] = useState(false);
 
   const dropdownRef = useRef(null);
 
-  useEffect(() => {
-    const currentLoggedIn = isLoggedIn();
-    setLoggedIn(currentLoggedIn);
-
-    if (currentLoggedIn) {
-      setUserName(getUserNameFromAccess());
-    }
-  }, []);
-
-  const handleLoginClick = () => {
-    router.push("/auth");
-  };
-
-  const handleLogout = () => {
-    clearTokens();
-    setLoggedIn(false);
-    setUserName("");
-    setDropdownOpen(false);
-    router.push("/");
-  };
-
-  const handleDashboard = () => {
-    const userId = getUserIdFromAccess();
-    setDropdownOpen(false);
-
-    // پیشنهاد: به جای /author/dashboard از /dashboard استفاده کن
-    // چون ما داشبورد را روی /dashboard ساختیم
-    router.push("/dashboard");
-
-    // اگر فعلاً مجبور هستی همان مسیر قبلی را نگه داری:
-    // router.push(userId ? `/author/dashboard?user_id=${userId}` : "/");
-  };
-
-  const handleSettings = () => {
-    setDropdownOpen(false);
-    router.push("/settings");
-  };
+  const loggedIn = isLoggedIn();
+  const { user, loading } = useMe();
 
   useEffect(() => {
     const handleScroll = () => {
@@ -97,6 +57,26 @@ function HeaderMenue() {
     return () => document.removeEventListener("mousedown", handleClickOutside);
   }, []);
 
+  const handleLoginClick = () => {
+    router.push("/auth");
+  };
+
+  const handleLogout = () => {
+    clearTokens();
+    setDropdownOpen(false);
+    router.push("/");
+  };
+
+  const handleDashboard = () => {
+    setDropdownOpen(false);
+    router.push("/dashboard");
+  };
+
+  const handleSettings = () => {
+    setDropdownOpen(false);
+    router.push("/settings");
+  };
+
   return (
     <div
       dir="rtl"
@@ -105,6 +85,7 @@ function HeaderMenue() {
       }`}
     >
       <Navbar />
+
       <div className="flex max-w-7xl mx-auto items-center justify-between h-14 px-4">
         <h1 className="text-white text-3xl font-semibold">شاخص یک</h1>
 
@@ -127,21 +108,29 @@ function HeaderMenue() {
                 className="flex items-center gap-2 bg-white text-black px-3 h-9 rounded-md hover:bg-gray-200 transition"
               >
                 <User size={18} />
-                <span className="max-w-30 truncate">{userName}</span>
+                <span className="max-w-30 truncate">
+                  {loading
+                    ? "..."
+                    : user?.username || user?.full_name || "کاربر"}
+                </span>
                 <ChevronDown size={16} />
               </button>
 
               {dropdownOpen && (
                 <div className="absolute left-0 mt-2 w-48 bg-white rounded-lg shadow-lg overflow-hidden border border-gray-200 z-50">
-                  <button
-                    onClick={handleDashboard}
-                    className="w-full flex items-center gap-2 px-4 py-3 text-sm text-right hover:bg-gray-100 transition"
-                  >
-                    <LayoutDashboard size={16} />
-                    داشبورد
-                  </button>
+                  {canAccessDashboard(user) && (
+                    <button
+                      type="button"
+                      onClick={handleDashboard}
+                      className="w-full flex items-center gap-2 px-4 py-3 text-sm text-right hover:bg-gray-100 transition"
+                    >
+                      <LayoutDashboard size={16} />
+                      داشبورد
+                    </button>
+                  )}
 
                   <button
+                    type="button"
                     onClick={handleSettings}
                     className="w-full flex items-center gap-2 px-4 py-3 text-sm text-right hover:bg-gray-100 transition"
                   >
@@ -150,6 +139,7 @@ function HeaderMenue() {
                   </button>
 
                   <button
+                    type="button"
                     onClick={handleLogout}
                     className="w-full flex items-center gap-2 px-4 py-3 text-sm text-right text-red-600 hover:bg-red-50 transition"
                   >

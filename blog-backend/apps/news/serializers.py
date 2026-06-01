@@ -1,3 +1,5 @@
+import re
+from django.utils.text import slugify
 from rest_framework import serializers
 
 from apps.news.models import Bookmark, Category, Comment, Post, Tag
@@ -136,7 +138,15 @@ class PostDetailSerializer(serializers.ModelSerializer):
         return Bookmark.objects.filter(post=obj, user=request.user).exists()
 
 
+SLUG_RE = re.compile(r"^[a-z0-9]+(?:-[a-z0-9]+)*$")
+
+SLUG_RE = re.compile(r"^[a-z0-9]+(?:-[a-z0-9]+)*$")
+
+
 class PostWriteSerializer(serializers.ModelSerializer):
+    # اجازه می‌دهیم کاربر اسلاگ را وارد کند
+    slug = serializers.CharField(required=False, allow_blank=True)
+
     class Meta:
         model = Post
         fields = (
@@ -151,7 +161,35 @@ class PostWriteSerializer(serializers.ModelSerializer):
             "status",
             "published_at",
         )
-        read_only_fields = ("id", "slug")
+        read_only_fields = ("id",)
+
+    def validate_slug(self, value):
+        if not value:
+            return ""
+
+        value = value.strip().lower()
+        if not SLUG_RE.fullmatch(value):
+            raise serializers.ValidationError(
+                "اسلاگ باید فقط شامل حروف کوچک انگلیسی، اعداد و خط تیره باشد. مثال: my-post-123"
+            )
+        return value
+
+    def create(self, validated_data):
+        slug = validated_data.get("slug")
+        title = validated_data.get("title")
+
+        # اگر کاربر اسلاگ نداده بود، خودمان بر اساس عنوان، اسلاگ انگلیسی می‌سازیم
+        if not slug:
+            base_slug = slugify(title, allow_unicode=False) or "post"
+            slug = base_slug
+            # جلوگیری از تکراری بودن اسلاگ
+            i = 1
+            while Post.objects.filter(slug=slug).exists():
+                i += 1
+                slug = f"{base_slug}-{i}"
+
+        validated_data["slug"] = slug
+        return super().create(validated_data)
 
 
 class CommentWriteSerializer(serializers.ModelSerializer):
