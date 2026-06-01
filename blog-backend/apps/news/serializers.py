@@ -43,6 +43,20 @@ class TagListSerializer(serializers.ModelSerializer):
         )
 
 
+class CategoryWriteSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Category
+        fields = ("id", "title", "slug")
+        read_only_fields = ("id",)
+
+
+class TagWriteSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Tag
+        fields = ("id", "title", "slug")
+        read_only_fields = ("id",)
+
+
 class CommentSerializer(serializers.ModelSerializer):
     user = AuthorSerializer(read_only=True)
 

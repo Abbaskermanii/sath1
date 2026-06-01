@@ -3,22 +3,7 @@
 import { useEffect, useMemo, useState } from "react";
 import { useParams, useRouter } from "next/navigation";
 import { dashboardApi } from "@/app/lib/dashboard/dashboardApi";
-
-function toDatetimeLocalValue(iso) {
-  if (!iso) return "";
-  const d = new Date(iso);
-  if (Number.isNaN(d.getTime())) return "";
-  return new Date(d.getTime() - d.getTimezoneOffset() * 60000)
-    .toISOString()
-    .slice(0, 16);
-}
-
-function toISOFromDatetimeLocal(value) {
-  if (!value) return null;
-  const d = new Date(value);
-  if (Number.isNaN(d.getTime())) return null;
-  return d.toISOString();
-}
+import { api } from "@/app/lib/axiosClient";
 
 export default function EditPostPage() {
   const params = useParams();
@@ -27,18 +12,21 @@ export default function EditPostPage() {
 
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
+  const [pageLoading, setPageLoading] = useState(true);
   const [error, setError] = useState("");
+
+  const [categories, setCategories] = useState([]);
+  const [tagsList, setTagsList] = useState([]);
 
   const [form, setForm] = useState({
     title: "",
     slug: "",
     excerpt: "",
     content: "",
-    cover: "", // فقط برای نمایش کاور فعلی از سرور
+    cover: "",
     category: "",
-    tagsText: "",
     status: "draft",
-    published_at: "",
+    tags: [],
   });
 
   const [coverFile, setCoverFile] = useState(null);
@@ -49,11 +37,33 @@ export default function EditPostPage() {
   }, [coverFile]);
 
   useEffect(() => {
-    // cleanup preview url
     return () => {
       if (coverPreview) URL.revokeObjectURL(coverPreview);
     };
   }, [coverPreview]);
+
+  useEffect(() => {
+    async function loadInitialData() {
+      try {
+        const [categoriesRes, tagsRes] = await Promise.all([
+          api.get("/news/categories/"),
+          api.get("/news/tags/"),
+        ]);
+
+        setCategories(
+          Array.isArray(categoriesRes?.data) ? categoriesRes.data : [],
+        );
+        setTagsList(Array.isArray(tagsRes?.data) ? tagsRes.data : []);
+      } catch (err) {
+        console.error("loadInitialData error:", err);
+        setError("خطا در بارگذاری دسته‌بندی‌ها و تگ‌ها");
+      } finally {
+        setPageLoading(false);
+      }
+    }
+
+    loadInitialData();
+  }, []);
 
   useEffect(() => {
     const loadPost = async () => {
@@ -89,11 +99,10 @@ export default function EditPostPage() {
           slug: post?.slug ?? "",
           excerpt: post?.excerpt ?? "",
           content: post?.content ?? "",
-          cover: post?.cover ?? "", // url کاور فعلی
+          cover: post?.cover ?? "",
           category: categoryId ? String(categoryId) : "",
-          tagsText: tagIds.join(","),
           status: post?.status ?? "draft",
-          published_at: toDatetimeLocalValue(post?.published_at),
+          tags: tagIds.map(Number).filter(Number.isFinite),
         });
 
         setCoverFile(null);
@@ -121,13 +130,14 @@ export default function EditPostPage() {
     setCoverFile(file);
   };
 
-  const parseTags = (text) =>
-    text
-      .split(",")
-      .map((x) => x.trim())
-      .filter(Boolean)
-      .map((x) => Number(x))
-      .filter((n) => Number.isFinite(n));
+  const toggleTag = (id) => {
+    setForm((prev) => ({
+      ...prev,
+      tags: prev.tags.includes(id)
+        ? prev.tags.filter((item) => item !== id)
+        : [...prev.tags, id],
+    }));
+  };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -137,10 +147,12 @@ export default function EditPostPage() {
       setError("اسلاگ پست نامعتبر است.");
       return;
     }
+
     if (!form.title.trim()) {
       setError("عنوان الزامی است.");
       return;
     }
+
     if (!form.content.trim()) {
       setError("محتوا الزامی است.");
       return;
@@ -149,26 +161,24 @@ export default function EditPostPage() {
     try {
       setSaving(true);
 
-      // نکته: به dashboardApi.js دست نمی‌زنیم
-      // و همینجا FormData می‌سازیم تا cover به صورت فایل ارسال شود.
       const fd = new FormData();
       fd.append("title", form.title.trim());
       fd.append("excerpt", form.excerpt.trim());
       fd.append("content", form.content.trim());
       fd.append("status", form.status);
 
-      if (form.category) {
-        fd.append("category", String(Number(form.category)));
+      if (form.slug.trim()) {
+        fd.append("slug", form.slug.trim().toLowerCase());
       }
 
-      const tags = parseTags(form.tagsText);
-      // برای DRF معمولاً ارسال تکراری tags جواب می‌دهد
-      tags.forEach((id) => fd.append("tags", String(id)));
+      if (form.category) {
+        fd.append("category", String(form.category));
+      }
 
-      const publishedAtIso = toISOFromDatetimeLocal(form.published_at);
-      if (publishedAtIso) fd.append("published_at", publishedAtIso);
+      form.tags.forEach((tagId) => {
+        fd.append("tags", String(tagId));
+      });
 
-      // فقط اگر کاربر فایل انتخاب کرد ارسالش کن
       if (coverFile) {
         fd.append("cover", coverFile);
       }
@@ -194,7 +204,7 @@ export default function EditPostPage() {
     }
   };
 
-  if (loading) {
+  if (pageLoading || loading) {
     return (
       <div className="p-10 text-center text-zinc-500" dir="rtl">
         در حال دریافت اطلاعات پست...
@@ -213,10 +223,23 @@ export default function EditPostPage() {
         <div>
           <label className="block mb-2 text-sm text-zinc-300">عنوان</label>
           <input
+            type="text"
             name="title"
             value={form.title}
             onChange={onChange}
             className="w-full rounded-lg bg-zinc-800 border border-zinc-700 px-4 py-3 text-white"
+          />
+        </div>
+
+        <div>
+          <label className="block mb-2 text-sm text-zinc-300">اسلاگ</label>
+          <input
+            type="text"
+            name="slug"
+            value={form.slug}
+            onChange={onChange}
+            dir="ltr"
+            className="w-full rounded-lg bg-zinc-800 border border-zinc-700 px-4 py-3 text-white text-left"
           />
         </div>
 
@@ -240,11 +263,9 @@ export default function EditPostPage() {
           />
         </div>
 
-        {/* کاور */}
         <div>
           <label className="block mb-2 text-sm text-zinc-300">کاور</label>
 
-          {/* نمایش کاور فعلی از سرور */}
           {form.cover && !coverPreview && (
             <div className="mb-3">
               <div className="mb-2 text-xs text-zinc-400">کاور فعلی:</div>
@@ -256,7 +277,6 @@ export default function EditPostPage() {
             </div>
           )}
 
-          {/* پیش‌نمایش فایل انتخاب‌شده */}
           {coverPreview && (
             <div className="mb-3">
               <div className="mb-2 text-xs text-green-400">
@@ -285,28 +305,44 @@ export default function EditPostPage() {
         </div>
 
         <div>
-          <label className="block mb-2 text-sm text-zinc-300">
-            دسته‌بندی (ID)
-          </label>
-          <input
+          <label className="block mb-2 text-sm text-zinc-300">دسته‌بندی</label>
+          <select
             name="category"
             value={form.category}
             onChange={onChange}
-            inputMode="numeric"
             className="w-full rounded-lg bg-zinc-800 border border-zinc-700 px-4 py-3 text-white"
-          />
+          >
+            <option value="">بدون دسته‌بندی</option>
+            {categories.map((cat) => (
+              <option key={cat.id} value={cat.id}>
+                {cat.title}
+              </option>
+            ))}
+          </select>
         </div>
 
         <div>
-          <label className="block mb-2 text-sm text-zinc-300">
-            تگ‌ها (IDها با کاما)
-          </label>
-          <input
-            name="tagsText"
-            value={form.tagsText}
-            onChange={onChange}
-            className="w-full rounded-lg bg-zinc-800 border border-zinc-700 px-4 py-3 text-white"
-          />
+          <label className="block mb-2 text-sm text-zinc-300">تگ‌ها</label>
+          <div className="flex flex-wrap gap-2">
+            {tagsList.map((tag) => {
+              const active = form.tags.includes(tag.id);
+
+              return (
+                <button
+                  key={tag.id}
+                  type="button"
+                  onClick={() => toggleTag(tag.id)}
+                  className={`px-3 py-2 rounded-lg border ${
+                    active
+                      ? "bg-white text-black border-white"
+                      : "bg-zinc-800 text-white border-zinc-700"
+                  }`}
+                >
+                  {tag.title}
+                </button>
+              );
+            })}
+          </div>
         </div>
 
         <div>
@@ -320,19 +356,6 @@ export default function EditPostPage() {
             <option value="draft">پیش‌نویس</option>
             <option value="published">منتشر شده</option>
           </select>
-        </div>
-
-        <div>
-          <label className="block mb-2 text-sm text-zinc-300">
-            تاریخ انتشار
-          </label>
-          <input
-            type="datetime-local"
-            name="published_at"
-            value={form.published_at}
-            onChange={onChange}
-            className="w-full rounded-lg bg-zinc-800 border border-zinc-700 px-4 py-3 text-white"
-          />
         </div>
 
         {error && (

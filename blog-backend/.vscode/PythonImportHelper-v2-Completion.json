@@ -420,6 +420,22 @@
         "documentation": {}
     },
     {
+        "label": "AllowAny",
+        "importPath": "rest_framework.permissions",
+        "description": "rest_framework.permissions",
+        "isExtraImport": true,
+        "detail": "rest_framework.permissions",
+        "documentation": {}
+    },
+    {
+        "label": "IsAdminUser",
+        "importPath": "rest_framework.permissions",
+        "description": "rest_framework.permissions",
+        "isExtraImport": true,
+        "detail": "rest_framework.permissions",
+        "documentation": {}
+    },
+    {
         "label": "authenticate",
         "importPath": "django.contrib.auth",
         "description": "django.contrib.auth",
@@ -916,6 +932,14 @@
         "documentation": {}
     },
     {
+        "label": "CategoryWriteSerializer",
+        "importPath": "apps.news.serializers",
+        "description": "apps.news.serializers",
+        "isExtraImport": true,
+        "detail": "apps.news.serializers",
+        "documentation": {}
+    },
+    {
         "label": "CommentSerializer",
         "importPath": "apps.news.serializers",
         "description": "apps.news.serializers",
@@ -957,6 +981,14 @@
     },
     {
         "label": "TagListSerializer",
+        "importPath": "apps.news.serializers",
+        "description": "apps.news.serializers",
+        "isExtraImport": true,
+        "detail": "apps.news.serializers",
+        "documentation": {}
+    },
+    {
+        "label": "TagWriteSerializer",
         "importPath": "apps.news.serializers",
         "description": "apps.news.serializers",
         "isExtraImport": true,
@@ -2026,6 +2058,24 @@
         "documentation": {}
     },
     {
+        "label": "CategoryWriteSerializer",
+        "kind": 6,
+        "importPath": "apps.news.serializers",
+        "description": "apps.news.serializers",
+        "peekOfCode": "class CategoryWriteSerializer(serializers.ModelSerializer):\n    class Meta:\n        model = Category\n        fields = (\"id\", \"title\", \"slug\")\n        read_only_fields = (\"id\",)\nclass TagWriteSerializer(serializers.ModelSerializer):\n    class Meta:\n        model = Tag\n        fields = (\"id\", \"title\", \"slug\")\n        read_only_fields = (\"id\",)",
+        "detail": "apps.news.serializers",
+        "documentation": {}
+    },
+    {
+        "label": "TagWriteSerializer",
+        "kind": 6,
+        "importPath": "apps.news.serializers",
+        "description": "apps.news.serializers",
+        "peekOfCode": "class TagWriteSerializer(serializers.ModelSerializer):\n    class Meta:\n        model = Tag\n        fields = (\"id\", \"title\", \"slug\")\n        read_only_fields = (\"id\",)\nclass CommentSerializer(serializers.ModelSerializer):\n    user = AuthorSerializer(read_only=True)\n    class Meta:\n        model = Comment\n        fields = (",
+        "detail": "apps.news.serializers",
+        "documentation": {}
+    },
+    {
         "label": "CommentSerializer",
         "kind": 6,
         "importPath": "apps.news.serializers",
@@ -2120,7 +2170,7 @@
         "kind": 6,
         "importPath": "apps.news.views",
         "description": "apps.news.views",
-        "peekOfCode": "class CategoryViewSet(viewsets.ReadOnlyModelViewSet):\n    queryset = Category.objects.annotate(posts_count=Count(\"posts\")).order_by(\"title\")\n    serializer_class = CategoryListSerializer\n    permission_classes = [AllowAny]\n    lookup_field = \"slug\"\n    filter_backends = [filters.SearchFilter, filters.OrderingFilter]\n    search_fields = [\"title\", \"slug\"]\n    ordering_fields = [\"title\", \"created_at\"]\n    ordering = [\"title\"]\nclass TagViewSet(viewsets.ReadOnlyModelViewSet):",
+        "peekOfCode": "class CategoryViewSet(viewsets.ModelViewSet):\n    queryset = Category.objects.annotate(posts_count=Count(\"posts\")).order_by(\"title\")\n    lookup_field = \"slug\"\n    filter_backends = [filters.SearchFilter, filters.OrderingFilter]\n    search_fields = [\"title\", \"slug\"]\n    ordering_fields = [\"title\", \"created_at\"]\n    ordering = [\"title\"]\n    def get_permissions(self):\n        if self.action in [\"list\", \"retrieve\"]:\n            return [AllowAny()]",
         "detail": "apps.news.views",
         "documentation": {}
     },
@@ -2129,7 +2179,7 @@
         "kind": 6,
         "importPath": "apps.news.views",
         "description": "apps.news.views",
-        "peekOfCode": "class TagViewSet(viewsets.ReadOnlyModelViewSet):\n    queryset = Tag.objects.annotate(posts_count=Count(\"posts\")).order_by(\"title\")\n    serializer_class = TagListSerializer\n    permission_classes = [AllowAny]\n    lookup_field = \"slug\"\n    filter_backends = [filters.SearchFilter, filters.OrderingFilter]\n    search_fields = [\"title\", \"slug\"]\n    ordering_fields = [\"title\", \"created_at\"]\n    ordering = [\"title\"]\nclass PostViewSet(viewsets.ModelViewSet):",
+        "peekOfCode": "class TagViewSet(viewsets.ModelViewSet):\n    queryset = Tag.objects.annotate(posts_count=Count(\"posts\")).order_by(\"title\")\n    lookup_field = \"slug\"\n    filter_backends = [filters.SearchFilter, filters.OrderingFilter]\n    search_fields = [\"title\", \"slug\"]\n    ordering_fields = [\"title\", \"created_at\"]\n    ordering = [\"title\"]\n    def get_permissions(self):\n        if self.action in [\"list\", \"retrieve\"]:\n            return [AllowAny()]",
         "detail": "apps.news.views",
         "documentation": {}
     },

@@ -2,41 +2,60 @@ from django.db.models import Count, Q
 from rest_framework import filters, mixins, status, viewsets
 from rest_framework.decorators import action
 from rest_framework.permissions import AllowAny, IsAuthenticated
+from rest_framework.permissions import AllowAny, IsAdminUser
 from rest_framework.response import Response
 
 from apps.news.models import Bookmark, Category, Comment, Post, PostStatus, Tag
 from apps.news.serializers import (
     BookmarkSerializer,
     CategoryListSerializer,
+    CategoryWriteSerializer,
     CommentSerializer,
     CommentWriteSerializer,
     PostDetailSerializer,
     PostListSerializer,
     PostWriteSerializer,
     TagListSerializer,
+    TagWriteSerializer,
 )
 
 
-class CategoryViewSet(viewsets.ReadOnlyModelViewSet):
+class CategoryViewSet(viewsets.ModelViewSet):
     queryset = Category.objects.annotate(posts_count=Count("posts")).order_by("title")
-    serializer_class = CategoryListSerializer
-    permission_classes = [AllowAny]
     lookup_field = "slug"
     filter_backends = [filters.SearchFilter, filters.OrderingFilter]
     search_fields = ["title", "slug"]
     ordering_fields = ["title", "created_at"]
     ordering = ["title"]
 
+    def get_permissions(self):
+        if self.action in ["list", "retrieve"]:
+            return [AllowAny()]
+        return [IsAdminUser()]
 
-class TagViewSet(viewsets.ReadOnlyModelViewSet):
+    def get_serializer_class(self):
+        if self.action in ["create", "update", "partial_update"]:
+            return CategoryWriteSerializer
+        return CategoryListSerializer
+
+
+class TagViewSet(viewsets.ModelViewSet):
     queryset = Tag.objects.annotate(posts_count=Count("posts")).order_by("title")
-    serializer_class = TagListSerializer
-    permission_classes = [AllowAny]
     lookup_field = "slug"
     filter_backends = [filters.SearchFilter, filters.OrderingFilter]
     search_fields = ["title", "slug"]
     ordering_fields = ["title", "created_at"]
     ordering = ["title"]
+
+    def get_permissions(self):
+        if self.action in ["list", "retrieve"]:
+            return [AllowAny()]
+        return [IsAdminUser()]
+
+    def get_serializer_class(self):
+        if self.action in ["create", "update", "partial_update"]:
+            return TagWriteSerializer
+        return TagListSerializer
 
 
 class PostViewSet(viewsets.ModelViewSet):
@@ -112,11 +131,14 @@ class PostViewSet(viewsets.ModelViewSet):
             Post.objects.filter(author=request.user)
             .select_related("author", "category")
             .prefetch_related("tags", "comments")
-            .annotate(comments_count=Count("comments", filter=Q(comments__is_approved=True)))
+            .annotate(
+                comments_count=Count("comments", filter=Q(comments__is_approved=True))
+            )
             .order_by("-created_at")
         )
         serializer = PostListSerializer(qs, many=True, context={"request": request})
         return Response(serializer.data)
+
 
 class CommentViewSet(
     mixins.CreateModelMixin,

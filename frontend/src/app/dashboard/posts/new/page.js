@@ -18,7 +18,6 @@ export default function NewPostPage() {
     category: "",
     status: "draft",
     tags: [],
-    published_at: "",
   });
 
   const [coverFile, setCoverFile] = useState(null);
@@ -120,11 +119,6 @@ export default function NewPostPage() {
         fd.append("tags", String(tagId));
       });
 
-      if (form.published_at) {
-        const iso = new Date(form.published_at).toISOString();
-        fd.append("published_at", iso);
-      }
-
       if (coverFile) {
         fd.append("cover", coverFile);
       }
@@ -164,34 +158,34 @@ export default function NewPostPage() {
 
   if (pageLoading) {
     return (
-      <div className="p-6 text-white" dir="rtl">
+      <div className="p-10 text-center text-zinc-500" dir="rtl">
         در حال بارگذاری...
       </div>
     );
   }
 
   return (
-    <div className="max-w-4xl mx-auto p-6 text-white" dir="rtl">
-      <h1 className="text-2xl font-bold mb-6">ایجاد پست جدید</h1>
+    <div className="space-y-6 max-w-3xl" dir="rtl">
+      <h1 className="text-2xl font-bold">ایجاد پست جدید</h1>
 
       <form
         onSubmit={handleSubmit}
-        className="space-y-6 bg-zinc-900 border border-zinc-800 rounded-2xl p-6"
+        className="space-y-4 rounded-2xl border border-zinc-800 bg-zinc-900 p-6"
       >
         <div>
-          <label className="block mb-2">عنوان</label>
+          <label className="block mb-2 text-sm text-zinc-300">عنوان</label>
           <input
             type="text"
             name="title"
             value={form.title}
             onChange={handleChange}
-            className="w-full p-3 rounded-lg bg-zinc-800 border border-zinc-700"
+            className="w-full rounded-lg bg-zinc-800 border border-zinc-700 px-4 py-3 text-white"
             required
           />
         </div>
 
         <div>
-          <label className="block mb-2">اسلاگ</label>
+          <label className="block mb-2 text-sm text-zinc-300">اسلاگ</label>
           <input
             type="text"
             name="slug"
@@ -199,7 +193,7 @@ export default function NewPostPage() {
             onChange={handleChange}
             dir="ltr"
             placeholder="مثلاً: my-first-post"
-            className="w-full p-3 rounded-lg bg-zinc-800 border border-zinc-700 text-left"
+            className="w-full rounded-lg bg-zinc-800 border border-zinc-700 px-4 py-3 text-white text-left"
           />
           <p className="text-xs text-zinc-500 mt-2">
             فقط حروف انگلیسی کوچک، عدد و خط تیره. اگر خالی بماند، بک‌اند خودش
@@ -208,52 +202,50 @@ export default function NewPostPage() {
         </div>
 
         <div>
-          <label className="block mb-2">خلاصه</label>
+          <label className="block mb-2 text-sm text-zinc-300">خلاصه</label>
           <textarea
             name="excerpt"
             value={form.excerpt}
             onChange={handleChange}
-            rows={3}
-            className="w-full p-3 rounded-lg bg-zinc-800 border border-zinc-700"
+            className="w-full min-h-24 rounded-lg bg-zinc-800 border border-zinc-700 px-4 py-3 text-white"
           />
         </div>
 
         <div>
-          <label className="block mb-2">محتوا</label>
+          <label className="block mb-2 text-sm text-zinc-300">محتوا</label>
           <textarea
             name="content"
             value={form.content}
             onChange={handleChange}
-            rows={8}
-            className="w-full p-3 rounded-lg bg-zinc-800 border border-zinc-700"
+            className="w-full min-h-48 rounded-lg bg-zinc-800 border border-zinc-700 px-4 py-3 text-white"
             required
           />
         </div>
 
         <div>
-          <label className="block mb-2">کاور</label>
+          <label className="block mb-2 text-sm text-zinc-300">کاور</label>
           <input
             type="file"
             accept="image/*"
             onChange={handleCoverChange}
-            className="w-full p-3 rounded-lg bg-zinc-800 border border-zinc-700"
+            className="w-full rounded-lg bg-zinc-800 border border-zinc-700 px-4 py-3 text-white"
           />
           {coverPreview && (
             <img
               src={coverPreview}
               alt="preview"
-              className="mt-4 w-64 h-40 object-cover rounded-lg border border-zinc-700"
+              className="mt-4 h-40 w-full rounded-lg border border-zinc-700 object-cover"
             />
           )}
         </div>
 
         <div>
-          <label className="block mb-2">دسته‌بندی</label>
+          <label className="block mb-2 text-sm text-zinc-300">دسته‌بندی</label>
           <select
             name="category"
             value={form.category}
             onChange={handleChange}
-            className="w-full p-3 rounded-lg bg-zinc-800 border border-zinc-700"
+            className="w-full rounded-lg bg-zinc-800 border border-zinc-700 px-4 py-3 text-white"
           >
             <option value="">بدون دسته‌بندی</option>
             {categories.map((cat) => (
@@ -265,7 +257,7 @@ export default function NewPostPage() {
         </div>
 
         <div>
-          <label className="block mb-2">تگ‌ها</label>
+          <label className="block mb-2 text-sm text-zinc-300">تگ‌ها</label>
           <div className="flex flex-wrap gap-2">
             {tagsList.map((tag) => {
               const active = form.tags.includes(tag.id);
@@ -289,27 +281,16 @@ export default function NewPostPage() {
         </div>
 
         <div>
-          <label className="block mb-2">وضعیت</label>
+          <label className="block mb-2 text-sm text-zinc-300">وضعیت</label>
           <select
             name="status"
             value={form.status}
             onChange={handleChange}
-            className="w-full p-3 rounded-lg bg-zinc-800 border border-zinc-700"
+            className="w-full rounded-lg bg-zinc-800 border border-zinc-700 px-4 py-3 text-white"
           >
             <option value="draft">پیش‌نویس</option>
             <option value="published">منتشر شده</option>
           </select>
-        </div>
-
-        <div>
-          <label className="block mb-2">تاریخ انتشار</label>
-          <input
-            type="datetime-local"
-            name="published_at"
-            value={form.published_at}
-            onChange={handleChange}
-            className="w-full p-3 rounded-lg bg-zinc-800 border border-zinc-700"
-          />
         </div>
 
         {error && (
@@ -318,11 +299,11 @@ export default function NewPostPage() {
           </div>
         )}
 
-        <div className="flex gap-3">
+        <div className="flex gap-3 pt-2">
           <button
             type="submit"
             disabled={loading}
-            className="px-6 py-3 rounded-lg bg-white text-black font-bold disabled:opacity-50"
+            className="bg-white text-black px-5 py-2.5 rounded-lg font-bold disabled:opacity-50"
           >
             {loading ? "در حال ثبت..." : "ثبت پست"}
           </button>
@@ -330,7 +311,7 @@ export default function NewPostPage() {
           <button
             type="button"
             onClick={() => router.push("/dashboard/posts")}
-            className="px-6 py-3 rounded-lg border border-zinc-700 text-white"
+            className="border border-zinc-700 text-white px-5 py-2.5 rounded-lg"
           >
             انصراف
           </button>
