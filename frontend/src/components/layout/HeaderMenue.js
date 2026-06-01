@@ -55,7 +55,13 @@ function HeaderMenue() {
   const handleDashboard = () => {
     const userId = getUserIdFromAccess();
     setDropdownOpen(false);
-    router.push(userId ? `/author/dashboard?user_id=${userId}` : "/");
+
+    // پیشنهاد: به جای /author/dashboard از /dashboard استفاده کن
+    // چون ما داشبورد را روی /dashboard ساختیم
+    router.push("/dashboard");
+
+    // اگر فعلاً مجبور هستی همان مسیر قبلی را نگه داری:
+    // router.push(userId ? `/author/dashboard?user_id=${userId}` : "/");
   };
 
   const handleSettings = () => {
@@ -80,7 +86,6 @@ function HeaderMenue() {
     return () => window.removeEventListener("scroll", handleScroll);
   }, [lastScroll]);
 
-  // بستن dropdown با کلیک بیرون
   useEffect(() => {
     const handleClickOutside = (event) => {
       if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
@@ -157,6 +162,7 @@ function HeaderMenue() {
           )}
         </div>
       </div>
+
       <Menue />
     </div>
   );
