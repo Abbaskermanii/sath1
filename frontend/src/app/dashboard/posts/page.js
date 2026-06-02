@@ -16,16 +16,11 @@ export default function DashboardPosts() {
   const fetchPosts = async () => {
     setLoading(true);
     try {
-      const res = await dashboardApi.getMyContent({ type: "post" });
-      console.log("getMyContent raw response =>", res);
-
-      const onlyPosts = Array.isArray(res)
-        ? res.filter((item) => item?.type === "post")
-        : [];
-
-      setPosts(onlyPosts);
+      const res = await dashboardApi.getMyPosts();
+      console.log("getMyPosts raw response =>", res);
+      setPosts(Array.isArray(res) ? res : []);
     } catch (err) {
-      console.error("getMyContent error:", err);
+      console.error("getMyPosts error:", err);
       setPosts([]);
     } finally {
       setLoading(false);
@@ -65,7 +60,7 @@ export default function DashboardPosts() {
     const slug = post?.slug;
 
     if (!slug) {
-      alert("slug این پست پیدا نشد. خروجی my-content را در console چک کن.");
+      alert("slug این پست پیدا نشد.");
       return;
     }
 
@@ -79,7 +74,7 @@ export default function DashboardPosts() {
       alert("پست با موفقیت حذف شد.");
     } catch (err) {
       console.error("deletePost error:", err);
-      alert(err?.message || "حذف پست انجام نشد.");
+      alert(err?.response?.data?.detail || err?.message || "حذف پست انجام نشد.");
     } finally {
       setDeletingSlug(null);
     }
@@ -129,9 +124,7 @@ export default function DashboardPosts() {
                   return (
                     <tr key={post?.id || idx} className="hover:bg-zinc-800/50">
                       <td className="p-4 font-medium">{post?.title || "-"}</td>
-
                       <td className="p-4 text-zinc-200">{categoryName}</td>
-
                       <td className="p-4">
                         {tagNames.length === 0 ? (
                           <span className="text-zinc-500 text-sm">—</span>
@@ -148,7 +141,6 @@ export default function DashboardPosts() {
                           </div>
                         )}
                       </td>
-
                       <td className="p-4">
                         <span
                           className={`px-2 py-1 rounded text-xs ${
@@ -162,7 +154,6 @@ export default function DashboardPosts() {
                             : "پیش‌نویس"}
                         </span>
                       </td>
-
                       <td className="p-4">
                         <div className="flex items-center gap-4">
                           {slug ? (
@@ -179,9 +170,7 @@ export default function DashboardPosts() {
                                 disabled={deletingSlug === slug}
                                 className="text-red-400 hover:underline disabled:opacity-50"
                               >
-                                {deletingSlug === slug
-                                  ? "در حال حذف..."
-                                  : "حذف"}
+                                {deletingSlug === slug ? "در حال حذف..." : "حذف"}
                               </button>
                             </>
                           ) : (

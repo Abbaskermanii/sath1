@@ -4,6 +4,12 @@ import AdminGuard from "@/app/lib/AdminGuard";
 import { useEffect, useState } from "react";
 import { api } from "@/app/lib/axiosClient";
 
+function normalizeList(data) {
+  if (Array.isArray(data)) return data;
+  if (Array.isArray(data?.results)) return data.results;
+  return [];
+}
+
 function TagsPageContent() {
   const [tags, setTags] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -23,7 +29,8 @@ function TagsPageContent() {
       setError("");
 
       const res = await api.get("/news/tags/");
-      setTags(Array.isArray(res?.data) ? res.data : []);
+
+      setTags(normalizeList(res?.data));
     } catch (err) {
       console.error("loadTags error:", err);
       setError("خطا در دریافت تگ‌ها");
@@ -38,6 +45,7 @@ function TagsPageContent() {
 
   function handleChange(e) {
     const { name, value } = e.target;
+
     setForm((prev) => ({
       ...prev,
       [name]: value,
@@ -49,6 +57,7 @@ function TagsPageContent() {
       title: "",
       slug: "",
     });
+
     setEditingSlug(null);
   }
 
@@ -82,13 +91,24 @@ function TagsPageContent() {
       await loadTags();
     } catch (err) {
       console.error("save tag error:", err);
+
       const data = err?.response?.data;
 
-      const message =
-        data?.title?.[0] ||
-        data?.slug?.[0] ||
-        data?.detail ||
-        "ذخیره تگ انجام نشد.";
+      let message = "ذخیره تگ انجام نشد.";
+
+      if (typeof data === "string") {
+        message = data;
+      } else if (data?.title?.[0]) {
+        message = data.title[0];
+      } else if (data?.slug?.[0]) {
+        message = data.slug[0];
+      } else if (data?.detail) {
+        message = data.detail;
+      } else if (data && typeof data === "object") {
+        message = JSON.stringify(data);
+      } else if (err?.message) {
+        message = err.message;
+      }
 
       setError(message);
     } finally {
@@ -101,6 +121,7 @@ function TagsPageContent() {
       title: tag.title ?? "",
       slug: tag.slug ?? "",
     });
+
     setEditingSlug(tag.slug);
   }
 
@@ -110,12 +131,28 @@ function TagsPageContent() {
 
     try {
       setError("");
+
       await api.delete(`/news/tags/${tag.slug}/`);
+
       await loadTags();
     } catch (err) {
       console.error("delete tag error:", err);
+
       const data = err?.response?.data;
-      setError(data?.detail || "حذف تگ انجام نشد.");
+
+      let message = "حذف تگ انجام نشد.";
+
+      if (typeof data === "string") {
+        message = data;
+      } else if (data?.detail) {
+        message = data.detail;
+      } else if (data && typeof data === "object") {
+        message = JSON.stringify(data);
+      } else if (err?.message) {
+        message = err.message;
+      }
+
+      setError(message);
     }
   }
 
@@ -123,6 +160,7 @@ function TagsPageContent() {
     <div className="space-y-6 max-w-5xl" dir="rtl">
       <div>
         <h1 className="text-2xl font-bold text-white">مدیریت تگ‌ها</h1>
+
         <p className="text-sm text-zinc-400 mt-1">
           ایجاد، ویرایش و حذف تگ‌های پست‌ها
         </p>
@@ -138,6 +176,7 @@ function TagsPageContent() {
 
         <div>
           <label className="block mb-2 text-sm text-zinc-300">عنوان</label>
+
           <input
             type="text"
             name="title"
@@ -150,6 +189,7 @@ function TagsPageContent() {
 
         <div>
           <label className="block mb-2 text-sm text-zinc-300">اسلاگ</label>
+
           <input
             type="text"
             name="slug"
@@ -159,6 +199,7 @@ function TagsPageContent() {
             className="w-full rounded-lg bg-zinc-800 border border-zinc-700 px-4 py-3 text-white text-left"
             placeholder="مثلاً: ai"
           />
+
           <p className="text-xs text-zinc-500 mt-2">
             اختیاری است. اگر خالی بماند، بک‌اند ممکن است خودش تولید کند.
           </p>
@@ -213,16 +254,20 @@ function TagsPageContent() {
                   <th className="py-3 px-2">عملیات</th>
                 </tr>
               </thead>
+
               <tbody>
                 {tags.map((tag) => (
                   <tr key={tag.id} className="border-b border-zinc-800/70">
-                    <td className="py-3 px-2 text-white">{tag.title}</td>
+                    <td className="py-3 px-2 text-white">{tag.title || "-"}</td>
+
                     <td className="py-3 px-2 text-zinc-400" dir="ltr">
-                      {tag.slug}
+                      {tag.slug || "-"}
                     </td>
+
                     <td className="py-3 px-2 text-zinc-300">
                       {tag.posts_count ?? 0}
                     </td>
+
                     <td className="py-3 px-2">
                       <div className="flex gap-2">
                         <button
@@ -232,6 +277,7 @@ function TagsPageContent() {
                         >
                           ویرایش
                         </button>
+
                         <button
                           type="button"
                           onClick={() => handleDelete(tag)}

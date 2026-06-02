@@ -5,9 +5,20 @@ import { useParams, useRouter } from "next/navigation";
 import { dashboardApi } from "@/app/lib/dashboard/dashboardApi";
 import { api } from "@/app/lib/axiosClient";
 
+function normalizeList(data) {
+  if (Array.isArray(data)) return data;
+  if (Array.isArray(data?.results)) return data.results;
+  return [];
+}
+
+function getItemTitle(item) {
+  return item?.title || item?.name || item?.slug || `#${item?.id}`;
+}
+
 export default function EditPostPage() {
   const params = useParams();
   const router = useRouter();
+
   const slug = Array.isArray(params?.slug) ? params.slug[0] : params?.slug;
 
   const [loading, setLoading] = useState(true);
@@ -38,22 +49,28 @@ export default function EditPostPage() {
 
   useEffect(() => {
     return () => {
-      if (coverPreview) URL.revokeObjectURL(coverPreview);
+      if (coverPreview) {
+        URL.revokeObjectURL(coverPreview);
+      }
     };
   }, [coverPreview]);
 
   useEffect(() => {
     async function loadInitialData() {
       try {
+        setPageLoading(true);
+        setError("");
+
         const [categoriesRes, tagsRes] = await Promise.all([
           api.get("/news/categories/"),
           api.get("/news/tags/"),
         ]);
 
-        setCategories(
-          Array.isArray(categoriesRes?.data) ? categoriesRes.data : [],
-        );
-        setTagsList(Array.isArray(tagsRes?.data) ? tagsRes.data : []);
+        const categoriesData = normalizeList(categoriesRes?.data);
+        const tagsData = normalizeList(tagsRes?.data);
+
+        setCategories(categoriesData);
+        setTagsList(tagsData);
       } catch (err) {
         console.error("loadInitialData error:", err);
         setError("خطا در بارگذاری دسته‌بندی‌ها و تگ‌ها");
@@ -90,8 +107,13 @@ export default function EditPostPage() {
 
         const tagIds = Array.isArray(post?.tags)
           ? post.tags
-              .map((t) => (typeof t === "object" ? t?.id : t))
+              .map((tag) => {
+                if (typeof tag === "object") return tag?.id;
+                return tag;
+              })
               .filter(Boolean)
+              .map(Number)
+              .filter(Number.isFinite)
           : [];
 
         setForm({
@@ -102,15 +124,21 @@ export default function EditPostPage() {
           cover: post?.cover ?? "",
           category: categoryId ? String(categoryId) : "",
           status: post?.status ?? "draft",
-          tags: tagIds.map(Number).filter(Number.isFinite),
+          tags: tagIds,
         });
 
         setCoverFile(null);
       } catch (err) {
         console.error("getPostBySlug error:", err);
+
         const data = err?.response?.data;
+
         const message =
-          data?.detail || err?.message || "خطا در دریافت اطلاعات پست";
+          data?.detail ||
+          data?.message ||
+          err?.message ||
+          "خطا در دریافت اطلاعات پست";
+
         setError(message);
       } finally {
         setLoading(false);
@@ -122,7 +150,11 @@ export default function EditPostPage() {
 
   const onChange = (e) => {
     const { name, value } = e.target;
-    setForm((prev) => ({ ...prev, [name]: value }));
+
+    setForm((prev) => ({
+      ...prev,
+      [name]: value,
+    }));
   };
 
   const onCoverChange = (e) => {
@@ -131,11 +163,15 @@ export default function EditPostPage() {
   };
 
   const toggleTag = (id) => {
+    const numericId = Number(id);
+
+    if (!Number.isFinite(numericId)) return;
+
     setForm((prev) => ({
       ...prev,
-      tags: prev.tags.includes(id)
-        ? prev.tags.filter((item) => item !== id)
-        : [...prev.tags, id],
+      tags: prev.tags.includes(numericId)
+        ? prev.tags.filter((item) => item !== numericId)
+        : [...prev.tags, numericId],
     }));
   };
 
@@ -162,6 +198,7 @@ export default function EditPostPage() {
       setSaving(true);
 
       const fd = new FormData();
+
       fd.append("title", form.title.trim());
       fd.append("excerpt", form.excerpt.trim());
       fd.append("content", form.content.trim());
@@ -173,6 +210,13 @@ export default function EditPostPage() {
 
       if (form.category) {
         fd.append("category", String(form.category));
+      } else {
+        /**
+         * اگر بک‌اند اجازه nullable/blank برای category بدهد،
+         * این خط می‌تواند دسته‌بندی را پاک کند.
+         * اگر خطا داد، این بخش را حذف کن.
+         */
+        fd.append("category", "");
       }
 
       form.tags.forEach((tagId) => {
@@ -189,15 +233,33 @@ export default function EditPostPage() {
       router.push("/dashboard/posts");
     } catch (err) {
       console.error("updatePost error:", err);
+
       const data = err?.response?.data;
-      const message =
-        data?.cover?.[0] ||
-        data?.slug?.[0] ||
-        data?.title?.[0] ||
-        data?.content?.[0] ||
-        data?.detail ||
-        err?.message ||
-        "ذخیره تغییرات انجام نشد.";
+
+      let message = "ذخیره تغییرات انجام نشد.";
+
+      if (typeof data === "string") {
+        message = data;
+      } else if (data?.cover?.[0]) {
+        message = data.cover[0];
+      } else if (data?.slug?.[0]) {
+        message = data.slug[0];
+      } else if (data?.title?.[0]) {
+        message = data.title[0];
+      } else if (data?.content?.[0]) {
+        message = data.content[0];
+      } else if (data?.category?.[0]) {
+        message = data.category[0];
+      } else if (data?.tags?.[0]) {
+        message = data.tags[0];
+      } else if (data?.detail) {
+        message = data.detail;
+      } else if (data && typeof data === "object") {
+        message = JSON.stringify(data);
+      } else if (err?.message) {
+        message = err.message;
+      }
+
       setError(message);
     } finally {
       setSaving(false);
@@ -239,6 +301,7 @@ export default function EditPostPage() {
             value={form.slug}
             onChange={onChange}
             dir="ltr"
+            placeholder="example-post-slug"
             className="w-full rounded-lg bg-zinc-800 border border-zinc-700 px-4 py-3 text-white text-left"
           />
         </div>
@@ -306,6 +369,7 @@ export default function EditPostPage() {
 
         <div>
           <label className="block mb-2 text-sm text-zinc-300">دسته‌بندی</label>
+
           <select
             name="category"
             value={form.category}
@@ -313,40 +377,54 @@ export default function EditPostPage() {
             className="w-full rounded-lg bg-zinc-800 border border-zinc-700 px-4 py-3 text-white"
           >
             <option value="">بدون دسته‌بندی</option>
+
             {categories.map((cat) => (
-              <option key={cat.id} value={cat.id}>
-                {cat.title}
+              <option key={cat.id} value={String(cat.id)}>
+                {getItemTitle(cat)}
               </option>
             ))}
           </select>
+
+          {!categories.length && (
+            <p className="mt-2 text-xs text-zinc-500">
+              هیچ دسته‌بندی‌ای دریافت نشد.
+            </p>
+          )}
         </div>
 
         <div>
           <label className="block mb-2 text-sm text-zinc-300">تگ‌ها</label>
+
           <div className="flex flex-wrap gap-2">
             {tagsList.map((tag) => {
-              const active = form.tags.includes(tag.id);
+              const tagId = Number(tag.id);
+              const active = form.tags.includes(tagId);
 
               return (
                 <button
                   key={tag.id}
                   type="button"
-                  onClick={() => toggleTag(tag.id)}
-                  className={`px-3 py-2 rounded-lg border ${
+                  onClick={() => toggleTag(tagId)}
+                  className={`px-3 py-2 rounded-lg border transition ${
                     active
                       ? "bg-white text-black border-white"
-                      : "bg-zinc-800 text-white border-zinc-700"
+                      : "bg-zinc-800 text-white border-zinc-700 hover:border-zinc-500"
                   }`}
                 >
-                  {tag.title}
+                  {getItemTitle(tag)}
                 </button>
               );
             })}
           </div>
+
+          {!tagsList.length && (
+            <p className="mt-2 text-xs text-zinc-500">هیچ تگی دریافت نشد.</p>
+          )}
         </div>
 
         <div>
           <label className="block mb-2 text-sm text-zinc-300">وضعیت</label>
+
           <select
             name="status"
             value={form.status}

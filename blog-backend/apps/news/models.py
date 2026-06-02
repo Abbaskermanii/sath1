@@ -48,12 +48,39 @@ class PostStatus(models.TextChoices):
     PUBLISHED = "published", "Published"
 
 
+class PostType(models.TextChoices):
+    FEATURED_TALK = "featured_talk", "گفتگوهای شاخص"
+    INTERVIEW = "interview", "مصاحبه"
+    NOTE = "note", "یادداشت"
+    VIDEO_CALL = "video_call", "ارتباط تصویری"
+    NEWS = "news", "خبر"
+    ANALYSIS = "analysis", "تحلیل"
+    REPORT = "report", "گزارش"
+    CHART = "chart", "نمودار"
+
+
+class HomepageSection(models.TextChoices):
+    NONE = "none", "None"
+    HERO = "hero", "Hero"
+    TOP_STORIES = "top_stories", "Top Stories"
+    LATEST = "latest", "Latest"
+    OPINION = "opinion", "Opinion"
+    EXPLAINERS = "explainers", "Explainers"
+    HOW_TO = "how_to", "How To"
+    MARKET = "market", "Market"
+    BUSINESS = "business", "Business"
+    CULTURE = "culture", "Culture"
+    WORK_LIFE = "work_life", "Work & Life"
+    GREEN = "green", "Green"
+
+
 class Post(TimeStampedModel):
     author = models.ForeignKey(
         settings.AUTH_USER_MODEL,
         on_delete=models.CASCADE,
         related_name="news_posts",
     )
+
     category = models.ForeignKey(
         Category,
         on_delete=models.SET_NULL,
@@ -61,6 +88,7 @@ class Post(TimeStampedModel):
         blank=True,
         related_name="posts",
     )
+
     tags = models.ManyToManyField(Tag, blank=True, related_name="posts")
 
     title = models.CharField(max_length=255)
@@ -72,29 +100,64 @@ class Post(TimeStampedModel):
     cover = models.ImageField(upload_to="posts/covers/", blank=True, null=True)
 
     status = models.CharField(
-        max_length=20, choices=PostStatus.choices, default=PostStatus.DRAFT
+        max_length=20,
+        choices=PostStatus.choices,
+        default=PostStatus.DRAFT,
     )
+
+    post_type = models.CharField(
+        max_length=30,
+        choices=PostType.choices,
+        default=PostType.NEWS,
+        db_index=True,
+    )
+
     published_at = models.DateTimeField(blank=True, null=True)
 
     views = models.PositiveIntegerField(default=0)
 
+    # Admin-controlled homepage/layout fields
+    is_featured = models.BooleanField(default=False, db_index=True)
+    is_hero = models.BooleanField(default=False, db_index=True)
+    show_on_homepage = models.BooleanField(default=False, db_index=True)
+
+    homepage_section = models.CharField(
+        max_length=40,
+        choices=HomepageSection.choices,
+        default=HomepageSection.NONE,
+        db_index=True,
+    )
+
+    homepage_order = models.PositiveIntegerField(default=0)
+
     class Meta:
-        ordering = ("-created_at",)
+        ordering = ("-published_at", "-created_at")
         indexes = [
             models.Index(fields=["slug"]),
             models.Index(fields=["status", "published_at"]),
+            models.Index(fields=["status", "post_type"]),
+            models.Index(fields=["status", "is_featured"]),
+            models.Index(fields=["status", "is_hero"]),
+            models.Index(
+                fields=["show_on_homepage", "homepage_section", "homepage_order"]
+            ),
         ]
 
     def save(self, *args, **kwargs):
         if not self.slug:
-            base = slugify(self.title, allow_unicode=False)  # <-- مهم
+            base = slugify(self.title, allow_unicode=False)
             if not base:
                 base = "post"
-            self.slug = base
+
+            slug = base
             i = 1
-            while Post.objects.filter(slug=self.slug).exclude(pk=self.pk).exists():
+
+            while Post.objects.filter(slug=slug).exclude(pk=self.pk).exists():
                 i += 1
-                self.slug = f"{base}-{i}"
+                slug = f"{base}-{i}"
+
+            self.slug = slug
+
         super().save(*args, **kwargs)
 
     def __str__(self):
@@ -104,7 +167,9 @@ class Post(TimeStampedModel):
 class Comment(TimeStampedModel):
     post = models.ForeignKey(Post, on_delete=models.CASCADE, related_name="comments")
     user = models.ForeignKey(
-        settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name="news_comments"
+        settings.AUTH_USER_MODEL,
+        on_delete=models.CASCADE,
+        related_name="news_comments",
     )
     text = models.TextField()
 

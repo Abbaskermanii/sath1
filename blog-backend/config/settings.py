@@ -9,21 +9,17 @@ DEBUG = os.getenv("DEBUG", "1") == "1"
 ALLOWED_HOSTS = ["*"]
 
 INSTALLED_APPS = [
-    # Django
     "django.contrib.admin",
     "django.contrib.auth",
     "django.contrib.contenttypes",
     "django.contrib.sessions",
     "django.contrib.messages",
     "django.contrib.staticfiles",
-    # Third-party
     "corsheaders",
     "rest_framework",
     "rest_framework_simplejwt",
     "django_filters",
     "drf_spectacular",
-    # "drf_spectacular_sidecar",  # اگر نصب کردی، این را فعال کن
-    # Local apps
     "apps.accounts",
     "apps.news",
     "apps.media",
@@ -94,7 +90,6 @@ MEDIA_URL = "/media/"
 MEDIA_ROOT = BASE_DIR / "media"
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
-
 AUTH_USER_MODEL = "accounts.User"
 
 CORS_ALLOW_ALL_ORIGINS = True
@@ -112,6 +107,8 @@ REST_FRAMEWORK = {
         "rest_framework.filters.OrderingFilter",
     ),
     "DEFAULT_SCHEMA_CLASS": "drf_spectacular.openapi.AutoSchema",
+    "DEFAULT_PAGINATION_CLASS": "rest_framework.pagination.PageNumberPagination",
+    "PAGE_SIZE": 12,
 }
 
 SIMPLE_JWT = {
@@ -127,4 +124,12 @@ SPECTACULAR_SETTINGS = {
     "DESCRIPTION": "Professional modular Django REST API for News/Blog platform",
     "VERSION": "1.0.0",
     "SERVE_INCLUDE_SCHEMA": False,
+    "COMPONENT_SPLIT_REQUEST": True,
+}
+
+CACHES = {
+    "default": {
+        "BACKEND": "django.core.cache.backends.locmem.LocMemCache",
+        "LOCATION": "news-blog-cache",
+    }
 }

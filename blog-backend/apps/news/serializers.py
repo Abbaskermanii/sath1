@@ -2,7 +2,15 @@ import re
 from django.utils.text import slugify
 from rest_framework import serializers
 
-from apps.news.models import Bookmark, Category, Comment, Post, Tag
+from apps.news.models import (
+    Bookmark,
+    Category,
+    Comment,
+    Post,
+    Tag,
+    PostType,
+    HomepageSection,
+)
 
 
 class AuthorSerializer(serializers.Serializer):
@@ -87,6 +95,14 @@ class PostListSerializer(serializers.ModelSerializer):
     comments_count = serializers.IntegerField(read_only=True)
     is_bookmarked = serializers.SerializerMethodField()
 
+    post_type_label = serializers.CharField(
+        source="get_post_type_display", read_only=True
+    )
+    homepage_section_label = serializers.CharField(
+        source="get_homepage_section_display",
+        read_only=True,
+    )
+
     class Meta:
         model = Post
         fields = (
@@ -99,11 +115,19 @@ class PostListSerializer(serializers.ModelSerializer):
             "category",
             "tags",
             "status",
+            "post_type",
+            "post_type_label",
             "views",
             "published_at",
             "created_at",
             "comments_count",
             "is_bookmarked",
+            "is_featured",
+            "is_hero",
+            "show_on_homepage",
+            "homepage_section",
+            "homepage_section_label",
+            "homepage_order",
         )
 
     def get_is_bookmarked(self, obj):
@@ -120,6 +144,14 @@ class PostDetailSerializer(serializers.ModelSerializer):
     comments = serializers.SerializerMethodField()
     is_bookmarked = serializers.SerializerMethodField()
 
+    post_type_label = serializers.CharField(
+        source="get_post_type_display", read_only=True
+    )
+    homepage_section_label = serializers.CharField(
+        source="get_homepage_section_display",
+        read_only=True,
+    )
+
     class Meta:
         model = Post
         fields = (
@@ -133,12 +165,20 @@ class PostDetailSerializer(serializers.ModelSerializer):
             "category",
             "tags",
             "status",
+            "post_type",
+            "post_type_label",
             "views",
             "published_at",
             "created_at",
             "updated_at",
             "comments",
             "is_bookmarked",
+            "is_featured",
+            "is_hero",
+            "show_on_homepage",
+            "homepage_section",
+            "homepage_section_label",
+            "homepage_order",
         )
 
     def get_comments(self, obj):
@@ -154,11 +194,8 @@ class PostDetailSerializer(serializers.ModelSerializer):
 
 SLUG_RE = re.compile(r"^[a-z0-9]+(?:-[a-z0-9]+)*$")
 
-SLUG_RE = re.compile(r"^[a-z0-9]+(?:-[a-z0-9]+)*$")
-
 
 class PostWriteSerializer(serializers.ModelSerializer):
-    # اجازه می‌دهیم کاربر اسلاگ را وارد کند
     slug = serializers.CharField(required=False, allow_blank=True)
 
     class Meta:
@@ -173,7 +210,13 @@ class PostWriteSerializer(serializers.ModelSerializer):
             "category",
             "tags",
             "status",
+            "post_type",
             "published_at",
+            "is_featured",
+            "is_hero",
+            "show_on_homepage",
+            "homepage_section",
+            "homepage_order",
         )
         read_only_fields = ("id",)
 
@@ -188,16 +231,27 @@ class PostWriteSerializer(serializers.ModelSerializer):
             )
         return value
 
+    def validate_post_type(self, value):
+        valid_values = [choice[0] for choice in PostType.choices]
+        if value not in valid_values:
+            raise serializers.ValidationError("post_type نامعتبر است.")
+        return value
+
+    def validate_homepage_section(self, value):
+        valid_values = [choice[0] for choice in HomepageSection.choices]
+        if value not in valid_values:
+            raise serializers.ValidationError("homepage_section نامعتبر است.")
+        return value
+
     def create(self, validated_data):
         slug = validated_data.get("slug")
         title = validated_data.get("title")
 
-        # اگر کاربر اسلاگ نداده بود، خودمان بر اساس عنوان، اسلاگ انگلیسی می‌سازیم
         if not slug:
             base_slug = slugify(title, allow_unicode=False) or "post"
             slug = base_slug
-            # جلوگیری از تکراری بودن اسلاگ
             i = 1
+
             while Post.objects.filter(slug=slug).exists():
                 i += 1
                 slug = f"{base_slug}-{i}"
@@ -217,6 +271,10 @@ class CommentWriteSerializer(serializers.ModelSerializer):
         read_only_fields = ("id",)
 
 
+class BookmarkCreateSerializer(serializers.Serializer):
+    post = serializers.IntegerField()
+
+
 class BookmarkSerializer(serializers.ModelSerializer):
     post = PostListSerializer(read_only=True)
 
@@ -231,3 +289,26 @@ class BookmarkSerializer(serializers.ModelSerializer):
             "id",
             "created_at",
         )
+
+
+class HomePageSerializer(serializers.Serializer):
+    hero = PostListSerializer(many=True)
+    featured = PostListSerializer(many=True)
+    top_stories = PostListSerializer(many=True)
+    latest = PostListSerializer(many=True)
+    opinion = PostListSerializer(many=True)
+    explainers = PostListSerializer(many=True)
+    how_to = PostListSerializer(many=True)
+    market = PostListSerializer(many=True)
+    business = PostListSerializer(many=True)
+    culture = PostListSerializer(many=True)
+    work_life = PostListSerializer(many=True)
+    green = PostListSerializer(many=True)
+
+
+class CategoryPageSerializer(serializers.Serializer):
+    category = CategoryListSerializer()
+    hero = PostListSerializer(many=True)
+    featured = PostListSerializer(many=True)
+    latest = PostListSerializer(many=True)
+    popular = PostListSerializer(many=True)

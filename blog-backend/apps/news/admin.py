@@ -1,5 +1,6 @@
 from django.contrib import admin
-from .models import Category, Tag, Post, Comment, Bookmark
+
+from apps.news.models import Category, Tag, Post, Comment, Bookmark
 
 
 @admin.register(Category)
@@ -21,38 +22,83 @@ class PostAdmin(admin.ModelAdmin):
     list_display = (
         "id",
         "title",
-        "author",
-        "status",
         "category",
+        "post_type",
+        "status",
+        "is_hero",
+        "is_featured",
+        "show_on_homepage",
+        "homepage_section",
+        "homepage_order",
         "published_at",
-        "created_at",
+        "views",
     )
-    list_filter = ("status", "category", "created_at")
-    search_fields = ("title", "slug", "author__username", "author__email")
-    autocomplete_fields = ("author", "category", "tags")
+
+    list_filter = (
+        "status",
+        "post_type",
+        "category",
+        "is_hero",
+        "is_featured",
+        "show_on_homepage",
+        "homepage_section",
+        "published_at",
+    )
+
+    search_fields = ("title", "slug", "excerpt", "content")
     prepopulated_fields = {"slug": ("title",)}
-    date_hierarchy = "created_at"
+    filter_horizontal = ("tags",)
+
+    ordering = ("-published_at", "-created_at")
+
+    fieldsets = (
+        (
+            "Main",
+            {
+                "fields": (
+                    "author",
+                    "title",
+                    "slug",
+                    "excerpt",
+                    "content",
+                    "cover",
+                    "category",
+                    "tags",
+                    "post_type",
+                    "status",
+                    "published_at",
+                )
+            },
+        ),
+        (
+            "Homepage / Layout",
+            {
+                "fields": (
+                    "is_hero",
+                    "is_featured",
+                    "show_on_homepage",
+                    "homepage_section",
+                    "homepage_order",
+                )
+            },
+        ),
+        (
+            "Stats",
+            {
+                "fields": ("views",),
+            },
+        ),
+    )
 
 
 @admin.register(Comment)
 class CommentAdmin(admin.ModelAdmin):
     list_display = ("id", "post", "user", "is_approved", "created_at")
     list_filter = ("is_approved", "created_at")
-    search_fields = ("post__title", "user__username", "user__email", "text")
-    autocomplete_fields = ("post", "user")
-    actions = ["approve_comments", "reject_comments"]
-
-    @admin.action(description="Approve selected comments")
-    def approve_comments(self, request, queryset):
-        queryset.update(is_approved=True)
-
-    @admin.action(description="Reject selected comments")
-    def reject_comments(self, request, queryset):
-        queryset.update(is_approved=False)
+    search_fields = ("text",)
 
 
 @admin.register(Bookmark)
 class BookmarkAdmin(admin.ModelAdmin):
     list_display = ("id", "post", "user", "created_at")
-    search_fields = ("post__title", "user__username", "user__email")
-    autocomplete_fields = ("post", "user")
+    search_fields = ("post__title", "user__email")

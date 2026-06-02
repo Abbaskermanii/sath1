@@ -29,22 +29,17 @@ export const dashboardApi = {
   },
 
   async getMyContent(params = {}) {
-    const searchParams = new URLSearchParams();
-
-    if (params?.type) searchParams.set("type", params.type);
-    if (params?.status) searchParams.set("status", params.status);
-
-    const query = searchParams.toString();
-    const url = query
-      ? `/dashboard/my-content/?${query}`
-      : "/dashboard/my-content/";
-
-    const { data } = await api.get(url);
+    const { data } = await api.get("/dashboard/my-content/", { params });
     return normalizeListResponse(data);
   },
 
-  async getMypost() {
-    const { data } = await api.get("/news/posts/");
+  async getMypost(params = {}) {
+    const { data } = await api.get("/news/posts/mine/", { params });
+    return normalizeListResponse(data);
+  },
+
+  async getMyPosts(params = {}) {
+    const { data } = await api.get("/news/posts/mine/", { params });
     return normalizeListResponse(data);
   },
 
@@ -55,26 +50,29 @@ export const dashboardApi = {
 
   async getPostBySlug(slug) {
     const validSlug = assertValidSlug(slug, "getPostBySlug");
-    const { data } = await api.get(
-      `/news/posts/${encodeURIComponent(validSlug)}/`,
-    );
+
+    const { data } = await api.get(`/news/posts/${validSlug}/`);
     return data;
   },
 
   async updatePost(slug, payload) {
     const validSlug = assertValidSlug(slug, "updatePost");
-    const { data } = await api.patch(
-      `/news/posts/${encodeURIComponent(validSlug)}/`,
-      payload,
-    );
+
+    const { data } = await api.patch(`/news/posts/${validSlug}/`, payload);
+    return data;
+  },
+
+  async putPost(slug, payload) {
+    const validSlug = assertValidSlug(slug, "putPost");
+
+    const { data } = await api.put(`/news/posts/${validSlug}/`, payload);
     return data;
   },
 
   async deletePost(slug) {
     const validSlug = assertValidSlug(slug, "deletePost");
-    const res = await api.delete(
-      `/news/posts/${encodeURIComponent(validSlug)}/`,
-    );
+
+    const res = await api.delete(`/news/posts/${validSlug}/`);
     return res?.data ?? null;
   },
 

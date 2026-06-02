@@ -4,6 +4,16 @@ import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { api } from "@/app/lib/axiosClient";
 
+function normalizeList(data) {
+  if (Array.isArray(data)) return data;
+  if (Array.isArray(data?.results)) return data.results;
+  return [];
+}
+
+function getItemTitle(item) {
+  return item?.title || item?.name || item?.slug || `#${item?.id}`;
+}
+
 export default function NewPostPage() {
   const router = useRouter();
 
@@ -29,15 +39,19 @@ export default function NewPostPage() {
   useEffect(() => {
     async function loadInitialData() {
       try {
+        setPageLoading(true);
+        setError("");
+
         const [categoriesRes, tagsRes] = await Promise.all([
           api.get("/news/categories/"),
           api.get("/news/tags/"),
         ]);
 
-        setCategories(
-          Array.isArray(categoriesRes?.data) ? categoriesRes.data : [],
-        );
-        setTagsList(Array.isArray(tagsRes?.data) ? tagsRes.data : []);
+        const categoriesData = normalizeList(categoriesRes?.data);
+        const tagsData = normalizeList(tagsRes?.data);
+
+        setCategories(categoriesData);
+        setTagsList(tagsData);
       } catch (err) {
         console.error("loadInitialData error:", err);
         setError("خطا در بارگذاری دسته‌بندی‌ها و تگ‌ها");
@@ -59,24 +73,37 @@ export default function NewPostPage() {
 
   function handleChange(e) {
     const { name, value } = e.target;
-    setForm((prev) => ({ ...prev, [name]: value }));
+
+    setForm((prev) => ({
+      ...prev,
+      [name]: value,
+    }));
   }
 
   function toggleTag(id) {
+    const numericId = Number(id);
+
+    if (!Number.isFinite(numericId)) return;
+
     setForm((prev) => ({
       ...prev,
-      tags: prev.tags.includes(id)
-        ? prev.tags.filter((item) => item !== id)
-        : [...prev.tags, id],
+      tags: prev.tags.includes(numericId)
+        ? prev.tags.filter((item) => item !== numericId)
+        : [...prev.tags, numericId],
     }));
   }
 
   function handleCoverChange(e) {
-    const file = e.target.files?.[0];
-    if (!file) return;
+    const file = e.target.files?.[0] ?? null;
 
     if (coverPreview) {
       URL.revokeObjectURL(coverPreview);
+    }
+
+    if (!file) {
+      setCoverFile(null);
+      setCoverPreview("");
+      return;
     }
 
     setCoverFile(file);
@@ -97,9 +124,9 @@ export default function NewPostPage() {
       return;
     }
 
-    setLoading(true);
-
     try {
+      setLoading(true);
+
       const fd = new FormData();
 
       fd.append("title", form.title.trim());
@@ -136,21 +163,31 @@ export default function NewPostPage() {
 
       const data = err?.response?.data;
 
+      let message = "خطا در ایجاد پست";
+
       if (typeof data === "string") {
-        setError(data);
+        message = data;
       } else if (data?.slug?.[0]) {
-        setError(data.slug[0]);
+        message = data.slug[0];
       } else if (data?.title?.[0]) {
-        setError(data.title[0]);
+        message = data.title[0];
       } else if (data?.content?.[0]) {
-        setError(data.content[0]);
+        message = data.content[0];
+      } else if (data?.cover?.[0]) {
+        message = data.cover[0];
+      } else if (data?.category?.[0]) {
+        message = data.category[0];
+      } else if (data?.tags?.[0]) {
+        message = data.tags[0];
       } else if (data?.detail) {
-        setError(data.detail);
+        message = data.detail;
       } else if (data && typeof data === "object") {
-        setError(JSON.stringify(data));
-      } else {
-        setError("خطا در ایجاد پست");
+        message = JSON.stringify(data);
+      } else if (err?.message) {
+        message = err.message;
       }
+
+      setError(message);
     } finally {
       setLoading(false);
     }
@@ -195,6 +232,7 @@ export default function NewPostPage() {
             placeholder="مثلاً: my-first-post"
             className="w-full rounded-lg bg-zinc-800 border border-zinc-700 px-4 py-3 text-white text-left"
           />
+
           <p className="text-xs text-zinc-500 mt-2">
             فقط حروف انگلیسی کوچک، عدد و خط تیره. اگر خالی بماند، بک‌اند خودش
             می‌سازد.
@@ -224,12 +262,14 @@ export default function NewPostPage() {
 
         <div>
           <label className="block mb-2 text-sm text-zinc-300">کاور</label>
+
           <input
             type="file"
             accept="image/*"
             onChange={handleCoverChange}
             className="w-full rounded-lg bg-zinc-800 border border-zinc-700 px-4 py-3 text-white"
           />
+
           {coverPreview && (
             <img
               src={coverPreview}
@@ -237,10 +277,17 @@ export default function NewPostPage() {
               className="mt-4 h-40 w-full rounded-lg border border-zinc-700 object-cover"
             />
           )}
+
+          {coverFile && (
+            <div className="mt-2 text-xs text-zinc-400">
+              فایل انتخاب شد: {coverFile.name}
+            </div>
+          )}
         </div>
 
         <div>
           <label className="block mb-2 text-sm text-zinc-300">دسته‌بندی</label>
+
           <select
             name="category"
             value={form.category}
@@ -248,40 +295,54 @@ export default function NewPostPage() {
             className="w-full rounded-lg bg-zinc-800 border border-zinc-700 px-4 py-3 text-white"
           >
             <option value="">بدون دسته‌بندی</option>
+
             {categories.map((cat) => (
-              <option key={cat.id} value={cat.id}>
-                {cat.title}
+              <option key={cat.id} value={String(cat.id)}>
+                {getItemTitle(cat)}
               </option>
             ))}
           </select>
+
+          {!categories.length && (
+            <p className="mt-2 text-xs text-zinc-500">
+              هیچ دسته‌بندی‌ای دریافت نشد.
+            </p>
+          )}
         </div>
 
         <div>
           <label className="block mb-2 text-sm text-zinc-300">تگ‌ها</label>
+
           <div className="flex flex-wrap gap-2">
             {tagsList.map((tag) => {
-              const active = form.tags.includes(tag.id);
+              const tagId = Number(tag.id);
+              const active = form.tags.includes(tagId);
 
               return (
                 <button
                   key={tag.id}
                   type="button"
-                  onClick={() => toggleTag(tag.id)}
-                  className={`px-3 py-2 rounded-lg border ${
+                  onClick={() => toggleTag(tagId)}
+                  className={`px-3 py-2 rounded-lg border transition ${
                     active
                       ? "bg-white text-black border-white"
-                      : "bg-zinc-800 text-white border-zinc-700"
+                      : "bg-zinc-800 text-white border-zinc-700 hover:border-zinc-500"
                   }`}
                 >
-                  {tag.title}
+                  {getItemTitle(tag)}
                 </button>
               );
             })}
           </div>
+
+          {!tagsList.length && (
+            <p className="mt-2 text-xs text-zinc-500">هیچ تگی دریافت نشد.</p>
+          )}
         </div>
 
         <div>
           <label className="block mb-2 text-sm text-zinc-300">وضعیت</label>
+
           <select
             name="status"
             value={form.status}
