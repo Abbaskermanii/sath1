@@ -2,37 +2,48 @@ version: "3.9"
 
 services:
   db:
-    image: postgres:16
+    image: postgres:15
     container_name: blog_db
     restart: always
     environment:
       POSTGRES_DB: blogdb
       POSTGRES_USER: bloguser
       POSTGRES_PASSWORD: blogpass
-    ports:
-      - "5433:5432"
     volumes:
       - postgres_data:/var/lib/postgresql/data
-
-  web:
-    build: .
-    container_name: blog_web
-    restart: always
-    command: sh -c "python manage.py makemigrations && python manage.py migrate && gunicorn config.wsgi:application --bind 0.0.0.0:8000"
-    volumes:
-      - .:/app
     ports:
-      - "8000:8000"
+      - "5432:5432"
+
+  backend:
+    build: ./backend
+    container_name: blog_backend
+    restart: always
+    depends_on:
+      - db
     environment:
-      DEBUG: "1"
-      SECRET_KEY: "django-insecure-super-secret-key"
+      SECRET_KEY: django-production-secret
+      DEBUG: "0"
       DB_NAME: blogdb
       DB_USER: bloguser
       DB_PASSWORD: blogpass
       DB_HOST: db
       DB_PORT: 5432
+    volumes:
+      - ./backend/media:/app/media
+      - ./backend/staticfiles:/app/staticfiles
+    ports:
+      - "8000:8000"
+
+  frontend:
+    build: ./frontend
+    container_name: blog_frontend
+    restart: always
     depends_on:
-      - db
+      - backend
+    environment:
+      NEXT_PUBLIC_API_BASE_URL: http://http://62.60.191.176:8000/api
+    ports:
+      - "3000:3000"
 
 volumes:
   postgres_data:

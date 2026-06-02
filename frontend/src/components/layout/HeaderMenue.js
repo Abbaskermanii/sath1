@@ -16,7 +16,6 @@ import { clearTokens, isLoggedIn } from "@/app/lib/tokens";
 import useMe from "@/app/hooks/useMe";
 import { canAccessDashboard } from "@/app/lib/authApi";
 
-
 function HeaderMenue() {
   const router = useRouter();
 
@@ -24,10 +23,17 @@ function HeaderMenue() {
   const [lastScroll, setLastScroll] = useState(0);
   const [dropdownOpen, setDropdownOpen] = useState(false);
 
+  const [mounted, setMounted] = useState(false);
+  const [loggedIn, setLoggedIn] = useState(false);
+
   const dropdownRef = useRef(null);
 
-  const loggedIn = isLoggedIn();
   const { user, loading } = useMe();
+
+  useEffect(() => {
+    setMounted(true);
+    setLoggedIn(isLoggedIn());
+  }, []);
 
   useEffect(() => {
     const handleScroll = () => {
@@ -63,6 +69,7 @@ function HeaderMenue() {
 
   const handleLogout = () => {
     clearTokens();
+    setLoggedIn(false);
     setDropdownOpen(false);
     router.push("/");
   };
@@ -76,6 +83,8 @@ function HeaderMenue() {
     setDropdownOpen(false);
     router.push("/settings");
   };
+
+  const shouldShowUserMenu = mounted && loggedIn;
 
   return (
     <div
@@ -92,7 +101,7 @@ function HeaderMenue() {
         <div className="flex gap-3 items-center">
           <Search color="white" className="cursor-pointer" />
 
-          {!loggedIn ? (
+          {!shouldShowUserMenu ? (
             <button
               type="button"
               onClick={handleLoginClick}
