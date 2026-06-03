@@ -1,5 +1,5 @@
 // eslint-disable-next-line no-undef
-const MEDIA_BASE_URL =  "http://127.0.0.1:8000/api";
+const MEDIA_BASE_URL =  "/api";
 
 
 export function getList(data) {

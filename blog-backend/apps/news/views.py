@@ -1,5 +1,5 @@
 from django.core.cache import cache
-from django.db.models import Count, Q, F
+from django.db.models import Count, Q, F, Case, When, IntegerField
 from rest_framework import filters, mixins, status, viewsets
 from rest_framework.decorators import action
 from rest_framework.permissions import AllowAny, IsAuthenticated, IsAdminUser
@@ -231,7 +231,11 @@ class PostViewSet(viewsets.ModelViewSet):
             return [AllowAny()]
         return [IsAuthenticated()]
 
+
     def get_queryset(self):
+        user = self.request.user
+        include_drafts = self.request.query_params.get("include_drafts") == "1"
+
         queryset = (
             Post.objects.select_related("author", "category")
             .prefetch_related("tags", "comments")
@@ -243,17 +247,29 @@ class PostViewSet(viewsets.ModelViewSet):
             )
         )
 
-        if self.action in [
-            "list",
-            "retrieve",
-            "latest",
-            "popular",
-            "home",
-            "related",
-        ]:
-            queryset = queryset.filter(status=PostStatus.PUBLISHED)
+        # ادمین: دسترسی کامل
+        if user.is_authenticated and (user.is_staff or getattr(user, "role", "") == "admin"):
+            return queryset.distinct()
+
+        # اگر کاربر لاگین کرده و درخواست مخصوص داشبورد داده
+        if self.action == "retrieve" and include_drafts and user.is_authenticated:
+            return queryset.filter(
+                Q(status=PostStatus.PUBLISHED) | Q(author=user)
+            ).distinct()
+
+        if self.action in ["list", "latest", "popular", "home", "related"]:
+            return queryset.filter(status=PostStatus.PUBLISHED).distinct()
+
+        if self.action == "retrieve":
+            if user.is_authenticated:
+                return queryset.filter(
+                    Q(status=PostStatus.PUBLISHED) | Q(author=user)
+                ).distinct()
+            return queryset.filter(status=PostStatus.PUBLISHED).distinct()
 
         return queryset.distinct()
+
+
 
     def get_serializer_class(self):
         if self.action == "retrieve":
@@ -444,9 +460,14 @@ class PostViewSet(viewsets.ModelViewSet):
                 comments_count=Count(
                     "comments",
                     filter=Q(comments__is_approved=True),
-                )
+                ),
+                draft_priority=Case(
+                    When(status=PostStatus.DRAFT, then=0),
+                    default=1,
+                    output_field=IntegerField(),
+                ),
             )
-            .order_by("-created_at")
+            .order_by("draft_priority", "-updated_at", "-created_at")
         )
 
         serializer = PostListSerializer(
@@ -456,20 +477,20 @@ class PostViewSet(viewsets.ModelViewSet):
         )
         return Response(serializer.data)
 
-    @action(detail=False, methods=["get"], permission_classes=[AllowAny])
-    def post_types(self, request):
-        return Response(
-            [{"value": value, "label": label} for value, label in PostType.choices]
-        )
+        @action(detail=False, methods=["get"], permission_classes=[AllowAny])
+        def post_types(self, request):
+            return Response(
+                [{"value": value, "label": label} for value, label in PostType.choices]
+            )
 
-    @action(detail=False, methods=["get"], permission_classes=[AllowAny])
-    def homepage_sections(self, request):
-        return Response(
-            [
-                {"value": value, "label": label}
-                for value, label in HomepageSection.choices
-            ]
-        )
+        @action(detail=False, methods=["get"], permission_classes=[AllowAny])
+        def homepage_sections(self, request):
+            return Response(
+                [
+                    {"value": value, "label": label}
+                    for value, label in HomepageSection.choices
+                ]
+            )
 
 
 class CommentViewSet(
