@@ -15,11 +15,13 @@ import CategoriesPage from "../pages/dashboard/Categories";
 import CommentsPage from "../pages/dashboard/Comments";
 import TagsPage from "../pages/dashboard/Tags";
 import ProfilePage from "../pages/dashboard/Profile";
+import SinglePostPage from "../pages/SinglePostPage"
 
 export const router = createBrowserRouter([
   {
     element: <SiteLayout />,
-    children: [{ path: "/", element: <HomePage /> }],
+    children: [{ path: "/", element: <HomePage /> },{ path: "/news/:slug", element: <SinglePostPage /> },],
+    
   },
   {
     element: <AuthLayout />,

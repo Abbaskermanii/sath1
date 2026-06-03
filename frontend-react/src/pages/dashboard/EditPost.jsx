@@ -1,25 +1,25 @@
 import { useEffect, useMemo, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { dashboardApi } from "../../lib/dashboard/dashboardApi";
-import { api } from "../../lib/axiosClient";
-
-function normalizeList(data) {
-  if (Array.isArray(data)) return data;
-  if (Array.isArray(data?.results)) return data.results;
-  return [];
-}
 
 function getItemTitle(item) {
-  return item?.title || item?.name || item?.slug || `#${item?.id}`;
+  return item?.title || item?.name || item?.slug || `#${item?.id ?? ""}`;
+}
+
+function normalizeToArray(value) {
+  if (Array.isArray(value)) return value;
+  if (Array.isArray(value?.results)) return value.results;
+  if (Array.isArray(value?.data)) return value.data;
+  return [];
 }
 
 export default function EditPostPage() {
   const { slug } = useParams();
   const navigate = useNavigate();
 
-  const [loading, setLoading] = useState(true);
-  const [saving, setSaving] = useState(false);
   const [pageLoading, setPageLoading] = useState(true);
+  const [postLoading, setPostLoading] = useState(true);
+  const [saving, setSaving] = useState(false);
   const [error, setError] = useState("");
 
   const [categories, setCategories] = useState([]);
@@ -45,61 +45,81 @@ export default function EditPostPage() {
 
   useEffect(() => {
     return () => {
-      if (coverPreview) URL.revokeObjectURL(coverPreview);
+      if (coverPreview) {
+        URL.revokeObjectURL(coverPreview);
+      }
     };
   }, [coverPreview]);
 
   useEffect(() => {
+    let alive = true;
+
     async function loadInitialData() {
       try {
         setPageLoading(true);
         setError("");
 
-        const [categoriesRes, tagsRes] = await Promise.all([
-          api.get("/news/categories/"),
-          api.get("/news/tags/"),
+        const [catsRes, tagsRes] = await Promise.all([
+          dashboardApi.getCategories(),
+          dashboardApi.getTags(),
         ]);
 
-        setCategories(normalizeList(categoriesRes?.data));
-        setTagsList(normalizeList(tagsRes?.data));
+        if (!alive) return;
+
+        const safeCategories = normalizeToArray(catsRes);
+        const safeTags = normalizeToArray(tagsRes);
+
+        setCategories(safeCategories);
+        setTagsList(safeTags);
       } catch (err) {
         console.error("loadInitialData error:", err);
+
+        if (!alive) return;
+
+        setCategories([]);
+        setTagsList([]);
         setError("خطا در بارگذاری دسته‌بندی‌ها و تگ‌ها");
       } finally {
-        setPageLoading(false);
+        if (alive) setPageLoading(false);
       }
     }
 
     loadInitialData();
+
+    return () => {
+      alive = false;
+    };
   }, []);
 
   useEffect(() => {
+    let alive = true;
+
     async function loadPost() {
       if (!slug || slug === "undefined" || slug === "null") {
         setError("اسلاگ پست نامعتبر است.");
-        setLoading(false);
+        setPostLoading(false);
         return;
       }
 
       try {
-        setLoading(true);
+        setPostLoading(true);
         setError("");
 
         const post = await dashboardApi.getPostBySlug(slug);
 
-        if (!post) throw new Error("داده‌ای از سرور دریافت نشد.");
+        if (!alive) return;
 
-        const categoryId =
+        const categoryValue =
           typeof post?.category === "object"
             ? post?.category?.id
-            : (post?.category ?? "");
+            : post?.category;
 
-        const tagIds = Array.isArray(post?.tags)
+        const normalizedTags = Array.isArray(post?.tags)
           ? post.tags
               .map((tag) => (typeof tag === "object" ? tag?.id : tag))
               .filter(Boolean)
-              .map(Number)
-              .filter(Number.isFinite)
+              .map((id) => Number(id))
+              .filter((id) => Number.isFinite(id))
           : [];
 
         setForm({
@@ -108,48 +128,69 @@ export default function EditPostPage() {
           excerpt: post?.excerpt ?? "",
           content: post?.content ?? "",
           cover: post?.cover ?? "",
-          category: categoryId ? String(categoryId) : "",
+          category:
+            categoryValue !== undefined &&
+            categoryValue !== null &&
+            categoryValue !== ""
+              ? String(categoryValue)
+              : "",
           status: post?.status ?? "draft",
-          tags: tagIds,
+          tags: normalizedTags,
         });
 
         setCoverFile(null);
       } catch (err) {
         console.error("getPostBySlug error:", err);
+
+        if (!alive) return;
+
         const data = err?.response?.data;
-        setError(
+        const message =
           data?.detail ||
-            data?.message ||
-            err?.message ||
-            "خطا در دریافت اطلاعات پست"
-        );
+          data?.message ||
+          err?.message ||
+          "خطا در دریافت اطلاعات پست";
+
+        setError(message);
       } finally {
-        setLoading(false);
+        if (alive) setPostLoading(false);
       }
     }
 
     loadPost();
+
+    return () => {
+      alive = false;
+    };
   }, [slug]);
 
   function onChange(e) {
     const { name, value } = e.target;
-    setForm((prev) => ({ ...prev, [name]: value }));
+    setForm((prev) => ({
+      ...prev,
+      [name]: value,
+    }));
   }
 
   function onCoverChange(e) {
-    setCoverFile(e.target.files?.[0] ?? null);
+    const file = e.target.files?.[0] ?? null;
+    setCoverFile(file);
   }
 
-  function toggleTag(id) {
-    const numericId = Number(id);
-    if (!Number.isFinite(numericId)) return;
+  function toggleTag(tagId) {
+    const id = Number(tagId);
+    if (!Number.isFinite(id)) return;
 
-    setForm((prev) => ({
-      ...prev,
-      tags: prev.tags.includes(numericId)
-        ? prev.tags.filter((item) => item !== numericId)
-        : [...prev.tags, numericId],
-    }));
+    setForm((prev) => {
+      const exists = prev.tags.includes(id);
+
+      return {
+        ...prev,
+        tags: exists
+          ? prev.tags.filter((item) => item !== id)
+          : [...prev.tags, id],
+      };
+    });
   }
 
   async function handleSubmit(e) {
@@ -160,10 +201,12 @@ export default function EditPostPage() {
       setError("اسلاگ پست نامعتبر است.");
       return;
     }
+
     if (!form.title.trim()) {
       setError("عنوان الزامی است.");
       return;
     }
+
     if (!form.content.trim()) {
       setError("محتوا الزامی است.");
       return;
@@ -178,7 +221,9 @@ export default function EditPostPage() {
       fd.append("content", form.content.trim());
       fd.append("status", form.status);
 
-      if (form.slug.trim()) fd.append("slug", form.slug.trim().toLowerCase());
+      if (form.slug.trim()) {
+        fd.append("slug", form.slug.trim().toLowerCase());
+      }
 
       if (form.category) {
         fd.append("category", String(form.category));
@@ -186,29 +231,48 @@ export default function EditPostPage() {
         fd.append("category", "");
       }
 
-      form.tags.forEach((tagId) => fd.append("tags", String(tagId)));
+      form.tags.forEach((tagId) => {
+        fd.append("tags", String(tagId));
+      });
 
-      if (coverFile) fd.append("cover", coverFile);
+      if (coverFile) {
+        fd.append("cover", coverFile);
+      }
 
-      await dashboardApi.updatePost(slug, fd);
+      const updatedPost = await dashboardApi.updatePost(slug, fd);
+
+      const nextSlug = updatedPost?.slug || form.slug || slug;
 
       alert("پست با موفقیت بروزرسانی شد.");
-      navigate("/dashboard/posts");
+
+      navigate(`/dashboard/posts/edit/${nextSlug}`, { replace: true });
     } catch (err) {
       console.error("updatePost error:", err);
-      const data = err?.response?.data;
 
+      const data = err?.response?.data;
       let message = "ذخیره تغییرات انجام نشد.";
-      if (typeof data === "string") message = data;
-      else if (data?.cover?.[0]) message = data.cover[0];
-      else if (data?.slug?.[0]) message = data.slug[0];
-      else if (data?.title?.[0]) message = data.title[0];
-      else if (data?.content?.[0]) message = data.content[0];
-      else if (data?.category?.[0]) message = data.category[0];
-      else if (data?.tags?.[0]) message = data.tags[0];
-      else if (data?.detail) message = data.detail;
-      else if (data && typeof data === "object") message = JSON.stringify(data);
-      else if (err?.message) message = err.message;
+
+      if (typeof data === "string") {
+        message = data;
+      } else if (data?.cover?.[0]) {
+        message = data.cover[0];
+      } else if (data?.slug?.[0]) {
+        message = data.slug[0];
+      } else if (data?.title?.[0]) {
+        message = data.title[0];
+      } else if (data?.content?.[0]) {
+        message = data.content[0];
+      } else if (data?.category?.[0]) {
+        message = data.category[0];
+      } else if (data?.tags?.[0]) {
+        message = data.tags[0];
+      } else if (data?.detail) {
+        message = data.detail;
+      } else if (data && typeof data === "object") {
+        message = JSON.stringify(data);
+      } else if (err?.message) {
+        message = err.message;
+      }
 
       setError(message);
     } finally {
@@ -216,7 +280,7 @@ export default function EditPostPage() {
     }
   }
 
-  if (pageLoading || loading) {
+  if (pageLoading || postLoading) {
     return (
       <div className="p-10 text-center text-zinc-500" dir="rtl">
         در حال دریافت اطلاعات پست...
@@ -319,6 +383,7 @@ export default function EditPostPage() {
 
         <div>
           <label className="block mb-2 text-sm text-zinc-300">دسته‌بندی</label>
+
           <select
             name="category"
             value={form.category}
@@ -326,25 +391,29 @@ export default function EditPostPage() {
             className="w-full rounded-lg bg-zinc-800 border border-zinc-700 px-4 py-3 text-white"
           >
             <option value="">بدون دسته‌بندی</option>
-            {categories.map((cat) => (
+
+            {(Array.isArray(categories) ? categories : []).map((cat) => (
               <option key={cat.id} value={String(cat.id)}>
                 {getItemTitle(cat)}
               </option>
             ))}
           </select>
-          {!categories.length && (
+
+          {!Array.isArray(categories) || categories.length === 0 ? (
             <p className="mt-2 text-xs text-zinc-500">
               هیچ دسته‌بندی‌ای دریافت نشد.
             </p>
-          )}
+          ) : null}
         </div>
 
         <div>
           <label className="block mb-2 text-sm text-zinc-300">تگ‌ها</label>
+
           <div className="flex flex-wrap gap-2">
-            {tagsList.map((tag) => {
+            {(Array.isArray(tagsList) ? tagsList : []).map((tag) => {
               const tagId = Number(tag.id);
               const active = form.tags.includes(tagId);
+
               return (
                 <button
                   key={tag.id}
@@ -361,13 +430,15 @@ export default function EditPostPage() {
               );
             })}
           </div>
-          {!tagsList.length && (
+
+          {!Array.isArray(tagsList) || tagsList.length === 0 ? (
             <p className="mt-2 text-xs text-zinc-500">هیچ تگی دریافت نشد.</p>
-          )}
+          ) : null}
         </div>
 
         <div>
           <label className="block mb-2 text-sm text-zinc-300">وضعیت</label>
+
           <select
             name="status"
             value={form.status}

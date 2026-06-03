@@ -19,6 +19,7 @@ function assertValidSlug(slug, fnName = "apiCall") {
 function normalizeListResponse(data) {
   if (Array.isArray(data)) return data;
   if (Array.isArray(data?.results)) return data.results;
+  if (Array.isArray(data?.data)) return data.data;
   return [];
 }
 
@@ -33,11 +34,6 @@ export const dashboardApi = {
     return normalizeListResponse(data);
   },
 
-  async getMypost(params = {}) {
-    const { data } = await api.get("/news/posts/mine/", { params });
-    return normalizeListResponse(data);
-  },
-
   async getMyPosts(params = {}) {
     const { data } = await api.get("/news/posts/mine/", { params });
     return normalizeListResponse(data);
@@ -48,36 +44,54 @@ export const dashboardApi = {
     return normalizeListResponse(data);
   },
 
+  async getCategories() {
+    const { data } = await api.get("/news/categories/");
+    return normalizeListResponse(data);
+  },
+
+  async getTags() {
+    const { data } = await api.get("/news/tags/");
+    return normalizeListResponse(data);
+  },
+
   async getPostBySlug(slug) {
     const validSlug = assertValidSlug(slug, "getPostBySlug");
-
     const { data } = await api.get(`/news/posts/${validSlug}/`);
+    return data;
+  },
+
+  async createPost(payload) {
+    const { data } = await api.post("/news/posts/", payload, {
+      headers: {
+        "Content-Type": "multipart/form-data",
+      },
+    });
     return data;
   },
 
   async updatePost(slug, payload) {
     const validSlug = assertValidSlug(slug, "updatePost");
-
-    const { data } = await api.patch(`/news/posts/${validSlug}/`, payload);
+    const { data } = await api.patch(`/news/posts/${validSlug}/`, payload, {
+      headers: {
+        "Content-Type": "multipart/form-data",
+      },
+    });
     return data;
   },
 
   async putPost(slug, payload) {
     const validSlug = assertValidSlug(slug, "putPost");
-
-    const { data } = await api.put(`/news/posts/${validSlug}/`, payload);
+    const { data } = await api.put(`/news/posts/${validSlug}/`, payload, {
+      headers: {
+        "Content-Type": "multipart/form-data",
+      },
+    });
     return data;
   },
 
   async deletePost(slug) {
     const validSlug = assertValidSlug(slug, "deletePost");
-
     const res = await api.delete(`/news/posts/${validSlug}/`);
     return res?.data ?? null;
-  },
-
-  async createPost(payload) {
-    const { data } = await api.post("/news/posts/", payload);
-    return data;
   },
 };
