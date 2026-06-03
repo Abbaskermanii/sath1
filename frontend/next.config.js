@@ -1,5 +1,13 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
+  async rewrites() {
+    return [
+      {
+        source: "/api/media/:path*",
+        destination: "http://backend:8000/media/:path*",
+      },
+    ];
+  },
   images: {
     remotePatterns: [
       {
@@ -8,14 +16,8 @@ const nextConfig = {
         port: "8000",
         pathname: "/media/**",
       },
-      {
-        protocol: "http",
-        hostname: "127.0.0.1",
-        port: "8000",
-        pathname: "/media/**",
-      },
     ],
   },
 };
 
-export default nextConfig;
+module.exports = nextConfig;

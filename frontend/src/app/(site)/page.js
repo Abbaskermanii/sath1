@@ -267,7 +267,7 @@ export default async function Home() {
   }
 
   return (
-    <div className="flex justify-center bg-white">
+    <div className="flex justify-center bg-white home-safe">
       <main className="w-full max-w-7xl border-x border-neutral-200">
         <Stocks />
 

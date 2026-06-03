@@ -51,7 +51,7 @@ function FeaturedHorizontal({ item }) {
         className="group grid gap-4 sm:grid-cols-[190px_minmax(0,1fr)] xl:grid-cols-[220px_minmax(0,1fr)] items-center"
       >
         <NewsImage
-          src={item.image}
+          src={item.cover}
           alt={item.title}
           className="aspect-3/3 w-full rounded-sm"
           priority
@@ -86,7 +86,7 @@ function CompactImageCard({ item, isVideo = false }) {
     <article>
       <Link href={item.href || "#"} className="group block">
         <NewsImage
-          src={item.image}
+          src={item.cover}
           alt={item.title}
           isVideo={isVideo || item.isVideo}
           duration={item.duration}
@@ -155,7 +155,7 @@ function SidePromoCard({ item, label = "Latest" }) {
         className="group grid grid-cols-[92px_minmax(0,1fr)] gap-3 rounded-md border border-neutral-200 bg-white p-2.5 transition hover:border-neutral-400"
       >
         <NewsImage
-          src={item.image}
+          src={item.cover}
           alt={item.title}
           className="aspect-square rounded-sm"
         />
@@ -184,7 +184,7 @@ function VideoCard({ item }) {
         className="group relative block overflow-hidden rounded-md bg-black"
       >
         <NewsImage
-          src={item.image}
+          src={item.cover}
           alt={item.title}
           isVideo
           duration={item.duration}
@@ -211,7 +211,7 @@ function MagazineFeature({ item }) {
         className="group grid gap-4 md:grid-cols-[280px_minmax(0,1fr)]"
       >
         <NewsImage
-          src={item.image}
+          src={item.cover}
           alt={item.title}
           className="aspect-[16/10] rounded-sm"
         />
@@ -354,9 +354,7 @@ export default function CategoryNewsSection({
           </div>
 
           {safeSidebar.length > 0 && (
-            <div className="mt-5 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-         
-            </div>
+            <div className="mt-5 grid gap-4 sm:grid-cols-2 lg:grid-cols-3"></div>
           )}
 
           <div className="mt-4 flex justify-center gap-1">
@@ -389,8 +387,6 @@ export default function CategoryNewsSection({
           </div>
         </div>
       )}
-
-     
     </section>
   );
 }

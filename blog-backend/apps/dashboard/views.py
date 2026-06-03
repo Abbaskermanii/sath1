@@ -57,10 +57,11 @@ class OverviewView(APIView):
 
 class MyContentView(APIView):
     """
-    یک endpoint یکپارچه برای محتواهای کاربر.
+    GET /api/dashboard/my-content/
+
     Query params:
       - type: post|video|podcast|all (default=all)
-      - status: draft|published|archived (اختیاری)
+      - status: draft|published|archived (optional)
     """
 
     permission_classes = [IsAuthenticated, IsAdminOrAuthor]
@@ -74,26 +75,29 @@ class MyContentView(APIView):
 
         result = []
 
-        def add_posts():
-            qs = (
+        # ✅ POSTS
+        if content_type in ["all", "post"]:
+            posts = (
                 Post.objects.select_related("author", "category")
                 .prefetch_related("tags")
                 .annotate(
                     comments_count=Count(
-                        "comments", filter=Q(comments__is_approved=True)
+                        "comments",
+                        filter=Q(comments__is_approved=True),
+                        distinct=True,
                     )
                 )
             )
 
             if not is_admin:
-                qs = qs.filter(author=user)
+                posts = posts.filter(author=user)
 
             if status_param:
-                qs = qs.filter(status=status_param)
+                posts = posts.filter(status=status_param)
 
-            qs = qs.order_by("-published_at", "-created_at")[:200]
+            posts = posts.order_by("-published_at", "-created_at")[:200]
 
-            for p in qs:
+            for p in posts:
                 result.append(
                     {
                         "type": "post",
@@ -101,12 +105,14 @@ class MyContentView(APIView):
                         "title": p.title,
                         "slug": p.slug,
                         "excerpt": p.excerpt,
-                        "cover": p.cover.url if p.cover else None,
+                        "cover": (
+                            request.build_absolute_uri(p.cover.url) if p.cover else None
+                        ),
                         "status": p.status,
                         "created_at": p.created_at,
                         "published_at": p.published_at,
-                        "views": p.views,
-                        "comments_count": p.comments_count,
+                        "views": p.views or 0,
+                        "comments_count": p.comments_count or 0,
                         "category": (
                             {
                                 "id": p.category.id,
@@ -127,53 +133,61 @@ class MyContentView(APIView):
                     }
                 )
 
-        def add_videos():
-            qs = Video.objects.all()
-            if not is_admin:
-                qs = qs.filter(author=user)
-            if status_param:
-                qs = qs.filter(status=status_param)
+        # ✅ VIDEOS
+        if content_type in ["all", "video"]:
+            videos = Video.objects.all()
 
-            for v in qs.order_by("-published_at", "-created_at")[:200]:
+            if not is_admin:
+                videos = videos.filter(author=user)
+
+            if status_param:
+                videos = videos.filter(status=status_param)
+
+            videos = videos.order_by("-published_at", "-created_at")[:200]
+
+            for v in videos:
                 result.append(
                     {
                         "type": "video",
                         "id": v.id,
                         "title": v.title,
+                        "slug": v.slug,
                         "status": v.status,
                         "created_at": v.created_at,
                         "published_at": v.published_at,
-                        "views": v.views_count,
+                        "views": v.views_count or 0,
+                        "duration": getattr(v, "duration", 0),
                     }
                 )
 
-        def add_podcasts():
-            qs = Podcast.objects.all()
-            if not is_admin:
-                qs = qs.filter(author=user)
-            if status_param:
-                qs = qs.filter(status=status_param)
+        # ✅ PODCASTS
+        if content_type in ["all", "podcast"]:
+            podcasts = Podcast.objects.all()
 
-            for p in qs.order_by("-published_at", "-created_at")[:200]:
+            if not is_admin:
+                podcasts = podcasts.filter(author=user)
+
+            if status_param:
+                podcasts = podcasts.filter(status=status_param)
+
+            podcasts = podcasts.order_by("-published_at", "-created_at")[:200]
+
+            for p in podcasts:
                 result.append(
                     {
                         "type": "podcast",
                         "id": p.id,
                         "title": p.title,
+                        "slug": p.slug,
                         "status": p.status,
                         "created_at": p.created_at,
                         "published_at": p.published_at,
-                        "listens": p.listens_count,
+                        "listens": p.listens_count or 0,
+                        "duration": getattr(p, "duration", 0),
                     }
                 )
 
-        if content_type in ["all", "post"]:
-            add_posts()
-        if content_type in ["all", "video"]:
-            add_videos()
-        if content_type in ["all", "podcast"]:
-            add_podcasts()
-
+        # ✅ sort unified (latest first)
         result.sort(
             key=lambda x: (
                 x["published_at"] is not None,

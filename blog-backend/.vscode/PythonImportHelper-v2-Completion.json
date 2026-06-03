@@ -508,6 +508,14 @@
         "documentation": {}
     },
     {
+        "label": "serializers",
+        "importPath": "rest_framework",
+        "description": "rest_framework",
+        "isExtraImport": true,
+        "detail": "rest_framework",
+        "documentation": {}
+    },
+    {
         "label": "viewsets",
         "importPath": "rest_framework",
         "description": "rest_framework",
@@ -1819,6 +1827,15 @@
         "documentation": {}
     },
     {
+        "label": "MyContentSerializer",
+        "kind": 6,
+        "importPath": "apps.dashboard.serializers",
+        "description": "apps.dashboard.serializers",
+        "peekOfCode": "class MyContentSerializer(serializers.Serializer):\n    id = serializers.IntegerField()\n    type = serializers.CharField()\n    title = serializers.CharField()\n    slug = serializers.CharField()\n    status = serializers.CharField()\n    views = serializers.IntegerField(required=False, default=0)\n    listens = serializers.IntegerField(required=False, default=0)\n    duration = serializers.IntegerField(required=False, default=0)\n    published_at = serializers.DateTimeField(required=False, allow_null=True)",
+        "detail": "apps.dashboard.serializers",
+        "documentation": {}
+    },
+    {
         "label": "app_name",
         "kind": 5,
         "importPath": "apps.dashboard.urls",
@@ -1850,7 +1867,7 @@
         "kind": 6,
         "importPath": "apps.dashboard.views",
         "description": "apps.dashboard.views",
-        "peekOfCode": "class MyContentView(APIView):\n    \"\"\"\n    یک endpoint یکپارچه برای محتواهای کاربر.\n    Query params:\n      - type: post|video|podcast|all (default=all)\n      - status: draft|published|archived (اختیاری)\n    \"\"\"\n    permission_classes = [IsAuthenticated, IsAdminOrAuthor]\n    def get(self, request):\n        user = request.user",
+        "peekOfCode": "class MyContentView(APIView):\n    \"\"\"\n    GET /api/dashboard/my-content/\n    Query params:\n      - type: post|video|podcast|all (default=all)\n      - status: draft|published|archived (optional)\n    \"\"\"\n    permission_classes = [IsAuthenticated, IsAdminOrAuthor]\n    def get(self, request):\n        user = request.user",
         "detail": "apps.dashboard.views",
         "documentation": {}
     },
@@ -2300,7 +2317,7 @@
         "kind": 6,
         "importPath": "apps.news.serializers",
         "description": "apps.news.serializers",
-        "peekOfCode": "class CategoryWriteSerializer(serializers.ModelSerializer):\n    class Meta:\n        model = Category\n        fields = (\"id\", \"title\", \"slug\")\n        read_only_fields = (\"id\",)\nclass TagWriteSerializer(serializers.ModelSerializer):\n    class Meta:\n        model = Tag\n        fields = (\"id\", \"title\", \"slug\")\n        read_only_fields = (\"id\",)",
+        "peekOfCode": "class CategoryWriteSerializer(serializers.ModelSerializer):\n    class Meta:\n        model = Category\n        fields = (\n            \"id\",\n            \"title\",\n            \"slug\",\n        )\n        read_only_fields = (\"id\",)\nclass TagWriteSerializer(serializers.ModelSerializer):",
         "detail": "apps.news.serializers",
         "documentation": {}
     },
@@ -2309,7 +2326,7 @@
         "kind": 6,
         "importPath": "apps.news.serializers",
         "description": "apps.news.serializers",
-        "peekOfCode": "class TagWriteSerializer(serializers.ModelSerializer):\n    class Meta:\n        model = Tag\n        fields = (\"id\", \"title\", \"slug\")\n        read_only_fields = (\"id\",)\nclass CommentSerializer(serializers.ModelSerializer):\n    user = AuthorSerializer(read_only=True)\n    class Meta:\n        model = Comment\n        fields = (",
+        "peekOfCode": "class TagWriteSerializer(serializers.ModelSerializer):\n    class Meta:\n        model = Tag\n        fields = (\n            \"id\",\n            \"title\",\n            \"slug\",\n        )\n        read_only_fields = (\"id\",)\nclass CommentSerializer(serializers.ModelSerializer):",
         "detail": "apps.news.serializers",
         "documentation": {}
     },
@@ -2327,7 +2344,7 @@
         "kind": 6,
         "importPath": "apps.news.serializers",
         "description": "apps.news.serializers",
-        "peekOfCode": "class PostListSerializer(serializers.ModelSerializer):\n    author = AuthorSerializer(read_only=True)\n    category = CategoryListSerializer(read_only=True)\n    tags = TagListSerializer(many=True, read_only=True)\n    comments_count = serializers.IntegerField(read_only=True)\n    is_bookmarked = serializers.SerializerMethodField()\n    post_type_label = serializers.CharField(\n        source=\"get_post_type_display\", read_only=True\n    )\n    homepage_section_label = serializers.CharField(",
+        "peekOfCode": "class PostListSerializer(serializers.ModelSerializer):\n    author = AuthorSerializer(read_only=True)\n    category = CategoryListSerializer(read_only=True)\n    tags = TagListSerializer(many=True, read_only=True)\n    comments_count = serializers.IntegerField(read_only=True)\n    is_bookmarked = serializers.SerializerMethodField()\n    cover = serializers.SerializerMethodField()\n    post_type_label = serializers.CharField(\n        source=\"get_post_type_display\",\n        read_only=True,",
         "detail": "apps.news.serializers",
         "documentation": {}
     },
@@ -2336,7 +2353,7 @@
         "kind": 6,
         "importPath": "apps.news.serializers",
         "description": "apps.news.serializers",
-        "peekOfCode": "class PostDetailSerializer(serializers.ModelSerializer):\n    author = AuthorSerializer(read_only=True)\n    category = CategoryListSerializer(read_only=True)\n    tags = TagListSerializer(many=True, read_only=True)\n    comments = serializers.SerializerMethodField()\n    is_bookmarked = serializers.SerializerMethodField()\n    post_type_label = serializers.CharField(\n        source=\"get_post_type_display\", read_only=True\n    )\n    homepage_section_label = serializers.CharField(",
+        "peekOfCode": "class PostDetailSerializer(serializers.ModelSerializer):\n    author = AuthorSerializer(read_only=True)\n    category = CategoryListSerializer(read_only=True)\n    tags = TagListSerializer(many=True, read_only=True)\n    comments = serializers.SerializerMethodField()\n    comments_count = serializers.IntegerField(read_only=True)\n    is_bookmarked = serializers.SerializerMethodField()\n    cover = serializers.SerializerMethodField()\n    post_type_display = serializers.CharField(\n        source=\"get_post_type_display\",",
         "detail": "apps.news.serializers",
         "documentation": {}
     },
@@ -2363,7 +2380,7 @@
         "kind": 6,
         "importPath": "apps.news.serializers",
         "description": "apps.news.serializers",
-        "peekOfCode": "class BookmarkCreateSerializer(serializers.Serializer):\n    post = serializers.IntegerField()\nclass BookmarkSerializer(serializers.ModelSerializer):\n    post = PostListSerializer(read_only=True)\n    class Meta:\n        model = Bookmark\n        fields = (\n            \"id\",\n            \"post\",\n            \"created_at\",",
+        "peekOfCode": "class BookmarkCreateSerializer(serializers.Serializer):\n    post = serializers.IntegerField()\n    def validate_post(self, value):\n        if not Post.objects.filter(pk=value).exists():\n            raise serializers.ValidationError(\"پست موردنظر پیدا نشد.\")\n        return value\nclass BookmarkSerializer(serializers.ModelSerializer):\n    post = PostListSerializer(read_only=True)\n    class Meta:\n        model = Bookmark",
         "detail": "apps.news.serializers",
         "documentation": {}
     },
@@ -2399,7 +2416,7 @@
         "kind": 5,
         "importPath": "apps.news.serializers",
         "description": "apps.news.serializers",
-        "peekOfCode": "SLUG_RE = re.compile(r\"^[a-z0-9]+(?:-[a-z0-9]+)*$\")\nclass PostWriteSerializer(serializers.ModelSerializer):\n    slug = serializers.CharField(required=False, allow_blank=True)\n    class Meta:\n        model = Post\n        fields = (\n            \"id\",\n            \"title\",\n            \"slug\",\n            \"excerpt\",",
+        "peekOfCode": "SLUG_RE = re.compile(r\"^[a-z0-9]+(?:-[a-z0-9]+)*$\")\nclass AuthorSerializer(serializers.Serializer):\n    id = serializers.IntegerField(read_only=True)\n    email = serializers.EmailField(read_only=True)\n    first_name = serializers.CharField(read_only=True)\n    last_name = serializers.CharField(read_only=True)\n    full_name = serializers.SerializerMethodField()\n    def get_full_name(self, obj):\n        full_name = f\"{obj.first_name} {obj.last_name}\".strip()\n        return full_name or obj.email",
         "detail": "apps.news.serializers",
         "documentation": {}
     },
@@ -2588,7 +2605,7 @@
         "kind": 5,
         "importPath": "config.settings",
         "description": "config.settings",
-        "peekOfCode": "AUTH_PASSWORD_VALIDATORS = [\n    {\n        \"NAME\": \"django.contrib.auth.password_validation.UserAttributeSimilarityValidator\"\n    },\n    {\"NAME\": \"django.contrib.auth.password_validation.MinimumLengthValidator\"},\n    {\"NAME\": \"django.contrib.auth.password_validation.CommonPasswordValidator\"},\n    {\"NAME\": \"django.contrib.auth.password_validation.NumericPasswordValidator\"},\n]\nLANGUAGE_CODE = \"en-us\"\nTIME_ZONE = \"Asia/Tehran\"",
+        "peekOfCode": "AUTH_PASSWORD_VALIDATORS = [\n    {\n        \"NAME\": \"django.contrib.auth.password_validation.UserAttributeSimilarityValidator\"\n    },\n    {\n        \"NAME\": \"django.contrib.auth.password_validation.MinimumLengthValidator\"\n    },\n    {\n        \"NAME\": \"django.contrib.auth.password_validation.CommonPasswordValidator\"\n    },",
         "detail": "config.settings",
         "documentation": {}
     },
@@ -2597,7 +2614,7 @@
         "kind": 5,
         "importPath": "config.settings",
         "description": "config.settings",
-        "peekOfCode": "LANGUAGE_CODE = \"en-us\"\nTIME_ZONE = \"Asia/Tehran\"\nUSE_I18N = True\nUSE_TZ = True\nSTATIC_URL = \"/static/\"\nSTATIC_ROOT = BASE_DIR / \"staticfiles\"\nMEDIA_URL = \"/media/\"\nMEDIA_ROOT = BASE_DIR / \"media\"\nDEFAULT_AUTO_FIELD = \"django.db.models.BigAutoField\"\nAUTH_USER_MODEL = \"accounts.User\"",
+        "peekOfCode": "LANGUAGE_CODE = \"en-us\"\nTIME_ZONE = \"Asia/Tehran\"\nUSE_I18N = True\nUSE_TZ = True\n# -------- STATIC FILES --------\nSTATIC_URL = \"/static/\"\nSTATIC_ROOT = BASE_DIR / \"staticfiles\"\n# -------- MEDIA FILES --------\nMEDIA_URL = \"/media/\"\nMEDIA_ROOT = BASE_DIR / \"media\"",
         "detail": "config.settings",
         "documentation": {}
     },
@@ -2606,7 +2623,7 @@
         "kind": 5,
         "importPath": "config.settings",
         "description": "config.settings",
-        "peekOfCode": "TIME_ZONE = \"Asia/Tehran\"\nUSE_I18N = True\nUSE_TZ = True\nSTATIC_URL = \"/static/\"\nSTATIC_ROOT = BASE_DIR / \"staticfiles\"\nMEDIA_URL = \"/media/\"\nMEDIA_ROOT = BASE_DIR / \"media\"\nDEFAULT_AUTO_FIELD = \"django.db.models.BigAutoField\"\nAUTH_USER_MODEL = \"accounts.User\"\nCORS_ALLOW_ALL_ORIGINS = True",
+        "peekOfCode": "TIME_ZONE = \"Asia/Tehran\"\nUSE_I18N = True\nUSE_TZ = True\n# -------- STATIC FILES --------\nSTATIC_URL = \"/static/\"\nSTATIC_ROOT = BASE_DIR / \"staticfiles\"\n# -------- MEDIA FILES --------\nMEDIA_URL = \"/media/\"\nMEDIA_ROOT = BASE_DIR / \"media\"\n# برای ساخت URL کامل عکس ها",
         "detail": "config.settings",
         "documentation": {}
     },
@@ -2615,7 +2632,7 @@
         "kind": 5,
         "importPath": "config.settings",
         "description": "config.settings",
-        "peekOfCode": "USE_I18N = True\nUSE_TZ = True\nSTATIC_URL = \"/static/\"\nSTATIC_ROOT = BASE_DIR / \"staticfiles\"\nMEDIA_URL = \"/media/\"\nMEDIA_ROOT = BASE_DIR / \"media\"\nDEFAULT_AUTO_FIELD = \"django.db.models.BigAutoField\"\nAUTH_USER_MODEL = \"accounts.User\"\nCORS_ALLOW_ALL_ORIGINS = True\nREST_FRAMEWORK = {",
+        "peekOfCode": "USE_I18N = True\nUSE_TZ = True\n# -------- STATIC FILES --------\nSTATIC_URL = \"/static/\"\nSTATIC_ROOT = BASE_DIR / \"staticfiles\"\n# -------- MEDIA FILES --------\nMEDIA_URL = \"/media/\"\nMEDIA_ROOT = BASE_DIR / \"media\"\n# برای ساخت URL کامل عکس ها\nPUBLIC_BACKEND_URL = os.getenv(\"PUBLIC_BACKEND_URL\", \"http://localhost:8000\")",
         "detail": "config.settings",
         "documentation": {}
     },
@@ -2624,7 +2641,7 @@
         "kind": 5,
         "importPath": "config.settings",
         "description": "config.settings",
-        "peekOfCode": "USE_TZ = True\nSTATIC_URL = \"/static/\"\nSTATIC_ROOT = BASE_DIR / \"staticfiles\"\nMEDIA_URL = \"/media/\"\nMEDIA_ROOT = BASE_DIR / \"media\"\nDEFAULT_AUTO_FIELD = \"django.db.models.BigAutoField\"\nAUTH_USER_MODEL = \"accounts.User\"\nCORS_ALLOW_ALL_ORIGINS = True\nREST_FRAMEWORK = {\n    \"DEFAULT_AUTHENTICATION_CLASSES\": (",
+        "peekOfCode": "USE_TZ = True\n# -------- STATIC FILES --------\nSTATIC_URL = \"/static/\"\nSTATIC_ROOT = BASE_DIR / \"staticfiles\"\n# -------- MEDIA FILES --------\nMEDIA_URL = \"/media/\"\nMEDIA_ROOT = BASE_DIR / \"media\"\n# برای ساخت URL کامل عکس ها\nPUBLIC_BACKEND_URL = os.getenv(\"PUBLIC_BACKEND_URL\", \"http://localhost:8000\")\nDEFAULT_AUTO_FIELD = \"django.db.models.BigAutoField\"",
         "detail": "config.settings",
         "documentation": {}
     },
@@ -2633,7 +2650,7 @@
         "kind": 5,
         "importPath": "config.settings",
         "description": "config.settings",
-        "peekOfCode": "STATIC_URL = \"/static/\"\nSTATIC_ROOT = BASE_DIR / \"staticfiles\"\nMEDIA_URL = \"/media/\"\nMEDIA_ROOT = BASE_DIR / \"media\"\nDEFAULT_AUTO_FIELD = \"django.db.models.BigAutoField\"\nAUTH_USER_MODEL = \"accounts.User\"\nCORS_ALLOW_ALL_ORIGINS = True\nREST_FRAMEWORK = {\n    \"DEFAULT_AUTHENTICATION_CLASSES\": (\n        \"rest_framework_simplejwt.authentication.JWTAuthentication\",",
+        "peekOfCode": "STATIC_URL = \"/static/\"\nSTATIC_ROOT = BASE_DIR / \"staticfiles\"\n# -------- MEDIA FILES --------\nMEDIA_URL = \"/media/\"\nMEDIA_ROOT = BASE_DIR / \"media\"\n# برای ساخت URL کامل عکس ها\nPUBLIC_BACKEND_URL = os.getenv(\"PUBLIC_BACKEND_URL\", \"http://localhost:8000\")\nDEFAULT_AUTO_FIELD = \"django.db.models.BigAutoField\"\nAUTH_USER_MODEL = \"accounts.User\"",
         "detail": "config.settings",
         "documentation": {}
     },
@@ -2642,7 +2659,7 @@
         "kind": 5,
         "importPath": "config.settings",
         "description": "config.settings",
-        "peekOfCode": "STATIC_ROOT = BASE_DIR / \"staticfiles\"\nMEDIA_URL = \"/media/\"\nMEDIA_ROOT = BASE_DIR / \"media\"\nDEFAULT_AUTO_FIELD = \"django.db.models.BigAutoField\"\nAUTH_USER_MODEL = \"accounts.User\"\nCORS_ALLOW_ALL_ORIGINS = True\nREST_FRAMEWORK = {\n    \"DEFAULT_AUTHENTICATION_CLASSES\": (\n        \"rest_framework_simplejwt.authentication.JWTAuthentication\",\n    ),",
+        "peekOfCode": "STATIC_ROOT = BASE_DIR / \"staticfiles\"\n# -------- MEDIA FILES --------\nMEDIA_URL = \"/media/\"\nMEDIA_ROOT = BASE_DIR / \"media\"\n# برای ساخت URL کامل عکس ها\nPUBLIC_BACKEND_URL = os.getenv(\"PUBLIC_BACKEND_URL\", \"http://localhost:8000\")\nDEFAULT_AUTO_FIELD = \"django.db.models.BigAutoField\"\nAUTH_USER_MODEL = \"accounts.User\"\n# -------- CORS --------",
         "detail": "config.settings",
         "documentation": {}
     },
@@ -2651,7 +2668,7 @@
         "kind": 5,
         "importPath": "config.settings",
         "description": "config.settings",
-        "peekOfCode": "MEDIA_URL = \"/media/\"\nMEDIA_ROOT = BASE_DIR / \"media\"\nDEFAULT_AUTO_FIELD = \"django.db.models.BigAutoField\"\nAUTH_USER_MODEL = \"accounts.User\"\nCORS_ALLOW_ALL_ORIGINS = True\nREST_FRAMEWORK = {\n    \"DEFAULT_AUTHENTICATION_CLASSES\": (\n        \"rest_framework_simplejwt.authentication.JWTAuthentication\",\n    ),\n    \"DEFAULT_PERMISSION_CLASSES\": (",
+        "peekOfCode": "MEDIA_URL = \"/media/\"\nMEDIA_ROOT = BASE_DIR / \"media\"\n# برای ساخت URL کامل عکس ها\nPUBLIC_BACKEND_URL = os.getenv(\"PUBLIC_BACKEND_URL\", \"http://localhost:8000\")\nDEFAULT_AUTO_FIELD = \"django.db.models.BigAutoField\"\nAUTH_USER_MODEL = \"accounts.User\"\n# -------- CORS --------\nCORS_ALLOW_ALL_ORIGINS = True\n# -------- DJANGO REST FRAMEWORK --------",
         "detail": "config.settings",
         "documentation": {}
     },
@@ -2660,7 +2677,16 @@
         "kind": 5,
         "importPath": "config.settings",
         "description": "config.settings",
-        "peekOfCode": "MEDIA_ROOT = BASE_DIR / \"media\"\nDEFAULT_AUTO_FIELD = \"django.db.models.BigAutoField\"\nAUTH_USER_MODEL = \"accounts.User\"\nCORS_ALLOW_ALL_ORIGINS = True\nREST_FRAMEWORK = {\n    \"DEFAULT_AUTHENTICATION_CLASSES\": (\n        \"rest_framework_simplejwt.authentication.JWTAuthentication\",\n    ),\n    \"DEFAULT_PERMISSION_CLASSES\": (\n        \"rest_framework.permissions.IsAuthenticatedOrReadOnly\",",
+        "peekOfCode": "MEDIA_ROOT = BASE_DIR / \"media\"\n# برای ساخت URL کامل عکس ها\nPUBLIC_BACKEND_URL = os.getenv(\"PUBLIC_BACKEND_URL\", \"http://localhost:8000\")\nDEFAULT_AUTO_FIELD = \"django.db.models.BigAutoField\"\nAUTH_USER_MODEL = \"accounts.User\"\n# -------- CORS --------\nCORS_ALLOW_ALL_ORIGINS = True\n# -------- DJANGO REST FRAMEWORK --------",
+        "detail": "config.settings",
+        "documentation": {}
+    },
+    {
+        "label": "PUBLIC_BACKEND_URL",
+        "kind": 5,
+        "importPath": "config.settings",
+        "description": "config.settings",
+        "peekOfCode": "PUBLIC_BACKEND_URL = os.getenv(\"PUBLIC_BACKEND_URL\", \"http://localhost:8000\")\nDEFAULT_AUTO_FIELD = \"django.db.models.BigAutoField\"\nAUTH_USER_MODEL = \"accounts.User\"\n# -------- CORS --------\nCORS_ALLOW_ALL_ORIGINS = True\n# -------- DJANGO REST FRAMEWORK --------\nREST_FRAMEWORK = {\n    \"DEFAULT_AUTHENTICATION_CLASSES\": (\n        \"rest_framework_simplejwt.authentication.JWTAuthentication\",\n    ),",
         "detail": "config.settings",
         "documentation": {}
     },
@@ -2669,7 +2695,7 @@
         "kind": 5,
         "importPath": "config.settings",
         "description": "config.settings",
-        "peekOfCode": "DEFAULT_AUTO_FIELD = \"django.db.models.BigAutoField\"\nAUTH_USER_MODEL = \"accounts.User\"\nCORS_ALLOW_ALL_ORIGINS = True\nREST_FRAMEWORK = {\n    \"DEFAULT_AUTHENTICATION_CLASSES\": (\n        \"rest_framework_simplejwt.authentication.JWTAuthentication\",\n    ),\n    \"DEFAULT_PERMISSION_CLASSES\": (\n        \"rest_framework.permissions.IsAuthenticatedOrReadOnly\",\n    ),",
+        "peekOfCode": "DEFAULT_AUTO_FIELD = \"django.db.models.BigAutoField\"\nAUTH_USER_MODEL = \"accounts.User\"\n# -------- CORS --------\nCORS_ALLOW_ALL_ORIGINS = True\n# -------- DJANGO REST FRAMEWORK --------\nREST_FRAMEWORK = {\n    \"DEFAULT_AUTHENTICATION_CLASSES\": (\n        \"rest_framework_simplejwt.authentication.JWTAuthentication\",\n    ),\n    \"DEFAULT_PERMISSION_CLASSES\": (",
         "detail": "config.settings",
         "documentation": {}
     },
@@ -2678,7 +2704,7 @@
         "kind": 5,
         "importPath": "config.settings",
         "description": "config.settings",
-        "peekOfCode": "AUTH_USER_MODEL = \"accounts.User\"\nCORS_ALLOW_ALL_ORIGINS = True\nREST_FRAMEWORK = {\n    \"DEFAULT_AUTHENTICATION_CLASSES\": (\n        \"rest_framework_simplejwt.authentication.JWTAuthentication\",\n    ),\n    \"DEFAULT_PERMISSION_CLASSES\": (\n        \"rest_framework.permissions.IsAuthenticatedOrReadOnly\",\n    ),\n    \"DEFAULT_FILTER_BACKENDS\": (",
+        "peekOfCode": "AUTH_USER_MODEL = \"accounts.User\"\n# -------- CORS --------\nCORS_ALLOW_ALL_ORIGINS = True\n# -------- DJANGO REST FRAMEWORK --------\nREST_FRAMEWORK = {\n    \"DEFAULT_AUTHENTICATION_CLASSES\": (\n        \"rest_framework_simplejwt.authentication.JWTAuthentication\",\n    ),\n    \"DEFAULT_PERMISSION_CLASSES\": (\n        \"rest_framework.permissions.IsAuthenticatedOrReadOnly\",",
         "detail": "config.settings",
         "documentation": {}
     },
@@ -2687,7 +2713,7 @@
         "kind": 5,
         "importPath": "config.settings",
         "description": "config.settings",
-        "peekOfCode": "CORS_ALLOW_ALL_ORIGINS = True\nREST_FRAMEWORK = {\n    \"DEFAULT_AUTHENTICATION_CLASSES\": (\n        \"rest_framework_simplejwt.authentication.JWTAuthentication\",\n    ),\n    \"DEFAULT_PERMISSION_CLASSES\": (\n        \"rest_framework.permissions.IsAuthenticatedOrReadOnly\",\n    ),\n    \"DEFAULT_FILTER_BACKENDS\": (\n        \"django_filters.rest_framework.DjangoFilterBackend\",",
+        "peekOfCode": "CORS_ALLOW_ALL_ORIGINS = True\n# -------- DJANGO REST FRAMEWORK --------\nREST_FRAMEWORK = {\n    \"DEFAULT_AUTHENTICATION_CLASSES\": (\n        \"rest_framework_simplejwt.authentication.JWTAuthentication\",\n    ),\n    \"DEFAULT_PERMISSION_CLASSES\": (\n        \"rest_framework.permissions.IsAuthenticatedOrReadOnly\",\n    ),\n    \"DEFAULT_FILTER_BACKENDS\": (",
         "detail": "config.settings",
         "documentation": {}
     },
@@ -2705,7 +2731,7 @@
         "kind": 5,
         "importPath": "config.settings",
         "description": "config.settings",
-        "peekOfCode": "SIMPLE_JWT = {\n    \"ACCESS_TOKEN_LIFETIME\": timedelta(days=1),\n    \"REFRESH_TOKEN_LIFETIME\": timedelta(days=7),\n    \"ROTATE_REFRESH_TOKENS\": False,\n    \"BLACKLIST_AFTER_ROTATION\": False,\n    \"AUTH_HEADER_TYPES\": (\"Bearer\",),\n}\nSPECTACULAR_SETTINGS = {\n    \"TITLE\": \"News Blog API\",\n    \"DESCRIPTION\": \"Professional modular Django REST API for News/Blog platform\",",
+        "peekOfCode": "SIMPLE_JWT = {\n    \"ACCESS_TOKEN_LIFETIME\": timedelta(days=1),\n    \"REFRESH_TOKEN_LIFETIME\": timedelta(days=7),\n    \"ROTATE_REFRESH_TOKENS\": False,\n    \"BLACKLIST_AFTER_ROTATION\": False,\n    \"AUTH_HEADER_TYPES\": (\"Bearer\",),\n}\n# -------- API DOCS --------\nSPECTACULAR_SETTINGS = {\n    \"TITLE\": \"News Blog API\",",
         "detail": "config.settings",
         "documentation": {}
     },
@@ -2714,7 +2740,7 @@
         "kind": 5,
         "importPath": "config.settings",
         "description": "config.settings",
-        "peekOfCode": "SPECTACULAR_SETTINGS = {\n    \"TITLE\": \"News Blog API\",\n    \"DESCRIPTION\": \"Professional modular Django REST API for News/Blog platform\",\n    \"VERSION\": \"1.0.0\",\n    \"SERVE_INCLUDE_SCHEMA\": False,\n    \"COMPONENT_SPLIT_REQUEST\": True,\n}\nCACHES = {\n    \"default\": {\n        \"BACKEND\": \"django.core.cache.backends.locmem.LocMemCache\",",
+        "peekOfCode": "SPECTACULAR_SETTINGS = {\n    \"TITLE\": \"News Blog API\",\n    \"DESCRIPTION\": \"Professional modular Django REST API for News/Blog platform\",\n    \"VERSION\": \"1.0.0\",\n    \"SERVE_INCLUDE_SCHEMA\": False,\n    \"COMPONENT_SPLIT_REQUEST\": True,\n}\n# -------- CACHE --------\nCACHES = {\n    \"default\": {",
         "detail": "config.settings",
         "documentation": {}
     },

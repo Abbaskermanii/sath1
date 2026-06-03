@@ -31,3 +31,164 @@
 body {
   font-family: "AbarHigh", sans-serif;
 }
+
+/* =========================
+   HOME SAFE SYSTEM
+   Only affects .home-safe
+   ========================= */
+
+.home-safe {
+  --home-border: #e5e5e5;
+  --home-muted: #737373;
+  --home-bg-soft: #f5f5f5;
+}
+
+/* Prevent media overflow */
+.home-safe img,
+.home-safe video,
+.home-safe svg,
+.home-safe canvas {
+  max-width: 100%;
+  display: block;
+}
+
+/* Grid/flex overflow protection */
+.home-safe * {
+  min-width: 0;
+  box-sizing: border-box;
+}
+
+/* Better text wrapping */
+.home-safe h1,
+.home-safe h2,
+.home-safe h3,
+.home-safe h4,
+.home-safe h5,
+.home-safe h6,
+.home-safe p,
+.home-safe a,
+.home-safe span {
+  overflow-wrap: anywhere;
+  word-break: normal;
+}
+
+/* Generic card shell */
+.home-safe-card {
+  height: 100%;
+  min-width: 0;
+  overflow: hidden;
+}
+
+/* Generic media wrapper */
+.home-safe-media {
+  position: relative;
+  width: 100%;
+  overflow: hidden;
+  background: var(--home-bg-soft);
+  flex-shrink: 0;
+}
+
+/* Fill the wrapper without distortion */
+.home-safe-media > img,
+.home-safe-media > video,
+.home-safe-media > picture > img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+/* If an image is intentionally shown in natural ratio */
+.home-safe-media--contain > img,
+.home-safe-media--contain > video,
+.home-safe-media--contain > picture > img {
+  object-fit: contain;
+}
+
+/* Fixed, reusable image heights */
+.home-safe-media--hero {
+  height: 420px;
+}
+
+.home-safe-media--large {
+  height: 320px;
+}
+
+.home-safe-media--medium {
+  height: 220px;
+}
+
+.home-safe-media--small {
+  height: 140px;
+}
+
+/* Text clamps */
+.home-safe-clamp-1,
+.home-safe-clamp-2,
+.home-safe-clamp-3,
+.home-safe-clamp-4 {
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.home-safe-clamp-1 { -webkit-line-clamp: 1; }
+.home-safe-clamp-2 { -webkit-line-clamp: 2; }
+.home-safe-clamp-3 { -webkit-line-clamp: 3; }
+.home-safe-clamp-4 { -webkit-line-clamp: 4; }
+
+/* Nice defaults for article blocks */
+.home-safe-title {
+  line-height: 1.1;
+  letter-spacing: -0.02em;
+}
+
+.home-safe-desc {
+  color: var(--home-muted);
+  line-height: 1.5;
+}
+
+/* Prevent long content from pushing layout */
+.home-safe-row {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  height: 100%;
+}
+
+/* Equal-height grids when needed */
+.home-safe-equal-grid {
+  align-items: stretch;
+}
+
+.home-safe-equal-grid > * {
+  height: 100%;
+}
+
+/* Responsive tuning */
+@media (max-width: 1024px) {
+  .home-safe-media--hero {
+    height: 360px;
+  }
+
+  .home-safe-media--large {
+    height: 280px;
+  }
+}
+
+@media (max-width: 768px) {
+  .home-safe-media--hero {
+    height: 280px;
+  }
+
+  .home-safe-media--large {
+    height: 220px;
+  }
+
+  .home-safe-media--medium {
+    height: 180px;
+  }
+
+  .home-safe-media--small {
+    height: 120px;
+  }
+}

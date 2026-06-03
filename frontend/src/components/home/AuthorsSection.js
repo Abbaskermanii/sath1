@@ -54,7 +54,10 @@ export default function AuthorsSection({
   if (!safeItems.length) return null;
 
   return (
-    <section dir="rtl" className="border-t border-neutral-300 bg-blue-50/70 p-6">
+    <section
+      dir="rtl"
+      className="border-t border-neutral-300 bg-blue-50/70 p-6"
+    >
       <SectionHeader title={title} href={href} actionText="همه نویسنده‌ها" />
 
       <div className="mt-5 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">

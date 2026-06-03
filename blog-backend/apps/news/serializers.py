@@ -1,4 +1,5 @@
 import re
+
 from django.utils.text import slugify
 from rest_framework import serializers
 
@@ -11,6 +12,8 @@ from apps.news.models import (
     PostType,
     HomepageSection,
 )
+
+SLUG_RE = re.compile(r"^[a-z0-9]+(?:-[a-z0-9]+)*$")
 
 
 class AuthorSerializer(serializers.Serializer):
@@ -54,14 +57,22 @@ class TagListSerializer(serializers.ModelSerializer):
 class CategoryWriteSerializer(serializers.ModelSerializer):
     class Meta:
         model = Category
-        fields = ("id", "title", "slug")
+        fields = (
+            "id",
+            "title",
+            "slug",
+        )
         read_only_fields = ("id",)
 
 
 class TagWriteSerializer(serializers.ModelSerializer):
     class Meta:
         model = Tag
-        fields = ("id", "title", "slug")
+        fields = (
+            "id",
+            "title",
+            "slug",
+        )
         read_only_fields = ("id",)
 
 
@@ -94,9 +105,11 @@ class PostListSerializer(serializers.ModelSerializer):
     tags = TagListSerializer(many=True, read_only=True)
     comments_count = serializers.IntegerField(read_only=True)
     is_bookmarked = serializers.SerializerMethodField()
+    cover = serializers.SerializerMethodField()
 
     post_type_label = serializers.CharField(
-        source="get_post_type_display", read_only=True
+        source="get_post_type_display",
+        read_only=True,
     )
     homepage_section_label = serializers.CharField(
         source="get_homepage_section_display",
@@ -130,6 +143,14 @@ class PostListSerializer(serializers.ModelSerializer):
             "homepage_order",
         )
 
+    def get_cover(self, obj):
+        if not obj.cover:
+            return None
+        request = self.context.get("request")
+        if request:
+            return request.build_absolute_uri(obj.cover.url)
+        return obj.cover.url
+
     def get_is_bookmarked(self, obj):
         request = self.context.get("request")
         if not request or not request.user.is_authenticated:
@@ -142,12 +163,15 @@ class PostDetailSerializer(serializers.ModelSerializer):
     category = CategoryListSerializer(read_only=True)
     tags = TagListSerializer(many=True, read_only=True)
     comments = serializers.SerializerMethodField()
+    comments_count = serializers.IntegerField(read_only=True)
     is_bookmarked = serializers.SerializerMethodField()
+    cover = serializers.SerializerMethodField()
 
-    post_type_label = serializers.CharField(
-        source="get_post_type_display", read_only=True
+    post_type_display = serializers.CharField(
+        source="get_post_type_display",
+        read_only=True,
     )
-    homepage_section_label = serializers.CharField(
+    homepage_section_display = serializers.CharField(
         source="get_homepage_section_display",
         read_only=True,
     )
@@ -165,25 +189,30 @@ class PostDetailSerializer(serializers.ModelSerializer):
             "category",
             "tags",
             "status",
-            "post_type",
-            "post_type_label",
             "views",
+            "comments",
+            "comments_count",
+            "is_bookmarked",
+            "post_type",
+            "post_type_display",
+            "homepage_section",
+            "homepage_section_display",
             "published_at",
             "created_at",
             "updated_at",
-            "comments",
-            "is_bookmarked",
             "is_featured",
             "is_hero",
             "show_on_homepage",
-            "homepage_section",
-            "homepage_section_label",
             "homepage_order",
         )
 
-    def get_comments(self, obj):
-        comments = obj.comments.filter(is_approved=True).order_by("-created_at")
-        return CommentSerializer(comments, many=True, context=self.context).data
+    def get_cover(self, obj):
+        if not obj.cover:
+            return None
+        request = self.context.get("request")
+        if request:
+            return request.build_absolute_uri(obj.cover.url)
+        return obj.cover.url
 
     def get_is_bookmarked(self, obj):
         request = self.context.get("request")
@@ -191,8 +220,26 @@ class PostDetailSerializer(serializers.ModelSerializer):
             return False
         return Bookmark.objects.filter(post=obj, user=request.user).exists()
 
+    def get_comments(self, obj):
+        request = self.context.get("request")
 
-SLUG_RE = re.compile(r"^[a-z0-9]+(?:-[a-z0-9]+)*$")
+        # اگر کاربر لاگین کرده و نویسنده همین پست یا ادمین باشد،
+        # همه کامنت‌ها را ببیند. در غیر این صورت فقط approvedها برگردند.
+        qs = obj.comments.all().order_by("-created_at")
+
+        if not request or not request.user.is_authenticated:
+            qs = qs.filter(is_approved=True)
+        else:
+            user = request.user
+            is_admin = getattr(user, "role", None) == "admin" or getattr(
+                user, "is_staff", False
+            )
+            is_author = obj.author_id == user.id
+
+            if not (is_admin or is_author):
+                qs = qs.filter(is_approved=True)
+
+        return CommentSerializer(qs, many=True, context=self.context).data
 
 
 class PostWriteSerializer(serializers.ModelSerializer):
@@ -225,10 +272,12 @@ class PostWriteSerializer(serializers.ModelSerializer):
             return ""
 
         value = value.strip().lower()
+
         if not SLUG_RE.fullmatch(value):
             raise serializers.ValidationError(
                 "اسلاگ باید فقط شامل حروف کوچک انگلیسی، اعداد و خط تیره باشد. مثال: my-post-123"
             )
+
         return value
 
     def validate_post_type(self, value):
@@ -243,21 +292,64 @@ class PostWriteSerializer(serializers.ModelSerializer):
             raise serializers.ValidationError("homepage_section نامعتبر است.")
         return value
 
+    def _generate_unique_slug(self, title, current_instance=None):
+        base_slug = slugify(title or "", allow_unicode=False) or "post"
+        slug = base_slug
+        i = 1
+
+        qs = Post.objects.all()
+        if current_instance is not None:
+            qs = qs.exclude(pk=current_instance.pk)
+
+        while qs.filter(slug=slug).exists():
+            i += 1
+            slug = f"{base_slug}-{i}"
+
+        return slug
+
+    def validate(self, attrs):
+        instance = getattr(self, "instance", None)
+
+        slug = attrs.get("slug")
+        title = attrs.get("title") or (instance.title if instance else "")
+
+        # اگر اسلاگ خالی باشد، بعداً اتومات ساخته می‌شود
+        if slug:
+            qs = Post.objects.filter(slug=slug)
+            if instance is not None:
+                qs = qs.exclude(pk=instance.pk)
+
+            if qs.exists():
+                raise serializers.ValidationError(
+                    {"slug": "این اسلاگ قبلاً استفاده شده است."}
+                )
+
+        # اگر homepage_section نیامده باشد و فیلد اجباری نباشد مشکلی نیست
+        return attrs
+
     def create(self, validated_data):
         slug = validated_data.get("slug")
         title = validated_data.get("title")
 
         if not slug:
-            base_slug = slugify(title, allow_unicode=False) or "post"
-            slug = base_slug
-            i = 1
-
-            while Post.objects.filter(slug=slug).exists():
-                i += 1
-                slug = f"{base_slug}-{i}"
+            slug = self._generate_unique_slug(title)
 
         validated_data["slug"] = slug
         return super().create(validated_data)
+
+    def update(self, instance, validated_data):
+        slug = validated_data.get("slug")
+        title = validated_data.get("title", instance.title)
+
+        if not slug:
+            # اگر اسلاگ خالی فرستاده شد، از اسلاگ فعلی نگه می‌داریم
+            validated_data["slug"] = instance.slug
+        else:
+            validated_data["slug"] = slug.strip().lower()
+
+        # اگر خواستی هنگام تغییر title، اسلاگ خودکار عوض شود،
+        # این بخش را جایگزین منطق بالا کن.
+        return super().update(instance, validated_data)
 
 
 class CommentWriteSerializer(serializers.ModelSerializer):
@@ -273,6 +365,11 @@ class CommentWriteSerializer(serializers.ModelSerializer):
 
 class BookmarkCreateSerializer(serializers.Serializer):
     post = serializers.IntegerField()
+
+    def validate_post(self, value):
+        if not Post.objects.filter(pk=value).exists():
+            raise serializers.ValidationError("پست موردنظر پیدا نشد.")
+        return value
 
 
 class BookmarkSerializer(serializers.ModelSerializer):
