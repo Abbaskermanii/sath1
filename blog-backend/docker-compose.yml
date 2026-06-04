@@ -9,21 +9,30 @@ services:
       POSTGRES_PASSWORD: blogpass
     volumes:
       - postgres_data:/var/lib/postgresql/data
-    healthcheck:
-      test: ["CMD-SHELL", "pg_isready -U bloguser -d blogdb"]
-      interval: 5s
-      timeout: 5s
-      retries: 10
+
+  minio:
+    image: minio/minio:latest
+    container_name: blog_minio
+    command: server /data --console-address ":9001"
+    restart: unless-stopped
+    environment:
+      MINIO_ROOT_USER: minioadmin
+      MINIO_ROOT_PASSWORD: minioadmin123
+    volumes:
+      - minio_data:/data
+    ports:
+      - "9000:9000"
+      - "9001:9001"
 
   backend:
     build: .
     container_name: blog_backend
     restart: unless-stopped
     depends_on:
-      db:
-        condition: service_healthy
+      - db
+      - minio
     environment:
-      SECRET_KEY: django-production-secret-change-this
+      SECRET_KEY: django-production-secret
       DEBUG: "1"
 
       DB_NAME: blogdb
@@ -31,15 +40,14 @@ services:
       DB_PASSWORD: blogpass
       DB_HOST: db
       DB_PORT: "5432"
-    volumes:
-      - ./media:/app/media
-      - ./staticfiles:/app/staticfiles
+
+      AWS_ACCESS_KEY_ID: minioadmin
+      AWS_SECRET_ACCESS_KEY: minioadmin123
+      AWS_STORAGE_BUCKET_NAME: media
+      AWS_S3_ENDPOINT_URL: http://minio:9000
     ports:
       - "8000:8000"
-    command: >
-      sh -c "python manage.py migrate &&
-             python manage.py collectstatic --noinput &&
-             gunicorn config.wsgi:application --bind 0.0.0.0:8000"
 
 volumes:
   postgres_data:
+  minio_data:

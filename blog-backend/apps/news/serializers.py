@@ -2,7 +2,7 @@ import re
 
 from django.utils.text import slugify
 from rest_framework import serializers
-
+from django.conf import settings
 from apps.news.models import (
     Bookmark,
     Category,
@@ -146,11 +146,17 @@ class PostListSerializer(serializers.ModelSerializer):
     def get_cover(self, obj):
         if not obj.cover:
             return None
-        request = self.context.get("request")
-        if request:
-            return request.build_absolute_uri(obj.cover.url)
-        return obj.cover.url
 
+        try:
+            url = obj.cover.url
+        except Exception:
+            return None
+
+        return url.replace(
+            settings.MINIO_INTERNAL_URL,
+            settings.MINIO_PUBLIC_URL
+        )
+    
     def get_is_bookmarked(self, obj):
         request = self.context.get("request")
         if not request or not request.user.is_authenticated:
@@ -209,11 +215,17 @@ class PostDetailSerializer(serializers.ModelSerializer):
     def get_cover(self, obj):
         if not obj.cover:
             return None
-        request = self.context.get("request")
-        if request:
-            return request.build_absolute_uri(obj.cover.url)
-        return obj.cover.url
 
+        try:
+            url = obj.cover.url
+        except Exception:
+            return None
+
+        return url.replace(
+            settings.MINIO_INTERNAL_URL,
+            settings.MINIO_PUBLIC_URL
+        )
+    
     def get_is_bookmarked(self, obj):
         request = self.context.get("request")
         if not request or not request.user.is_authenticated:

@@ -108,6 +108,14 @@
         "documentation": {}
     },
     {
+        "label": "settings",
+        "importPath": "django.conf",
+        "description": "django.conf",
+        "isExtraImport": true,
+        "detail": "django.conf",
+        "documentation": {}
+    },
+    {
         "label": "migrations",
         "importPath": "django.db",
         "description": "django.db",
@@ -1608,6 +1616,49 @@
         "documentation": {}
     },
     {
+        "label": "json",
+        "kind": 6,
+        "isExtraImport": true,
+        "importPath": "json",
+        "description": "json",
+        "detail": "json",
+        "documentation": {}
+    },
+    {
+        "label": "argparse",
+        "kind": 6,
+        "isExtraImport": true,
+        "importPath": "argparse",
+        "description": "argparse",
+        "detail": "argparse",
+        "documentation": {}
+    },
+    {
+        "label": "pformat",
+        "importPath": "pprint",
+        "description": "pprint",
+        "isExtraImport": true,
+        "detail": "pprint",
+        "documentation": {}
+    },
+    {
+        "label": "jmespath",
+        "kind": 6,
+        "isExtraImport": true,
+        "importPath": "jmespath",
+        "description": "jmespath",
+        "detail": "jmespath",
+        "documentation": {}
+    },
+    {
+        "label": "exceptions",
+        "importPath": "jmespath",
+        "description": "jmespath",
+        "isExtraImport": true,
+        "detail": "jmespath",
+        "documentation": {}
+    },
+    {
         "label": "Migration",
         "kind": 6,
         "importPath": "apps.accounts.migrations.0001_initial",
@@ -2539,7 +2590,7 @@
         "kind": 5,
         "importPath": "config.settings",
         "description": "config.settings",
-        "peekOfCode": "BASE_DIR = Path(__file__).resolve().parent.parent\nSECRET_KEY = os.getenv(\"SECRET_KEY\", \"django-insecure-dev-key\")\nDEBUG = os.getenv(\"DEBUG\", \"1\") == \"1\"\nALLOWED_HOSTS = [\"*\"]\nINSTALLED_APPS = [\n    \"django.contrib.admin\",\n    \"django.contrib.auth\",\n    \"django.contrib.contenttypes\",\n    \"django.contrib.sessions\",\n    \"django.contrib.messages\",",
+        "peekOfCode": "BASE_DIR = Path(__file__).resolve().parent.parent\nSECRET_KEY = os.getenv(\"SECRET_KEY\", \"django-insecure-dev-key\")\nDEBUG = os.getenv(\"DEBUG\", \"1\") == \"1\"\nALLOWED_HOSTS = [\"*\"]\n# --------------------------------------------------\n# INSTALLED APPS\n# --------------------------------------------------\nINSTALLED_APPS = [\n    \"django.contrib.admin\",\n    \"django.contrib.auth\",",
         "detail": "config.settings",
         "documentation": {}
     },
@@ -2548,7 +2599,7 @@
         "kind": 5,
         "importPath": "config.settings",
         "description": "config.settings",
-        "peekOfCode": "SECRET_KEY = os.getenv(\"SECRET_KEY\", \"django-insecure-dev-key\")\nDEBUG = os.getenv(\"DEBUG\", \"1\") == \"1\"\nALLOWED_HOSTS = [\"*\"]\nINSTALLED_APPS = [\n    \"django.contrib.admin\",\n    \"django.contrib.auth\",\n    \"django.contrib.contenttypes\",\n    \"django.contrib.sessions\",\n    \"django.contrib.messages\",\n    \"django.contrib.staticfiles\",",
+        "peekOfCode": "SECRET_KEY = os.getenv(\"SECRET_KEY\", \"django-insecure-dev-key\")\nDEBUG = os.getenv(\"DEBUG\", \"1\") == \"1\"\nALLOWED_HOSTS = [\"*\"]\n# --------------------------------------------------\n# INSTALLED APPS\n# --------------------------------------------------\nINSTALLED_APPS = [\n    \"django.contrib.admin\",\n    \"django.contrib.auth\",\n    \"django.contrib.contenttypes\",",
         "detail": "config.settings",
         "documentation": {}
     },
@@ -2557,7 +2608,7 @@
         "kind": 5,
         "importPath": "config.settings",
         "description": "config.settings",
-        "peekOfCode": "DEBUG = os.getenv(\"DEBUG\", \"1\") == \"1\"\nALLOWED_HOSTS = [\"*\"]\nINSTALLED_APPS = [\n    \"django.contrib.admin\",\n    \"django.contrib.auth\",\n    \"django.contrib.contenttypes\",\n    \"django.contrib.sessions\",\n    \"django.contrib.messages\",\n    \"django.contrib.staticfiles\",\n    \"corsheaders\",",
+        "peekOfCode": "DEBUG = os.getenv(\"DEBUG\", \"1\") == \"1\"\nALLOWED_HOSTS = [\"*\"]\n# --------------------------------------------------\n# INSTALLED APPS\n# --------------------------------------------------\nINSTALLED_APPS = [\n    \"django.contrib.admin\",\n    \"django.contrib.auth\",\n    \"django.contrib.contenttypes\",\n    \"django.contrib.sessions\",",
         "detail": "config.settings",
         "documentation": {}
     },
@@ -2566,7 +2617,7 @@
         "kind": 5,
         "importPath": "config.settings",
         "description": "config.settings",
-        "peekOfCode": "ALLOWED_HOSTS = [\"*\"]\nINSTALLED_APPS = [\n    \"django.contrib.admin\",\n    \"django.contrib.auth\",\n    \"django.contrib.contenttypes\",\n    \"django.contrib.sessions\",\n    \"django.contrib.messages\",\n    \"django.contrib.staticfiles\",\n    \"corsheaders\",\n    \"rest_framework\",",
+        "peekOfCode": "ALLOWED_HOSTS = [\"*\"]\n# --------------------------------------------------\n# INSTALLED APPS\n# --------------------------------------------------\nINSTALLED_APPS = [\n    \"django.contrib.admin\",\n    \"django.contrib.auth\",\n    \"django.contrib.contenttypes\",\n    \"django.contrib.sessions\",\n    \"django.contrib.messages\",",
         "detail": "config.settings",
         "documentation": {}
     },
@@ -2593,7 +2644,7 @@
         "kind": 5,
         "importPath": "config.settings",
         "description": "config.settings",
-        "peekOfCode": "ROOT_URLCONF = \"config.urls\"\nTEMPLATES = [\n    {\n        \"BACKEND\": \"django.template.backends.django.DjangoTemplates\",\n        \"DIRS\": [],\n        \"APP_DIRS\": True,\n        \"OPTIONS\": {\n            \"context_processors\": [\n                \"django.template.context_processors.request\",\n                \"django.contrib.auth.context_processors.auth\",",
+        "peekOfCode": "ROOT_URLCONF = \"config.urls\"\n# --------------------------------------------------\n# TEMPLATES\n# --------------------------------------------------\nTEMPLATES = [\n    {\n        \"BACKEND\": \"django.template.backends.django.DjangoTemplates\",\n        \"DIRS\": [],\n        \"APP_DIRS\": True,\n        \"OPTIONS\": {",
         "detail": "config.settings",
         "documentation": {}
     },
@@ -2611,7 +2662,7 @@
         "kind": 5,
         "importPath": "config.settings",
         "description": "config.settings",
-        "peekOfCode": "WSGI_APPLICATION = \"config.wsgi.application\"\nDATABASES = {\n    \"default\": {\n        \"ENGINE\": \"django.db.backends.postgresql\",\n        \"NAME\": os.getenv(\"DB_NAME\", \"blogdb\"),\n        \"USER\": os.getenv(\"DB_USER\", \"bloguser\"),\n        \"PASSWORD\": os.getenv(\"DB_PASSWORD\", \"blogpass\"),\n        \"HOST\": os.getenv(\"DB_HOST\", \"db\"),\n        \"PORT\": os.getenv(\"DB_PORT\", \"5432\"),\n    }",
+        "peekOfCode": "WSGI_APPLICATION = \"config.wsgi.application\"\n# --------------------------------------------------\n# DATABASE\n# --------------------------------------------------\nDATABASES = {\n    \"default\": {\n        \"ENGINE\": \"django.db.backends.postgresql\",\n        \"NAME\": os.getenv(\"DB_NAME\", \"blogdb\"),\n        \"USER\": os.getenv(\"DB_USER\", \"bloguser\"),\n        \"PASSWORD\": os.getenv(\"DB_PASSWORD\", \"blogpass\"),",
         "detail": "config.settings",
         "documentation": {}
     },
@@ -2629,7 +2680,7 @@
         "kind": 5,
         "importPath": "config.settings",
         "description": "config.settings",
-        "peekOfCode": "AUTH_PASSWORD_VALIDATORS = [\n    {\n        \"NAME\": \"django.contrib.auth.password_validation.UserAttributeSimilarityValidator\"\n    },\n    {\n        \"NAME\": \"django.contrib.auth.password_validation.MinimumLengthValidator\"\n    },\n    {\n        \"NAME\": \"django.contrib.auth.password_validation.CommonPasswordValidator\"\n    },",
+        "peekOfCode": "AUTH_PASSWORD_VALIDATORS = [\n    {\n        \"NAME\": \"django.contrib.auth.password_validation.UserAttributeSimilarityValidator\"\n    },\n    {\"NAME\": \"django.contrib.auth.password_validation.MinimumLengthValidator\"},\n    {\"NAME\": \"django.contrib.auth.password_validation.CommonPasswordValidator\"},\n    {\"NAME\": \"django.contrib.auth.password_validation.NumericPasswordValidator\"},\n]\n# --------------------------------------------------\n# INTERNATIONALIZATION",
         "detail": "config.settings",
         "documentation": {}
     },
@@ -2638,7 +2689,7 @@
         "kind": 5,
         "importPath": "config.settings",
         "description": "config.settings",
-        "peekOfCode": "LANGUAGE_CODE = \"en-us\"\nTIME_ZONE = \"Asia/Tehran\"\nUSE_I18N = True\nUSE_TZ = True\n# -------- STATIC FILES --------\nSTATIC_URL = \"/static/\"\nSTATIC_ROOT = BASE_DIR / \"staticfiles\"\n# -------- MEDIA FILES --------\nMEDIA_URL = \"/media/\"\nMEDIA_ROOT = BASE_DIR / \"media\"",
+        "peekOfCode": "LANGUAGE_CODE = \"en-us\"\nTIME_ZONE = \"Asia/Tehran\"\nUSE_I18N = True\nUSE_TZ = True\n# --------------------------------------------------\n# STATIC FILES\n# --------------------------------------------------\nSTATIC_URL = \"/static/\"\nSTATIC_ROOT = BASE_DIR / \"staticfiles\"\nSTORAGES = {",
         "detail": "config.settings",
         "documentation": {}
     },
@@ -2647,7 +2698,7 @@
         "kind": 5,
         "importPath": "config.settings",
         "description": "config.settings",
-        "peekOfCode": "TIME_ZONE = \"Asia/Tehran\"\nUSE_I18N = True\nUSE_TZ = True\n# -------- STATIC FILES --------\nSTATIC_URL = \"/static/\"\nSTATIC_ROOT = BASE_DIR / \"staticfiles\"\n# -------- MEDIA FILES --------\nMEDIA_URL = \"/media/\"\nMEDIA_ROOT = BASE_DIR / \"media\"\n# برای ساخت URL کامل عکس ها",
+        "peekOfCode": "TIME_ZONE = \"Asia/Tehran\"\nUSE_I18N = True\nUSE_TZ = True\n# --------------------------------------------------\n# STATIC FILES\n# --------------------------------------------------\nSTATIC_URL = \"/static/\"\nSTATIC_ROOT = BASE_DIR / \"staticfiles\"\nSTORAGES = {\n    \"default\": {",
         "detail": "config.settings",
         "documentation": {}
     },
@@ -2656,7 +2707,7 @@
         "kind": 5,
         "importPath": "config.settings",
         "description": "config.settings",
-        "peekOfCode": "USE_I18N = True\nUSE_TZ = True\n# -------- STATIC FILES --------\nSTATIC_URL = \"/static/\"\nSTATIC_ROOT = BASE_DIR / \"staticfiles\"\n# -------- MEDIA FILES --------\nMEDIA_URL = \"/media/\"\nMEDIA_ROOT = BASE_DIR / \"media\"\n# برای ساخت URL کامل عکس ها\nPUBLIC_BACKEND_URL = os.getenv(\"PUBLIC_BACKEND_URL\", \"http://localhost:8000\")",
+        "peekOfCode": "USE_I18N = True\nUSE_TZ = True\n# --------------------------------------------------\n# STATIC FILES\n# --------------------------------------------------\nSTATIC_URL = \"/static/\"\nSTATIC_ROOT = BASE_DIR / \"staticfiles\"\nSTORAGES = {\n    \"default\": {\n        \"BACKEND\": \"storages.backends.s3boto3.S3Boto3Storage\",",
         "detail": "config.settings",
         "documentation": {}
     },
@@ -2665,7 +2716,7 @@
         "kind": 5,
         "importPath": "config.settings",
         "description": "config.settings",
-        "peekOfCode": "USE_TZ = True\n# -------- STATIC FILES --------\nSTATIC_URL = \"/static/\"\nSTATIC_ROOT = BASE_DIR / \"staticfiles\"\n# -------- MEDIA FILES --------\nMEDIA_URL = \"/media/\"\nMEDIA_ROOT = BASE_DIR / \"media\"\n# برای ساخت URL کامل عکس ها\nPUBLIC_BACKEND_URL = os.getenv(\"PUBLIC_BACKEND_URL\", \"http://localhost:8000\")\nDEFAULT_AUTO_FIELD = \"django.db.models.BigAutoField\"",
+        "peekOfCode": "USE_TZ = True\n# --------------------------------------------------\n# STATIC FILES\n# --------------------------------------------------\nSTATIC_URL = \"/static/\"\nSTATIC_ROOT = BASE_DIR / \"staticfiles\"\nSTORAGES = {\n    \"default\": {\n        \"BACKEND\": \"storages.backends.s3boto3.S3Boto3Storage\",\n    },",
         "detail": "config.settings",
         "documentation": {}
     },
@@ -2674,7 +2725,7 @@
         "kind": 5,
         "importPath": "config.settings",
         "description": "config.settings",
-        "peekOfCode": "STATIC_URL = \"/static/\"\nSTATIC_ROOT = BASE_DIR / \"staticfiles\"\n# -------- MEDIA FILES --------\nMEDIA_URL = \"/media/\"\nMEDIA_ROOT = BASE_DIR / \"media\"\n# برای ساخت URL کامل عکس ها\nPUBLIC_BACKEND_URL = os.getenv(\"PUBLIC_BACKEND_URL\", \"http://localhost:8000\")\nDEFAULT_AUTO_FIELD = \"django.db.models.BigAutoField\"\nAUTH_USER_MODEL = \"accounts.User\"",
+        "peekOfCode": "STATIC_URL = \"/static/\"\nSTATIC_ROOT = BASE_DIR / \"staticfiles\"\nSTORAGES = {\n    \"default\": {\n        \"BACKEND\": \"storages.backends.s3boto3.S3Boto3Storage\",\n    },\n    \"staticfiles\": {\n        \"BACKEND\": \"django.contrib.staticfiles.storage.StaticFilesStorage\",\n    },\n}",
         "detail": "config.settings",
         "documentation": {}
     },
@@ -2683,34 +2734,124 @@
         "kind": 5,
         "importPath": "config.settings",
         "description": "config.settings",
-        "peekOfCode": "STATIC_ROOT = BASE_DIR / \"staticfiles\"\n# -------- MEDIA FILES --------\nMEDIA_URL = \"/media/\"\nMEDIA_ROOT = BASE_DIR / \"media\"\n# برای ساخت URL کامل عکس ها\nPUBLIC_BACKEND_URL = os.getenv(\"PUBLIC_BACKEND_URL\", \"http://localhost:8000\")\nDEFAULT_AUTO_FIELD = \"django.db.models.BigAutoField\"\nAUTH_USER_MODEL = \"accounts.User\"\n# -------- CORS --------",
+        "peekOfCode": "STATIC_ROOT = BASE_DIR / \"staticfiles\"\nSTORAGES = {\n    \"default\": {\n        \"BACKEND\": \"storages.backends.s3boto3.S3Boto3Storage\",\n    },\n    \"staticfiles\": {\n        \"BACKEND\": \"django.contrib.staticfiles.storage.StaticFilesStorage\",\n    },\n}\nAWS_ACCESS_KEY_ID = os.getenv(\"AWS_ACCESS_KEY_ID\")",
         "detail": "config.settings",
         "documentation": {}
     },
     {
-        "label": "MEDIA_URL",
+        "label": "STORAGES",
         "kind": 5,
         "importPath": "config.settings",
         "description": "config.settings",
-        "peekOfCode": "MEDIA_URL = \"/media/\"\nMEDIA_ROOT = BASE_DIR / \"media\"\n# برای ساخت URL کامل عکس ها\nPUBLIC_BACKEND_URL = os.getenv(\"PUBLIC_BACKEND_URL\", \"http://localhost:8000\")\nDEFAULT_AUTO_FIELD = \"django.db.models.BigAutoField\"\nAUTH_USER_MODEL = \"accounts.User\"\n# -------- CORS --------\nCORS_ALLOW_ALL_ORIGINS = True\n# -------- DJANGO REST FRAMEWORK --------",
+        "peekOfCode": "STORAGES = {\n    \"default\": {\n        \"BACKEND\": \"storages.backends.s3boto3.S3Boto3Storage\",\n    },\n    \"staticfiles\": {\n        \"BACKEND\": \"django.contrib.staticfiles.storage.StaticFilesStorage\",\n    },\n}\nAWS_ACCESS_KEY_ID = os.getenv(\"AWS_ACCESS_KEY_ID\")\nAWS_SECRET_ACCESS_KEY = os.getenv(\"AWS_SECRET_ACCESS_KEY\")",
         "detail": "config.settings",
         "documentation": {}
     },
     {
-        "label": "MEDIA_ROOT",
+        "label": "AWS_ACCESS_KEY_ID",
         "kind": 5,
         "importPath": "config.settings",
         "description": "config.settings",
-        "peekOfCode": "MEDIA_ROOT = BASE_DIR / \"media\"\n# برای ساخت URL کامل عکس ها\nPUBLIC_BACKEND_URL = os.getenv(\"PUBLIC_BACKEND_URL\", \"http://localhost:8000\")\nDEFAULT_AUTO_FIELD = \"django.db.models.BigAutoField\"\nAUTH_USER_MODEL = \"accounts.User\"\n# -------- CORS --------\nCORS_ALLOW_ALL_ORIGINS = True\n# -------- DJANGO REST FRAMEWORK --------",
+        "peekOfCode": "AWS_ACCESS_KEY_ID = os.getenv(\"AWS_ACCESS_KEY_ID\")\nAWS_SECRET_ACCESS_KEY = os.getenv(\"AWS_SECRET_ACCESS_KEY\")\nAWS_STORAGE_BUCKET_NAME = os.getenv(\"AWS_STORAGE_BUCKET_NAME\")\n# داخل docker (برای اتصال)\nAWS_S3_ENDPOINT_URL = os.getenv(\"AWS_S3_ENDPOINT_URL\")  # http://minio:9000\nAWS_S3_REGION_NAME = \"us-east-1\"\nAWS_S3_ADDRESSING_STYLE = \"path\"\nAWS_S3_SIGNATURE_VERSION = \"s3v4\"\nAWS_QUERYSTRING_AUTH = False\nAWS_DEFAULT_ACL = \"public-read\"",
         "detail": "config.settings",
         "documentation": {}
     },
     {
-        "label": "PUBLIC_BACKEND_URL",
+        "label": "AWS_SECRET_ACCESS_KEY",
         "kind": 5,
         "importPath": "config.settings",
         "description": "config.settings",
-        "peekOfCode": "PUBLIC_BACKEND_URL = os.getenv(\"PUBLIC_BACKEND_URL\", \"http://localhost:8000\")\nDEFAULT_AUTO_FIELD = \"django.db.models.BigAutoField\"\nAUTH_USER_MODEL = \"accounts.User\"\n# -------- CORS --------\nCORS_ALLOW_ALL_ORIGINS = True\n# -------- DJANGO REST FRAMEWORK --------\nREST_FRAMEWORK = {\n    \"DEFAULT_AUTHENTICATION_CLASSES\": (\n        \"rest_framework_simplejwt.authentication.JWTAuthentication\",\n    ),",
+        "peekOfCode": "AWS_SECRET_ACCESS_KEY = os.getenv(\"AWS_SECRET_ACCESS_KEY\")\nAWS_STORAGE_BUCKET_NAME = os.getenv(\"AWS_STORAGE_BUCKET_NAME\")\n# داخل docker (برای اتصال)\nAWS_S3_ENDPOINT_URL = os.getenv(\"AWS_S3_ENDPOINT_URL\")  # http://minio:9000\nAWS_S3_REGION_NAME = \"us-east-1\"\nAWS_S3_ADDRESSING_STYLE = \"path\"\nAWS_S3_SIGNATURE_VERSION = \"s3v4\"\nAWS_QUERYSTRING_AUTH = False\nAWS_DEFAULT_ACL = \"public-read\"\nAWS_S3_FILE_OVERWRITE = False",
+        "detail": "config.settings",
+        "documentation": {}
+    },
+    {
+        "label": "AWS_STORAGE_BUCKET_NAME",
+        "kind": 5,
+        "importPath": "config.settings",
+        "description": "config.settings",
+        "peekOfCode": "AWS_STORAGE_BUCKET_NAME = os.getenv(\"AWS_STORAGE_BUCKET_NAME\")\n# داخل docker (برای اتصال)\nAWS_S3_ENDPOINT_URL = os.getenv(\"AWS_S3_ENDPOINT_URL\")  # http://minio:9000\nAWS_S3_REGION_NAME = \"us-east-1\"\nAWS_S3_ADDRESSING_STYLE = \"path\"\nAWS_S3_SIGNATURE_VERSION = \"s3v4\"\nAWS_QUERYSTRING_AUTH = False\nAWS_DEFAULT_ACL = \"public-read\"\nAWS_S3_FILE_OVERWRITE = False\n# =========================",
+        "detail": "config.settings",
+        "documentation": {}
+    },
+    {
+        "label": "AWS_S3_ENDPOINT_URL",
+        "kind": 5,
+        "importPath": "config.settings",
+        "description": "config.settings",
+        "peekOfCode": "AWS_S3_ENDPOINT_URL = os.getenv(\"AWS_S3_ENDPOINT_URL\")  # http://minio:9000\nAWS_S3_REGION_NAME = \"us-east-1\"\nAWS_S3_ADDRESSING_STYLE = \"path\"\nAWS_S3_SIGNATURE_VERSION = \"s3v4\"\nAWS_QUERYSTRING_AUTH = False\nAWS_DEFAULT_ACL = \"public-read\"\nAWS_S3_FILE_OVERWRITE = False\n# =========================\n# PUBLIC URL FIX (خیلی مهم)\n# =========================",
+        "detail": "config.settings",
+        "documentation": {}
+    },
+    {
+        "label": "AWS_S3_REGION_NAME",
+        "kind": 5,
+        "importPath": "config.settings",
+        "description": "config.settings",
+        "peekOfCode": "AWS_S3_REGION_NAME = \"us-east-1\"\nAWS_S3_ADDRESSING_STYLE = \"path\"\nAWS_S3_SIGNATURE_VERSION = \"s3v4\"\nAWS_QUERYSTRING_AUTH = False\nAWS_DEFAULT_ACL = \"public-read\"\nAWS_S3_FILE_OVERWRITE = False\n# =========================\n# PUBLIC URL FIX (خیلی مهم)\n# =========================\nMINIO_INTERNAL_URL = \"http://minio:9000\"",
+        "detail": "config.settings",
+        "documentation": {}
+    },
+    {
+        "label": "AWS_S3_ADDRESSING_STYLE",
+        "kind": 5,
+        "importPath": "config.settings",
+        "description": "config.settings",
+        "peekOfCode": "AWS_S3_ADDRESSING_STYLE = \"path\"\nAWS_S3_SIGNATURE_VERSION = \"s3v4\"\nAWS_QUERYSTRING_AUTH = False\nAWS_DEFAULT_ACL = \"public-read\"\nAWS_S3_FILE_OVERWRITE = False\n# =========================\n# PUBLIC URL FIX (خیلی مهم)\n# =========================\nMINIO_INTERNAL_URL = \"http://minio:9000\"\nMINIO_PUBLIC_URL = \"http://localhost:9000\"",
+        "detail": "config.settings",
+        "documentation": {}
+    },
+    {
+        "label": "AWS_S3_SIGNATURE_VERSION",
+        "kind": 5,
+        "importPath": "config.settings",
+        "description": "config.settings",
+        "peekOfCode": "AWS_S3_SIGNATURE_VERSION = \"s3v4\"\nAWS_QUERYSTRING_AUTH = False\nAWS_DEFAULT_ACL = \"public-read\"\nAWS_S3_FILE_OVERWRITE = False\n# =========================\n# PUBLIC URL FIX (خیلی مهم)\n# =========================\nMINIO_INTERNAL_URL = \"http://minio:9000\"\nMINIO_PUBLIC_URL = \"http://localhost:9000\"\n# --------------------------------------------------",
+        "detail": "config.settings",
+        "documentation": {}
+    },
+    {
+        "label": "AWS_QUERYSTRING_AUTH",
+        "kind": 5,
+        "importPath": "config.settings",
+        "description": "config.settings",
+        "peekOfCode": "AWS_QUERYSTRING_AUTH = False\nAWS_DEFAULT_ACL = \"public-read\"\nAWS_S3_FILE_OVERWRITE = False\n# =========================\n# PUBLIC URL FIX (خیلی مهم)\n# =========================\nMINIO_INTERNAL_URL = \"http://minio:9000\"\nMINIO_PUBLIC_URL = \"http://localhost:9000\"\n# --------------------------------------------------\n# DEFAULTS",
+        "detail": "config.settings",
+        "documentation": {}
+    },
+    {
+        "label": "AWS_DEFAULT_ACL",
+        "kind": 5,
+        "importPath": "config.settings",
+        "description": "config.settings",
+        "peekOfCode": "AWS_DEFAULT_ACL = \"public-read\"\nAWS_S3_FILE_OVERWRITE = False\n# =========================\n# PUBLIC URL FIX (خیلی مهم)\n# =========================\nMINIO_INTERNAL_URL = \"http://minio:9000\"\nMINIO_PUBLIC_URL = \"http://localhost:9000\"\n# --------------------------------------------------\n# DEFAULTS\n# --------------------------------------------------",
+        "detail": "config.settings",
+        "documentation": {}
+    },
+    {
+        "label": "AWS_S3_FILE_OVERWRITE",
+        "kind": 5,
+        "importPath": "config.settings",
+        "description": "config.settings",
+        "peekOfCode": "AWS_S3_FILE_OVERWRITE = False\n# =========================\n# PUBLIC URL FIX (خیلی مهم)\n# =========================\nMINIO_INTERNAL_URL = \"http://minio:9000\"\nMINIO_PUBLIC_URL = \"http://localhost:9000\"\n# --------------------------------------------------\n# DEFAULTS\n# --------------------------------------------------\nDEFAULT_AUTO_FIELD = \"django.db.models.BigAutoField\"",
+        "detail": "config.settings",
+        "documentation": {}
+    },
+    {
+        "label": "MINIO_INTERNAL_URL",
+        "kind": 5,
+        "importPath": "config.settings",
+        "description": "config.settings",
+        "peekOfCode": "MINIO_INTERNAL_URL = \"http://minio:9000\"\nMINIO_PUBLIC_URL = \"http://localhost:9000\"\n# --------------------------------------------------\n# DEFAULTS\n# --------------------------------------------------\nDEFAULT_AUTO_FIELD = \"django.db.models.BigAutoField\"\nAUTH_USER_MODEL = \"accounts.User\"\n# --------------------------------------------------\n# CORS\n# --------------------------------------------------",
+        "detail": "config.settings",
+        "documentation": {}
+    },
+    {
+        "label": "MINIO_PUBLIC_URL",
+        "kind": 5,
+        "importPath": "config.settings",
+        "description": "config.settings",
+        "peekOfCode": "MINIO_PUBLIC_URL = \"http://localhost:9000\"\n# --------------------------------------------------\n# DEFAULTS\n# --------------------------------------------------\nDEFAULT_AUTO_FIELD = \"django.db.models.BigAutoField\"\nAUTH_USER_MODEL = \"accounts.User\"\n# --------------------------------------------------\n# CORS\n# --------------------------------------------------\nCORS_ALLOW_ALL_ORIGINS = True",
         "detail": "config.settings",
         "documentation": {}
     },
@@ -2719,7 +2860,7 @@
         "kind": 5,
         "importPath": "config.settings",
         "description": "config.settings",
-        "peekOfCode": "DEFAULT_AUTO_FIELD = \"django.db.models.BigAutoField\"\nAUTH_USER_MODEL = \"accounts.User\"\n# -------- CORS --------\nCORS_ALLOW_ALL_ORIGINS = True\n# -------- DJANGO REST FRAMEWORK --------\nREST_FRAMEWORK = {\n    \"DEFAULT_AUTHENTICATION_CLASSES\": (\n        \"rest_framework_simplejwt.authentication.JWTAuthentication\",\n    ),\n    \"DEFAULT_PERMISSION_CLASSES\": (",
+        "peekOfCode": "DEFAULT_AUTO_FIELD = \"django.db.models.BigAutoField\"\nAUTH_USER_MODEL = \"accounts.User\"\n# --------------------------------------------------\n# CORS\n# --------------------------------------------------\nCORS_ALLOW_ALL_ORIGINS = True\n# --------------------------------------------------\n# REST FRAMEWORK\n# --------------------------------------------------\nREST_FRAMEWORK = {",
         "detail": "config.settings",
         "documentation": {}
     },
@@ -2728,7 +2869,7 @@
         "kind": 5,
         "importPath": "config.settings",
         "description": "config.settings",
-        "peekOfCode": "AUTH_USER_MODEL = \"accounts.User\"\n# -------- CORS --------\nCORS_ALLOW_ALL_ORIGINS = True\n# -------- DJANGO REST FRAMEWORK --------\nREST_FRAMEWORK = {\n    \"DEFAULT_AUTHENTICATION_CLASSES\": (\n        \"rest_framework_simplejwt.authentication.JWTAuthentication\",\n    ),\n    \"DEFAULT_PERMISSION_CLASSES\": (\n        \"rest_framework.permissions.IsAuthenticatedOrReadOnly\",",
+        "peekOfCode": "AUTH_USER_MODEL = \"accounts.User\"\n# --------------------------------------------------\n# CORS\n# --------------------------------------------------\nCORS_ALLOW_ALL_ORIGINS = True\n# --------------------------------------------------\n# REST FRAMEWORK\n# --------------------------------------------------\nREST_FRAMEWORK = {\n    \"DEFAULT_AUTHENTICATION_CLASSES\": (",
         "detail": "config.settings",
         "documentation": {}
     },
@@ -2737,7 +2878,7 @@
         "kind": 5,
         "importPath": "config.settings",
         "description": "config.settings",
-        "peekOfCode": "CORS_ALLOW_ALL_ORIGINS = True\n# -------- DJANGO REST FRAMEWORK --------\nREST_FRAMEWORK = {\n    \"DEFAULT_AUTHENTICATION_CLASSES\": (\n        \"rest_framework_simplejwt.authentication.JWTAuthentication\",\n    ),\n    \"DEFAULT_PERMISSION_CLASSES\": (\n        \"rest_framework.permissions.IsAuthenticatedOrReadOnly\",\n    ),\n    \"DEFAULT_FILTER_BACKENDS\": (",
+        "peekOfCode": "CORS_ALLOW_ALL_ORIGINS = True\n# --------------------------------------------------\n# REST FRAMEWORK\n# --------------------------------------------------\nREST_FRAMEWORK = {\n    \"DEFAULT_AUTHENTICATION_CLASSES\": (\n        \"rest_framework_simplejwt.authentication.JWTAuthentication\",\n    ),\n    \"DEFAULT_PERMISSION_CLASSES\": (\n        \"rest_framework.permissions.IsAuthenticatedOrReadOnly\",",
         "detail": "config.settings",
         "documentation": {}
     },
@@ -2755,7 +2896,7 @@
         "kind": 5,
         "importPath": "config.settings",
         "description": "config.settings",
-        "peekOfCode": "SIMPLE_JWT = {\n    \"ACCESS_TOKEN_LIFETIME\": timedelta(days=1),\n    \"REFRESH_TOKEN_LIFETIME\": timedelta(days=7),\n    \"ROTATE_REFRESH_TOKENS\": False,\n    \"BLACKLIST_AFTER_ROTATION\": False,\n    \"AUTH_HEADER_TYPES\": (\"Bearer\",),\n}\n# -------- API DOCS --------\nSPECTACULAR_SETTINGS = {\n    \"TITLE\": \"News Blog API\",",
+        "peekOfCode": "SIMPLE_JWT = {\n    \"ACCESS_TOKEN_LIFETIME\": timedelta(days=1),\n    \"REFRESH_TOKEN_LIFETIME\": timedelta(days=7),\n    \"ROTATE_REFRESH_TOKENS\": False,\n    \"BLACKLIST_AFTER_ROTATION\": False,\n    \"AUTH_HEADER_TYPES\": (\"Bearer\",),\n}\n# --------------------------------------------------\n# API DOCS\n# --------------------------------------------------",
         "detail": "config.settings",
         "documentation": {}
     },
@@ -2764,7 +2905,7 @@
         "kind": 5,
         "importPath": "config.settings",
         "description": "config.settings",
-        "peekOfCode": "SPECTACULAR_SETTINGS = {\n    \"TITLE\": \"News Blog API\",\n    \"DESCRIPTION\": \"Professional modular Django REST API for News/Blog platform\",\n    \"VERSION\": \"1.0.0\",\n    \"SERVE_INCLUDE_SCHEMA\": False,\n    \"COMPONENT_SPLIT_REQUEST\": True,\n}\n# -------- CACHE --------\nCACHES = {\n    \"default\": {",
+        "peekOfCode": "SPECTACULAR_SETTINGS = {\n    \"TITLE\": \"News Blog API\",\n    \"DESCRIPTION\": \"Professional modular Django REST API\",\n    \"VERSION\": \"1.0.0\",\n    \"SERVE_INCLUDE_SCHEMA\": False,\n    \"COMPONENT_SPLIT_REQUEST\": True,\n}\n# --------------------------------------------------\n# CACHE\n# --------------------------------------------------",
         "detail": "config.settings",
         "documentation": {}
     },
@@ -2793,6 +2934,15 @@
         "description": "config.wsgi",
         "peekOfCode": "application = get_wsgi_application()",
         "detail": "config.wsgi",
+        "documentation": {}
+    },
+    {
+        "label": "main",
+        "kind": 2,
+        "importPath": "venv.Scripts.jp",
+        "description": "venv.Scripts.jp",
+        "peekOfCode": "def main():\n    parser = argparse.ArgumentParser()\n    parser.add_argument('expression')\n    parser.add_argument('-f', '--filename',\n                        help=('The filename containing the input data.  '\n                              'If a filename is not given then data is '\n                              'read from stdin.'))\n    parser.add_argument('--ast', action='store_true',\n                        help=('Pretty print the AST, do not search the data.'))\n    args = parser.parse_args()",
+        "detail": "venv.Scripts.jp",
         "documentation": {}
     },
     {

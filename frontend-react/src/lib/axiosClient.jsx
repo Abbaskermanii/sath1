@@ -7,7 +7,7 @@ import {
 } from "./tokens";
 
 // eslint-disable-next-line no-undef
-const baseURL = "/api";
+const baseURL = "http://localhost:8000/api";
 
 export const api = axios.create({
   baseURL,
