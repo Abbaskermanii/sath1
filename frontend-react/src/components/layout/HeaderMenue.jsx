@@ -1,15 +1,17 @@
 import { useEffect, useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import Navbar from "./Navbar";
+import HeaderSearch from "../layout/HeaderSearch";
 import Menue from "./Menue";
+
 import {
-  Search,
   ChevronDown,
   User,
   Settings,
   LayoutDashboard,
   LogOut,
 } from "lucide-react";
+
 import { clearTokens, isLoggedIn } from "../../lib/tokens";
 import useMe from "../../hooks/useMe";
 import { canAccessDashboard } from "../../lib/authApi";
@@ -36,11 +38,13 @@ function HeaderMenue() {
   useEffect(() => {
     const handleScroll = () => {
       const currentScroll = window.scrollY;
+
       if (currentScroll > lastScroll && currentScroll > 80) {
         setShow(false);
       } else {
         setShow(true);
       }
+
       setLastScroll(currentScroll);
     };
 
@@ -89,11 +93,22 @@ function HeaderMenue() {
     >
       <Navbar />
 
-      <div className="flex max-w-7xl mx-auto items-center justify-between h-14 px-4">
-        <h1 className="text-white text-3xl font-semibold">شاخص یک</h1>
+      <div className="flex max-w-7xl mx-auto items-center justify-between h-24 px-4">
+        <button
+          type="button"
+          onClick={() => navigate("/")}
+          className="flex items-center gap-2 text-white cursor-pointer shrink-0"
+        >
+          <img
+            src="/logo.jpg"
+            alt="لوگوی شاخص یک"
+            className="h-24 w-24 object-contain"
+          />
+          <span className="text-3xl font-semibold">شاخص یک</span>
+        </button>
 
         <div className="flex gap-3 items-center">
-          <Search color="white" className="cursor-pointer" />
+          <HeaderSearch />
 
           {!shouldShowUserMenu ? (
             <button
@@ -108,7 +123,7 @@ function HeaderMenue() {
               <button
                 type="button"
                 onClick={() => setDropdownOpen((prev) => !prev)}
-                className="flex items-center gap-2 bg-white text-black px-3 h-9 rounded-md hover:bg-gray-200 transition"
+                className="flex items-center gap-2 bg-white text-black px-3 h-9 rounded-md hover:bg-gray-200 transition cursor-pointer"
               >
                 <User size={18} />
                 <span className="max-w-30 truncate">
@@ -125,7 +140,7 @@ function HeaderMenue() {
                     <button
                       type="button"
                       onClick={handleDashboard}
-                      className="w-full flex items-center gap-2 px-4 py-3 text-sm text-right hover:bg-gray-100 transition"
+                      className="w-full flex items-center gap-2 px-4 py-3 text-sm text-right hover:bg-gray-100 transition cursor-pointer"
                     >
                       <LayoutDashboard size={16} />
                       داشبورد
@@ -135,7 +150,7 @@ function HeaderMenue() {
                   <button
                     type="button"
                     onClick={handleSettings}
-                    className="w-full flex items-center gap-2 px-4 py-3 text-sm text-right hover:bg-gray-100 transition"
+                    className="w-full flex items-center gap-2 px-4 py-3 text-sm text-right hover:bg-gray-100 transition cursor-pointer"
                   >
                     <Settings size={16} />
                     تنظیمات
@@ -144,7 +159,7 @@ function HeaderMenue() {
                   <button
                     type="button"
                     onClick={handleLogout}
-                    className="w-full flex items-center gap-2 px-4 py-3 text-sm text-right text-red-600 hover:bg-red-50 transition"
+                    className="w-full flex items-center gap-2 px-4 py-3 text-sm text-right text-red-600 hover:bg-red-50 transition cursor-pointer"
                   >
                     <LogOut size={16} />
                     خروج

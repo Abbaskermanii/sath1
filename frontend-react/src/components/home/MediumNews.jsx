@@ -1,63 +1,109 @@
-function MediumNews({ title, description, image, category, categoryTitle }) {
+import { Link } from "react-router-dom";
+
+function getSafeHref(href) {
+  return typeof href === "string" ? href.trim() : "";
+}
+
+function isExternalHref(href) {
+  return /^https?:\/\//i.test(getSafeHref(href));
+}
+
+function hasValidHref(href) {
+  const value = getSafeHref(href);
+  return value.length > 0 && value !== "#";
+}
+
+function Clickable({ href, className = "", children, fallback = "div" }) {
+  const safeHref = getSafeHref(href);
+
+  if (!hasValidHref(safeHref)) {
+    const Tag = fallback;
+    return <Tag className={className}>{children}</Tag>;
+  }
+
+  if (isExternalHref(safeHref)) {
+    return (
+      <a
+        href={safeHref}
+        target="_blank"
+        rel="noopener noreferrer"
+        className={className}
+      >
+        {children}
+      </a>
+    );
+  }
+
+  return (
+    <Link to={safeHref} className={className}>
+      {children}
+    </Link>
+  );
+}
+
+function MediumNews({
+  title,
+  description,
+  image,
+  categoryText,
+  href = "",
+  bottomNewsTitle,
+  bottomNewsDescription,
+  bottomNewsHref = "",
+}) {
+  const showBottomNews = bottomNewsTitle || bottomNewsDescription;
+
   return (
     <article className="bg-white px-6" dir="rtl">
-      <div className="max-w-2xl mx-auto space-y-4">
-        {/* 👇 فقط این بخش هاور میگیره */}
-        <div className="group space-y-4">
+      <div className="mx-auto max-w-2xl space-y-4">
+        <Clickable href={href} fallback="div" className="group block space-y-4">
           {image && (
             <div className="overflow-hidden rounded-lg">
               <img
                 src={image}
                 alt={title || "image"}
-                className="
-                  w-full h-auto object-cover
-                  transition-transform duration-300
-                  group-hover:scale-105
-                "
+                className="h-auto w-full object-cover transition-transform duration-300 group-hover:scale-105"
               />
             </div>
           )}
 
           <div className="space-y-3">
+            {categoryText && (
+              <div className="text-xs text-neutral-500">{categoryText}</div>
+            )}
+
             {title && (
-              <h2
-                className="
-                  text-base font-semibold leading-snug text-right text-neutral-900
-                  transition-colors duration-200
-                  group-hover:text-neutral-700
-                "
-              >
+              <h2 className="text-right text-base font-semibold leading-snug text-neutral-900 transition-colors duration-200 group-hover:text-neutral-700">
                 {title}
               </h2>
             )}
 
             {description && (
-              <p
-                className="
-                  text-sm text-neutral-600 leading-relaxed text-right
-                  transition-colors duration-200
-                  group-hover:text-neutral-800
-                "
-              >
+              <p className="text-right text-sm leading-relaxed text-neutral-600 transition-colors duration-200 group-hover:text-neutral-800">
                 {description}
               </p>
             )}
           </div>
-        </div>
+        </Clickable>
 
-        {/* ❌ این بخش بدون هاور */}
-        {(category || categoryTitle) && (
-          <div className="border border-neutral-300 rounded-xl p-3 space-y-1">
-            {category && (
-              <div className="text-xs text-neutral-500">{category}</div>
+        {showBottomNews && (
+          <Clickable
+            href={bottomNewsHref}
+            fallback="div"
+            className="group block border-t border-neutral-200 pt-4"
+          >
+            {bottomNewsTitle && (
+              <h3 className="text-sm font-semibold leading-snug text-neutral-800 transition-colors duration-200 group-hover:text-neutral-700">
+                {bottomNewsTitle}
+              </h3>
             )}
 
-            {categoryTitle && (
-              <div className="text-sm font-semibold text-neutral-800 leading-snug">
-                {categoryTitle}
-              </div>
+            {bottomNewsDescription && (
+              <p className="mt-2 text-sm leading-6 text-neutral-600 transition-colors duration-200 group-hover:text-neutral-800">
+                {bottomNewsDescription}
+              </p>
             )}
-          </div>
+          </Clickable>
         )}
       </div>
     </article>

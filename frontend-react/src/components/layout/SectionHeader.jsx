@@ -1,4 +1,4 @@
-import { Link } from 'react-router-dom'
+import { Link } from "react-router-dom";
 import { ChevronLeft } from "lucide-react";
 
 export default function SectionHeader({
@@ -23,12 +23,13 @@ export default function SectionHeader({
         {tabs.length > 0 && (
           <div className="hidden min-w-0 items-center gap-3 overflow-x-auto md:flex">
             {tabs.map((tab) => {
-              const isActive = activeTab === tab.value || activeTab === tab.label;
+              const isActive =
+                activeTab === tab.value || activeTab === tab.label;
 
               return (
                 <Link
                   key={tab.value || tab.label}
-                  href={tab.href || "#"}
+                  to={tab.href || "#"}
                   className={`whitespace-nowrap text-[12px] font-medium transition ${
                     isActive
                       ? "text-red-600"
@@ -45,7 +46,7 @@ export default function SectionHeader({
 
       {href && (
         <Link
-          href={href}
+          to={href}
           className="inline-flex shrink-0 items-center gap-1 text-[12px] font-semibold text-neutral-600 transition hover:gap-2 hover:text-neutral-950"
         >
           <span>{actionText}</span>

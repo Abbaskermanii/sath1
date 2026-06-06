@@ -152,11 +152,8 @@ class PostListSerializer(serializers.ModelSerializer):
         except Exception:
             return None
 
-        return url.replace(
-            settings.MINIO_INTERNAL_URL,
-            settings.MINIO_PUBLIC_URL
-        )
-    
+        return url.replace(settings.MINIO_INTERNAL_URL, settings.MINIO_PUBLIC_URL)
+
     def get_is_bookmarked(self, obj):
         request = self.context.get("request")
         if not request or not request.user.is_authenticated:
@@ -177,6 +174,7 @@ class PostDetailSerializer(serializers.ModelSerializer):
         source="get_post_type_display",
         read_only=True,
     )
+
     homepage_section_display = serializers.CharField(
         source="get_homepage_section_display",
         read_only=True,
@@ -221,11 +219,8 @@ class PostDetailSerializer(serializers.ModelSerializer):
         except Exception:
             return None
 
-        return url.replace(
-            settings.MINIO_INTERNAL_URL,
-            settings.MINIO_PUBLIC_URL
-        )
-    
+        return url.replace(settings.MINIO_INTERNAL_URL, settings.MINIO_PUBLIC_URL)
+
     def get_is_bookmarked(self, obj):
         request = self.context.get("request")
         if not request or not request.user.is_authenticated:

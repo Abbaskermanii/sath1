@@ -1,5 +1,46 @@
-import { Link } from 'react-router-dom'
+import { Link } from "react-router-dom";
 import SectionHeader from "../layout/SectionHeader";
+
+function getSafeHref(href) {
+  return typeof href === "string" ? href.trim() : "";
+}
+
+function isExternalHref(href) {
+  return /^https?:\/\//i.test(getSafeHref(href));
+}
+
+function hasValidHref(href) {
+  const value = getSafeHref(href);
+  return value.length > 0 && value !== "#";
+}
+
+function Clickable({ href, className = "", children, fallback = "div" }) {
+  const safeHref = getSafeHref(href);
+
+  if (!hasValidHref(safeHref)) {
+    const Tag = fallback;
+    return <Tag className={className}>{children}</Tag>;
+  }
+
+  if (isExternalHref(safeHref)) {
+    return (
+      <a
+        href={safeHref}
+        target="_blank"
+        rel="noopener noreferrer"
+        className={className}
+      >
+        {children}
+      </a>
+    );
+  }
+
+  return (
+    <Link to={safeHref} className={className}>
+      {children}
+    </Link>
+  );
+}
 
 export default function LatestNewsList({
   title = "آخرین خبرها",
@@ -18,9 +59,10 @@ export default function LatestNewsList({
 
       <div className="divide-y divide-neutral-200">
         {safeItems.map((item, index) => (
-          <Link
+          <Clickable
             key={item.id || index}
             href={item.href || "#"}
+            fallback="div"
             className="group grid grid-cols-[32px_1fr] gap-3 py-3"
           >
             {showNumbers ? (
@@ -46,16 +88,17 @@ export default function LatestNewsList({
                 <p className="mt-1 text-[10px] text-neutral-500">{item.time}</p>
               )}
             </div>
-          </Link>
+          </Clickable>
         ))}
       </div>
 
-      <Link
+      <Clickable
         href={href}
+        fallback="div"
         className="mt-2 inline-flex text-[12px] font-semibold text-neutral-600 transition hover:text-neutral-950"
       >
         بیشتر
-      </Link>
+      </Clickable>
     </section>
   );
 }

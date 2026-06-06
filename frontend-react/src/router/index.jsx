@@ -15,19 +15,37 @@ import CategoriesPage from "../pages/dashboard/Categories";
 import CommentsPage from "../pages/dashboard/Comments";
 import TagsPage from "../pages/dashboard/Tags";
 import ProfilePage from "../pages/dashboard/Profile";
-import SinglePostPage from "../pages/SinglePostPage"
+import SinglePostPage from "../pages/SinglePostPage";
 
 export const router = createBrowserRouter([
   {
     element: <SiteLayout />,
-    children: [{ path: "/", element: <HomePage /> },{ path: "/news/:slug", element: <SinglePostPage /> },],
-    
+    children: [
+      {
+        path: "/",
+        element: <HomePage />,
+      },
+      {
+        path: "/category/:categorySlug",
+        element: <HomePage />,
+      },
+      {
+        path: "/news/:slug",
+        element: <SinglePostPage />,
+      },
+    ],
   },
   {
     element: <AuthLayout />,
     children: [
-      { path: "/auth", element: <AuthPage /> },
-      { path: "/auth/forgot-password", element: <ForgotPassword /> },
+      {
+        path: "/auth",
+        element: <AuthPage />,
+      },
+      {
+        path: "/auth/forgot-password",
+        element: <ForgotPassword />,
+      },
     ],
   },
   {
@@ -37,14 +55,38 @@ export const router = createBrowserRouter([
       </PrivateRoute>
     ),
     children: [
-      { path: "/dashboard", element: <DashboardPage /> },
-      { path: "/dashboard/posts", element: <PostsPage /> },
-      { path: "/dashboard/posts/new", element: <NewPostPage /> },
-      { path: "/dashboard/posts/:slug/edit", element: <EditPostPage /> },
-      { path: "/dashboard/categories", element: <CategoriesPage /> },
-      { path: "/dashboard/comments", element: <CommentsPage /> },
-      { path: "/dashboard/tags", element: <TagsPage /> },
-      { path: "/dashboard/profile", element: <ProfilePage /> },
+      {
+        path: "/dashboard",
+        element: <DashboardPage />,
+      },
+      {
+        path: "/dashboard/posts",
+        element: <PostsPage />,
+      },
+      {
+        path: "/dashboard/posts/new",
+        element: <NewPostPage />,
+      },
+      {
+        path: "/dashboard/posts/:slug/edit",
+        element: <EditPostPage />,
+      },
+      {
+        path: "/dashboard/categories",
+        element: <CategoriesPage />,
+      },
+      {
+        path: "/dashboard/comments",
+        element: <CommentsPage />,
+      },
+      {
+        path: "/dashboard/tags",
+        element: <TagsPage />,
+      },
+      {
+        path: "/dashboard/profile",
+        element: <ProfilePage />,
+      },
     ],
   },
 ]);
