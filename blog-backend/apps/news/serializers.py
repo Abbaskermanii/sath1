@@ -1,19 +1,39 @@
 import re
 
+from django.conf import settings
 from django.utils.text import slugify
 from rest_framework import serializers
-from django.conf import settings
+
 from apps.news.models import (
     Bookmark,
     Category,
     Comment,
-    Post,
-    Tag,
-    PostType,
     HomepageSection,
+    MediaType,
+    Post,
+    PostType,
+    Tag,
 )
 
 SLUG_RE = re.compile(r"^[a-z0-9]+(?:-[a-z0-9]+)*$")
+
+
+def build_public_file_url(file_field):
+    if not file_field:
+        return None
+
+    try:
+        url = file_field.url
+    except Exception:
+        return None
+
+    internal = getattr(settings, "MINIO_INTERNAL_URL", "")
+    public = getattr(settings, "MINIO_PUBLIC_URL", "")
+
+    if internal and public and internal in url:
+        return url.replace(internal, public)
+
+    return url
 
 
 class AuthorSerializer(serializers.Serializer):
@@ -105,7 +125,10 @@ class PostListSerializer(serializers.ModelSerializer):
     tags = TagListSerializer(many=True, read_only=True)
     comments_count = serializers.IntegerField(read_only=True)
     is_bookmarked = serializers.SerializerMethodField()
+
     cover = serializers.SerializerMethodField()
+    video_file = serializers.SerializerMethodField()
+    audio_file = serializers.SerializerMethodField()
 
     post_type_label = serializers.CharField(
         source="get_post_type_display",
@@ -113,6 +136,10 @@ class PostListSerializer(serializers.ModelSerializer):
     )
     homepage_section_label = serializers.CharField(
         source="get_homepage_section_display",
+        read_only=True,
+    )
+    media_type_label = serializers.CharField(
+        source="get_media_type_display",
         read_only=True,
     )
 
@@ -124,12 +151,18 @@ class PostListSerializer(serializers.ModelSerializer):
             "slug",
             "excerpt",
             "cover",
+            "video_file",
+            "audio_file",
+            "embed_url",
+            "media_duration",
             "author",
             "category",
             "tags",
             "status",
             "post_type",
             "post_type_label",
+            "media_type",
+            "media_type_label",
             "views",
             "published_at",
             "created_at",
@@ -144,15 +177,13 @@ class PostListSerializer(serializers.ModelSerializer):
         )
 
     def get_cover(self, obj):
-        if not obj.cover:
-            return None
+        return build_public_file_url(obj.cover)
 
-        try:
-            url = obj.cover.url
-        except Exception:
-            return None
+    def get_video_file(self, obj):
+        return build_public_file_url(obj.video_file)
 
-        return url.replace(settings.MINIO_INTERNAL_URL, settings.MINIO_PUBLIC_URL)
+    def get_audio_file(self, obj):
+        return build_public_file_url(obj.audio_file)
 
     def get_is_bookmarked(self, obj):
         request = self.context.get("request")
@@ -168,15 +199,21 @@ class PostDetailSerializer(serializers.ModelSerializer):
     comments = serializers.SerializerMethodField()
     comments_count = serializers.IntegerField(read_only=True)
     is_bookmarked = serializers.SerializerMethodField()
+
     cover = serializers.SerializerMethodField()
+    video_file = serializers.SerializerMethodField()
+    audio_file = serializers.SerializerMethodField()
 
     post_type_display = serializers.CharField(
         source="get_post_type_display",
         read_only=True,
     )
-
     homepage_section_display = serializers.CharField(
         source="get_homepage_section_display",
+        read_only=True,
+    )
+    media_type_display = serializers.CharField(
+        source="get_media_type_display",
         read_only=True,
     )
 
@@ -189,6 +226,10 @@ class PostDetailSerializer(serializers.ModelSerializer):
             "excerpt",
             "content",
             "cover",
+            "video_file",
+            "audio_file",
+            "embed_url",
+            "media_duration",
             "author",
             "category",
             "tags",
@@ -199,6 +240,8 @@ class PostDetailSerializer(serializers.ModelSerializer):
             "is_bookmarked",
             "post_type",
             "post_type_display",
+            "media_type",
+            "media_type_display",
             "homepage_section",
             "homepage_section_display",
             "published_at",
@@ -211,15 +254,13 @@ class PostDetailSerializer(serializers.ModelSerializer):
         )
 
     def get_cover(self, obj):
-        if not obj.cover:
-            return None
+        return build_public_file_url(obj.cover)
 
-        try:
-            url = obj.cover.url
-        except Exception:
-            return None
+    def get_video_file(self, obj):
+        return build_public_file_url(obj.video_file)
 
-        return url.replace(settings.MINIO_INTERNAL_URL, settings.MINIO_PUBLIC_URL)
+    def get_audio_file(self, obj):
+        return build_public_file_url(obj.audio_file)
 
     def get_is_bookmarked(self, obj):
         request = self.context.get("request")
@@ -229,9 +270,6 @@ class PostDetailSerializer(serializers.ModelSerializer):
 
     def get_comments(self, obj):
         request = self.context.get("request")
-
-        # اگر کاربر لاگین کرده و نویسنده همین پست یا ادمین باشد،
-        # همه کامنت‌ها را ببیند. در غیر این صورت فقط approvedها برگردند.
         qs = obj.comments.all().order_by("-created_at")
 
         if not request or not request.user.is_authenticated:
@@ -265,6 +303,11 @@ class PostWriteSerializer(serializers.ModelSerializer):
             "tags",
             "status",
             "post_type",
+            "media_type",
+            "video_file",
+            "audio_file",
+            "embed_url",
+            "media_duration",
             "published_at",
             "is_featured",
             "is_hero",
@@ -291,6 +334,12 @@ class PostWriteSerializer(serializers.ModelSerializer):
         valid_values = [choice[0] for choice in PostType.choices]
         if value not in valid_values:
             raise serializers.ValidationError("post_type نامعتبر است.")
+        return value
+
+    def validate_media_type(self, value):
+        valid_values = [choice[0] for choice in MediaType.choices]
+        if value not in valid_values:
+            raise serializers.ValidationError("media_type نامعتبر است.")
         return value
 
     def validate_homepage_section(self, value):
@@ -320,7 +369,14 @@ class PostWriteSerializer(serializers.ModelSerializer):
         slug = attrs.get("slug")
         title = attrs.get("title") or (instance.title if instance else "")
 
-        # اگر اسلاگ خالی باشد، بعداً اتومات ساخته می‌شود
+        media_type = attrs.get(
+            "media_type",
+            instance.media_type if instance else MediaType.NONE,
+        )
+        video_file = attrs.get("video_file", getattr(instance, "video_file", None))
+        audio_file = attrs.get("audio_file", getattr(instance, "audio_file", None))
+        embed_url = attrs.get("embed_url", getattr(instance, "embed_url", ""))
+
         if slug:
             qs = Post.objects.filter(slug=slug)
             if instance is not None:
@@ -331,31 +387,46 @@ class PostWriteSerializer(serializers.ModelSerializer):
                     {"slug": "این اسلاگ قبلاً استفاده شده است."}
                 )
 
-        # اگر homepage_section نیامده باشد و فیلد اجباری نباشد مشکلی نیست
+        if media_type == MediaType.VIDEO:
+            if not video_file and not embed_url:
+                raise serializers.ValidationError(
+                    {
+                        "video_file": "برای پست ویدیویی، فایل ویدیو یا لینک embed الزامی است."
+                    }
+                )
+            attrs["audio_file"] = None
+
+        elif media_type == MediaType.PODCAST:
+            if not audio_file and not embed_url:
+                raise serializers.ValidationError(
+                    {
+                        "audio_file": "برای پست پادکست، فایل صوتی یا لینک embed الزامی است."
+                    }
+                )
+            attrs["video_file"] = None
+
+        else:
+            attrs["video_file"] = None
+            attrs["audio_file"] = None
+            attrs["embed_url"] = ""
+            attrs["media_duration"] = None
+
+        if not slug:
+            attrs["slug"] = self._generate_unique_slug(title, current_instance=instance)
+
         return attrs
 
     def create(self, validated_data):
-        slug = validated_data.get("slug")
-        title = validated_data.get("title")
-
-        if not slug:
-            slug = self._generate_unique_slug(title)
-
-        validated_data["slug"] = slug
         return super().create(validated_data)
 
     def update(self, instance, validated_data):
         slug = validated_data.get("slug")
-        title = validated_data.get("title", instance.title)
 
         if not slug:
-            # اگر اسلاگ خالی فرستاده شد، از اسلاگ فعلی نگه می‌داریم
             validated_data["slug"] = instance.slug
         else:
             validated_data["slug"] = slug.strip().lower()
 
-        # اگر خواستی هنگام تغییر title، اسلاگ خودکار عوض شود،
-        # این بخش را جایگزین منطق بالا کن.
         return super().update(instance, validated_data)
 
 

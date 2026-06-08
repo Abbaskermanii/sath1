@@ -17,8 +17,19 @@ function getItemKey(item, index) {
   return item?.id || item?.slug || item?.href || item?.label || index;
 }
 
+function normalizeTopicItem(item = {}) {
+  return {
+    id: item?.id,
+    slug: item?.slug,
+    href: getSafeHref(item?.href),
+    label: item?.label || item?.title || "بدون عنوان",
+  };
+}
+
 export default function InFocusTopics({ title = "در کانون توجه", items = [] }) {
   if (!Array.isArray(items) || !items.length) return null;
+
+  const normalizedItems = items.map(normalizeTopicItem);
 
   const linkClassName = `
     inline-flex items-center rounded-full border border-neutral-300
@@ -39,20 +50,18 @@ export default function InFocusTopics({ title = "در کانون توجه", item
       </h3>
 
       <div className="flex flex-wrap gap-2">
-        {items.map((item, index) => {
-          const safeHref = getSafeHref(item?.href);
-
-          if (hasValidHref(safeHref)) {
-            if (isExternalHref(safeHref)) {
+        {normalizedItems.map((item, index) => {
+          if (hasValidHref(item.href)) {
+            if (isExternalHref(item.href)) {
               return (
                 <a
                   key={getItemKey(item, index)}
-                  href={safeHref}
+                  href={item.href}
                   target="_blank"
                   rel="noopener noreferrer"
                   className={linkClassName}
                 >
-                  {item?.label}
+                  {item.label}
                 </a>
               );
             }
@@ -60,17 +69,17 @@ export default function InFocusTopics({ title = "در کانون توجه", item
             return (
               <Link
                 key={getItemKey(item, index)}
-                to={safeHref}
+                to={item.href}
                 className={linkClassName}
               >
-                {item?.label}
+                {item.label}
               </Link>
             );
           }
 
           return (
             <span key={getItemKey(item, index)} className={staticClassName}>
-              {item?.label}
+              {item.label}
             </span>
           );
         })}

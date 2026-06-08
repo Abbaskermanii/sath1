@@ -48,7 +48,7 @@ export default function SiteFooter() {
             to="/"
             className="block text-3xl font-extrabold tracking-tight text-right"
           >
-            شاخص یک{" "}
+            شاخص اول{" "}
           </Link>
 
           <div className="mt-8 grid gap-8 sm:grid-cols-2 lg:grid-cols-4">

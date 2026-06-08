@@ -1,4 +1,5 @@
 import { Link } from "react-router-dom";
+import { Play } from "lucide-react";
 
 function getSafeHref(href) {
   return typeof href === "string" ? href.trim() : "";
@@ -17,9 +18,85 @@ function getItemKey(item, index) {
   return item?.id || item?.slug || item?.href || item?.label || index;
 }
 
+function isAudioLikeItem(item = {}) {
+  const mediaType = String(
+    item?.mediaType || item?.media_type || item?.post_type || "",
+  ).toLowerCase();
+
+  return (
+    mediaType === "audio" ||
+    mediaType === "podcast" ||
+    mediaType === "voice" ||
+    Boolean(item?.audioFile) ||
+    Boolean(item?.audio_file) ||
+    Boolean(item?.podcastFile) ||
+    Boolean(item?.podcast_file)
+  );
+}
+
+function isVideoItem(item = {}) {
+  if (isAudioLikeItem(item)) return false;
+
+  const mediaType = String(
+    item?.mediaType || item?.media_type || item?.post_type || "",
+  ).toLowerCase();
+
+  return (
+    item?.isVideo === true ||
+    mediaType === "video" ||
+    Boolean(item?.videoFile) ||
+    Boolean(item?.video_file) ||
+    Boolean(item?.embedUrl) ||
+    Boolean(item?.embed_url)
+  );
+}
+
+function HotNewsItem({ item, className }) {
+  const safeHref = getSafeHref(item?.href);
+  const showVideoIndicator = isVideoItem(item);
+
+  const content = (
+    <>
+      <span>{item?.label}</span>
+      {showVideoIndicator && (
+        <span
+          className="mr-1 inline-flex items-center text-red-500 group-hover:text-white"
+          aria-label="خبر ویدیویی"
+          title="خبر ویدیویی"
+        >
+          <Play size={14} fill="currentColor" />
+        </span>
+      )}
+    </>
+  );
+
+  if (hasValidHref(safeHref)) {
+    if (isExternalHref(safeHref)) {
+      return (
+        <a
+          href={safeHref}
+          target="_blank"
+          rel="noopener noreferrer"
+          className={className}
+        >
+          {content}
+        </a>
+      );
+    }
+
+    return (
+      <Link to={safeHref} className={className}>
+        {content}
+      </Link>
+    );
+  }
+
+  return <span className={className}>{content}</span>;
+}
+
 export default function HotNews({ items = [] }) {
   const baseClassName = `
-    inline-flex items-center rounded-md
+    group inline-flex items-center rounded-md
     border border-neutral-300
     bg-white px-4 py-2 text-sm text-neutral-800
     transition-all duration-200
@@ -32,41 +109,13 @@ export default function HotNews({ items = [] }) {
 
   return (
     <div dir="rtl" className="flex flex-wrap gap-2">
-      {items.map((item, index) => {
-        const safeHref = getSafeHref(item?.href);
-
-        if (hasValidHref(safeHref)) {
-          if (isExternalHref(safeHref)) {
-            return (
-              <a
-                key={getItemKey(item, index)}
-                href={safeHref}
-                target="_blank"
-                rel="noopener noreferrer"
-                className={baseClassName}
-              >
-                {item?.label}
-              </a>
-            );
-          }
-
-          return (
-            <Link
-              key={getItemKey(item, index)}
-              to={safeHref}
-              className={baseClassName}
-            >
-              {item?.label}
-            </Link>
-          );
-        }
-
-        return (
-          <span key={getItemKey(item, index)} className={baseClassName}>
-            {item?.label}
-          </span>
-        );
-      })}
+      {items.map((item, index) => (
+        <HotNewsItem
+          key={getItemKey(item, index)}
+          item={item}
+          className={baseClassName}
+        />
+      ))}
     </div>
   );
 }

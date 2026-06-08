@@ -74,6 +74,12 @@ class HomepageSection(models.TextChoices):
     GREEN = "green", "Green"
 
 
+class MediaType(models.TextChoices):
+    NONE = "none", "بدون رسانه"
+    VIDEO = "video", "ویدیو"
+    PODCAST = "podcast", "پادکست"
+
+
 class Post(TimeStampedModel):
     author = models.ForeignKey(
         settings.AUTH_USER_MODEL,
@@ -82,14 +88,14 @@ class Post(TimeStampedModel):
     )
 
     category = models.ForeignKey(
-        Category,
+        "news.Category",
         on_delete=models.SET_NULL,
         null=True,
         blank=True,
         related_name="posts",
     )
 
-    tags = models.ManyToManyField(Tag, blank=True, related_name="posts")
+    tags = models.ManyToManyField("news.Tag", blank=True, related_name="posts")
 
     title = models.CharField(max_length=255)
     slug = models.SlugField(max_length=280, unique=True, blank=True)
@@ -112,11 +118,22 @@ class Post(TimeStampedModel):
         db_index=True,
     )
 
+    media_type = models.CharField(
+        max_length=20,
+        choices=MediaType.choices,
+        default=MediaType.NONE,
+        db_index=True,
+    )
+
+    video_file = models.FileField(upload_to="posts/videos/", blank=True, null=True)
+    audio_file = models.FileField(upload_to="posts/audios/", blank=True, null=True)
+    embed_url = models.URLField(blank=True)
+    media_duration = models.PositiveIntegerField(blank=True, null=True)
+
     published_at = models.DateTimeField(blank=True, null=True)
 
     views = models.PositiveIntegerField(default=0)
 
-    # Admin-controlled homepage/layout fields
     is_featured = models.BooleanField(default=False, db_index=True)
     is_hero = models.BooleanField(default=False, db_index=True)
     show_on_homepage = models.BooleanField(default=False, db_index=True)
@@ -136,6 +153,7 @@ class Post(TimeStampedModel):
             models.Index(fields=["slug"]),
             models.Index(fields=["status", "published_at"]),
             models.Index(fields=["status", "post_type"]),
+            models.Index(fields=["status", "media_type"]),
             models.Index(fields=["status", "is_featured"]),
             models.Index(fields=["status", "is_hero"]),
             models.Index(

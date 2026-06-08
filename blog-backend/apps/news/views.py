@@ -1,37 +1,27 @@
 from django.core.cache import cache
 from django.db.models import Count, Q, F, Case, When, IntegerField
+from django_filters.rest_framework import DjangoFilterBackend
 from rest_framework import filters, mixins, status, viewsets
 from rest_framework.decorators import action
+from rest_framework.parsers import MultiPartParser, FormParser, JSONParser
 from rest_framework.permissions import AllowAny, IsAuthenticated, IsAdminUser
 from rest_framework.response import Response
-
-from django_filters.rest_framework import DjangoFilterBackend
-
-try:
-    from drf_spectacular.utils import (
-        extend_schema,
-        OpenApiParameter,
-        OpenApiTypes,
-    )
-except Exception:
-    extend_schema = None
-    OpenApiParameter = None
-    OpenApiTypes = None
 
 from apps.news.filters import PostFilter
 from apps.news.models import (
     Bookmark,
     Category,
     Comment,
+    HomepageSection,
+    MediaType,
     Post,
     PostStatus,
-    Tag,
     PostType,
-    HomepageSection,
+    Tag,
 )
 from apps.news.serializers import (
-    BookmarkSerializer,
     BookmarkCreateSerializer,
+    BookmarkSerializer,
     CategoryListSerializer,
     CategoryWriteSerializer,
     CommentSerializer,
@@ -52,10 +42,6 @@ def get_client_ip(request):
 
 
 def should_count_post_view(request, post_id):
-    """
-    جلوگیری از افزایش غیرواقعی view.
-    برای هر کاربر/session/IP روی هر پست، هر 6 ساعت فقط یک بار view حساب می‌شود.
-    """
     user = request.user if request.user.is_authenticated else None
 
     if user:
@@ -106,15 +92,6 @@ class CategoryViewSet(viewsets.ModelViewSet):
 
     @action(detail=True, methods=["get"], permission_classes=[AllowAny])
     def page(self, request, slug=None):
-        """
-        GET /api/news/categories/{slug}/page/
-
-        صفحه کامل یک دسته‌بندی:
-        - hero
-        - featured
-        - latest
-        - popular
-        """
         category = self.get_object()
 
         base_qs = (
@@ -190,6 +167,7 @@ class TagViewSet(viewsets.ModelViewSet):
 
 class PostViewSet(viewsets.ModelViewSet):
     lookup_field = "slug"
+    parser_classes = [MultiPartParser, FormParser, JSONParser]
 
     filter_backends = [
         DjangoFilterBackend,
@@ -225,9 +203,13 @@ class PostViewSet(viewsets.ModelViewSet):
             "popular",
             "home",
             "related",
+            "mine",
             "post_types",
             "homepage_sections",
+            "media_types",
         ]:
+            if self.action == "mine":
+                return [IsAuthenticated()]
             return [AllowAny()]
         return [IsAuthenticated()]
 
@@ -246,13 +228,11 @@ class PostViewSet(viewsets.ModelViewSet):
             )
         )
 
-        # ادمین: دسترسی کامل
         if user.is_authenticated and (
             user.is_staff or getattr(user, "role", "") == "admin"
         ):
             return queryset.distinct()
 
-        # اگر کاربر لاگین کرده و درخواست مخصوص داشبورد داده
         if self.action == "retrieve" and include_drafts and user.is_authenticated:
             return queryset.filter(
                 Q(status=PostStatus.PUBLISHED) | Q(author=user)
@@ -329,18 +309,6 @@ class PostViewSet(viewsets.ModelViewSet):
 
     @action(detail=False, methods=["get"], permission_classes=[AllowAny])
     def home(self, request):
-        """
-        GET /api/news/posts/home/
-
-        خروجی صفحه اصلی.
-        ادمین با فیلدهای زیر کنترل می‌کند چی کجا بیاید:
-        - is_hero
-        - is_featured
-        - show_on_homepage
-        - homepage_section
-        - homepage_order
-        """
-
         base_qs = (
             self.get_queryset()
             .filter(show_on_homepage=True)
@@ -429,9 +397,6 @@ class PostViewSet(viewsets.ModelViewSet):
 
     @action(detail=True, methods=["get"], permission_classes=[AllowAny])
     def related(self, request, slug=None):
-        """
-        GET /api/news/posts/{slug}/related/
-        """
         post = self.get_object()
 
         queryset = (
@@ -469,6 +434,18 @@ class PostViewSet(viewsets.ModelViewSet):
             .order_by("draft_priority", "-updated_at", "-created_at")
         )
 
+        # اگر خواستی فیلتر/search/order خود DRF هم روی mine اعمال شود
+        qs = self.filter_queryset(qs)
+
+        page = self.paginate_queryset(qs)
+        if page is not None:
+            serializer = PostListSerializer(
+                page,
+                many=True,
+                context={"request": request},
+            )
+            return self.get_paginated_response(serializer.data)
+
         serializer = PostListSerializer(
             qs,
             many=True,
@@ -489,6 +466,12 @@ class PostViewSet(viewsets.ModelViewSet):
                 {"value": value, "label": label}
                 for value, label in HomepageSection.choices
             ]
+        )
+
+    @action(detail=False, methods=["get"], permission_classes=[AllowAny])
+    def media_types(self, request):
+        return Response(
+            [{"value": value, "label": label} for value, label in MediaType.choices]
         )
 
 

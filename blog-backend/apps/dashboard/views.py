@@ -4,8 +4,6 @@ from rest_framework.response import Response
 from rest_framework.permissions import IsAuthenticated
 
 from apps.news.models import Post, Comment
-from apps.media.models import Video, Podcast
-
 from .permissions import IsAdminOrAuthor
 
 
@@ -17,32 +15,53 @@ class OverviewView(APIView):
         is_admin = getattr(user, "role", None) == "admin"
 
         posts = Post.objects.all()
-        videos = Video.objects.all()
-        podcasts = Podcast.objects.all()
 
         if not is_admin:
             posts = posts.filter(author=user)
-            videos = videos.filter(author=user)
-            podcasts = podcasts.filter(author=user)
 
         data = {
             "posts": {
-                "total": posts.count(),
-                "draft": posts.filter(status="draft").count(),
-                "published": posts.filter(status="published").count(),
-                "views_sum": posts.aggregate(s=Sum("views"))["s"] or 0,
+                "total": posts.filter(
+                    Q(media_type="none") | Q(media_type="") | Q(media_type__isnull=True)
+                ).count(),
+                "draft": posts.filter(
+                    Q(media_type="none")
+                    | Q(media_type="")
+                    | Q(media_type__isnull=True),
+                    status="draft",
+                ).count(),
+                "published": posts.filter(
+                    Q(media_type="none")
+                    | Q(media_type="")
+                    | Q(media_type__isnull=True),
+                    status="published",
+                ).count(),
+                "views_sum": posts.filter(
+                    Q(media_type="none") | Q(media_type="") | Q(media_type__isnull=True)
+                ).aggregate(s=Sum("views"))["s"]
+                or 0,
             },
             "videos": {
-                "total": videos.count(),
-                "draft": videos.filter(status="draft").count(),
-                "published": videos.filter(status="published").count(),
-                "views_sum": videos.aggregate(s=Sum("views_count"))["s"] or 0,
+                "total": posts.filter(media_type="video").count(),
+                "draft": posts.filter(media_type="video", status="draft").count(),
+                "published": posts.filter(
+                    media_type="video", status="published"
+                ).count(),
+                "views_sum": posts.filter(media_type="video").aggregate(s=Sum("views"))[
+                    "s"
+                ]
+                or 0,
             },
             "podcasts": {
-                "total": podcasts.count(),
-                "draft": podcasts.filter(status="draft").count(),
-                "published": podcasts.filter(status="published").count(),
-                "listens_sum": podcasts.aggregate(s=Sum("listens_count"))["s"] or 0,
+                "total": posts.filter(media_type="podcast").count(),
+                "draft": posts.filter(media_type="podcast", status="draft").count(),
+                "published": posts.filter(
+                    media_type="podcast", status="published"
+                ).count(),
+                "listens_sum": posts.filter(media_type="podcast").aggregate(
+                    s=Sum("views")
+                )["s"]
+                or 0,
             },
         }
 
@@ -75,27 +94,29 @@ class MyContentView(APIView):
 
         result = []
 
-        # ✅ POSTS
-        if content_type in ["all", "post"]:
-            posts = (
-                Post.objects.select_related("author", "category")
-                .prefetch_related("tags")
-                .annotate(
-                    comments_count=Count(
-                        "comments",
-                        filter=Q(comments__is_approved=True),
-                        distinct=True,
-                    )
+        base_qs = (
+            Post.objects.select_related("author", "category")
+            .prefetch_related("tags")
+            .annotate(
+                comments_count=Count(
+                    "comments",
+                    filter=Q(comments__is_approved=True),
+                    distinct=True,
                 )
             )
+        )
 
-            if not is_admin:
-                posts = posts.filter(author=user)
+        if not is_admin:
+            base_qs = base_qs.filter(author=user)
 
-            if status_param:
-                posts = posts.filter(status=status_param)
+        if status_param:
+            base_qs = base_qs.filter(status=status_param)
 
-            posts = posts.order_by("-published_at", "-created_at")[:200]
+        # POSTS
+        if content_type in ["all", "post"]:
+            posts = base_qs.filter(
+                Q(media_type="none") | Q(media_type="") | Q(media_type__isnull=True)
+            ).order_by("-published_at", "-created_at")[:200]
 
             for p in posts:
                 result.append(
@@ -106,11 +127,14 @@ class MyContentView(APIView):
                         "slug": p.slug,
                         "excerpt": p.excerpt,
                         "cover": (
-                            request.build_absolute_uri(p.cover.url) if p.cover else None
+                            request.build_absolute_uri(p.cover.url)
+                            if getattr(p, "cover", None)
+                            else None
                         ),
                         "status": p.status,
                         "created_at": p.created_at,
                         "published_at": p.published_at,
+                        "updated_at": p.updated_at,
                         "views": p.views or 0,
                         "comments_count": p.comments_count or 0,
                         "category": (
@@ -133,17 +157,11 @@ class MyContentView(APIView):
                     }
                 )
 
-        # ✅ VIDEOS
+        # VIDEOS
         if content_type in ["all", "video"]:
-            videos = Video.objects.all()
-
-            if not is_admin:
-                videos = videos.filter(author=user)
-
-            if status_param:
-                videos = videos.filter(status=status_param)
-
-            videos = videos.order_by("-published_at", "-created_at")[:200]
+            videos = base_qs.filter(media_type="video").order_by(
+                "-published_at", "-created_at"
+            )[:200]
 
             for v in videos:
                 result.append(
@@ -152,25 +170,44 @@ class MyContentView(APIView):
                         "id": v.id,
                         "title": v.title,
                         "slug": v.slug,
+                        "excerpt": v.excerpt,
+                        "cover": (
+                            request.build_absolute_uri(v.cover.url)
+                            if getattr(v, "cover", None)
+                            else None
+                        ),
                         "status": v.status,
                         "created_at": v.created_at,
                         "published_at": v.published_at,
-                        "views": v.views_count or 0,
-                        "duration": getattr(v, "duration", 0),
+                        "updated_at": v.updated_at,
+                        "views": v.views or 0,
+                        "comments_count": v.comments_count or 0,
+                        "duration": getattr(v, "media_duration", 0) or 0,
+                        "category": (
+                            {
+                                "id": v.category.id,
+                                "title": v.category.title,
+                                "slug": v.category.slug,
+                            }
+                            if v.category
+                            else None
+                        ),
+                        "tags": [
+                            {
+                                "id": tag.id,
+                                "title": tag.title,
+                                "slug": tag.slug,
+                            }
+                            for tag in v.tags.all()
+                        ],
                     }
                 )
 
-        # ✅ PODCASTS
+        # PODCASTS
         if content_type in ["all", "podcast"]:
-            podcasts = Podcast.objects.all()
-
-            if not is_admin:
-                podcasts = podcasts.filter(author=user)
-
-            if status_param:
-                podcasts = podcasts.filter(status=status_param)
-
-            podcasts = podcasts.order_by("-published_at", "-created_at")[:200]
+            podcasts = base_qs.filter(media_type="podcast").order_by(
+                "-published_at", "-created_at"
+            )[:200]
 
             for p in podcasts:
                 result.append(
@@ -179,15 +216,40 @@ class MyContentView(APIView):
                         "id": p.id,
                         "title": p.title,
                         "slug": p.slug,
+                        "excerpt": p.excerpt,
+                        "cover": (
+                            request.build_absolute_uri(p.cover.url)
+                            if getattr(p, "cover", None)
+                            else None
+                        ),
                         "status": p.status,
                         "created_at": p.created_at,
                         "published_at": p.published_at,
-                        "listens": p.listens_count or 0,
-                        "duration": getattr(p, "duration", 0),
+                        "updated_at": p.updated_at,
+                        "views": p.views or 0,
+                        "comments_count": p.comments_count or 0,
+                        "listens": p.views or 0,
+                        "duration": getattr(p, "media_duration", 0) or 0,
+                        "category": (
+                            {
+                                "id": p.category.id,
+                                "title": p.category.title,
+                                "slug": p.category.slug,
+                            }
+                            if p.category
+                            else None
+                        ),
+                        "tags": [
+                            {
+                                "id": tag.id,
+                                "title": tag.title,
+                                "slug": tag.slug,
+                            }
+                            for tag in p.tags.all()
+                        ],
                     }
                 )
 
-        # ✅ sort unified (latest first)
         result.sort(
             key=lambda x: (
                 x["published_at"] is not None,

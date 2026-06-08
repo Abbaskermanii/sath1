@@ -7,6 +7,7 @@ class PostFilter(django_filters.FilterSet):
     category = django_filters.CharFilter(field_name="category__slug")
     tag = django_filters.CharFilter(field_name="tags__slug")
     post_type = django_filters.CharFilter(field_name="post_type")
+    media_type = django_filters.CharFilter(field_name="media_type")
 
     is_featured = django_filters.BooleanFilter(field_name="is_featured")
     is_hero = django_filters.BooleanFilter(field_name="is_hero")
@@ -30,6 +31,7 @@ class PostFilter(django_filters.FilterSet):
             "category",
             "tag",
             "post_type",
+            "media_type",
             "is_featured",
             "is_hero",
             "show_on_homepage",

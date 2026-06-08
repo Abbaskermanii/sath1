@@ -1,17 +1,10 @@
 import { Link } from "react-router-dom";
-
-function getSafeHref(href) {
-  return typeof href === "string" ? href.trim() : "";
-}
-
-function isExternalHref(href) {
-  return /^https?:\/\//i.test(getSafeHref(href));
-}
-
-function hasValidHref(href) {
-  const value = getSafeHref(href);
-  return value.length > 0 && value !== "#";
-}
+import MediaPreview from "./MediaPreview";
+import {
+  getSafeHref,
+  hasValidHref,
+  isExternalHref,
+} from "../../lib/media.utils";
 
 function Clickable({ href, className = "", children, fallback = "div" }) {
   const safeHref = getSafeHref(href);
@@ -50,23 +43,30 @@ function LargNews({
   bottomNewsDescription,
   href = "",
   bottomNewsHref = "",
+  videoFile = "",
+  embedUrl = "",
+  poster = "",
 }) {
   const showBottomNews = bottomNewsTitle || bottomNewsDescription;
   const showCategoryBox = categoryText;
   const hasBox = showCategoryBox || showBottomNews;
+  const hasMedia = image || videoFile || embedUrl;
 
   return (
     <article className="bg-white p-8" dir="rtl">
       <div className="mx-auto flex max-w-5xl items-stretch gap-6">
-        {image && (
+        {hasMedia && (
           <Clickable
             href={href}
             fallback="div"
             className="group aspect-16/10 w-90 shrink-0 overflow-hidden rounded-lg"
           >
-            <img
-              src={image}
-              alt={title || "image"}
+            <MediaPreview
+              image={image}
+              title={title}
+              videoFile={videoFile}
+              embedUrl={embedUrl}
+              poster={poster}
               className="h-full w-full object-cover transition-transform duration-300 group-hover:scale-105"
             />
           </Clickable>

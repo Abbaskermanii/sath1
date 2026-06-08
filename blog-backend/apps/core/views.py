@@ -4,8 +4,6 @@ from rest_framework.views import APIView
 
 from apps.news.models import Category, Post, PostStatus
 from apps.news.serializers import CategoryListSerializer, PostSimpleSerializer
-from apps.media.models import Video, Podcast
-from apps.media.serializers import VideoListSerializer, PodcastListSerializer
 
 
 class HomeAPIView(APIView):

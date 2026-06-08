@@ -92,30 +92,6 @@
         "documentation": {}
     },
     {
-        "label": "settings",
-        "importPath": "django.conf",
-        "description": "django.conf",
-        "isExtraImport": true,
-        "detail": "django.conf",
-        "documentation": {}
-    },
-    {
-        "label": "settings",
-        "importPath": "django.conf",
-        "description": "django.conf",
-        "isExtraImport": true,
-        "detail": "django.conf",
-        "documentation": {}
-    },
-    {
-        "label": "settings",
-        "importPath": "django.conf",
-        "description": "django.conf",
-        "isExtraImport": true,
-        "detail": "django.conf",
-        "documentation": {}
-    },
-    {
         "label": "migrations",
         "importPath": "django.db",
         "description": "django.db",
@@ -217,54 +193,6 @@
         "description": "django.db",
         "isExtraImport": true,
         "detail": "django.db",
-        "documentation": {}
-    },
-    {
-        "label": "migrations",
-        "importPath": "django.db",
-        "description": "django.db",
-        "isExtraImport": true,
-        "detail": "django.db",
-        "documentation": {}
-    },
-    {
-        "label": "models",
-        "importPath": "django.db",
-        "description": "django.db",
-        "isExtraImport": true,
-        "detail": "django.db",
-        "documentation": {}
-    },
-    {
-        "label": "migrations",
-        "importPath": "django.db",
-        "description": "django.db",
-        "isExtraImport": true,
-        "detail": "django.db",
-        "documentation": {}
-    },
-    {
-        "label": "models",
-        "importPath": "django.db",
-        "description": "django.db",
-        "isExtraImport": true,
-        "detail": "django.db",
-        "documentation": {}
-    },
-    {
-        "label": "models",
-        "importPath": "django.db",
-        "description": "django.db",
-        "isExtraImport": true,
-        "detail": "django.db",
-        "documentation": {}
-    },
-    {
-        "label": "admin",
-        "importPath": "django.contrib",
-        "description": "django.contrib",
-        "isExtraImport": true,
-        "detail": "django.contrib",
         "documentation": {}
     },
     {
@@ -364,14 +292,6 @@
         "documentation": {}
     },
     {
-        "label": "AppConfig",
-        "importPath": "django.apps",
-        "description": "django.apps",
-        "isExtraImport": true,
-        "detail": "django.apps",
-        "documentation": {}
-    },
-    {
         "label": "gettext_lazy",
         "importPath": "django.utils.translation",
         "description": "django.utils.translation",
@@ -405,30 +325,6 @@
     },
     {
         "label": "IsAuthenticated",
-        "importPath": "rest_framework.permissions",
-        "description": "rest_framework.permissions",
-        "isExtraImport": true,
-        "detail": "rest_framework.permissions",
-        "documentation": {}
-    },
-    {
-        "label": "BasePermission",
-        "importPath": "rest_framework.permissions",
-        "description": "rest_framework.permissions",
-        "isExtraImport": true,
-        "detail": "rest_framework.permissions",
-        "documentation": {}
-    },
-    {
-        "label": "SAFE_METHODS",
-        "importPath": "rest_framework.permissions",
-        "description": "rest_framework.permissions",
-        "isExtraImport": true,
-        "detail": "rest_framework.permissions",
-        "documentation": {}
-    },
-    {
-        "label": "AllowAny",
         "importPath": "rest_framework.permissions",
         "description": "rest_framework.permissions",
         "isExtraImport": true,
@@ -524,22 +420,6 @@
         "documentation": {}
     },
     {
-        "label": "viewsets",
-        "importPath": "rest_framework",
-        "description": "rest_framework",
-        "isExtraImport": true,
-        "detail": "rest_framework",
-        "documentation": {}
-    },
-    {
-        "label": "serializers",
-        "importPath": "rest_framework",
-        "description": "rest_framework",
-        "isExtraImport": true,
-        "detail": "rest_framework",
-        "documentation": {}
-    },
-    {
         "label": "filters",
         "importPath": "rest_framework",
         "description": "rest_framework",
@@ -585,14 +465,6 @@
         "description": "django.dispatch",
         "isExtraImport": true,
         "detail": "django.dispatch",
-        "documentation": {}
-    },
-    {
-        "label": "TestCase",
-        "importPath": "django.test",
-        "description": "django.test",
-        "isExtraImport": true,
-        "detail": "django.test",
         "documentation": {}
     },
     {
@@ -724,14 +596,6 @@
         "documentation": {}
     },
     {
-        "label": "Response",
-        "importPath": "rest_framework.response",
-        "description": "rest_framework.response",
-        "isExtraImport": true,
-        "detail": "rest_framework.response",
-        "documentation": {}
-    },
-    {
         "label": "APIView",
         "importPath": "rest_framework.views",
         "description": "rest_framework.views",
@@ -828,38 +692,6 @@
         "documentation": {}
     },
     {
-        "label": "Category",
-        "importPath": "apps.news.models",
-        "description": "apps.news.models",
-        "isExtraImport": true,
-        "detail": "apps.news.models",
-        "documentation": {}
-    },
-    {
-        "label": "Tag",
-        "importPath": "apps.news.models",
-        "description": "apps.news.models",
-        "isExtraImport": true,
-        "detail": "apps.news.models",
-        "documentation": {}
-    },
-    {
-        "label": "Category",
-        "importPath": "apps.news.models",
-        "description": "apps.news.models",
-        "isExtraImport": true,
-        "detail": "apps.news.models",
-        "documentation": {}
-    },
-    {
-        "label": "Tag",
-        "importPath": "apps.news.models",
-        "description": "apps.news.models",
-        "isExtraImport": true,
-        "detail": "apps.news.models",
-        "documentation": {}
-    },
-    {
         "label": "Post",
         "importPath": "apps.news.models",
         "description": "apps.news.models",
@@ -909,30 +741,6 @@
     },
     {
         "label": "Comment",
-        "importPath": "apps.news.models",
-        "description": "apps.news.models",
-        "isExtraImport": true,
-        "detail": "apps.news.models",
-        "documentation": {}
-    },
-    {
-        "label": "Post",
-        "importPath": "apps.news.models",
-        "description": "apps.news.models",
-        "isExtraImport": true,
-        "detail": "apps.news.models",
-        "documentation": {}
-    },
-    {
-        "label": "Tag",
-        "importPath": "apps.news.models",
-        "description": "apps.news.models",
-        "isExtraImport": true,
-        "detail": "apps.news.models",
-        "documentation": {}
-    },
-    {
-        "label": "PostType",
         "importPath": "apps.news.models",
         "description": "apps.news.models",
         "isExtraImport": true,
@@ -948,6 +756,38 @@
         "documentation": {}
     },
     {
+        "label": "MediaType",
+        "importPath": "apps.news.models",
+        "description": "apps.news.models",
+        "isExtraImport": true,
+        "detail": "apps.news.models",
+        "documentation": {}
+    },
+    {
+        "label": "Post",
+        "importPath": "apps.news.models",
+        "description": "apps.news.models",
+        "isExtraImport": true,
+        "detail": "apps.news.models",
+        "documentation": {}
+    },
+    {
+        "label": "PostType",
+        "importPath": "apps.news.models",
+        "description": "apps.news.models",
+        "isExtraImport": true,
+        "detail": "apps.news.models",
+        "documentation": {}
+    },
+    {
+        "label": "Tag",
+        "importPath": "apps.news.models",
+        "description": "apps.news.models",
+        "isExtraImport": true,
+        "detail": "apps.news.models",
+        "documentation": {}
+    },
+    {
         "label": "Bookmark",
         "importPath": "apps.news.models",
         "description": "apps.news.models",
@@ -965,6 +805,22 @@
     },
     {
         "label": "Comment",
+        "importPath": "apps.news.models",
+        "description": "apps.news.models",
+        "isExtraImport": true,
+        "detail": "apps.news.models",
+        "documentation": {}
+    },
+    {
+        "label": "HomepageSection",
+        "importPath": "apps.news.models",
+        "description": "apps.news.models",
+        "isExtraImport": true,
+        "detail": "apps.news.models",
+        "documentation": {}
+    },
+    {
+        "label": "MediaType",
         "importPath": "apps.news.models",
         "description": "apps.news.models",
         "isExtraImport": true,
@@ -988,14 +844,6 @@
         "documentation": {}
     },
     {
-        "label": "Tag",
-        "importPath": "apps.news.models",
-        "description": "apps.news.models",
-        "isExtraImport": true,
-        "detail": "apps.news.models",
-        "documentation": {}
-    },
-    {
         "label": "PostType",
         "importPath": "apps.news.models",
         "description": "apps.news.models",
@@ -1004,7 +852,7 @@
         "documentation": {}
     },
     {
-        "label": "HomepageSection",
+        "label": "Tag",
         "importPath": "apps.news.models",
         "description": "apps.news.models",
         "isExtraImport": true,
@@ -1028,7 +876,7 @@
         "documentation": {}
     },
     {
-        "label": "BookmarkSerializer",
+        "label": "BookmarkCreateSerializer",
         "importPath": "apps.news.serializers",
         "description": "apps.news.serializers",
         "isExtraImport": true,
@@ -1036,7 +884,7 @@
         "documentation": {}
     },
     {
-        "label": "BookmarkCreateSerializer",
+        "label": "BookmarkSerializer",
         "importPath": "apps.news.serializers",
         "description": "apps.news.serializers",
         "isExtraImport": true,
@@ -1116,142 +964,6 @@
         "documentation": {}
     },
     {
-        "label": "Video",
-        "importPath": "apps.media.models",
-        "description": "apps.media.models",
-        "isExtraImport": true,
-        "detail": "apps.media.models",
-        "documentation": {}
-    },
-    {
-        "label": "Podcast",
-        "importPath": "apps.media.models",
-        "description": "apps.media.models",
-        "isExtraImport": true,
-        "detail": "apps.media.models",
-        "documentation": {}
-    },
-    {
-        "label": "Video",
-        "importPath": "apps.media.models",
-        "description": "apps.media.models",
-        "isExtraImport": true,
-        "detail": "apps.media.models",
-        "documentation": {}
-    },
-    {
-        "label": "Podcast",
-        "importPath": "apps.media.models",
-        "description": "apps.media.models",
-        "isExtraImport": true,
-        "detail": "apps.media.models",
-        "documentation": {}
-    },
-    {
-        "label": "Video",
-        "importPath": "apps.media.models",
-        "description": "apps.media.models",
-        "isExtraImport": true,
-        "detail": "apps.media.models",
-        "documentation": {}
-    },
-    {
-        "label": "Podcast",
-        "importPath": "apps.media.models",
-        "description": "apps.media.models",
-        "isExtraImport": true,
-        "detail": "apps.media.models",
-        "documentation": {}
-    },
-    {
-        "label": "MediaFile",
-        "importPath": "apps.media.models",
-        "description": "apps.media.models",
-        "isExtraImport": true,
-        "detail": "apps.media.models",
-        "documentation": {}
-    },
-    {
-        "label": "Video",
-        "importPath": "apps.media.models",
-        "description": "apps.media.models",
-        "isExtraImport": true,
-        "detail": "apps.media.models",
-        "documentation": {}
-    },
-    {
-        "label": "Podcast",
-        "importPath": "apps.media.models",
-        "description": "apps.media.models",
-        "isExtraImport": true,
-        "detail": "apps.media.models",
-        "documentation": {}
-    },
-    {
-        "label": "Video",
-        "importPath": "apps.media.models",
-        "description": "apps.media.models",
-        "isExtraImport": true,
-        "detail": "apps.media.models",
-        "documentation": {}
-    },
-    {
-        "label": "Podcast",
-        "importPath": "apps.media.models",
-        "description": "apps.media.models",
-        "isExtraImport": true,
-        "detail": "apps.media.models",
-        "documentation": {}
-    },
-    {
-        "label": "VideoListSerializer",
-        "importPath": "apps.media.serializers",
-        "description": "apps.media.serializers",
-        "isExtraImport": true,
-        "detail": "apps.media.serializers",
-        "documentation": {}
-    },
-    {
-        "label": "PodcastListSerializer",
-        "importPath": "apps.media.serializers",
-        "description": "apps.media.serializers",
-        "isExtraImport": true,
-        "detail": "apps.media.serializers",
-        "documentation": {}
-    },
-    {
-        "label": "VideoListSerializer",
-        "importPath": "apps.media.serializers",
-        "description": "apps.media.serializers",
-        "isExtraImport": true,
-        "detail": "apps.media.serializers",
-        "documentation": {}
-    },
-    {
-        "label": "VideoDetailSerializer",
-        "importPath": "apps.media.serializers",
-        "description": "apps.media.serializers",
-        "isExtraImport": true,
-        "detail": "apps.media.serializers",
-        "documentation": {}
-    },
-    {
-        "label": "PodcastListSerializer",
-        "importPath": "apps.media.serializers",
-        "description": "apps.media.serializers",
-        "isExtraImport": true,
-        "detail": "apps.media.serializers",
-        "documentation": {}
-    },
-    {
-        "label": "PodcastDetailSerializer",
-        "importPath": "apps.media.serializers",
-        "description": "apps.media.serializers",
-        "isExtraImport": true,
-        "detail": "apps.media.serializers",
-        "documentation": {}
-    },
-    {
         "label": "Sum",
         "importPath": "django.db.models",
         "description": "django.db.models",
@@ -1269,14 +981,6 @@
     },
     {
         "label": "Q",
-        "importPath": "django.db.models",
-        "description": "django.db.models",
-        "isExtraImport": true,
-        "detail": "django.db.models",
-        "documentation": {}
-    },
-    {
-        "label": "F",
         "importPath": "django.db.models",
         "description": "django.db.models",
         "isExtraImport": true,
@@ -1365,116 +1069,20 @@
         "documentation": {}
     },
     {
-        "label": "slugify",
-        "importPath": "django.utils.text",
-        "description": "django.utils.text",
-        "isExtraImport": true,
-        "detail": "django.utils.text",
-        "documentation": {}
-    },
-    {
-        "label": "DefaultRouter",
-        "importPath": "rest_framework.routers",
-        "description": "rest_framework.routers",
-        "isExtraImport": true,
-        "detail": "rest_framework.routers",
-        "documentation": {}
-    },
-    {
-        "label": "DefaultRouter",
-        "importPath": "rest_framework.routers",
-        "description": "rest_framework.routers",
-        "isExtraImport": true,
-        "detail": "rest_framework.routers",
-        "documentation": {}
-    },
-    {
-        "label": "PublicVideoViewSet",
-        "importPath": "apps.media.views",
-        "description": "apps.media.views",
-        "isExtraImport": true,
-        "detail": "apps.media.views",
-        "documentation": {}
-    },
-    {
-        "label": "PublicPodcastViewSet",
-        "importPath": "apps.media.views",
-        "description": "apps.media.views",
-        "isExtraImport": true,
-        "detail": "apps.media.views",
-        "documentation": {}
-    },
-    {
-        "label": "cache",
-        "importPath": "django.core.cache",
-        "description": "django.core.cache",
-        "isExtraImport": true,
-        "detail": "django.core.cache",
-        "documentation": {}
-    },
-    {
-        "label": "cache",
-        "importPath": "django.core.cache",
-        "description": "django.core.cache",
-        "isExtraImport": true,
-        "detail": "django.core.cache",
-        "documentation": {}
-    },
-    {
-        "label": "SearchFilter",
-        "importPath": "rest_framework.filters",
-        "description": "rest_framework.filters",
-        "isExtraImport": true,
-        "detail": "rest_framework.filters",
-        "documentation": {}
-    },
-    {
-        "label": "OrderingFilter",
-        "importPath": "rest_framework.filters",
-        "description": "rest_framework.filters",
-        "isExtraImport": true,
-        "detail": "rest_framework.filters",
-        "documentation": {}
-    },
-    {
-        "label": "DjangoFilterBackend",
-        "importPath": "django_filters.rest_framework",
-        "description": "django_filters.rest_framework",
-        "isExtraImport": true,
-        "detail": "django_filters.rest_framework",
-        "documentation": {}
-    },
-    {
-        "label": "DjangoFilterBackend",
-        "importPath": "django_filters.rest_framework",
-        "description": "django_filters.rest_framework",
-        "isExtraImport": true,
-        "detail": "django_filters.rest_framework",
-        "documentation": {}
-    },
-    {
-        "label": "VideoFilter",
-        "importPath": "apps.media.filters",
-        "description": "apps.media.filters",
-        "isExtraImport": true,
-        "detail": "apps.media.filters",
-        "documentation": {}
-    },
-    {
-        "label": "PodcastFilter",
-        "importPath": "apps.media.filters",
-        "description": "apps.media.filters",
-        "isExtraImport": true,
-        "detail": "apps.media.filters",
-        "documentation": {}
-    },
-    {
         "label": "re",
         "kind": 6,
         "isExtraImport": true,
         "importPath": "re",
         "description": "re",
         "detail": "re",
+        "documentation": {}
+    },
+    {
+        "label": "DefaultRouter",
+        "importPath": "rest_framework.routers",
+        "description": "rest_framework.routers",
+        "isExtraImport": true,
+        "detail": "rest_framework.routers",
         "documentation": {}
     },
     {
@@ -1518,11 +1126,51 @@
         "documentation": {}
     },
     {
+        "label": "cache",
+        "importPath": "django.core.cache",
+        "description": "django.core.cache",
+        "isExtraImport": true,
+        "detail": "django.core.cache",
+        "documentation": {}
+    },
+    {
+        "label": "DjangoFilterBackend",
+        "importPath": "django_filters.rest_framework",
+        "description": "django_filters.rest_framework",
+        "isExtraImport": true,
+        "detail": "django_filters.rest_framework",
+        "documentation": {}
+    },
+    {
         "label": "action",
         "importPath": "rest_framework.decorators",
         "description": "rest_framework.decorators",
         "isExtraImport": true,
         "detail": "rest_framework.decorators",
+        "documentation": {}
+    },
+    {
+        "label": "MultiPartParser",
+        "importPath": "rest_framework.parsers",
+        "description": "rest_framework.parsers",
+        "isExtraImport": true,
+        "detail": "rest_framework.parsers",
+        "documentation": {}
+    },
+    {
+        "label": "FormParser",
+        "importPath": "rest_framework.parsers",
+        "description": "rest_framework.parsers",
+        "isExtraImport": true,
+        "detail": "rest_framework.parsers",
+        "documentation": {}
+    },
+    {
+        "label": "JSONParser",
+        "importPath": "rest_framework.parsers",
+        "description": "rest_framework.parsers",
+        "isExtraImport": true,
+        "detail": "rest_framework.parsers",
         "documentation": {}
     },
     {
@@ -1933,7 +1581,7 @@
         "kind": 6,
         "importPath": "apps.dashboard.views",
         "description": "apps.dashboard.views",
-        "peekOfCode": "class OverviewView(APIView):\n    permission_classes = [IsAuthenticated, IsAdminOrAuthor]\n    def get(self, request):\n        user = request.user\n        is_admin = getattr(user, \"role\", None) == \"admin\"\n        posts = Post.objects.all()\n        videos = Video.objects.all()\n        podcasts = Podcast.objects.all()\n        if not is_admin:\n            posts = posts.filter(author=user)",
+        "peekOfCode": "class OverviewView(APIView):\n    permission_classes = [IsAuthenticated, IsAdminOrAuthor]\n    def get(self, request):\n        user = request.user\n        is_admin = getattr(user, \"role\", None) == \"admin\"\n        posts = Post.objects.all()\n        if not is_admin:\n            posts = posts.filter(author=user)\n        data = {\n            \"posts\": {",
         "detail": "apps.dashboard.views",
         "documentation": {}
     },
@@ -1971,231 +1619,6 @@
         "description": "apps.marketing.urls",
         "peekOfCode": "urlpatterns = []",
         "detail": "apps.marketing.urls",
-        "documentation": {}
-    },
-    {
-        "label": "Migration",
-        "kind": 6,
-        "importPath": "apps.media.migrations.0001_initial",
-        "description": "apps.media.migrations.0001_initial",
-        "peekOfCode": "class Migration(migrations.Migration):\n    initial = True\n    dependencies = [\n        migrations.swappable_dependency(settings.AUTH_USER_MODEL),\n    ]\n    operations = [\n        migrations.CreateModel(\n            name='MediaFile',\n            fields=[\n                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),",
-        "detail": "apps.media.migrations.0001_initial",
-        "documentation": {}
-    },
-    {
-        "label": "Migration",
-        "kind": 6,
-        "importPath": "apps.media.migrations.0002_mediafile_mime_type_alter_mediafile_file_type_and_more",
-        "description": "apps.media.migrations.0002_mediafile_mime_type_alter_mediafile_file_type_and_more",
-        "peekOfCode": "class Migration(migrations.Migration):\n    dependencies = [\n        ('media', '0001_initial'),\n        ('news', '0001_initial'),\n        migrations.swappable_dependency(settings.AUTH_USER_MODEL),\n    ]\n    operations = [\n        migrations.AddField(\n            model_name='mediafile',\n            name='mime_type',",
-        "detail": "apps.media.migrations.0002_mediafile_mime_type_alter_mediafile_file_type_and_more",
-        "documentation": {}
-    },
-    {
-        "label": "MediaFileAdmin",
-        "kind": 6,
-        "importPath": "apps.media.admin",
-        "description": "apps.media.admin",
-        "peekOfCode": "class MediaFileAdmin(admin.ModelAdmin):\n    list_display = (\"id\", \"title\", \"file_type\", \"uploaded_by\", \"created_at\")\n    list_filter = (\"file_type\", \"created_at\")\n    search_fields = (\"title\", \"alt_text\", \"mime_type\")\n    readonly_fields = (\"created_at\", \"updated_at\", \"file_size\", \"mime_type\")\n@admin.register(Video)\nclass VideoAdmin(admin.ModelAdmin):\n    list_display = (\n        \"id\",\n        \"title\",",
-        "detail": "apps.media.admin",
-        "documentation": {}
-    },
-    {
-        "label": "VideoAdmin",
-        "kind": 6,
-        "importPath": "apps.media.admin",
-        "description": "apps.media.admin",
-        "peekOfCode": "class VideoAdmin(admin.ModelAdmin):\n    list_display = (\n        \"id\",\n        \"title\",\n        \"category\",\n        \"author\",\n        \"status\",\n        \"is_featured\",\n        \"views_count\",\n        \"published_at\",",
-        "detail": "apps.media.admin",
-        "documentation": {}
-    },
-    {
-        "label": "PodcastAdmin",
-        "kind": 6,
-        "importPath": "apps.media.admin",
-        "description": "apps.media.admin",
-        "peekOfCode": "class PodcastAdmin(admin.ModelAdmin):\n    list_display = (\n        \"id\",\n        \"title\",\n        \"category\",\n        \"author\",\n        \"status\",\n        \"is_featured\",\n        \"listens_count\",\n        \"published_at\",",
-        "detail": "apps.media.admin",
-        "documentation": {}
-    },
-    {
-        "label": "MediaConfig",
-        "kind": 6,
-        "importPath": "apps.media.apps",
-        "description": "apps.media.apps",
-        "peekOfCode": "class MediaConfig(AppConfig):\n    default_auto_field = \"django.db.models.BigAutoField\"\n    name = \"apps.media\"",
-        "detail": "apps.media.apps",
-        "documentation": {}
-    },
-    {
-        "label": "VideoFilter",
-        "kind": 6,
-        "importPath": "apps.media.filters",
-        "description": "apps.media.filters",
-        "peekOfCode": "class VideoFilter(django_filters.FilterSet):\n    category = django_filters.CharFilter(field_name=\"category__slug\")\n    tag = django_filters.CharFilter(field_name=\"tags__slug\")\n    is_featured = django_filters.BooleanFilter(field_name=\"is_featured\")\n    published_after = django_filters.DateTimeFilter(\n        field_name=\"published_at\",\n        lookup_expr=\"gte\",\n    )\n    published_before = django_filters.DateTimeFilter(\n        field_name=\"published_at\",",
-        "detail": "apps.media.filters",
-        "documentation": {}
-    },
-    {
-        "label": "PodcastFilter",
-        "kind": 6,
-        "importPath": "apps.media.filters",
-        "description": "apps.media.filters",
-        "peekOfCode": "class PodcastFilter(django_filters.FilterSet):\n    category = django_filters.CharFilter(field_name=\"category__slug\")\n    tag = django_filters.CharFilter(field_name=\"tags__slug\")\n    is_featured = django_filters.BooleanFilter(field_name=\"is_featured\")\n    published_after = django_filters.DateTimeFilter(\n        field_name=\"published_at\",\n        lookup_expr=\"gte\",\n    )\n    published_before = django_filters.DateTimeFilter(\n        field_name=\"published_at\",",
-        "detail": "apps.media.filters",
-        "documentation": {}
-    },
-    {
-        "label": "MediaFile",
-        "kind": 6,
-        "importPath": "apps.media.models",
-        "description": "apps.media.models",
-        "peekOfCode": "class MediaFile(models.Model):\n    FILE_TYPE_CHOICES = (\n        (\"image\", \"Image\"),\n        (\"audio\", \"Audio\"),\n        (\"video\", \"Video\"),\n        (\"document\", \"Document\"),\n        (\"other\", \"Other\"),\n    )\n    title = models.CharField(max_length=255)\n    file = models.FileField(upload_to=\"uploads/%Y/%m/%d/\")",
-        "detail": "apps.media.models",
-        "documentation": {}
-    },
-    {
-        "label": "Video",
-        "kind": 6,
-        "importPath": "apps.media.models",
-        "description": "apps.media.models",
-        "peekOfCode": "class Video(models.Model):\n    STATUS_CHOICES = (\n        (\"draft\", \"Draft\"),\n        (\"published\", \"Published\"),\n        (\"archived\", \"Archived\"),\n    )\n    title = models.CharField(max_length=255)\n    slug = models.SlugField(max_length=280, unique=True, blank=True)\n    summary = models.TextField(blank=True)\n    content = models.TextField(blank=True)",
-        "detail": "apps.media.models",
-        "documentation": {}
-    },
-    {
-        "label": "Podcast",
-        "kind": 6,
-        "importPath": "apps.media.models",
-        "description": "apps.media.models",
-        "peekOfCode": "class Podcast(models.Model):\n    STATUS_CHOICES = (\n        (\"draft\", \"Draft\"),\n        (\"published\", \"Published\"),\n        (\"archived\", \"Archived\"),\n    )\n    title = models.CharField(max_length=255)\n    slug = models.SlugField(max_length=280, unique=True, blank=True)\n    summary = models.TextField(blank=True)\n    content = models.TextField(blank=True)",
-        "detail": "apps.media.models",
-        "documentation": {}
-    },
-    {
-        "label": "IsOwnerOrAdmin",
-        "kind": 6,
-        "importPath": "apps.media.permissions",
-        "description": "apps.media.permissions",
-        "peekOfCode": "class IsOwnerOrAdmin(BasePermission):\n    def has_object_permission(self, request, view, obj):\n        if request.method in SAFE_METHODS:\n            return True\n        return bool(\n            request.user\n            and request.user.is_authenticated\n            and (request.user.is_staff or obj.author_id == request.user.id)\n        )",
-        "detail": "apps.media.permissions",
-        "documentation": {}
-    },
-    {
-        "label": "CategorySimpleSerializer",
-        "kind": 6,
-        "importPath": "apps.media.serializers",
-        "description": "apps.media.serializers",
-        "peekOfCode": "class CategorySimpleSerializer(serializers.ModelSerializer):\n    name = serializers.CharField(source=\"title\", read_only=True)\n    class Meta:\n        model = Category\n        fields = [\"id\", \"name\", \"title\", \"slug\"]\nclass TagSimpleSerializer(serializers.ModelSerializer):\n    name = serializers.CharField(source=\"title\", read_only=True)\n    class Meta:\n        model = Tag\n        fields = [\"id\", \"name\", \"title\", \"slug\"]",
-        "detail": "apps.media.serializers",
-        "documentation": {}
-    },
-    {
-        "label": "TagSimpleSerializer",
-        "kind": 6,
-        "importPath": "apps.media.serializers",
-        "description": "apps.media.serializers",
-        "peekOfCode": "class TagSimpleSerializer(serializers.ModelSerializer):\n    name = serializers.CharField(source=\"title\", read_only=True)\n    class Meta:\n        model = Tag\n        fields = [\"id\", \"name\", \"title\", \"slug\"]\nclass MediaFileSerializer(serializers.ModelSerializer):\n    url = serializers.SerializerMethodField()\n    class Meta:\n        model = MediaFile\n        fields = [",
-        "detail": "apps.media.serializers",
-        "documentation": {}
-    },
-    {
-        "label": "MediaFileSerializer",
-        "kind": 6,
-        "importPath": "apps.media.serializers",
-        "description": "apps.media.serializers",
-        "peekOfCode": "class MediaFileSerializer(serializers.ModelSerializer):\n    url = serializers.SerializerMethodField()\n    class Meta:\n        model = MediaFile\n        fields = [\n            \"id\",\n            \"title\",\n            \"alt_text\",\n            \"file_type\",\n            \"mime_type\",",
-        "detail": "apps.media.serializers",
-        "documentation": {}
-    },
-    {
-        "label": "VideoListSerializer",
-        "kind": 6,
-        "importPath": "apps.media.serializers",
-        "description": "apps.media.serializers",
-        "peekOfCode": "class VideoListSerializer(serializers.ModelSerializer):\n    category = CategorySimpleSerializer(read_only=True)\n    tags = TagSimpleSerializer(many=True, read_only=True)\n    thumbnail_url = serializers.SerializerMethodField()\n    class Meta:\n        model = Video\n        fields = [\n            \"id\",\n            \"title\",\n            \"slug\",",
-        "detail": "apps.media.serializers",
-        "documentation": {}
-    },
-    {
-        "label": "VideoDetailSerializer",
-        "kind": 6,
-        "importPath": "apps.media.serializers",
-        "description": "apps.media.serializers",
-        "peekOfCode": "class VideoDetailSerializer(serializers.ModelSerializer):\n    category = CategorySimpleSerializer(read_only=True)\n    tags = TagSimpleSerializer(many=True, read_only=True)\n    thumbnail = MediaFileSerializer(read_only=True)\n    video_file = MediaFileSerializer(read_only=True)\n    thumbnail_url = serializers.SerializerMethodField()\n    video_url = serializers.SerializerMethodField()\n    class Meta:\n        model = Video\n        fields = [",
-        "detail": "apps.media.serializers",
-        "documentation": {}
-    },
-    {
-        "label": "PodcastListSerializer",
-        "kind": 6,
-        "importPath": "apps.media.serializers",
-        "description": "apps.media.serializers",
-        "peekOfCode": "class PodcastListSerializer(serializers.ModelSerializer):\n    category = CategorySimpleSerializer(read_only=True)\n    tags = TagSimpleSerializer(many=True, read_only=True)\n    cover_url = serializers.SerializerMethodField()\n    class Meta:\n        model = Podcast\n        fields = [\n            \"id\",\n            \"title\",\n            \"slug\",",
-        "detail": "apps.media.serializers",
-        "documentation": {}
-    },
-    {
-        "label": "PodcastDetailSerializer",
-        "kind": 6,
-        "importPath": "apps.media.serializers",
-        "description": "apps.media.serializers",
-        "peekOfCode": "class PodcastDetailSerializer(serializers.ModelSerializer):\n    category = CategorySimpleSerializer(read_only=True)\n    tags = TagSimpleSerializer(many=True, read_only=True)\n    cover_image = MediaFileSerializer(read_only=True)\n    audio_file = MediaFileSerializer(read_only=True)\n    cover_url = serializers.SerializerMethodField()\n    audio_url = serializers.SerializerMethodField()\n    class Meta:\n        model = Podcast\n        fields = [",
-        "detail": "apps.media.serializers",
-        "documentation": {}
-    },
-    {
-        "label": "router",
-        "kind": 5,
-        "importPath": "apps.media.urls",
-        "description": "apps.media.urls",
-        "peekOfCode": "router = DefaultRouter()\nrouter.register(r\"videos\", PublicVideoViewSet, basename=\"public-videos\")\nrouter.register(r\"podcasts\", PublicPodcastViewSet, basename=\"public-podcasts\")\nurlpatterns = router.urls",
-        "detail": "apps.media.urls",
-        "documentation": {}
-    },
-    {
-        "label": "urlpatterns",
-        "kind": 5,
-        "importPath": "apps.media.urls",
-        "description": "apps.media.urls",
-        "peekOfCode": "urlpatterns = router.urls",
-        "detail": "apps.media.urls",
-        "documentation": {}
-    },
-    {
-        "label": "PublicVideoViewSet",
-        "kind": 6,
-        "importPath": "apps.media.views",
-        "description": "apps.media.views",
-        "peekOfCode": "class PublicVideoViewSet(viewsets.ReadOnlyModelViewSet):\n    permission_classes = [AllowAny]\n    filter_backends = [\n        DjangoFilterBackend,\n        SearchFilter,\n        OrderingFilter,\n    ]\n    filterset_class = VideoFilter\n    search_fields = [\n        \"title\",",
-        "detail": "apps.media.views",
-        "documentation": {}
-    },
-    {
-        "label": "PublicPodcastViewSet",
-        "kind": 6,
-        "importPath": "apps.media.views",
-        "description": "apps.media.views",
-        "peekOfCode": "class PublicPodcastViewSet(viewsets.ReadOnlyModelViewSet):\n    permission_classes = [AllowAny]\n    filter_backends = [\n        DjangoFilterBackend,\n        SearchFilter,\n        OrderingFilter,\n    ]\n    filterset_class = PodcastFilter\n    search_fields = [\n        \"title\",",
-        "detail": "apps.media.views",
-        "documentation": {}
-    },
-    {
-        "label": "get_client_ip",
-        "kind": 2,
-        "importPath": "apps.media.views",
-        "description": "apps.media.views",
-        "peekOfCode": "def get_client_ip(request):\n    x_forwarded_for = request.META.get(\"HTTP_X_FORWARDED_FOR\")\n    if x_forwarded_for:\n        return x_forwarded_for.split(\",\")[0].strip()\n    return request.META.get(\"REMOTE_ADDR\", \"\")\ndef should_count_media_view(request, prefix, object_id):\n    user = request.user if request.user.is_authenticated else None\n    if user:\n        identity = f\"user:{user.id}\"\n    else:",
-        "detail": "apps.media.views",
-        "documentation": {}
-    },
-    {
-        "label": "should_count_media_view",
-        "kind": 2,
-        "importPath": "apps.media.views",
-        "description": "apps.media.views",
-        "peekOfCode": "def should_count_media_view(request, prefix, object_id):\n    user = request.user if request.user.is_authenticated else None\n    if user:\n        identity = f\"user:{user.id}\"\n    else:\n        session_key = request.session.session_key\n        if not session_key:\n            request.session.save()\n            session_key = request.session.session_key\n        ip = get_client_ip(request)",
-        "detail": "apps.media.views",
         "documentation": {}
     },
     {
@@ -2275,7 +1698,7 @@
         "kind": 6,
         "importPath": "apps.news.filters",
         "description": "apps.news.filters",
-        "peekOfCode": "class PostFilter(django_filters.FilterSet):\n    category = django_filters.CharFilter(field_name=\"category__slug\")\n    tag = django_filters.CharFilter(field_name=\"tags__slug\")\n    post_type = django_filters.CharFilter(field_name=\"post_type\")\n    is_featured = django_filters.BooleanFilter(field_name=\"is_featured\")\n    is_hero = django_filters.BooleanFilter(field_name=\"is_hero\")\n    show_on_homepage = django_filters.BooleanFilter(field_name=\"show_on_homepage\")\n    homepage_section = django_filters.CharFilter(field_name=\"homepage_section\")\n    author = django_filters.NumberFilter(field_name=\"author__id\")\n    published_after = django_filters.DateTimeFilter(",
+        "peekOfCode": "class PostFilter(django_filters.FilterSet):\n    category = django_filters.CharFilter(field_name=\"category__slug\")\n    tag = django_filters.CharFilter(field_name=\"tags__slug\")\n    post_type = django_filters.CharFilter(field_name=\"post_type\")\n    media_type = django_filters.CharFilter(field_name=\"media_type\")\n    is_featured = django_filters.BooleanFilter(field_name=\"is_featured\")\n    is_hero = django_filters.BooleanFilter(field_name=\"is_hero\")\n    show_on_homepage = django_filters.BooleanFilter(field_name=\"show_on_homepage\")\n    homepage_section = django_filters.CharFilter(field_name=\"homepage_section\")\n    author = django_filters.NumberFilter(field_name=\"author__id\")",
         "detail": "apps.news.filters",
         "documentation": {}
     },
@@ -2334,11 +1757,20 @@
         "documentation": {}
     },
     {
+        "label": "MediaType",
+        "kind": 6,
+        "importPath": "apps.news.models",
+        "description": "apps.news.models",
+        "peekOfCode": "class MediaType(models.TextChoices):\n    NONE = \"none\", \"بدون رسانه\"\n    VIDEO = \"video\", \"ویدیو\"\n    PODCAST = \"podcast\", \"پادکست\"\nclass Post(TimeStampedModel):\n    author = models.ForeignKey(\n        settings.AUTH_USER_MODEL,\n        on_delete=models.CASCADE,\n        related_name=\"news_posts\",\n    )",
+        "detail": "apps.news.models",
+        "documentation": {}
+    },
+    {
         "label": "Post",
         "kind": 6,
         "importPath": "apps.news.models",
         "description": "apps.news.models",
-        "peekOfCode": "class Post(TimeStampedModel):\n    author = models.ForeignKey(\n        settings.AUTH_USER_MODEL,\n        on_delete=models.CASCADE,\n        related_name=\"news_posts\",\n    )\n    category = models.ForeignKey(\n        Category,\n        on_delete=models.SET_NULL,\n        null=True,",
+        "peekOfCode": "class Post(TimeStampedModel):\n    author = models.ForeignKey(\n        settings.AUTH_USER_MODEL,\n        on_delete=models.CASCADE,\n        related_name=\"news_posts\",\n    )\n    category = models.ForeignKey(\n        \"news.Category\",\n        on_delete=models.SET_NULL,\n        null=True,",
         "detail": "apps.news.models",
         "documentation": {}
     },
@@ -2419,7 +1851,7 @@
         "kind": 6,
         "importPath": "apps.news.serializers",
         "description": "apps.news.serializers",
-        "peekOfCode": "class PostListSerializer(serializers.ModelSerializer):\n    author = AuthorSerializer(read_only=True)\n    category = CategoryListSerializer(read_only=True)\n    tags = TagListSerializer(many=True, read_only=True)\n    comments_count = serializers.IntegerField(read_only=True)\n    is_bookmarked = serializers.SerializerMethodField()\n    cover = serializers.SerializerMethodField()\n    post_type_label = serializers.CharField(\n        source=\"get_post_type_display\",\n        read_only=True,",
+        "peekOfCode": "class PostListSerializer(serializers.ModelSerializer):\n    author = AuthorSerializer(read_only=True)\n    category = CategoryListSerializer(read_only=True)\n    tags = TagListSerializer(many=True, read_only=True)\n    comments_count = serializers.IntegerField(read_only=True)\n    is_bookmarked = serializers.SerializerMethodField()\n    cover = serializers.SerializerMethodField()\n    video_file = serializers.SerializerMethodField()\n    audio_file = serializers.SerializerMethodField()\n    post_type_label = serializers.CharField(",
         "detail": "apps.news.serializers",
         "documentation": {}
     },
@@ -2428,7 +1860,7 @@
         "kind": 6,
         "importPath": "apps.news.serializers",
         "description": "apps.news.serializers",
-        "peekOfCode": "class PostDetailSerializer(serializers.ModelSerializer):\n    author = AuthorSerializer(read_only=True)\n    category = CategoryListSerializer(read_only=True)\n    tags = TagListSerializer(many=True, read_only=True)\n    comments = serializers.SerializerMethodField()\n    comments_count = serializers.IntegerField(read_only=True)\n    is_bookmarked = serializers.SerializerMethodField()\n    cover = serializers.SerializerMethodField()\n    post_type_display = serializers.CharField(\n        source=\"get_post_type_display\",",
+        "peekOfCode": "class PostDetailSerializer(serializers.ModelSerializer):\n    author = AuthorSerializer(read_only=True)\n    category = CategoryListSerializer(read_only=True)\n    tags = TagListSerializer(many=True, read_only=True)\n    comments = serializers.SerializerMethodField()\n    comments_count = serializers.IntegerField(read_only=True)\n    is_bookmarked = serializers.SerializerMethodField()\n    cover = serializers.SerializerMethodField()\n    video_file = serializers.SerializerMethodField()\n    audio_file = serializers.SerializerMethodField()",
         "detail": "apps.news.serializers",
         "documentation": {}
     },
@@ -2487,11 +1919,20 @@
         "documentation": {}
     },
     {
+        "label": "build_public_file_url",
+        "kind": 2,
+        "importPath": "apps.news.serializers",
+        "description": "apps.news.serializers",
+        "peekOfCode": "def build_public_file_url(file_field):\n    if not file_field:\n        return None\n    try:\n        url = file_field.url\n    except Exception:\n        return None\n    internal = getattr(settings, \"MINIO_INTERNAL_URL\", \"\")\n    public = getattr(settings, \"MINIO_PUBLIC_URL\", \"\")\n    if internal and public and internal in url:",
+        "detail": "apps.news.serializers",
+        "documentation": {}
+    },
+    {
         "label": "SLUG_RE",
         "kind": 5,
         "importPath": "apps.news.serializers",
         "description": "apps.news.serializers",
-        "peekOfCode": "SLUG_RE = re.compile(r\"^[a-z0-9]+(?:-[a-z0-9]+)*$\")\nclass AuthorSerializer(serializers.Serializer):\n    id = serializers.IntegerField(read_only=True)\n    email = serializers.EmailField(read_only=True)\n    first_name = serializers.CharField(read_only=True)\n    last_name = serializers.CharField(read_only=True)\n    full_name = serializers.SerializerMethodField()\n    def get_full_name(self, obj):\n        full_name = f\"{obj.first_name} {obj.last_name}\".strip()\n        return full_name or obj.email",
+        "peekOfCode": "SLUG_RE = re.compile(r\"^[a-z0-9]+(?:-[a-z0-9]+)*$\")\ndef build_public_file_url(file_field):\n    if not file_field:\n        return None\n    try:\n        url = file_field.url\n    except Exception:\n        return None\n    internal = getattr(settings, \"MINIO_INTERNAL_URL\", \"\")\n    public = getattr(settings, \"MINIO_PUBLIC_URL\", \"\")",
         "detail": "apps.news.serializers",
         "documentation": {}
     },
@@ -2536,7 +1977,7 @@
         "kind": 6,
         "importPath": "apps.news.views",
         "description": "apps.news.views",
-        "peekOfCode": "class PostViewSet(viewsets.ModelViewSet):\n    lookup_field = \"slug\"\n    filter_backends = [\n        DjangoFilterBackend,\n        filters.SearchFilter,\n        filters.OrderingFilter,\n    ]\n    filterset_class = PostFilter\n    search_fields = [\n        \"title\",",
+        "peekOfCode": "class PostViewSet(viewsets.ModelViewSet):\n    lookup_field = \"slug\"\n    parser_classes = [MultiPartParser, FormParser, JSONParser]\n    filter_backends = [\n        DjangoFilterBackend,\n        filters.SearchFilter,\n        filters.OrderingFilter,\n    ]\n    filterset_class = PostFilter\n    search_fields = [",
         "detail": "apps.news.views",
         "documentation": {}
     },
@@ -2563,7 +2004,7 @@
         "kind": 2,
         "importPath": "apps.news.views",
         "description": "apps.news.views",
-        "peekOfCode": "def get_client_ip(request):\n    x_forwarded_for = request.META.get(\"HTTP_X_FORWARDED_FOR\")\n    if x_forwarded_for:\n        return x_forwarded_for.split(\",\")[0].strip()\n    return request.META.get(\"REMOTE_ADDR\", \"\")\ndef should_count_post_view(request, post_id):\n    \"\"\"\n    جلوگیری از افزایش غیرواقعی view.\n    برای هر کاربر/session/IP روی هر پست، هر 6 ساعت فقط یک بار view حساب می‌شود.\n    \"\"\"",
+        "peekOfCode": "def get_client_ip(request):\n    x_forwarded_for = request.META.get(\"HTTP_X_FORWARDED_FOR\")\n    if x_forwarded_for:\n        return x_forwarded_for.split(\",\")[0].strip()\n    return request.META.get(\"REMOTE_ADDR\", \"\")\ndef should_count_post_view(request, post_id):\n    user = request.user if request.user.is_authenticated else None\n    if user:\n        identity = f\"user:{user.id}\"\n    else:",
         "detail": "apps.news.views",
         "documentation": {}
     },
@@ -2572,7 +2013,7 @@
         "kind": 2,
         "importPath": "apps.news.views",
         "description": "apps.news.views",
-        "peekOfCode": "def should_count_post_view(request, post_id):\n    \"\"\"\n    جلوگیری از افزایش غیرواقعی view.\n    برای هر کاربر/session/IP روی هر پست، هر 6 ساعت فقط یک بار view حساب می‌شود.\n    \"\"\"\n    user = request.user if request.user.is_authenticated else None\n    if user:\n        identity = f\"user:{user.id}\"\n    else:\n        session_key = request.session.session_key",
+        "peekOfCode": "def should_count_post_view(request, post_id):\n    user = request.user if request.user.is_authenticated else None\n    if user:\n        identity = f\"user:{user.id}\"\n    else:\n        session_key = request.session.session_key\n        if not session_key:\n            request.session.save()\n            session_key = request.session.session_key\n        ip = get_client_ip(request)",
         "detail": "apps.news.views",
         "documentation": {}
     },

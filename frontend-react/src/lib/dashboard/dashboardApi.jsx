@@ -30,13 +30,28 @@ export const dashboardApi = {
   },
 
   async getMyContent(params = {}) {
-    const { data } = await api.get("/dashboard/my-content/", { params });
+    const safeParams =
+      params && typeof params === "object" && !Array.isArray(params)
+        ? params
+        : {};
+
+    const { data } = await api.get("/dashboard/my-content/", {
+      params: safeParams,
+    });
     return normalizeListResponse(data);
   },
 
   async getMyPosts(params = {}) {
-    const { data } = await api.get("/news/posts/mine/", { params });
-    return normalizeListResponse(data);
+    const safeParams =
+      params && typeof params === "object" && !Array.isArray(params)
+        ? params
+        : {};
+
+    const { data } = await api.get("/news/posts/mine/", {
+      params: safeParams,
+    });
+
+    return data;
   },
 
   async getModerationComments() {

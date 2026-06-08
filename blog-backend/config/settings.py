@@ -29,7 +29,6 @@ INSTALLED_APPS = [
     "storages",
     "apps.accounts",
     "apps.news",
-    "apps.media",
     "apps.marketing",
     "apps.dashboard",
     "apps.core",

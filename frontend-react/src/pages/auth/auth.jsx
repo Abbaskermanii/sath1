@@ -44,7 +44,7 @@ export default function AuthPage() {
   });
 
   const title = useMemo(
-    () => (mode === "login" ? "ورود به حساب" : "ثبت‌نام در شاخص یک"),
+    () => (mode === "login" ? "ورود به حساب" : "ثبت‌نام در شاخص اول"),
     [mode],
   );
 
@@ -160,7 +160,7 @@ export default function AuthPage() {
                 {title}
               </h1>
               <p className="text-[13px] text-zinc-500 mt-1.5">
-                به شاخص یک خوش آمدید
+                به شاخص اول خوش آمدید
               </p>
             </div>
 
@@ -323,7 +323,7 @@ export default function AuthPage() {
             </form>
 
             <p className="text-center text-[11px] text-zinc-500 mt-3">
-              با ادامه، قوانین و حریم خصوصی شاخص یک را می‌پذیرید.
+              با ادامه، قوانین و حریم خصوصی شاخص اول را می‌پذیرید.
             </p>
           </div>
 
@@ -334,7 +334,7 @@ export default function AuthPage() {
             <div className="relative z-10">
               <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full border border-white/10 bg-white/5 text-[11px]">
                 <div className="w-2 h-2 bg-emerald-500 rounded-full animate-pulse" />
-                شاخص یک
+                شاخص اول
               </div>
 
               <h2 className="mt-6 text-3xl lg:text-4xl font-bold leading-tight">

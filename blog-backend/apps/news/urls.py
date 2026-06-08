@@ -15,6 +15,4 @@ router.register("posts", PostViewSet, basename="news-post")
 router.register("comments", CommentViewSet, basename="news-comment")
 router.register("bookmarks", BookmarkViewSet, basename="news-bookmark")
 
-
 urlpatterns = router.urls
-

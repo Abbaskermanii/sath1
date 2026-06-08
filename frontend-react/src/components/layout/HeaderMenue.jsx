@@ -93,18 +93,14 @@ function HeaderMenue() {
     >
       <Navbar />
 
-      <div className="flex max-w-7xl mx-auto items-center justify-between h-24 px-4">
+      <div className="flex max-w-7xl mx-auto items-center justify-between h-18 px-6">
         <button
           type="button"
           onClick={() => navigate("/")}
           className="flex items-center gap-2 text-white cursor-pointer shrink-0"
         >
-          <img
-            src="/logo.jpg"
-            alt="لوگوی شاخص یک"
-            className="h-24 w-24 object-contain"
-          />
-          <span className="text-3xl font-semibold">شاخص یک</span>
+        
+          <span className="text-4xl font-extrabold">شاخص اول</span>
         </button>
 
         <div className="flex gap-3 items-center">

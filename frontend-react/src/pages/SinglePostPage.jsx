@@ -17,6 +17,8 @@ import {
   ChevronDown,
   ChevronUp,
   SlidersHorizontal,
+  Play,
+  Volume2,
 } from "lucide-react";
 import { newsApi } from "../lib/news/newsApi";
 import CategoryNewsSection from "../components/home/CategoryNewsSection";
@@ -87,22 +89,118 @@ function extractList(payload) {
   return [];
 }
 
+function normalizeEmbedUrl(url = "") {
+  if (!url) return "";
+
+  const trimmed = String(url).trim();
+
+  const scriptSrcMatch = trimmed.match(/src=["']([^"']+)["']/i);
+  const rawUrl = scriptSrcMatch ? scriptSrcMatch[1] : trimmed;
+
+  if (!rawUrl) return "";
+
+  if (rawUrl.includes("youtube.com/watch?v=")) {
+    const videoId = rawUrl.split("v=")[1]?.split("&")[0];
+    return videoId ? `https://www.youtube.com/embed/${videoId}` : rawUrl;
+  }
+
+  if (rawUrl.includes("youtu.be/")) {
+    const videoId = rawUrl.split("youtu.be/")[1]?.split("?")[0];
+    return videoId ? `https://www.youtube.com/embed/${videoId}` : rawUrl;
+  }
+
+  if (rawUrl.includes("youtube.com/embed/")) {
+    return rawUrl;
+  }
+
+  const aparatEmbedMatch = rawUrl.match(/aparat\.com\/embed\/([^/?&]+)/i);
+  if (aparatEmbedMatch) {
+    const videoHash = aparatEmbedMatch[1];
+    return `https://www.aparat.com/video/video/embed/videohash/${videoHash}/vt/frame`;
+  }
+
+  const aparatVideoMatch = rawUrl.match(/aparat\.com\/v\/([^/?&]+)/i);
+  if (aparatVideoMatch) {
+    const videoHash = aparatVideoMatch[1];
+    return `https://www.aparat.com/video/video/embed/videohash/${videoHash}/vt/frame`;
+  }
+
+  if (rawUrl.includes("/video/video/embed/videohash/")) {
+    return rawUrl;
+  }
+
+  return rawUrl;
+}
+
+function isVideoPost(post = {}) {
+  return (
+    (post?.mediaType || post?.media_type || "").toLowerCase() === "video" ||
+    (post?.postType || post?.post_type || "").toLowerCase() === "video" ||
+    !!post?.videoFile ||
+    !!post?.video_file ||
+    !!post?.embedUrl ||
+    !!post?.embed_url
+  );
+}
+
+function isPodcastPost(post = {}) {
+  return (
+    (post?.mediaType || post?.media_type || "").toLowerCase() === "podcast" ||
+    (post?.postType || post?.post_type || "").toLowerCase() === "podcast" ||
+    !!post?.audioFile ||
+    !!post?.audio_file
+  );
+}
+
+function getPostImage(post = {}) {
+  return (
+    post?.cover ||
+    post?.image ||
+    post?.coverImage ||
+    post?.cover_image ||
+    post?.thumbnail ||
+    post?.video_thumbnail ||
+    post?.videoThumbnail ||
+    post?.poster ||
+    ""
+  );
+}
+
+function getPostVideoFile(post = {}) {
+  return post?.videoFile || post?.video_file || "";
+}
+
+function getPostAudioFile(post = {}) {
+  return post?.audioFile || post?.audio_file || "";
+}
+
+function getPostEmbedUrl(post = {}) {
+  return post?.embedUrl || post?.embed_url || "";
+}
+
 function normalizeRelatedItem(item) {
   return {
     id: item?.id,
     slug: item?.slug,
-    href: item?.slug ? `/news/${item.slug}` : "#",
+    href: item?.href || (item?.slug ? `/news/${item.slug}` : "#"),
     title: item?.title || "بدون عنوان",
     description: item?.excerpt || item?.description || "",
-    cover: item?.cover || item?.image || "",
-    category: item?.category?.title || "",
-    isVideo: item?.post_type === "video",
-    duration: item?.duration || "",
+    cover: getPostImage(item),
+    category:
+      item?.category?.title || item?.categoryTitle || item?.category || "",
+    isVideo: isVideoPost(item),
+    duration: item?.mediaDuration || item?.media_duration || "",
   };
 }
 
 function normalizeTrendingItem(item) {
-  const publishedAt = item?.published_at || item?.created_at || null;
+  const publishedAt =
+    item?.publishedAt ||
+    item?.published_at ||
+    item?.createdAt ||
+    item?.created_at ||
+    null;
+
   const timeLabel = publishedAt
     ? new Date(publishedAt).toLocaleDateString("fa-IR", {
         month: "long",
@@ -112,11 +210,11 @@ function normalizeTrendingItem(item) {
 
   return {
     id: item?.id ?? Math.random(),
-    href: item?.slug ? `/news/${item.slug}` : "#",
-    tag: item?.category?.title || "عمومی",
+    href: item?.href || (item?.slug ? `/news/${item.slug}` : "#"),
+    tag: item?.category?.title || item?.category || "عمومی",
     title: item?.title || "بدون عنوان",
     time: timeLabel,
-    hot: (item?.views ?? 0) > 1000,
+    hot: (item?.views ?? item?.viewsCount ?? 0) > 1000,
   };
 }
 
@@ -124,15 +222,23 @@ function normalizeComment(c) {
   return {
     id: c?.id ?? Date.now() + Math.random(),
     author:
-      c?.author_name || c?.user?.full_name || c?.user?.username || "کاربر",
-    date: c?.created_at
-      ? new Date(c.created_at).toLocaleDateString("fa-IR", {
-          year: "numeric",
-          month: "long",
-          day: "numeric",
-        })
-      : "لحظاتی پیش",
-    ts: c?.created_at ? new Date(c.created_at).getTime() : Date.now(),
+      c?.author_name ||
+      c?.user?.full_name ||
+      c?.user?.username ||
+      c?.author ||
+      "کاربر",
+    date:
+      c?.createdAt || c?.created_at
+        ? new Date(c?.createdAt || c?.created_at).toLocaleDateString("fa-IR", {
+            year: "numeric",
+            month: "long",
+            day: "numeric",
+          })
+        : "لحظاتی پیش",
+    ts:
+      c?.createdAt || c?.created_at
+        ? new Date(c?.createdAt || c?.created_at).getTime()
+        : Date.now(),
     text: c?.content || c?.text || "",
   };
 }
@@ -151,6 +257,81 @@ function getApiErrorMessage(error, fallback = "خطا در بارگذاری پس
     if (typeof firstVal === "string") return firstVal;
   }
   return fallback;
+}
+
+function MediaBlock({ post }) {
+  const videoFile = getPostVideoFile(post);
+  const audioFile = getPostAudioFile(post);
+  const safeEmbedUrl = normalizeEmbedUrl(getPostEmbedUrl(post));
+  const poster = getPostImage(post);
+
+  if (isVideoPost(post)) {
+    if (videoFile) {
+      return (
+        <div className="border-b border-neutral-200 bg-black">
+          <video
+            controls
+            preload="metadata"
+            poster={poster || undefined}
+            className="w-full max-h-[520px] object-contain bg-black"
+          >
+            <source src={videoFile} type="video/mp4" />
+            مرورگر شما از پخش ویدیو پشتیبانی نمی‌کند.
+          </video>
+        </div>
+      );
+    }
+
+    if (safeEmbedUrl) {
+      return (
+        <div className="border-b border-neutral-200 bg-black">
+          <div className="relative w-full" style={{ paddingTop: "56.25%" }}>
+            <iframe
+              src={safeEmbedUrl}
+              title={post?.title || "video"}
+              className="absolute inset-0 h-full w-full"
+              allow="autoplay; fullscreen; picture-in-picture"
+              allowFullScreen
+            />
+          </div>
+        </div>
+      );
+    }
+  }
+
+  if (isPodcastPost(post)) {
+    if (audioFile) {
+      return (
+        <div className="border-b border-neutral-200 bg-neutral-50 px-4 py-6 md:px-8">
+          <div className="mb-4 flex items-center gap-2">
+            <Volume2 size={18} />
+            <h3 className="text-base font-black md:text-lg">پخش صوت</h3>
+          </div>
+          <audio controls preload="metadata" className="w-full">
+            <source src={audioFile} />
+            مرورگر شما از پخش صوت پشتیبانی نمی‌کند.
+          </audio>
+        </div>
+      );
+    }
+
+    if (safeEmbedUrl) {
+      return (
+        <div className="border-b border-neutral-200 bg-neutral-50 px-4 py-6 md:px-8">
+          <div className="relative w-full" style={{ minHeight: 120 }}>
+            <iframe
+              src={safeEmbedUrl}
+              title={post?.title || "podcast"}
+              className="min-h-[120px] w-full"
+              allow="autoplay"
+            />
+          </div>
+        </div>
+      );
+    }
+  }
+
+  return null;
 }
 
 function useSinglePostData(slug) {
@@ -193,7 +374,7 @@ function useSinglePostData(slug) {
 
       if (bookmarkRes.status === "fulfilled") {
         const bookmarkValue = bookmarkRes.value;
-        if (typeof bookmarkValue === "object") {
+        if (typeof bookmarkValue === "object" && bookmarkValue !== null) {
           setIsSaved(!!bookmarkValue?.id);
           setBookmarkId(bookmarkValue?.id ?? null);
         } else {
@@ -410,14 +591,31 @@ export default function SinglePostPage() {
   };
 
   const formattedViews = useMemo(() => {
-    const views = post?.views ?? 0;
+    const views = post?.views ?? post?.viewsCount ?? 0;
     return new Intl.NumberFormat("fa-IR").format(views);
-  }, [post?.views]);
+  }, [post?.views, post?.viewsCount]);
 
   const postTypeLabel = useMemo(() => {
     const postTypeValue = post?.postType || post?.post_type || post?.type || "";
     return POST_TYPES.find((t) => t.value === postTypeValue)?.label || "عمومی";
   }, [post]);
+
+  const isVideo = isVideoPost(post);
+  const isPodcast = isPodcastPost(post);
+  const heroImage = getPostImage(post);
+
+  const authorName =
+    post?.author?.full_name ||
+    post?.author?.email ||
+    post?.author_name ||
+    post?.author ||
+    "تحریریه";
+
+  const publishedAt =
+    post?.publishedAt ||
+    post?.published_at ||
+    post?.createdAt ||
+    post?.created_at;
 
   const currentUrl = typeof window !== "undefined" ? window.location.href : "";
   const encodedUrl = encodeURIComponent(currentUrl);
@@ -507,16 +705,17 @@ export default function SinglePostPage() {
     }
   };
 
-  if (loading)
+  if (loading) {
     return (
-      <div className="min-h-screen grid place-items-center">
+      <div className="grid min-h-screen place-items-center">
         در حال بارگذاری...
       </div>
     );
+  }
 
   if (error || !post) {
     return (
-      <div className="min-h-screen grid place-items-center p-6">
+      <div className="grid min-h-screen place-items-center p-6">
         <div className="max-w-xl rounded-2xl border border-red-200 bg-red-50 p-6 text-center">
           <h2 className="text-xl font-bold text-red-700">
             خطا در بارگذاری خبر
@@ -535,7 +734,6 @@ export default function SinglePostPage() {
       </div>
     );
   }
-  console.log("SINGLE POST DATA:", post);
 
   const socialLinks = [
     {
@@ -563,21 +761,21 @@ export default function SinglePostPage() {
   return (
     <div dir="rtl" className="flex justify-center bg-white">
       <div
-        className="fixed top-0 left-0 z-50 h-1 bg-black transition-all duration-150"
+        className="fixed left-0 top-0 z-50 h-1 bg-black transition-all duration-150"
         style={{ width: `${readingProgress}%` }}
       />
 
-      <main className="w-full max-w-7xl border-x border-neutral-200 min-h-screen">
+      <main className="min-h-screen w-full max-w-7xl border-x border-neutral-200">
         <div className="flex flex-col xl:flex-row">
-          <aside className="hidden xl:flex xl:w-[72px] border-l border-neutral-200 justify-center">
-            <div className="sticky top-24 h-fit py-6 flex flex-col items-center gap-2">
+          <aside className="hidden justify-center border-l border-neutral-200 xl:flex xl:w-[72px]">
+            <div className="sticky top-24 flex h-fit flex-col items-center gap-2 py-6">
               {socialLinks.map((btn) => (
                 <a
                   key={btn.label}
                   href={btn.href}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="w-9 h-9 rounded-full border border-neutral-300 hover:bg-black hover:text-white grid place-items-center transition-all"
+                  className="grid h-9 w-9 place-items-center rounded-full border border-neutral-300 transition-all hover:bg-black hover:text-white"
                   title={btn.label}
                 >
                   {btn.icon}
@@ -586,9 +784,9 @@ export default function SinglePostPage() {
 
               <button
                 onClick={handleCopy}
-                className={`w-9 h-9 rounded-full border grid place-items-center transition-all ${
+                className={`grid h-9 w-9 place-items-center rounded-full border transition-all ${
                   copied
-                    ? "bg-emerald-500 text-white border-emerald-500"
+                    ? "border-emerald-500 bg-emerald-500 text-white"
                     : "border-neutral-300 hover:bg-black hover:text-white"
                 }`}
                 title="کپی لینک"
@@ -599,9 +797,9 @@ export default function SinglePostPage() {
               <button
                 onClick={handleToggleBookmark}
                 disabled={bookmarkLoading}
-                className={`w-9 h-9 rounded-full border grid place-items-center transition-all disabled:opacity-60 ${
+                className={`grid h-9 w-9 place-items-center rounded-full border transition-all disabled:opacity-60 ${
                   isSaved
-                    ? "bg-black text-white border-black"
+                    ? "border-black bg-black text-white"
                     : "border-neutral-300 hover:bg-black hover:text-white"
                 }`}
                 title="ذخیره"
@@ -612,7 +810,7 @@ export default function SinglePostPage() {
               {typeof navigator !== "undefined" && !!navigator.share && (
                 <button
                   onClick={handleShareNative}
-                  className="w-9 h-9 rounded-full border border-neutral-300 hover:bg-black hover:text-white grid place-items-center transition-all"
+                  className="grid h-9 w-9 place-items-center rounded-full border border-neutral-300 transition-all hover:bg-black hover:text-white"
                   title="اشتراک‌گذاری"
                 >
                   <Share2 size={15} />
@@ -623,72 +821,88 @@ export default function SinglePostPage() {
 
           <section className="w-full xl:flex-1">
             <article>
-              <div className="border-b border-neutral-200 px-4 md:px-8 py-6 md:py-8">
-                <div className="flex flex-wrap items-center gap-3 text-xs text-neutral-500 mb-4">
-                  <span className="px-3 py-1 rounded-full text-xs font-bold border bg-neutral-100 text-neutral-700 border-neutral-300">
+              <div className="border-b border-neutral-200 px-4 py-6 md:px-8 md:py-8">
+                <div className="mb-4 flex flex-wrap items-center gap-3 text-xs text-neutral-500">
+                  <span className="rounded-full border border-neutral-300 bg-neutral-100 px-3 py-1 text-xs font-bold text-neutral-700">
                     {postTypeLabel}
                   </span>
+
+                  {isVideo && (
+                    <span className="inline-flex items-center gap-1 font-bold text-red-600">
+                      <Play size={14} />
+                      ویدیو
+                    </span>
+                  )}
+
+                  {isPodcast && (
+                    <span className="inline-flex items-center gap-1 font-bold text-emerald-700">
+                      <Volume2 size={14} />
+                      پادکست
+                    </span>
+                  )}
 
                   <span className="inline-flex items-center gap-1">
                     <Clock3 size={14} />
                     {readTime(post?.content)} دقیقه مطالعه
                   </span>
+
                   <span className="inline-flex items-center gap-1">
                     <Eye size={14} />
                     {formattedViews} بازدید
                   </span>
                 </div>
 
-                <h1 className="text-2xl md:text-4xl font-black leading-[1.5] mb-4">
+                <h1 className="mb-4 text-2xl font-black leading-[1.5] md:text-4xl">
                   {post?.title}
                 </h1>
 
                 {(post?.excerpt || post?.description) && (
-                  <p className="text-[15px] md:text-base leading-8 text-neutral-600 max-w-4xl">
+                  <p className="max-w-4xl text-[15px] leading-8 text-neutral-600 md:text-base">
                     {post?.excerpt || post?.description}
                   </p>
                 )}
 
-                <div className="mt-5 flex flex-wrap items-center gap-x-5 gap-y-2 text-xs md:text-sm text-neutral-500">
+                <div className="mt-5 flex flex-wrap items-center gap-x-5 gap-y-2 text-xs text-neutral-500 md:text-sm">
                   <span className="inline-flex items-center gap-1">
                     <User2 size={15} />
                     <span className="font-bold text-neutral-900">
-                      {post?.author?.full_name ||
-                        post?.author?.email ||
-                        "تحریریه"}
+                      {authorName}
                     </span>
                   </span>
+
                   <span className="inline-flex items-center gap-1">
                     <CalendarDays size={15} />
-                    {formatDate(post?.published_at || post?.created_at)}
+                    {formatDate(publishedAt)}
                   </span>
                 </div>
               </div>
 
-              {(post?.cover || post?.image) && (
+              <MediaBlock post={post} />
+
+              {!isVideo && !isPodcast && !!heroImage && (
                 <figure className="border-b border-neutral-200">
                   <img
-                    src={post?.cover || post?.image}
+                    src={heroImage}
                     alt={post?.title}
                     loading="lazy"
-                    className="w-full h-[220px] md:h-[380px] object-cover"
+                    className="h-[220px] w-full object-cover md:h-[380px]"
                   />
                 </figure>
               )}
 
-              <div className="px-4 md:px-8 py-8 border-b border-neutral-200">
+              <div className="border-b border-neutral-200 px-4 py-8 md:px-8">
                 <div
-                  className="prose prose-neutral max-w-none prose-p:leading-[2.1] prose-p:text-[15px] md:prose-p:text-[17px] prose-li:text-[15px] md:prose-li:text-[17px] prose-headings:font-black"
+                  className="prose prose-neutral max-w-none prose-p:leading-[2.1] prose-p:text-[15px] prose-li:text-[15px] prose-headings:font-black md:prose-p:text-[17px] md:prose-li:text-[17px]"
                   dangerouslySetInnerHTML={{ __html: safeHtml }}
                 />
               </div>
 
-              <section className="px-4 md:px-8 py-8 border-b border-neutral-200">
-                <div className="flex flex-wrap items-center justify-between gap-3 mb-6">
+              <section className="border-b border-neutral-200 px-4 py-8 md:px-8">
+                <div className="mb-6 flex flex-wrap items-center justify-between gap-3">
                   <div className="flex items-center gap-2">
                     <MessageCircle size={20} />
-                    <h3 className="text-lg md:text-xl font-black">دیدگاه‌ها</h3>
-                    <span className="text-[10px] font-bold bg-black text-white px-2 py-0.5 rounded-full">
+                    <h3 className="text-lg font-black md:text-xl">دیدگاه‌ها</h3>
+                    <span className="rounded-full bg-black px-2 py-0.5 text-[10px] font-bold text-white">
                       {comments.length}
                     </span>
                   </div>
@@ -701,7 +915,7 @@ export default function SinglePostPage() {
                         setCommentsSort(e.target.value);
                         setVisibleCommentsCount(COMMENTS_STEP);
                       }}
-                      className="text-[12px] border border-neutral-300 rounded-lg px-2 py-1 bg-white outline-none"
+                      className="rounded-lg border border-neutral-300 bg-white px-2 py-1 text-[12px] outline-none"
                     >
                       <option value="newest">جدیدترین</option>
                       <option value="oldest">قدیمی‌ترین</option>
@@ -716,18 +930,22 @@ export default function SinglePostPage() {
                     placeholder="دیدگاه خود را بنویسید..."
                     rows={4}
                     maxLength={500}
-                    className="w-full rounded-xl border border-neutral-300 p-4 text-sm outline-none resize-none"
+                    className="w-full resize-none rounded-xl border border-neutral-300 p-4 text-sm outline-none"
                   />
                   <div className="mt-2 flex items-center justify-between">
                     <span
-                      className={`text-xs ${commentText.length > 450 ? "text-red-500" : "text-neutral-400"}`}
+                      className={`text-xs ${
+                        commentText.length > 450
+                          ? "text-red-500"
+                          : "text-neutral-400"
+                      }`}
                     >
                       {commentText.length} / ۵۰۰
                     </span>
                     <button
                       type="submit"
                       disabled={!commentText.trim() || commentSubmitting}
-                      className="px-5 py-2 rounded-lg bg-black text-white text-xs font-bold disabled:opacity-50 disabled:cursor-not-allowed"
+                      className="rounded-lg bg-black px-5 py-2 text-xs font-bold text-white disabled:cursor-not-allowed disabled:opacity-50"
                     >
                       {commentSubmitting ? "در حال ارسال..." : "ثبت دیدگاه"}
                     </button>
@@ -743,14 +961,14 @@ export default function SinglePostPage() {
                     {visibleComments.map((c) => (
                       <article
                         key={c.id}
-                        className="border border-neutral-200 rounded-xl p-4"
+                        className="rounded-xl border border-neutral-200 p-4"
                       >
-                        <div className="flex items-center gap-2 mb-2">
-                          <div className="w-9 h-9 rounded-full bg-black text-white text-xs grid place-items-center font-bold shrink-0">
+                        <div className="mb-2 flex items-center gap-2">
+                          <div className="grid h-9 w-9 shrink-0 place-items-center rounded-full bg-black text-xs font-bold text-white">
                             {c.author?.charAt(0) || "ک"}
                           </div>
                           <div className="min-w-0">
-                            <p className="text-sm font-bold truncate">
+                            <p className="truncate text-sm font-bold">
                               {c.author}
                             </p>
                             <p className="text-[11px] text-neutral-400">
@@ -758,7 +976,7 @@ export default function SinglePostPage() {
                             </p>
                           </div>
                         </div>
-                        <p className="text-[14px] md:text-[15px] text-neutral-700 leading-8 pr-11">
+                        <p className="pr-11 text-[14px] leading-8 text-neutral-700 md:text-[15px]">
                           {c.text}
                         </p>
                       </article>
@@ -772,16 +990,17 @@ export default function SinglePostPage() {
                       onClick={() =>
                         setVisibleCommentsCount((prev) => prev + COMMENTS_STEP)
                       }
-                      className="inline-flex items-center gap-1.5 px-4 py-2 rounded-xl border border-neutral-300 text-sm font-bold"
+                      className="inline-flex items-center gap-1.5 rounded-xl border border-neutral-300 px-4 py-2 text-sm font-bold"
                     >
                       مشاهده بیشتر
                       <ChevronDown size={16} />
                     </button>
                   )}
+
                   {visibleCommentsCount > COMMENTS_STEP && (
                     <button
                       onClick={() => setVisibleCommentsCount(COMMENTS_STEP)}
-                      className="inline-flex items-center gap-1.5 px-4 py-2 rounded-xl border border-neutral-300 text-neutral-600 text-sm"
+                      className="inline-flex items-center gap-1.5 rounded-xl border border-neutral-300 px-4 py-2 text-sm text-neutral-600"
                     >
                       نمایش کمتر
                       <ChevronUp size={16} />
@@ -792,9 +1011,9 @@ export default function SinglePostPage() {
             </article>
           </section>
 
-          <aside className="hidden xl:block xl:w-[320px] border-r border-neutral-200">
+          <aside className="hidden border-r border-neutral-200 xl:block xl:w-[320px]">
             <div className="sticky top-24 p-5">
-              <div className="flex items-center gap-2 mb-4">
+              <div className="mb-4 flex items-center gap-2">
                 <Flame size={18} />
                 <h4 className="text-sm font-black tracking-wider">
                   پرخواننده‌ترین‌ها
@@ -804,10 +1023,10 @@ export default function SinglePostPage() {
               <div className="divide-y divide-neutral-200">
                 {trendingLoading ? (
                   Array.from({ length: 5 }).map((_, i) => (
-                    <div key={i} className="py-3 animate-pulse">
-                      <div className="h-3 w-16 bg-neutral-200 rounded mb-2" />
-                      <div className="h-4 w-full bg-neutral-200 rounded mb-2" />
-                      <div className="h-3 w-20 bg-neutral-200 rounded" />
+                    <div key={i} className="animate-pulse py-3">
+                      <div className="mb-2 h-3 w-16 rounded bg-neutral-200" />
+                      <div className="mb-2 h-4 w-full rounded bg-neutral-200" />
+                      <div className="h-3 w-20 rounded bg-neutral-200" />
                     </div>
                   ))
                 ) : trendingItems.length > 0 ? (
@@ -821,17 +1040,17 @@ export default function SinglePostPage() {
                         {i + 1}
                       </span>
                       <div className="min-w-0">
-                        <div className="flex items-center gap-1.5 mb-1">
-                          <span className="text-[10px] text-neutral-400 font-bold">
+                        <div className="mb-1 flex items-center gap-1.5">
+                          <span className="text-[10px] font-bold text-neutral-400">
                             {a.tag}
                           </span>
                           {a.hot && (
-                            <span className="text-[9px] bg-red-500 text-white px-1.5 py-0.5 rounded">
+                            <span className="rounded bg-red-500 px-1.5 py-0.5 text-[9px] text-white">
                               داغ
                             </span>
                           )}
                         </div>
-                        <p className="text-[13px] leading-6 text-neutral-800 line-clamp-2">
+                        <p className="line-clamp-2 text-[13px] leading-6 text-neutral-800">
                           {a.title}
                         </p>
                         <span className="text-[11px] text-neutral-400">
@@ -850,13 +1069,13 @@ export default function SinglePostPage() {
           </aside>
         </div>
 
-        <section className="border-t-2 border-black px-4 md:px-8 py-8">
+        <section className="border-t-2 border-black px-4 py-8 md:px-8">
           {relatedLoading ? (
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+            <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
               {Array.from({ length: 4 }).map((_, i) => (
                 <div
                   key={i}
-                  className="h-56 rounded-xl bg-neutral-100 animate-pulse"
+                  className="h-56 animate-pulse rounded-xl bg-neutral-100"
                 />
               ))}
             </div>
@@ -868,7 +1087,7 @@ export default function SinglePostPage() {
               stories={relatedItems}
             />
           ) : (
-            <div className="border border-dashed border-neutral-300 rounded-xl p-4 text-sm text-neutral-500">
+            <div className="rounded-xl border border-dashed border-neutral-300 p-4 text-sm text-neutral-500">
               خبر مرتبطی برای نمایش وجود ندارد.
             </div>
           )}
@@ -878,7 +1097,7 @@ export default function SinglePostPage() {
       {showToTop && (
         <button
           onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
-          className="fixed bottom-6 left-6 z-40 w-11 h-11 rounded-full bg-black text-white grid place-items-center shadow-lg"
+          className="fixed bottom-6 left-6 z-40 grid h-11 w-11 place-items-center rounded-full bg-black text-white shadow-lg"
           title="بازگشت به بالا"
         >
           <ArrowUp size={18} />

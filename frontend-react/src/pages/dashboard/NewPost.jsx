@@ -3,7 +3,42 @@ import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import { api } from "../../lib/axiosClient";
 
-const MAX_COVER_SIZE_MB = 5;
+const MAX_COVER_SIZE_MB = 1;
+const MAX_VIDEO_SIZE_MB = 40;
+const MAX_AUDIO_SIZE_MB = 30;
+
+function extractEmbedUrl(value = "") {
+  const input = String(value || "").trim();
+  if (!input) return "";
+
+  // اگر snippet کامل HTML داده شده باشد، src را استخراج کن
+  const scriptSrcMatch = input.match(/src=["']([^"']+)["']/i);
+  const rawUrl = scriptSrcMatch ? scriptSrcMatch[1] : input;
+
+  // لینک embed آپارات را به لینک قابل‌استفاده برای iframe تبدیل کن
+  const aparatMatch = rawUrl.match(
+    /(?:https?:\/\/)?(?:www\.)?aparat\.com\/embed\/([^/?&"']+)/i,
+  );
+
+  if (aparatMatch) {
+    const videoHash = aparatMatch[1];
+    return `https://www.aparat.com/video/video/embed/videohash/${videoHash}/vt/frame`;
+  }
+
+  return rawUrl;
+}
+
+function isValidEmbedValue(value = "") {
+  const normalized = extractEmbedUrl(value);
+  if (!normalized) return true;
+
+  try {
+    new URL(normalized);
+    return true;
+  } catch {
+    return false;
+  }
+}
 
 const initialForm = {
   title: "",
@@ -14,6 +49,8 @@ const initialForm = {
   status: "draft",
   tags: [],
   post_type: "",
+  media_type: "none",
+  embed_url: "",
 };
 
 function normalizeList(data) {
@@ -59,9 +96,7 @@ function getApiErrorMessage(error) {
   const data = error?.response?.data;
 
   if (!data) return error?.message || "خطای ناشناخته رخ داد.";
-
   if (typeof data === "string") return data;
-
   if (data.detail) return data.detail;
   if (data.message) return data.message;
   if (data.error) return data.error;
@@ -95,7 +130,6 @@ function mapApiErrors(error) {
 
 function FieldError({ message }) {
   if (!message) return null;
-
   return <p className="mt-1.5 text-xs text-red-400">{message}</p>;
 }
 
@@ -132,21 +166,24 @@ export default function NewPostPage() {
   const [coverFile, setCoverFile] = useState(null);
   const [coverPreview, setCoverPreview] = useState("");
 
+  const [videoFile, setVideoFile] = useState(null);
+  const [audioFile, setAudioFile] = useState(null);
+
   const [pageLoading, setPageLoading] = useState(true);
   const [submitting, setSubmitting] = useState(false);
 
   const selectedTagsCount = form.tags.length;
 
   const canSubmit = useMemo(() => {
-    return (
-      form.title.trim() &&
-      form.slug.trim() &&
-      form.post_type &&
-      form.content.trim() &&
-      form.tags.length > 0 &&
-      !submitting
-    );
-  }, [form, submitting]);
+    if (submitting) return false;
+    if (!form.title.trim()) return false;
+    if (!form.slug.trim()) return false;
+    if (!form.post_type) return false;
+    if (!form.tags.length) return false;
+    if (!coverFile) return false;
+    if (form.media_type === "none" && !form.content.trim()) return false;
+    return true;
+  }, [form, submitting, coverFile]);
 
   useEffect(() => {
     let mounted = true;
@@ -225,6 +262,28 @@ export default function NewPostPage() {
       return;
     }
 
+    if (name === "media_type") {
+      setForm((prev) => ({
+        ...prev,
+        media_type: value,
+        embed_url: value === "none" ? "" : prev.embed_url,
+      }));
+
+      if (value !== "video") setVideoFile(null);
+      if (value !== "podcast") setAudioFile(null);
+
+      setErrors((prev) => {
+        const next = { ...prev };
+        delete next.media_type;
+        delete next.video_file;
+        delete next.audio_file;
+        delete next.embed_url;
+        return next;
+      });
+
+      return;
+    }
+
     updateForm(name, value);
   }
 
@@ -275,7 +334,6 @@ export default function NewPostPage() {
     }
 
     const sizeMb = file.size / 1024 / 1024;
-
     if (sizeMb > MAX_COVER_SIZE_MB) {
       const message = `حجم تصویر نباید بیشتر از ${MAX_COVER_SIZE_MB} مگابایت باشد.`;
       toast.error(message);
@@ -293,8 +351,59 @@ export default function NewPostPage() {
     });
   }
 
+  function handleVideoChange(event) {
+    const file = event.target.files?.[0] ?? null;
+    event.target.value = "";
+
+    setVideoFile(null);
+
+    if (!file) return;
+
+    const sizeMb = file.size / 1024 / 1024;
+    if (sizeMb > MAX_VIDEO_SIZE_MB) {
+      const message = `حجم ویدیو نباید بیشتر از ${MAX_VIDEO_SIZE_MB} مگابایت باشد.`;
+      toast.error(message);
+      setErrors((prev) => ({ ...prev, video_file: message }));
+      return;
+    }
+
+    setVideoFile(file);
+    setErrors((prev) => {
+      const next = { ...prev };
+      delete next.video_file;
+      delete next.embed_url;
+      return next;
+    });
+  }
+
+  function handleAudioChange(event) {
+    const file = event.target.files?.[0] ?? null;
+    event.target.value = "";
+
+    setAudioFile(null);
+
+    if (!file) return;
+
+    const sizeMb = file.size / 1024 / 1024;
+    if (sizeMb > MAX_AUDIO_SIZE_MB) {
+      const message = `حجم فایل صوتی نباید بیشتر از ${MAX_AUDIO_SIZE_MB} مگابایت باشد.`;
+      toast.error(message);
+      setErrors((prev) => ({ ...prev, audio_file: message }));
+      return;
+    }
+
+    setAudioFile(file);
+    setErrors((prev) => {
+      const next = { ...prev };
+      delete next.audio_file;
+      delete next.embed_url;
+      return next;
+    });
+  }
+
   function validateForm() {
     const nextErrors = {};
+    const normalizedEmbed = extractEmbedUrl(form.embed_url);
 
     if (!form.title.trim()) nextErrors.title = "عنوان الزامی است.";
 
@@ -306,8 +415,30 @@ export default function NewPostPage() {
     }
 
     if (!form.post_type) nextErrors.post_type = "قالب پست الزامی است.";
-    if (!form.content.trim()) nextErrors.content = "محتوا الزامی است.";
     if (!form.tags.length) nextErrors.tags = "حداقل یک تگ انتخاب کنید.";
+    if (!coverFile) nextErrors.cover = "کاور برای همه پست‌ها الزامی است.";
+
+    if (form.media_type === "none" && !form.content.trim()) {
+      nextErrors.content = "محتوا الزامی است.";
+    }
+
+    if (form.embed_url.trim() && !isValidEmbedValue(form.embed_url)) {
+      nextErrors.embed_url = "لینک یا کد embed معتبر نیست.";
+    }
+
+    if (form.media_type === "video") {
+      if (!videoFile && !normalizedEmbed) {
+        nextErrors.video_file =
+          "برای پست ویدیویی، فایل ویدیو یا لینک embed الزامی است.";
+      }
+    }
+
+    if (form.media_type === "podcast") {
+      if (!audioFile && !normalizedEmbed) {
+        nextErrors.audio_file =
+          "برای پادکست، فایل صوتی یا لینک embed الزامی است.";
+      }
+    }
 
     setErrors(nextErrors);
 
@@ -321,6 +452,7 @@ export default function NewPostPage() {
 
   function buildPayload() {
     const fd = new FormData();
+    const normalizedEmbed = extractEmbedUrl(form.embed_url);
 
     fd.append("title", form.title.trim());
     fd.append("slug", toSlug(form.slug));
@@ -328,12 +460,16 @@ export default function NewPostPage() {
     fd.append("content", form.content.trim());
     fd.append("status", form.status);
     fd.append("post_type", form.post_type);
+    fd.append("media_type", form.media_type);
 
     if (form.category) fd.append("category", String(form.category));
+    if (normalizedEmbed) fd.append("embed_url", normalizedEmbed);
 
     form.tags.forEach((tagId) => fd.append("tags", String(tagId)));
 
     if (coverFile) fd.append("cover", coverFile);
+    if (videoFile) fd.append("video_file", videoFile);
+    if (audioFile) fd.append("audio_file", audioFile);
 
     return fd;
   }
@@ -463,12 +599,22 @@ export default function NewPostPage() {
                 </option>
               ))}
             </select>
-            {!postTypes.length && (
-              <p className="mt-1.5 text-xs text-amber-400">
-                هیچ قالبی از سرور دریافت نشد.
-              </p>
-            )}
             <FieldError message={errors.post_type} />
+          </div>
+
+          <div>
+            <Label>نوع رسانه</Label>
+            <select
+              name="media_type"
+              value={form.media_type}
+              onChange={handleChange}
+              className={baseInputClass(errors.media_type)}
+            >
+              <option value="none">بدون رسانه</option>
+              <option value="video">ویدیو</option>
+              <option value="podcast">پادکست</option>
+            </select>
+            <FieldError message={errors.media_type} />
           </div>
 
           <div>
@@ -512,14 +658,11 @@ export default function NewPostPage() {
               placeholder="خلاصه‌ای کوتاه برای نمایش در کارت خبر..."
               className={`${baseInputClass(errors.excerpt)} min-h-24 resize-y leading-7`}
             />
-            <div className="mt-1.5 flex justify-between text-xs text-zinc-500">
-              <FieldError message={errors.excerpt} />
-              <span>{form.excerpt.length} کاراکتر</span>
-            </div>
+            <FieldError message={errors.excerpt} />
           </div>
 
           <div className="md:col-span-2">
-            <Label required>محتوا</Label>
+            <Label required={form.media_type === "none"}>محتوا</Label>
             <textarea
               name="content"
               value={form.content}
@@ -527,15 +670,66 @@ export default function NewPostPage() {
               placeholder="متن کامل پست را وارد کنید..."
               className={`${baseInputClass(errors.content)} min-h-56 resize-y leading-8`}
             />
-            <div className="mt-1.5 flex justify-between text-xs text-zinc-500">
-              <FieldError message={errors.content} />
-              <span>{form.content.length} کاراکتر</span>
-            </div>
+            <FieldError message={errors.content} />
           </div>
 
-          <div className="md:col-span-2">
-            <Label>کاور</Label>
+          {(form.media_type === "video" || form.media_type === "podcast") && (
+            <div className="md:col-span-2">
+              <Label>لینک Embed</Label>
+              <input
+                type="text"
+                name="embed_url"
+                value={form.embed_url}
+                onChange={handleChange}
+                placeholder="لینک یا کد embed آپارات را وارد کنید"
+                dir="ltr"
+                className={`${baseInputClass(errors.embed_url)} text-left`}
+              />
+              <p className="mt-1.5 text-xs text-zinc-500">
+                می‌توانید URL مستقیم یا کد embed آپارات را وارد کنید.
+              </p>
+              <FieldError message={errors.embed_url} />
+            </div>
+          )}
 
+          {form.media_type === "video" && (
+            <div className="md:col-span-2">
+              <Label>فایل ویدیو</Label>
+              <input
+                type="file"
+                accept="video/*"
+                onChange={handleVideoChange}
+                className="block w-full cursor-pointer rounded-xl border border-zinc-700 bg-zinc-900 px-4 py-3 text-sm text-zinc-300"
+              />
+              {videoFile && (
+                <p className="mt-2 text-xs text-zinc-400">
+                  فایل انتخاب شده: {videoFile.name}
+                </p>
+              )}
+              <FieldError message={errors.video_file} />
+            </div>
+          )}
+
+          {form.media_type === "podcast" && (
+            <div className="md:col-span-2">
+              <Label>فایل صوتی</Label>
+              <input
+                type="file"
+                accept="audio/*"
+                onChange={handleAudioChange}
+                className="block w-full cursor-pointer rounded-xl border border-zinc-700 bg-zinc-900 px-4 py-3 text-sm text-zinc-300"
+              />
+              {audioFile && (
+                <p className="mt-2 text-xs text-zinc-400">
+                  فایل انتخاب شده: {audioFile.name}
+                </p>
+              )}
+              <FieldError message={errors.audio_file} />
+            </div>
+          )}
+
+          <div className="md:col-span-2">
+            <Label required>کاور</Label>
             <div className="rounded-2xl border border-dashed border-zinc-700 bg-zinc-900/50 p-4 transition hover:border-zinc-500">
               <input
                 type="file"
@@ -543,9 +737,9 @@ export default function NewPostPage() {
                 onChange={handleCoverChange}
                 className="block w-full cursor-pointer rounded-xl border border-zinc-700 bg-zinc-900 px-4 py-3 text-sm text-zinc-300 file:ml-4 file:cursor-pointer file:rounded-lg file:border-0 file:bg-white file:px-4 file:py-2 file:text-sm file:font-bold file:text-black hover:border-zinc-600"
               />
-
               <p className="mt-2 text-xs text-zinc-500">
-                فرمت تصویر مجاز است. حداکثر حجم: {MAX_COVER_SIZE_MB}MB
+                کاور برای همه پست‌ها الزامی است. حداکثر حجم: {MAX_COVER_SIZE_MB}
+                MB
               </p>
 
               {coverPreview && (
@@ -555,20 +749,6 @@ export default function NewPostPage() {
                     alt="پیش‌نمایش کاور"
                     className="h-64 w-full object-cover"
                   />
-
-                  <div className="flex flex-col gap-2 border-t border-zinc-800 p-3 text-xs text-zinc-400 sm:flex-row sm:items-center sm:justify-between">
-                    <span className="truncate">
-                      فایل انتخاب شده: {coverFile?.name}
-                    </span>
-
-                    <button
-                      type="button"
-                      onClick={removeCover}
-                      className="rounded-lg border border-red-500/40 px-3 py-2 text-red-300 transition hover:bg-red-500/10"
-                    >
-                      حذف کاور
-                    </button>
-                  </div>
                 </div>
               )}
 

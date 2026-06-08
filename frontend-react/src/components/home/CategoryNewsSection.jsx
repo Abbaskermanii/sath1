@@ -1,8 +1,7 @@
+import { useState } from "react";
 import { Link } from "react-router-dom";
 import SectionHeader from "../layout/SectionHeader";
 import { Play } from "lucide-react";
-
-const FALLBACK_IMAGE = "/images/placeholder.svg";
 
 function makeSafeId(value) {
   return String(value || "section")
@@ -23,13 +22,36 @@ function normalizeItem(item = {}) {
     href: item.href || "",
     title: item.title || "بدون عنوان",
     description: item.description || item.excerpt || "",
-    cover: item.cover || item.image || FALLBACK_IMAGE,
-    category: item.category || "",
-    duration: item.duration || "",
+    cover: item.cover || item.image || "",
+    category: item.category || item.categoryTitle || "",
+    duration: item.duration || item.media_duration || "",
     isVideo: Boolean(item.isVideo),
+    mediaType: item.mediaType || item.media_type || item.post_type || "",
     bottomNewsTitle: item.bottomNewsTitle || "",
     bottomNewsDescription: item.bottomNewsDescription || "",
     bottomNewsHref: item.bottomNewsHref || "",
+  };
+}
+
+function isAudioLikeItem(item = {}) {
+  const mediaType = String(item.mediaType || "").toLowerCase();
+  return (
+    mediaType === "audio" ||
+    mediaType === "podcast" ||
+    mediaType === "voice" ||
+    mediaType === "sound" ||
+    Boolean(item.audioFile) ||
+    Boolean(item.audio_file) ||
+    Boolean(item.podcastFile) ||
+    Boolean(item.podcast_file)
+  );
+}
+
+function sanitizeNonVisualMediaItem(item = {}) {
+  return {
+    ...item,
+    isVideo: false,
+    duration: "",
   };
 }
 
@@ -75,19 +97,21 @@ function Clickable({ href, className = "", children, fallback = "div" }) {
 }
 
 function NewsImage({ src, alt, className = "", isVideo = false, duration }) {
-  const safeSrc = src || FALLBACK_IMAGE;
+  const [failed, setFailed] = useState(false);
 
   return (
     <div className={`relative overflow-hidden bg-neutral-200 ${className}`}>
-      <img
-        src={safeSrc}
-        alt={alt || "News"}
-        loading="lazy"
-        onError={(e) => {
-          e.currentTarget.src = FALLBACK_IMAGE;
-        }}
-        className="h-full w-full object-cover transition duration-300 group-hover:scale-[1.03]"
-      />
+      {src && !failed ? (
+        <img
+          src={src}
+          alt={alt || "News"}
+          loading="lazy"
+          onError={() => setFailed(true)}
+          className="h-full w-full object-cover transition duration-300 group-hover:scale-[1.03]"
+        />
+      ) : (
+        <div className="h-full w-full bg-neutral-200" />
+      )}
 
       {isVideo && (
         <div className="absolute inset-0 flex items-center justify-center bg-black/15">
@@ -97,7 +121,7 @@ function NewsImage({ src, alt, className = "", isVideo = false, duration }) {
         </div>
       )}
 
-      {duration && (
+      {duration && isVideo && (
         <span className="absolute bottom-2 right-2 rounded bg-black/85 px-2 py-0.5 text-[11px] font-bold text-white">
           {duration}
         </span>
@@ -119,7 +143,6 @@ function BottomInlineNews({ title, description, href = "" }) {
           {title}
         </h4>
       )}
-
       {description && (
         <p className="mt-2 text-sm leading-6 text-neutral-600 transition-colors duration-200 group-hover:text-neutral-800">
           {description}
@@ -131,7 +154,7 @@ function BottomInlineNews({ title, description, href = "" }) {
 
 function FeaturedHorizontal({ item }) {
   if (!item) return null;
-  const safeItem = normalizeItem(item);
+  const safeItem = sanitizeNonVisualMediaItem(normalizeItem(item));
 
   return (
     <article>
@@ -144,18 +167,15 @@ function FeaturedHorizontal({ item }) {
           alt={safeItem.title}
           className="aspect-3/3 w-full rounded-sm"
         />
-
         <div className="min-w-0">
           {safeItem.category && (
             <p className="mb-2 text-[12px] font-extrabold tracking-tight text-red-600">
               {safeItem.category}
             </p>
           )}
-
           <h3 className="text-[22px] font-semibold leading-[1.1] tracking-[-0.03em] text-neutral-950 transition group-hover:text-neutral-700">
             {safeItem.title}
           </h3>
-
           {safeItem.description && (
             <p className="mt-3 line-clamp-3 text-[14.5px] leading-6 text-neutral-600">
               {safeItem.description}
@@ -163,7 +183,6 @@ function FeaturedHorizontal({ item }) {
           )}
         </div>
       </Clickable>
-
       <BottomInlineNews
         href={safeItem.bottomNewsHref}
         title={safeItem.bottomNewsTitle}
@@ -175,7 +194,10 @@ function FeaturedHorizontal({ item }) {
 
 function CompactImageCard({ item, isVideo = false, titleOnly = false }) {
   if (!item) return null;
-  const safeItem = normalizeItem(item);
+
+  const safeItem = isVideo
+    ? normalizeItem(item)
+    : sanitizeNonVisualMediaItem(normalizeItem(item));
 
   return (
     <article>
@@ -183,15 +205,13 @@ function CompactImageCard({ item, isVideo = false, titleOnly = false }) {
         <NewsImage
           src={safeItem.cover}
           alt={safeItem.title}
-          isVideo={isVideo || safeItem.isVideo}
-          duration={safeItem.duration}
+          isVideo={Boolean(isVideo)}
+          duration={isVideo ? safeItem.duration : ""}
           className="aspect-16/10 rounded-sm"
         />
-
         <h3 className="mt-2.5 line-clamp-2 text-[14px] font-extrabold leading-5 text-neutral-950 transition group-hover:text-neutral-700">
           {safeItem.title}
         </h3>
-
         {!titleOnly && safeItem.description && (
           <p className="mt-1 line-clamp-2 text-[12px] leading-5 text-neutral-600">
             {safeItem.description}
@@ -210,7 +230,7 @@ function TextStoryList({ items = [], columns = false }) {
       className={columns ? "grid gap-x-6 gap-y-4 sm:grid-cols-2" : "space-y-4"}
     >
       {items.map((item, index) => {
-        const safeItem = normalizeItem(item);
+        const safeItem = sanitizeNonVisualMediaItem(normalizeItem(item));
 
         return (
           <article key={getItemKey(safeItem, index)}>
@@ -220,11 +240,9 @@ function TextStoryList({ items = [], columns = false }) {
                   {safeItem.category}
                 </p>
               )}
-
               <h3 className="line-clamp-2 text-[14px] font-extrabold leading-5 text-neutral-950 transition group-hover:text-neutral-700">
                 {safeItem.title}
               </h3>
-
               {safeItem.description && (
                 <p className="mt-1 line-clamp-2 text-[12px] leading-5 text-neutral-600">
                   {safeItem.description}
@@ -240,7 +258,7 @@ function TextStoryList({ items = [], columns = false }) {
 
 function SidePromoCard({ item, label = "جدید" }) {
   if (!item) return null;
-  const safeItem = normalizeItem(item);
+  const safeItem = sanitizeNonVisualMediaItem(normalizeItem(item));
 
   return (
     <article>
@@ -253,12 +271,10 @@ function SidePromoCard({ item, label = "جدید" }) {
           alt={safeItem.title}
           className="aspect-square rounded-sm"
         />
-
         <div className="min-w-0">
           <p className="mb-1 text-[10px] font-extrabold uppercase text-neutral-500">
             {label}
           </p>
-
           <h3 className="line-clamp-3 text-[12.5px] font-extrabold leading-4.5 text-neutral-950 transition group-hover:text-neutral-700">
             {safeItem.title}
           </h3>
@@ -270,7 +286,17 @@ function SidePromoCard({ item, label = "جدید" }) {
 
 function VideoCard({ item }) {
   if (!item) return null;
-  const safeItem = normalizeItem({ ...item, isVideo: true });
+
+  const normalized = normalizeItem({ ...item, isVideo: true });
+
+  if (isAudioLikeItem(item)) {
+    return null;
+  }
+
+  const safeItem = {
+    ...normalized,
+    isVideo: true,
+  };
 
   return (
     <article>
@@ -285,7 +311,6 @@ function VideoCard({ item }) {
           duration={safeItem.duration}
           className="aspect-4/5 md:aspect-5/6"
         />
-
         <div className="absolute inset-x-0 bottom-0 bg-linear-to-t from-black via-black/70 to-transparent p-4 pt-12">
           <h3 className="line-clamp-3 text-[13.5px] font-extrabold leading-5 text-white">
             {safeItem.title}
@@ -298,7 +323,7 @@ function VideoCard({ item }) {
 
 function MagazineFeature({ item }) {
   if (!item) return null;
-  const safeItem = normalizeItem(item);
+  const safeItem = sanitizeNonVisualMediaItem(normalizeItem(item));
 
   return (
     <article>
@@ -311,18 +336,15 @@ function MagazineFeature({ item }) {
           alt={safeItem.title}
           className="aspect-16/10 rounded-sm"
         />
-
         <div>
           {safeItem.category && (
             <p className="mb-1.5 text-[11px] font-extrabold text-red-600">
               {safeItem.category}
             </p>
           )}
-
           <h3 className="text-[24px] font-black leading-[1.1] tracking-[-0.03em] text-neutral-950 transition group-hover:text-neutral-700">
             {safeItem.title}
           </h3>
-
           {safeItem.description && (
             <p className="mt-2.5 line-clamp-3 text-[13.5px] leading-6 text-neutral-600">
               {safeItem.description}
@@ -340,7 +362,7 @@ function BottomMiniLinks({ items = [] }) {
   return (
     <div className="grid gap-4 border-t border-neutral-200 pt-4 sm:grid-cols-2 lg:grid-cols-3">
       {items.map((item, index) => {
-        const safeItem = normalizeItem(item);
+        const safeItem = sanitizeNonVisualMediaItem(normalizeItem(item));
 
         return (
           <article key={getItemKey(safeItem, index)}>
@@ -367,16 +389,27 @@ function FourCardStrip({ stories = [] }) {
   return (
     <div className="mt-4 grid gap-4 sm:grid-cols-2 xl:grid-cols-4">
       {stories.slice(0, 4).map((item, index) => (
-        <CompactImageCard key={getItemKey(item, index)} item={item} titleOnly />
+        <CompactImageCard
+          key={getItemKey(item, index)}
+          item={item}
+          titleOnly
+          isVideo={false}
+        />
       ))}
     </div>
   );
 }
 
 function MixedFeatureGrid({ featured, stories = [], sidebar = [] }) {
-  const safeFeatured = featured ? normalizeItem(featured) : null;
-  const safeStories = Array.isArray(stories) ? stories.map(normalizeItem) : [];
-  const safeSidebar = Array.isArray(sidebar) ? sidebar.map(normalizeItem) : [];
+  const safeFeatured = featured
+    ? sanitizeNonVisualMediaItem(normalizeItem(featured))
+    : null;
+  const safeStories = Array.isArray(stories)
+    ? stories.map((item) => sanitizeNonVisualMediaItem(normalizeItem(item)))
+    : [];
+  const safeSidebar = Array.isArray(sidebar)
+    ? sidebar.map((item) => sanitizeNonVisualMediaItem(normalizeItem(item)))
+    : [];
 
   const bottomItem = safeStories[0] || null;
   const listItems = bottomItem
@@ -397,11 +430,9 @@ function MixedFeatureGrid({ featured, stories = [], sidebar = [] }) {
       <div className="min-w-0">
         <FeaturedHorizontal item={featuredWithBottom} />
       </div>
-
       <div className="min-w-0 border-t border-b border-neutral-200 py-4 xl:border-y-0 xl:border-x xl:px-5 xl:py-0">
         <TextStoryList items={listItems} columns />
       </div>
-
       <div className="grid gap-3 sm:grid-cols-2 xl:grid-cols-1">
         {safeSidebar.slice(0, 2).map((item, index) => (
           <SidePromoCard key={getItemKey(item, index)} item={item} />
@@ -431,6 +462,14 @@ export default function CategoryNewsSection({
     layout === "feature-list-sidebar"
       ? safeStories.slice(5, 8)
       : safeStories.slice(4, 7);
+
+  const videoStories = safeStories.filter(
+    (item) => item.isVideo && !isAudioLikeItem(item),
+  );
+
+  const videoSidebar = safeSidebar.filter(
+    (item) => item.isVideo && !isAudioLikeItem(item),
+  );
 
   return (
     <section
@@ -475,24 +514,24 @@ export default function CategoryNewsSection({
       {layout === "video-row" && (
         <div>
           <div className="mt-4 grid gap-4 sm:grid-cols-2 lg:grid-cols-4 xl:grid-cols-5">
-            {safeStories.slice(0, 5).map((item, index) => (
+            {videoStories.slice(0, 5).map((item, index) => (
               <VideoCard key={getItemKey(item, index)} item={item} />
             ))}
           </div>
 
-          {safeSidebar.length > 0 && (
+          {videoSidebar.length > 0 && (
             <div className="mt-5 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-              {safeSidebar.slice(0, 3).map((item, index) => (
+              {videoSidebar.slice(0, 3).map((item, index) => (
                 <SidePromoCard
                   key={getItemKey(item, index)}
-                  item={item}
+                  item={sanitizeNonVisualMediaItem(item)}
                   label="ویدیوی بیشتر"
                 />
               ))}
             </div>
           )}
 
-          {safeStories.length > 0 && (
+          {videoStories.length > 0 && (
             <div className="mt-4 flex justify-center gap-1">
               <span className="h-1.5 w-1.5 rounded-full bg-neutral-950" />
               <span className="h-1.5 w-1.5 rounded-full bg-neutral-300" />
@@ -505,12 +544,10 @@ export default function CategoryNewsSection({
         <div className="mt-4">
           <div className="grid gap-5 xl:grid-cols-[minmax(0,1.35fr)_300px]">
             <MagazineFeature item={safeFeatured || safeStories[0]} />
-
             <div className="rounded-md border border-neutral-200 p-3.5">
               <p className="mb-3 text-[11px] font-extrabold uppercase text-neutral-500">
                 مطالب بیشتر از این بخش
               </p>
-
               <div className="space-y-3">
                 {(safeFeatured ? safeStories : safeStories.slice(1))
                   .slice(0, 2)
@@ -520,7 +557,6 @@ export default function CategoryNewsSection({
               </div>
             </div>
           </div>
-
           <div className="mt-5">
             <BottomMiniLinks
               items={

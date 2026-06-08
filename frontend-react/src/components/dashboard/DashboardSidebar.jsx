@@ -12,6 +12,11 @@ const navItems = [
 export default function DashboardSidebar() {
   const { pathname } = useLocation();
 
+  const isActive = (href) => {
+    if (href === "/dashboard") return pathname === "/dashboard";
+    return pathname === href || pathname.startsWith(`${href}/`);
+  };
+
   return (
     <aside className="hidden w-64 shrink-0 border-l border-zinc-800 bg-zinc-950 lg:flex lg:flex-col">
       <div className="border-b border-zinc-800 p-5">
@@ -20,26 +25,19 @@ export default function DashboardSidebar() {
       </div>
 
       <nav className="flex-1 space-y-1 p-3">
-        {navItems.map((item) => {
-          const active =
-            item.href === "/dashboard"
-              ? pathname === item.href
-              : pathname.startsWith(item.href);
-
-          return (
-            <Link
-              key={item.href}
-              to={item.href}
-              className={`block rounded-lg px-3 py-2.5 text-sm transition ${
-                active
-                  ? "bg-white text-zinc-950"
-                  : "text-zinc-400 hover:bg-zinc-900 hover:text-white"
-              }`}
-            >
-              {item.label}
-            </Link>
-          );
-        })}
+        {navItems.map((item) => (
+          <Link
+            key={item.href}
+            to={item.href}
+            className={`block rounded-lg px-3 py-2.5 text-sm transition ${
+              isActive(item.href)
+                ? "bg-white text-zinc-950"
+                : "text-zinc-400 hover:bg-zinc-900 hover:text-white"
+            }`}
+          >
+            {item.label}
+          </Link>
+        ))}
       </nav>
     </aside>
   );

@@ -1,13 +1,10 @@
 // eslint-disable-next-line no-undef
-const MEDIA_BASE_URL =  "/api";
-
+const MEDIA_BASE_URL = "/api";
 
 export function getList(data) {
   if (Array.isArray(data)) return data;
   if (Array.isArray(data?.results)) return data.results;
 
-  // بعضی endpointهای swagger توی مثال object نشون داده شدن.
-  // اگر API واقعی object تکی برگردونه، این باعث میشه کرش نکنه.
   if (data && typeof data === "object" && data.id) return [data];
 
   return [];
@@ -36,15 +33,12 @@ export function resolveImageUrl(image, placeholder = "/images/placeholder.jpg") 
   const rawUrl = getFileUrl(image);
 
   if (!rawUrl) return placeholder;
-
   if (typeof rawUrl !== "string") return placeholder;
 
-  // اگر آدرس کامل بود، دست نزن
   if (rawUrl.startsWith("http://") || rawUrl.startsWith("https://")) {
     return rawUrl;
   }
 
-  // فایل‌های public خود Next مثل /images/... یا /img/... نباید به localhost وصل شوند
   if (
     rawUrl.startsWith("/images/") ||
     rawUrl.startsWith("/img/") ||
@@ -53,7 +47,6 @@ export function resolveImageUrl(image, placeholder = "/images/placeholder.jpg") 
     return rawUrl;
   }
 
-  // مسیرهای media بک‌اند
   if (rawUrl.startsWith("/")) {
     return `${MEDIA_BASE_URL}${rawUrl}`;
   }
@@ -65,7 +58,6 @@ export function resolveFileUrl(file) {
   const rawUrl = getFileUrl(file);
 
   if (!rawUrl) return "";
-
   if (typeof rawUrl !== "string") return "";
 
   if (rawUrl.startsWith("http://") || rawUrl.startsWith("https://")) {
@@ -94,8 +86,24 @@ export function normalizePost(post) {
     post.thumbnail ||
     "";
 
+  const videoFileRaw =
+    post.video_file?.url ||
+    post.video_file ||
+    post.videoUrl ||
+    post.video_url ||
+    "";
+
+  const audioFileRaw =
+    post.audio_file?.url ||
+    post.audio_file ||
+    post.audioUrl ||
+    post.audio_url ||
+    "";
+
   return {
-    id: post.id,
+    ...post,
+
+    id: post.id ?? null,
     title: post.title || "",
     slug: post.slug || "",
     href: post.slug ? `/news/${post.slug}` : "#",
@@ -118,29 +126,45 @@ export function normalizePost(post) {
         post.author?.avatar_url ||
         post.author?.image ||
         "",
-      "/images/placeholder-avatar.jpg",
+      "/images/placeholder-avatar.jpg"
     ),
 
-    tags: post.tags || [],
+    tags: Array.isArray(post.tags) ? post.tags : [],
 
     views: post.views || post.views_count || 0,
+    viewsCount: post.views_count || post.views || 0,
     commentsCount: post.comments_count || 0,
 
-    publishedAt: post.published_at,
-    createdAt: post.created_at,
-    updatedAt: post.updated_at,
+    publishedAt: post.published_at || null,
+    createdAt: post.created_at || null,
+    updatedAt: post.updated_at || null,
 
     isBookmarked: Boolean(post.is_bookmarked),
     isFeatured: Boolean(post.is_featured),
     isHero: Boolean(post.is_hero),
     showOnHomepage: Boolean(post.show_on_homepage),
 
-    postType: post.post_type,
-    postTypeLabel: post.post_type_label,
+    postType: post.post_type || "",
+    postTypeLabel: post.post_type_label || "",
 
-    homepageSection: post.homepage_section,
-    homepageSectionLabel: post.homepage_section_label,
-    homepageOrder: post.homepage_order,
+    homepageSection: post.homepage_section || "",
+    homepageSectionLabel: post.homepage_section_label || "",
+    homepageOrder: post.homepage_order ?? 0,
+
+    mediaType: post.media_type || post.mediaType || "none",
+    media_type: post.media_type || post.mediaType || "none",
+
+    mediaDuration: post.media_duration || post.mediaDuration || "",
+    media_duration: post.media_duration || post.mediaDuration || "",
+
+    videoFile: resolveFileUrl(videoFileRaw),
+    video_file: resolveFileUrl(videoFileRaw),
+
+    audioFile: resolveFileUrl(audioFileRaw),
+    audio_file: resolveFileUrl(audioFileRaw),
+
+    embedUrl: post.embed_url || post.embedUrl || "",
+    embed_url: post.embed_url || post.embedUrl || "",
   };
 }
 
@@ -152,6 +176,7 @@ export function normalizeCategory(category) {
   if (!category) return null;
 
   return {
+    ...category,
     id: category.id,
     title: category.title || category.name || "",
     label: category.title || category.name || "",
@@ -161,7 +186,7 @@ export function normalizeCategory(category) {
     postsCount: category.posts_count || 0,
     image: resolveImageUrl(
       category.image_url || category.image?.url || category.image || "",
-      "",
+      ""
     ),
   };
 }
@@ -174,6 +199,7 @@ export function normalizeTag(tag) {
   if (!tag) return null;
 
   return {
+    ...tag,
     id: tag.id,
     title: tag.title || tag.name || "",
     label: tag.title || tag.name || "",
@@ -203,7 +229,15 @@ export function normalizeVideo(video) {
     video.image ||
     "";
 
+  const videoFileRaw =
+    video.video_file?.url ||
+    video.video_file ||
+    video.videoUrl ||
+    video.video_url ||
+    "";
+
   return {
+    ...video,
     id: video.id,
     title: video.title || "",
     slug: video.slug || "",
@@ -216,17 +250,28 @@ export function normalizeVideo(video) {
     image: resolveImageUrl(thumbnail, "/images/placeholder-video.jpg"),
     thumbnail: resolveImageUrl(thumbnail, "/images/placeholder-video.jpg"),
 
-    videoUrl: resolveFileUrl(video.video_url || video.video_file?.url || video.video_file || ""),
-    embedUrl: video.embed_url || "",
+    videoUrl: resolveFileUrl(videoFileRaw),
+    videoFile: resolveFileUrl(videoFileRaw),
+    video_file: resolveFileUrl(videoFileRaw),
 
-    duration: video.duration || 0,
+    embedUrl: video.embed_url || video.embedUrl || "",
+    embed_url: video.embed_url || video.embedUrl || "",
+
+    mediaType: video.media_type || video.mediaType || "video",
+    media_type: video.media_type || video.mediaType || "video",
+
+    duration:
+      video.media_duration || video.mediaDuration || video.duration || 0,
+    mediaDuration:
+      video.media_duration || video.mediaDuration || video.duration || 0,
+
     views: video.views_count || video.views || 0,
 
     isFeatured: Boolean(video.is_featured),
 
     category: video.category?.title || video.category?.name || "",
     categorySlug: video.category?.slug || "",
-    tags: video.tags || [],
+    tags: Array.isArray(video.tags) ? video.tags : [],
 
     publishedAt: video.published_at,
   };
@@ -250,7 +295,15 @@ export function normalizePodcast(podcast) {
     podcast.image ||
     "";
 
+  const audioFileRaw =
+    podcast.audio_file?.url ||
+    podcast.audio_file ||
+    podcast.audioUrl ||
+    podcast.audio_url ||
+    "";
+
   return {
+    ...podcast,
     id: podcast.id,
     title: podcast.title || "",
     slug: podcast.slug || "",
@@ -263,16 +316,28 @@ export function normalizePodcast(podcast) {
     image: resolveImageUrl(cover, "/images/placeholder-podcast.jpg"),
     cover: resolveImageUrl(cover, "/images/placeholder-podcast.jpg"),
 
-    audioUrl: resolveFileUrl(podcast.audio_url || podcast.audio_file?.url || podcast.audio_file || ""),
+    audioUrl: resolveFileUrl(audioFileRaw),
+    audioFile: resolveFileUrl(audioFileRaw),
+    audio_file: resolveFileUrl(audioFileRaw),
 
-    duration: podcast.duration || 0,
+    embedUrl: podcast.embed_url || podcast.embedUrl || "",
+    embed_url: podcast.embed_url || podcast.embedUrl || "",
+
+    mediaType: podcast.media_type || podcast.mediaType || "podcast",
+    media_type: podcast.media_type || podcast.mediaType || "podcast",
+
+    duration:
+      podcast.media_duration || podcast.mediaDuration || podcast.duration || 0,
+    mediaDuration:
+      podcast.media_duration || podcast.mediaDuration || podcast.duration || 0,
+
     listens: podcast.listens_count || podcast.listens || 0,
 
     isFeatured: Boolean(podcast.is_featured),
 
     category: podcast.category?.title || podcast.category?.name || "",
     categorySlug: podcast.category?.slug || "",
-    tags: podcast.tags || [],
+    tags: Array.isArray(podcast.tags) ? podcast.tags : [],
 
     publishedAt: podcast.published_at,
   };
@@ -280,4 +345,47 @@ export function normalizePodcast(podcast) {
 
 export function normalizePodcasts(data) {
   return getList(data).map(normalizePodcast).filter(Boolean);
+}
+
+export function normalizeComment(comment) {
+  if (!comment) return null;
+
+  return {
+    ...comment,
+    id: comment.id ?? null,
+    content: comment.content || "",
+    createdAt: comment.created_at || null,
+    updatedAt: comment.updated_at || null,
+    author: comment.author || null,
+    post: comment.post || null,
+    status: comment.status || "",
+  };
+}
+
+export function normalizeComments(data) {
+  return getList(data).map(normalizeComment).filter(Boolean);
+}
+
+export function normalizeBookmark(bookmark) {
+  if (!bookmark) return null;
+
+  return {
+    ...bookmark,
+    id: bookmark.id ?? null,
+    post: bookmark.post ? normalizePost(bookmark.post) : bookmark.post || null,
+    createdAt: bookmark.created_at || null,
+  };
+}
+
+export function normalizeBookmarks(data) {
+  return getList(data).map(normalizeBookmark).filter(Boolean);
+}
+
+export function normalizePaginatedPosts(data) {
+  return {
+    count: Number(data?.count || 0),
+    next: data?.next || null,
+    previous: data?.previous || null,
+    results: normalizePosts(data),
+  };
 }

@@ -5,6 +5,8 @@ import { api } from "../../lib/axiosClient";
 import { dashboardApi } from "../../lib/dashboard/dashboardApi";
 
 const MAX_COVER_SIZE_MB = 5;
+const MAX_VIDEO_SIZE_MB = 200;
+const MAX_AUDIO_SIZE_MB = 50;
 
 const initialForm = {
   title: "",
@@ -16,6 +18,10 @@ const initialForm = {
   status: "draft",
   tags: [],
   post_type: "",
+  media_type: "none",
+  embed_url: "",
+  video_file: "",
+  audio_file: "",
 };
 
 function normalizeList(data) {
@@ -84,9 +90,7 @@ function getApiErrorMessage(error) {
   const data = error?.response?.data;
 
   if (!data) return error?.message || "خطای ناشناخته رخ داد.";
-
   if (typeof data === "string") return data;
-
   if (data.detail) return data.detail;
   if (data.message) return data.message;
   if (data.error) return data.error;
@@ -120,7 +124,6 @@ function mapApiErrors(error) {
 
 function FieldError({ message }) {
   if (!message) return null;
-
   return <p className="mt-1.5 text-xs text-red-400">{message}</p>;
 }
 
@@ -159,21 +162,24 @@ export default function EditPostPage() {
   const [coverFile, setCoverFile] = useState(null);
   const [coverPreview, setCoverPreview] = useState("");
 
+  const [videoFile, setVideoFile] = useState(null);
+  const [audioFile, setAudioFile] = useState(null);
+
   const [pageLoading, setPageLoading] = useState(true);
   const [saving, setSaving] = useState(false);
 
   const selectedTagsCount = form.tags.length;
 
   const canSubmit = useMemo(() => {
-    return (
-      form.title.trim() &&
-      form.slug.trim() &&
-      form.post_type &&
-      form.content.trim() &&
-      form.tags.length > 0 &&
-      !saving
-    );
-  }, [form, saving]);
+    if (saving) return false;
+    if (!form.title.trim()) return false;
+    if (!form.slug.trim()) return false;
+    if (!form.post_type) return false;
+    if (!form.tags.length) return false;
+    if (!form.cover && !coverFile) return false;
+    if (form.media_type === "none" && !form.content.trim()) return false;
+    return true;
+  }, [form, saving, coverFile]);
 
   useEffect(() => {
     let mounted = true;
@@ -215,10 +221,16 @@ export default function EditPostPage() {
           status: post?.status ?? "draft",
           tags: normalizeTags(post?.tags),
           post_type: getRelationValue(post?.post_type),
+          media_type: post?.media_type ?? "none",
+          embed_url: post?.embed_url ?? "",
+          video_file: post?.video_file ?? "",
+          audio_file: post?.audio_file ?? "",
         });
 
         setCoverFile(null);
         setCoverPreview("");
+        setVideoFile(null);
+        setAudioFile(null);
       } catch (error) {
         console.error("Load edit page data error:", error);
 
@@ -261,6 +273,30 @@ export default function EditPostPage() {
 
     if (name === "slug") {
       updateForm(name, toSlug(value));
+      return;
+    }
+
+    if (name === "media_type") {
+      setForm((prev) => ({
+        ...prev,
+        media_type: value,
+        embed_url: value === "none" ? "" : prev.embed_url,
+        video_file: value === "video" ? prev.video_file : "",
+        audio_file: value === "podcast" ? prev.audio_file : "",
+      }));
+
+      if (value !== "video") setVideoFile(null);
+      if (value !== "podcast") setAudioFile(null);
+
+      setErrors((prev) => {
+        const next = { ...prev };
+        delete next.media_type;
+        delete next.video_file;
+        delete next.audio_file;
+        delete next.embed_url;
+        return next;
+      });
+
       return;
     }
 
@@ -333,6 +369,58 @@ export default function EditPostPage() {
     });
   }
 
+  function handleVideoChange(event) {
+    const file = event.target.files?.[0] ?? null;
+    event.target.value = "";
+
+    setVideoFile(null);
+
+    if (!file) return;
+
+    const sizeMb = file.size / 1024 / 1024;
+    if (sizeMb > MAX_VIDEO_SIZE_MB) {
+      const message = `حجم ویدیو نباید بیشتر از ${MAX_VIDEO_SIZE_MB} مگابایت باشد.`;
+      toast.error(message);
+      setErrors((prev) => ({ ...prev, video_file: message }));
+      return;
+    }
+
+    setVideoFile(file);
+
+    setErrors((prev) => {
+      const next = { ...prev };
+      delete next.video_file;
+      delete next.embed_url;
+      return next;
+    });
+  }
+
+  function handleAudioChange(event) {
+    const file = event.target.files?.[0] ?? null;
+    event.target.value = "";
+
+    setAudioFile(null);
+
+    if (!file) return;
+
+    const sizeMb = file.size / 1024 / 1024;
+    if (sizeMb > MAX_AUDIO_SIZE_MB) {
+      const message = `حجم فایل صوتی نباید بیشتر از ${MAX_AUDIO_SIZE_MB} مگابایت باشد.`;
+      toast.error(message);
+      setErrors((prev) => ({ ...prev, audio_file: message }));
+      return;
+    }
+
+    setAudioFile(file);
+
+    setErrors((prev) => {
+      const next = { ...prev };
+      delete next.audio_file;
+      delete next.embed_url;
+      return next;
+    });
+  }
+
   function validateForm() {
     const nextErrors = {};
 
@@ -346,8 +434,37 @@ export default function EditPostPage() {
     }
 
     if (!form.post_type) nextErrors.post_type = "قالب پست الزامی است.";
-    if (!form.content.trim()) nextErrors.content = "محتوا الزامی است.";
     if (!form.tags.length) nextErrors.tags = "حداقل یک تگ انتخاب کنید.";
+
+    if (!form.cover && !coverFile) {
+      nextErrors.cover = "کاور برای همه پست‌ها الزامی است.";
+    }
+
+    if (form.media_type === "none" && !form.content.trim()) {
+      nextErrors.content = "محتوا الزامی است.";
+    }
+
+    if (form.media_type === "video") {
+      const hasCurrentVideo = Boolean(form.video_file);
+      const hasNewVideo = Boolean(videoFile);
+      const hasEmbed = Boolean(form.embed_url.trim());
+
+      if (!hasCurrentVideo && !hasNewVideo && !hasEmbed) {
+        nextErrors.video_file =
+          "برای پست ویدیویی، فایل ویدیو یا لینک embed الزامی است.";
+      }
+    }
+
+    if (form.media_type === "podcast") {
+      const hasCurrentAudio = Boolean(form.audio_file);
+      const hasNewAudio = Boolean(audioFile);
+      const hasEmbed = Boolean(form.embed_url.trim());
+
+      if (!hasCurrentAudio && !hasNewAudio && !hasEmbed) {
+        nextErrors.audio_file =
+          "برای پادکست، فایل صوتی یا لینک embed الزامی است.";
+      }
+    }
 
     setErrors(nextErrors);
 
@@ -368,11 +485,16 @@ export default function EditPostPage() {
     fd.append("content", form.content.trim());
     fd.append("status", form.status);
     fd.append("post_type", form.post_type);
+    fd.append("media_type", form.media_type);
 
     if (form.category) {
       fd.append("category", String(form.category));
     } else {
       fd.append("category", "");
+    }
+
+    if (form.embed_url.trim()) {
+      fd.append("embed_url", form.embed_url.trim());
     }
 
     form.tags.forEach((tagId) => {
@@ -381,6 +503,14 @@ export default function EditPostPage() {
 
     if (coverFile) {
       fd.append("cover", coverFile);
+    }
+
+    if (videoFile) {
+      fd.append("video_file", videoFile);
+    }
+
+    if (audioFile) {
+      fd.append("audio_file", audioFile);
     }
 
     return fd;
@@ -538,6 +668,21 @@ export default function EditPostPage() {
           </div>
 
           <div>
+            <Label>نوع رسانه</Label>
+            <select
+              name="media_type"
+              value={form.media_type}
+              onChange={handleChange}
+              className={baseInputClass(errors.media_type)}
+            >
+              <option value="none">بدون رسانه</option>
+              <option value="video">ویدیو</option>
+              <option value="podcast">پادکست</option>
+            </select>
+            <FieldError message={errors.media_type} />
+          </div>
+
+          <div>
             <Label>دسته‌بندی</Label>
             <select
               name="category"
@@ -585,7 +730,7 @@ export default function EditPostPage() {
           </div>
 
           <div className="md:col-span-2">
-            <Label required>محتوا</Label>
+            <Label required={form.media_type === "none"}>محتوا</Label>
             <textarea
               name="content"
               value={form.content}
@@ -599,8 +744,84 @@ export default function EditPostPage() {
             </div>
           </div>
 
+          {(form.media_type === "video" || form.media_type === "podcast") && (
+            <div className="md:col-span-2">
+              <Label>لینک Embed</Label>
+              <input
+                type="url"
+                name="embed_url"
+                value={form.embed_url}
+                onChange={handleChange}
+                placeholder="https://..."
+                dir="ltr"
+                className={`${baseInputClass(errors.embed_url)} text-left`}
+              />
+              <FieldError message={errors.embed_url} />
+            </div>
+          )}
+
+          {form.media_type === "video" && (
+            <div className="md:col-span-2">
+              <Label>فایل ویدیو</Label>
+              <input
+                type="file"
+                accept="video/*"
+                onChange={handleVideoChange}
+                className="block w-full cursor-pointer rounded-xl border border-zinc-700 bg-zinc-900 px-4 py-3 text-sm text-zinc-300"
+              />
+
+              <p className="mt-2 text-xs text-zinc-500">
+                حداکثر حجم فایل: {MAX_VIDEO_SIZE_MB}MB
+              </p>
+
+              {form.video_file && !videoFile && (
+                <div className="mt-3 rounded-xl border border-zinc-800 bg-zinc-900/50 p-3 text-sm text-zinc-300">
+                  فایل ویدیوی فعلی موجود است.
+                </div>
+              )}
+
+              {videoFile && (
+                <div className="mt-3 rounded-xl border border-zinc-800 bg-zinc-900/50 p-3 text-sm text-zinc-300">
+                  فایل جدید انتخاب شده: {videoFile.name}
+                </div>
+              )}
+
+              <FieldError message={errors.video_file} />
+            </div>
+          )}
+
+          {form.media_type === "podcast" && (
+            <div className="md:col-span-2">
+              <Label>فایل صوتی</Label>
+              <input
+                type="file"
+                accept="audio/*"
+                onChange={handleAudioChange}
+                className="block w-full cursor-pointer rounded-xl border border-zinc-700 bg-zinc-900 px-4 py-3 text-sm text-zinc-300"
+              />
+
+              <p className="mt-2 text-xs text-zinc-500">
+                حداکثر حجم فایل: {MAX_AUDIO_SIZE_MB}MB
+              </p>
+
+              {form.audio_file && !audioFile && (
+                <div className="mt-3 rounded-xl border border-zinc-800 bg-zinc-900/50 p-3 text-sm text-zinc-300">
+                  فایل صوتی فعلی موجود است.
+                </div>
+              )}
+
+              {audioFile && (
+                <div className="mt-3 rounded-xl border border-zinc-800 bg-zinc-900/50 p-3 text-sm text-zinc-300">
+                  فایل جدید انتخاب شده: {audioFile.name}
+                </div>
+              )}
+
+              <FieldError message={errors.audio_file} />
+            </div>
+          )}
+
           <div className="md:col-span-2">
-            <Label>کاور</Label>
+            <Label required>کاور</Label>
 
             <div className="rounded-2xl border border-dashed border-zinc-700 bg-zinc-900/50 p-4 transition hover:border-zinc-500">
               <input
@@ -611,7 +832,8 @@ export default function EditPostPage() {
               />
 
               <p className="mt-2 text-xs text-zinc-500">
-                فرمت تصویر مجاز است. حداکثر حجم: {MAX_COVER_SIZE_MB}MB
+                کاور برای همه پست‌ها الزامی است. حداکثر حجم:{" "}
+                {MAX_COVER_SIZE_MB}MB
               </p>
 
               {form.cover && !coverPreview && (
