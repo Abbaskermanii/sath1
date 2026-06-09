@@ -1,6 +1,7 @@
 import { useEffect, useMemo, useState } from "react";
 import { toast } from "react-toastify";
 import { api } from "../../lib/axiosClient";
+import AdminGuard from "../../lib/AdminGuard";
 
 const SLOT_LABELS = {
   main: "خبر اصلی (بزرگ)",
@@ -135,8 +136,18 @@ function SearchBox({ slot, label, selectedPost, onSelect, onClear }) {
             onClick={onClear}
             className="flex items-center gap-1 rounded-lg border border-red-500/20 bg-red-500/10 px-3 py-1.5 text-xs font-semibold text-red-400 transition-colors hover:bg-red-500/20 hover:text-red-300"
           >
-            <svg className="h-3 w-3" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+            <svg
+              className="h-3 w-3"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke="currentColor"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth={2}
+                d="M6 18L18 6M6 6l12 12"
+              />
             </svg>
             حذف
           </button>
@@ -152,23 +163,46 @@ function SearchBox({ slot, label, selectedPost, onSelect, onClear }) {
             <span className="rounded-md bg-emerald-500/20 px-2 py-1 text-[10px] font-bold text-emerald-300">
               شناسه: {selectedPost.id}
             </span>
-            <p className="truncate text-xs font-medium text-emerald-300/70" dir="ltr">
+            <p
+              className="truncate text-xs font-medium text-emerald-300/70"
+              dir="ltr"
+            >
               {selectedPost.slug}
             </p>
           </div>
         </div>
       ) : (
         <div className="mb-5 flex h-[90px] flex-col items-center justify-center gap-2 rounded-2xl border-2 border-dashed border-zinc-800 bg-zinc-900/50 p-3 text-zinc-500 transition-colors hover:border-zinc-700">
-          <svg className="h-6 w-6 opacity-40" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M12 4v16m8-8H4" />
+          <svg
+            className="h-6 w-6 opacity-40"
+            fill="none"
+            viewBox="0 0 24 24"
+            stroke="currentColor"
+          >
+            <path
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              strokeWidth={1.5}
+              d="M12 4v16m8-8H4"
+            />
           </svg>
           <span className="text-xs font-medium">پستی انتخاب نشده است</span>
         </div>
       )}
 
       <div className="relative mt-auto">
-        <svg className="absolute right-3.5 top-1/2 h-5 w-5 -translate-y-1/2 text-zinc-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+        <svg
+          className="absolute right-3.5 top-1/2 h-5 w-5 -translate-y-1/2 text-zinc-500"
+          fill="none"
+          viewBox="0 0 24 24"
+          stroke="currentColor"
+        >
+          <path
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            strokeWidth={2}
+            d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"
+          />
         </svg>
         <input
           type="text"
@@ -204,7 +238,10 @@ function SearchBox({ slot, label, selectedPost, onSelect, onClear }) {
                   <p className="truncate text-sm font-bold text-zinc-100">
                     {item.title}
                   </p>
-                  <p className="mt-1.5 truncate text-xs text-zinc-400" dir="ltr">
+                  <p
+                    className="mt-1.5 truncate text-xs text-zinc-400"
+                    dir="ltr"
+                  >
                     {item.slug}
                   </p>
                 </button>
@@ -245,8 +282,18 @@ function HeroWireframe({ slots }) {
     <div className="sticky top-6 overflow-hidden rounded-3xl border border-zinc-800/80 bg-zinc-900/40 shadow-2xl backdrop-blur-sm">
       <div className="border-b border-zinc-800/80 bg-zinc-800/20 px-6 py-5">
         <h2 className="text-base font-black text-white flex items-center gap-2">
-          <svg className="w-5 h-5 text-indigo-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 5a1 1 0 011-1h14a1 1 0 011 1v2a1 1 0 01-1 1H5a1 1 0 01-1-1V5zM4 13a1 1 0 011-1h6a1 1 0 011 1v6a1 1 0 01-1 1H5a1 1 0 01-1-1v-6zM16 13a1 1 0 011-1h2a1 1 0 011 1v6a1 1 0 01-1 1h-2a1 1 0 01-1-1v-6z" />
+          <svg
+            className="w-5 h-5 text-indigo-400"
+            fill="none"
+            viewBox="0 0 24 24"
+            stroke="currentColor"
+          >
+            <path
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              strokeWidth={2}
+              d="M4 5a1 1 0 011-1h14a1 1 0 011 1v2a1 1 0 01-1 1H5a1 1 0 01-1-1V5zM4 13a1 1 0 011-1h6a1 1 0 011 1v6a1 1 0 01-1 1H5a1 1 0 01-1-1v-6zM16 13a1 1 0 011-1h2a1 1 0 011 1v6a1 1 0 01-1 1h-2a1 1 0 01-1-1v-6z"
+            />
           </svg>
           شماتیک چیدمان سایت
         </h2>
@@ -258,19 +305,23 @@ function HeroWireframe({ slots }) {
       <div className="p-6">
         <div className="flex flex-col overflow-hidden rounded-2xl border border-zinc-700 bg-white shadow-inner">
           {/* Main Container */}
-          <div className={`relative flex h-[220px] w-full flex-col justify-between border-b border-zinc-300 p-4 transition-colors ${main.bgClass}`}>
+          <div
+            className={`relative flex h-[220px] w-full flex-col justify-between border-b border-zinc-300 p-4 transition-colors ${main.bgClass}`}
+          >
             <div className="flex w-full items-start justify-between">
               <span className="rounded-md bg-zinc-200/80 px-2 py-1 text-xs font-bold text-zinc-600 shadow-sm">
                 خبر اصلی
               </span>
             </div>
-            
+
             <div className="px-2 pb-16 text-center text-sm font-black leading-snug">
               {main.title}
             </div>
 
             {/* Inner Sub-News */}
-            <div className={`absolute bottom-4 left-4 right-16 rounded-xl border p-3 shadow-md transition-colors ${topLeft.bgClass === 'bg-indigo-50/90 text-indigo-900' ? 'bg-white border-indigo-200' : 'bg-white border-zinc-200'}`}>
+            <div
+              className={`absolute bottom-4 left-4 right-16 rounded-xl border p-3 shadow-md transition-colors ${topLeft.bgClass === "bg-indigo-50/90 text-indigo-900" ? "bg-white border-indigo-200" : "bg-white border-zinc-200"}`}
+            >
               <div className="mb-1.5 flex items-center justify-between border-b border-zinc-100 pb-1.5">
                 <span className="text-[10px] font-bold text-zinc-400">
                   خبر زیرین
@@ -285,7 +336,9 @@ function HeroWireframe({ slots }) {
           {/* Related News Container - Grid Layout */}
           <div className="grid grid-cols-3 divide-x divide-x-reverse divide-zinc-200 bg-zinc-50">
             {/* bottom_right (Leftmost visually) */}
-            <div className={`flex h-28 flex-col items-center justify-between p-3 text-center transition-colors hover:bg-zinc-100 ${bRight.bgClass}`}>
+            <div
+              className={`flex h-28 flex-col items-center justify-between p-3 text-center transition-colors hover:bg-zinc-100 ${bRight.bgClass}`}
+            >
               <span className="rounded bg-zinc-200/50 px-1.5 py-0.5 text-[9px] font-bold text-zinc-500">
                 مرتبط چپ
               </span>
@@ -295,7 +348,9 @@ function HeroWireframe({ slots }) {
             </div>
 
             {/* bottom_center (Center visually) */}
-            <div className={`flex h-28 flex-col items-center justify-between p-3 text-center transition-colors hover:bg-zinc-100 ${bCenter.bgClass}`}>
+            <div
+              className={`flex h-28 flex-col items-center justify-between p-3 text-center transition-colors hover:bg-zinc-100 ${bCenter.bgClass}`}
+            >
               <span className="rounded bg-zinc-200/50 px-1.5 py-0.5 text-[9px] font-bold text-zinc-500">
                 مرتبط وسط
               </span>
@@ -305,7 +360,9 @@ function HeroWireframe({ slots }) {
             </div>
 
             {/* bottom_left (Rightmost visually) */}
-            <div className={`flex h-28 flex-col items-center justify-between p-3 text-center transition-colors hover:bg-zinc-100 ${bLeft.bgClass}`}>
+            <div
+              className={`flex h-28 flex-col items-center justify-between p-3 text-center transition-colors hover:bg-zinc-100 ${bLeft.bgClass}`}
+            >
               <span className="rounded bg-zinc-200/50 px-1.5 py-0.5 text-[9px] font-bold text-zinc-500">
                 مرتبط راست
               </span>
@@ -320,7 +377,7 @@ function HeroWireframe({ slots }) {
   );
 }
 
-export default function HomeHeroPage() {
+function HomeHeroPageContent() {
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
   const [slots, setSlots] = useState(EMPTY_SLOTS);
@@ -470,8 +527,18 @@ export default function HomeHeroPage() {
               {saving ? "در حال ذخیره..." : "ذخیره نهایی چیدمان"}
             </span>
             {!saving && (
-              <svg className="relative h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M5 13l4 4L19 7" />
+              <svg
+                className="relative h-4 w-4"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke="currentColor"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={2.5}
+                  d="M5 13l4 4L19 7"
+                />
               </svg>
             )}
           </button>
@@ -512,5 +579,13 @@ export default function HomeHeroPage() {
         </div>
       </div>
     </div>
+  );
+}
+
+export default function HomeHeroPage() {
+  return (
+    <AdminGuard>
+      <HomeHeroPageContent />
+    </AdminGuard>
   );
 }

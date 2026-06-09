@@ -316,6 +316,14 @@
         "documentation": {}
     },
     {
+        "label": "IsAdminUser",
+        "importPath": "rest_framework.permissions",
+        "description": "rest_framework.permissions",
+        "isExtraImport": true,
+        "detail": "rest_framework.permissions",
+        "documentation": {}
+    },
+    {
         "label": "AllowAny",
         "importPath": "rest_framework.permissions",
         "description": "rest_framework.permissions",
@@ -437,6 +445,22 @@
     },
     {
         "label": "status",
+        "importPath": "rest_framework",
+        "description": "rest_framework",
+        "isExtraImport": true,
+        "detail": "rest_framework",
+        "documentation": {}
+    },
+    {
+        "label": "viewsets",
+        "importPath": "rest_framework",
+        "description": "rest_framework",
+        "isExtraImport": true,
+        "detail": "rest_framework",
+        "documentation": {}
+    },
+    {
+        "label": "filters",
         "importPath": "rest_framework",
         "description": "rest_framework",
         "isExtraImport": true,
@@ -636,6 +660,30 @@
         "documentation": {}
     },
     {
+        "label": "DefaultRouter",
+        "importPath": "rest_framework.routers",
+        "description": "rest_framework.routers",
+        "isExtraImport": true,
+        "detail": "rest_framework.routers",
+        "documentation": {}
+    },
+    {
+        "label": "DefaultRouter",
+        "importPath": "rest_framework.routers",
+        "description": "rest_framework.routers",
+        "isExtraImport": true,
+        "detail": "rest_framework.routers",
+        "documentation": {}
+    },
+    {
+        "label": "DefaultRouter",
+        "importPath": "rest_framework.routers",
+        "description": "rest_framework.routers",
+        "isExtraImport": true,
+        "detail": "rest_framework.routers",
+        "documentation": {}
+    },
+    {
         "label": "TokenRefreshView",
         "importPath": "rest_framework_simplejwt.views",
         "description": "rest_framework_simplejwt.views",
@@ -721,6 +769,22 @@
         "description": "drf_spectacular.utils",
         "isExtraImport": true,
         "detail": "drf_spectacular.utils",
+        "documentation": {}
+    },
+    {
+        "label": "DjangoFilterBackend",
+        "importPath": "django_filters.rest_framework",
+        "description": "django_filters.rest_framework",
+        "isExtraImport": true,
+        "detail": "django_filters.rest_framework",
+        "documentation": {}
+    },
+    {
+        "label": "DjangoFilterBackend",
+        "importPath": "django_filters.rest_framework",
+        "description": "django_filters.rest_framework",
+        "isExtraImport": true,
+        "detail": "django_filters.rest_framework",
         "documentation": {}
     },
     {
@@ -1204,22 +1268,6 @@
         "documentation": {}
     },
     {
-        "label": "DefaultRouter",
-        "importPath": "rest_framework.routers",
-        "description": "rest_framework.routers",
-        "isExtraImport": true,
-        "detail": "rest_framework.routers",
-        "documentation": {}
-    },
-    {
-        "label": "DefaultRouter",
-        "importPath": "rest_framework.routers",
-        "description": "rest_framework.routers",
-        "isExtraImport": true,
-        "detail": "rest_framework.routers",
-        "documentation": {}
-    },
-    {
         "label": "api_view",
         "importPath": "rest_framework.decorators",
         "description": "rest_framework.decorators",
@@ -1371,14 +1419,6 @@
         "description": "django.core.cache",
         "isExtraImport": true,
         "detail": "django.core.cache",
-        "documentation": {}
-    },
-    {
-        "label": "DjangoFilterBackend",
-        "importPath": "django_filters.rest_framework",
-        "description": "django_filters.rest_framework",
-        "isExtraImport": true,
-        "detail": "django_filters.rest_framework",
         "documentation": {}
     },
     {
@@ -1650,6 +1690,15 @@
         "documentation": {}
     },
     {
+        "label": "AdminUserSerializer",
+        "kind": 6,
+        "importPath": "apps.accounts.serializers",
+        "description": "apps.accounts.serializers",
+        "peekOfCode": "class AdminUserSerializer(serializers.ModelSerializer):\n    profile = ProfileSerializer(required=False)\n    class Meta:\n        model = User\n        fields = (\n            \"id\",\n            \"username\",\n            \"email\",\n            \"full_name\",\n            \"role\",",
+        "detail": "apps.accounts.serializers",
+        "documentation": {}
+    },
+    {
         "label": "User",
         "kind": 5,
         "importPath": "apps.accounts.serializers",
@@ -1668,11 +1717,20 @@
         "documentation": {}
     },
     {
+        "label": "router",
+        "kind": 5,
+        "importPath": "apps.accounts.urls",
+        "description": "apps.accounts.urls",
+        "peekOfCode": "router = DefaultRouter()\nrouter.register(\"admin/users\", AdminUserViewSet, basename=\"admin-users\")\nurlpatterns = [\n    path(\"register/\", RegisterView.as_view(), name=\"register\"),\n    path(\"login/\", LoginView.as_view(), name=\"login\"),\n    path(\"token/refresh/\", TokenRefreshView.as_view(), name=\"token_refresh\"),\n    path(\"me/\", MeView.as_view(), name=\"me\"),\n    path(\"me/profile/\", UpdateProfileView.as_view(), name=\"me_profile\"),\n]\n# اضافه کردن مسیرهای router",
+        "detail": "apps.accounts.urls",
+        "documentation": {}
+    },
+    {
         "label": "urlpatterns",
         "kind": 5,
         "importPath": "apps.accounts.urls",
         "description": "apps.accounts.urls",
-        "peekOfCode": "urlpatterns = [\n    path(\"register/\", RegisterView.as_view(), name=\"register\"),\n    path(\"login/\", LoginView.as_view(), name=\"login\"),\n    path(\"token/refresh/\", TokenRefreshView.as_view(), name=\"token_refresh\"),\n    path(\"me/\", MeView.as_view(), name=\"me\"),\n    path(\"me/profile/\", UpdateProfileView.as_view(), name=\"me_profile\"),\n]",
+        "peekOfCode": "urlpatterns = [\n    path(\"register/\", RegisterView.as_view(), name=\"register\"),\n    path(\"login/\", LoginView.as_view(), name=\"login\"),\n    path(\"token/refresh/\", TokenRefreshView.as_view(), name=\"token_refresh\"),\n    path(\"me/\", MeView.as_view(), name=\"me\"),\n    path(\"me/profile/\", UpdateProfileView.as_view(), name=\"me_profile\"),\n]\n# اضافه کردن مسیرهای router\nurlpatterns += router.urls",
         "detail": "apps.accounts.urls",
         "documentation": {}
     },
@@ -1708,7 +1766,16 @@
         "kind": 6,
         "importPath": "apps.accounts.views",
         "description": "apps.accounts.views",
-        "peekOfCode": "class UpdateProfileView(generics.UpdateAPIView):\n    permission_classes = [permissions.IsAuthenticated]\n    serializer_class = ProfileSerializer\n    def get_object(self):\n        return self.request.user.profile",
+        "peekOfCode": "class UpdateProfileView(generics.UpdateAPIView):\n    permission_classes = [permissions.IsAuthenticated]\n    serializer_class = ProfileSerializer\n    def get_object(self):\n        return self.request.user.profile\nfrom rest_framework import viewsets, filters\nfrom rest_framework.permissions import IsAdminUser\nfrom django_filters.rest_framework import DjangoFilterBackend\nfrom .models import User\nfrom .serializers import AdminUserSerializer",
+        "detail": "apps.accounts.views",
+        "documentation": {}
+    },
+    {
+        "label": "AdminUserViewSet",
+        "kind": 6,
+        "importPath": "apps.accounts.views",
+        "description": "apps.accounts.views",
+        "peekOfCode": "class AdminUserViewSet(viewsets.ModelViewSet):\n    \"\"\"\n    فقط ادمین می‌تواند:\n    - لیست همه کاربران\n    - جستجو\n    - ویرایش\n    - حذف\n    \"\"\"\n    queryset = User.objects.all().select_related(\"profile\")\n    serializer_class = AdminUserSerializer",
         "detail": "apps.accounts.views",
         "documentation": {}
     },

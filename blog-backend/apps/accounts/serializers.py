@@ -97,3 +97,41 @@ class MeSerializer(serializers.ModelSerializer):
             "is_staff",
             "is_superuser",
         )
+
+
+class AdminUserSerializer(serializers.ModelSerializer):
+    profile = ProfileSerializer(required=False)
+
+    class Meta:
+        model = User
+        fields = (
+            "id",
+            "username",
+            "email",
+            "full_name",
+            "role",
+            "is_active",
+            "is_staff",
+            "is_superuser",
+            "profile",
+            "date_joined",
+        )
+        read_only_fields = ("id", "date_joined")
+
+    def update(self, instance, validated_data):
+        profile_data = validated_data.pop("profile", None)
+
+        # آپدیت اطلاعات یوزر
+        for attr, value in validated_data.items():
+            setattr(instance, attr, value)
+
+        instance.save()
+
+        # آپدیت پروفایل اگر ارسال شده باشد
+        if profile_data:
+            profile = instance.profile
+            for attr, value in profile_data.items():
+                setattr(profile, attr, value)
+            profile.save()
+
+        return instance

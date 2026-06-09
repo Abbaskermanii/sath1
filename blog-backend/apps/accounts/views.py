@@ -52,3 +52,47 @@ class UpdateProfileView(generics.UpdateAPIView):
 
     def get_object(self):
         return self.request.user.profile
+
+
+from rest_framework import viewsets, filters
+from rest_framework.permissions import IsAdminUser
+from django_filters.rest_framework import DjangoFilterBackend
+
+from .models import User
+from .serializers import AdminUserSerializer
+
+
+class AdminUserViewSet(viewsets.ModelViewSet):
+    """
+    فقط ادمین می‌تواند:
+    - لیست همه کاربران
+    - جستجو
+    - ویرایش
+    - حذف
+    """
+
+    queryset = User.objects.all().select_related("profile")
+    serializer_class = AdminUserSerializer
+    permission_classes = [IsAdminUser]
+
+    filter_backends = [
+        DjangoFilterBackend,
+        filters.SearchFilter,
+        filters.OrderingFilter,
+    ]
+
+    search_fields = [
+        "username",
+        "email",
+        "full_name",
+        "profile__full_name",
+    ]
+
+    ordering_fields = [
+        "date_joined",
+        "username",
+        "email",
+        "role",
+    ]
+
+    ordering = ["-date_joined"]
