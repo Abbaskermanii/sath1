@@ -1,5 +1,13 @@
-import React, { useCallback, useEffect, useMemo, useState } from "react";
+import React, {
+  useCallback,
+  useEffect,
+  useMemo,
+  useState,
+  useRef,
+} from "react";
 import { Link, useParams } from "react-router-dom";
+import Plyr from "plyr";
+import "plyr/dist/plyr.css";
 import DOMPurify from "dompurify";
 import {
   Clock3,
@@ -39,6 +47,7 @@ function FacebookSvg({ size = 16 }) {
     </svg>
   );
 }
+
 function TelegramSvg({ size = 16 }) {
   return (
     <svg
@@ -52,6 +61,7 @@ function TelegramSvg({ size = 16 }) {
     </svg>
   );
 }
+
 function XSvg({ size = 12 }) {
   return (
     <svg
@@ -65,6 +75,7 @@ function XSvg({ size = 12 }) {
     </svg>
   );
 }
+
 function LinkedinSvg({ size = 16 }) {
   return (
     <svg
@@ -260,75 +271,120 @@ function getApiErrorMessage(error, fallback = "خطا در بارگذاری پس
 }
 
 function MediaBlock({ post }) {
+  const videoRef = useRef(null);
+  const audioRef = useRef(null);
+
   const videoFile = getPostVideoFile(post);
   const audioFile = getPostAudioFile(post);
   const safeEmbedUrl = normalizeEmbedUrl(getPostEmbedUrl(post));
   const poster = getPostImage(post);
 
+  useEffect(() => {
+    let videoPlayer;
+    let audioPlayer;
+
+    if (videoRef.current && videoFile) {
+      videoPlayer = new Plyr(videoRef.current, {
+        controls: [
+          "play-large",
+          "play",
+          "progress",
+          "current-time",
+          "duration",
+          "mute",
+          "volume",
+          "settings",
+          "fullscreen",
+        ],
+        settings: ["speed", "quality"],
+        ratio: "16:9",
+      });
+    }
+
+    if (audioRef.current && audioFile) {
+      audioPlayer = new Plyr(audioRef.current, {
+        controls: [
+          "play",
+          "progress",
+          "current-time",
+          "duration",
+          "mute",
+          "volume",
+        ],
+      });
+    }
+
+    return () => {
+      videoPlayer?.destroy();
+      audioPlayer?.destroy();
+    };
+  }, [videoFile, audioFile]);
+
   if (isVideoPost(post)) {
     if (videoFile) {
       return (
-        <div className="border-b border-neutral-200 bg-black">
-          <video
-            controls
-            preload="metadata"
-            poster={poster || undefined}
-            className="w-full max-h-[520px] object-contain bg-black"
-          >
-            <source src={videoFile} type="video/mp4" />
-            مرورگر شما از پخش ویدیو پشتیبانی نمی‌کند.
-          </video>
-        </div>
+        <section className="border-b border-neutral-200  px-4 py-5 md:px-8 md:py-8">
+          <div className="mx-auto w-full max-w-5xl">
+            <div className="overflow-hidden rounded-2xl ">
+              <div className="aspect-video w-full [&_.plyr]:h-full [&_.plyr]:w-full [&_.plyr__video-wrapper]:h-full [&_.plyr__video-wrapper]:w-full">
+                <video
+                  ref={videoRef}
+                  controls
+                  playsInline
+                  preload="metadata"
+                  poster={poster || undefined}
+                  className="h-full w-full object-contain"
+                >
+                  <source src={videoFile} type="video/mp4" />
+                </video>
+              </div>
+            </div>
+          </div>
+        </section>
       );
     }
 
     if (safeEmbedUrl) {
       return (
-        <div className="border-b border-neutral-200 bg-black">
-          <div className="relative w-full" style={{ paddingTop: "56.25%" }}>
-            <iframe
-              src={safeEmbedUrl}
-              title={post?.title || "video"}
-              className="absolute inset-0 h-full w-full"
-              allow="autoplay; fullscreen; picture-in-picture"
-              allowFullScreen
-            />
+        <section className="border-b border-neutral-200 px-4 py-5 md:px-8 md:py-8">
+          <div className="mx-auto w-full max-w-5xl">
+            <div className="aspect-video overflow-hidden rounded-2xl">
+              <iframe
+                src={safeEmbedUrl}
+                title={post?.title || "video"}
+                className="h-full w-full"
+                allow="autoplay; fullscreen; picture-in-picture"
+                allowFullScreen
+              />
+            </div>
           </div>
-        </div>
+        </section>
       );
     }
   }
 
-  if (isPodcastPost(post)) {
-    if (audioFile) {
-      return (
-        <div className="border-b border-neutral-200 bg-neutral-50 px-4 py-6 md:px-8">
-          <div className="mb-4 flex items-center gap-2">
-            <Volume2 size={18} />
-            <h3 className="text-base font-black md:text-lg">پخش صوت</h3>
-          </div>
-          <audio controls preload="metadata" className="w-full">
-            <source src={audioFile} />
-            مرورگر شما از پخش صوت پشتیبانی نمی‌کند.
-          </audio>
-        </div>
-      );
-    }
+  if (isPodcastPost(post) && audioFile) {
+    return (
+      <section className="border-b border-neutral-200 bg-neutral-50 px-4 py-6 md:px-8 md:py-8">
+        <div className="mx-auto w-full max-w-3xl">
+          <div className="rounded-2xl border border-neutral-200 bg-white p-4 shadow-sm md:p-5">
+            {poster && (
+              <img
+                src={poster}
+                alt={post?.title || "podcast"}
+                className="mb-4 h-48 w-full rounded-xl object-cover md:h-64"
+              />
+            )}
 
-    if (safeEmbedUrl) {
-      return (
-        <div className="border-b border-neutral-200 bg-neutral-50 px-4 py-6 md:px-8">
-          <div className="relative w-full" style={{ minHeight: 120 }}>
-            <iframe
-              src={safeEmbedUrl}
-              title={post?.title || "podcast"}
-              className="min-h-[120px] w-full"
-              allow="autoplay"
-            />
+            <div className="[&_.plyr]:w-full">
+              <audio ref={audioRef} controls className="w-full">
+                <source src={audioFile} />
+              </audio>
+            </div>
           </div>
         </div>
-      );
-    }
+      </section>
+    );
   }
 
   return null;
@@ -475,6 +531,7 @@ export default function SinglePostPage() {
       }
 
       setRelatedLoading(true);
+
       try {
         const categorySlug =
           post?.category?.slug ||
@@ -483,6 +540,7 @@ export default function SinglePostPage() {
           "";
 
         let relatedRaw;
+
         if (categorySlug) {
           relatedRaw = await newsApi.getPosts({
             category: categorySlug,
@@ -496,6 +554,7 @@ export default function SinglePostPage() {
         }
 
         const list = extractList(relatedRaw);
+
         const filtered = safeArray(list).filter((item) => {
           if (!item) return false;
           if (post?.id && item?.id) return item.id !== post.id;
@@ -504,6 +563,7 @@ export default function SinglePostPage() {
         });
 
         const prepared = filtered.slice(0, 8).map(normalizeRelatedItem);
+
         if (mounted) setRelatedItems(prepared);
       } catch {
         if (mounted) setRelatedItems([]);
@@ -513,6 +573,7 @@ export default function SinglePostPage() {
     }
 
     fetchRelated();
+
     return () => {
       mounted = false;
     };
@@ -523,8 +584,10 @@ export default function SinglePostPage() {
 
     async function fetchTrending() {
       setTrendingLoading(true);
+
       try {
         let raw;
+
         if (typeof newsApi.getTrendingPosts === "function") {
           raw = await newsApi.getTrendingPosts({ page_size: 5 });
         } else {
@@ -546,6 +609,7 @@ export default function SinglePostPage() {
     }
 
     fetchTrending();
+
     return () => {
       mounted = false;
     };
@@ -582,11 +646,13 @@ export default function SinglePostPage() {
 
   const readTime = (content) => {
     if (!content) return 5;
+
     const words = content
       .replace(/<[^>]*>/g, "")
       .trim()
       .split(/\s+/)
       .filter(Boolean).length;
+
     return Math.max(1, Math.ceil(words / 200));
   };
 
@@ -636,6 +702,7 @@ export default function SinglePostPage() {
         document.execCommand("copy");
         document.body.removeChild(ta);
       }
+
       setCopied(true);
       setTimeout(() => setCopied(false), 2000);
     } catch {}
@@ -643,6 +710,7 @@ export default function SinglePostPage() {
 
   const handleShareNative = async () => {
     if (!navigator.share) return;
+
     try {
       await navigator.share({
         title: post?.title,
@@ -654,6 +722,7 @@ export default function SinglePostPage() {
 
   const handleToggleBookmark = async () => {
     if (!post?.id || bookmarkLoading) return;
+
     setBookmarkLoading(true);
 
     try {
@@ -679,10 +748,13 @@ export default function SinglePostPage() {
 
   const handleCommentSubmit = async (e) => {
     e.preventDefault();
+
     const text = commentText.trim();
+
     if (!text || !post?.id || commentSubmitting) return;
 
     setCommentSubmitting(true);
+
     try {
       const created = await newsApi.createComment({
         post: post.id,
@@ -690,6 +762,7 @@ export default function SinglePostPage() {
       });
 
       const newComment = normalizeComment(created || { content: text });
+
       setComments((prev) => [newComment, ...prev]);
       setCommentText("");
       setCommentsSort("newest");
@@ -720,9 +793,11 @@ export default function SinglePostPage() {
           <h2 className="text-xl font-bold text-red-700">
             خطا در بارگذاری خبر
           </h2>
+
           <p className="mt-3 text-sm text-red-600">
             {error || "محتوایی یافت نشد"}
           </p>
+
           <button
             type="button"
             onClick={refresh}
@@ -761,7 +836,7 @@ export default function SinglePostPage() {
   return (
     <div dir="rtl" className="flex justify-center bg-white">
       <div
-        className="fixed left-0 top-0 z-50 h-1 bg-black transition-all duration-150"
+        className="fixed left-0 top-0 z-50 h-1 transition-all duration-150"
         style={{ width: `${readingProgress}%` }}
       />
 
@@ -783,6 +858,7 @@ export default function SinglePostPage() {
               ))}
 
               <button
+                type="button"
                 onClick={handleCopy}
                 className={`grid h-9 w-9 place-items-center rounded-full border transition-all ${
                   copied
@@ -795,6 +871,7 @@ export default function SinglePostPage() {
               </button>
 
               <button
+                type="button"
                 onClick={handleToggleBookmark}
                 disabled={bookmarkLoading}
                 className={`grid h-9 w-9 place-items-center rounded-full border transition-all disabled:opacity-60 ${
@@ -809,6 +886,7 @@ export default function SinglePostPage() {
 
               {typeof navigator !== "undefined" && !!navigator.share && (
                 <button
+                  type="button"
                   onClick={handleShareNative}
                   className="grid h-9 w-9 place-items-center rounded-full border border-neutral-300 transition-all hover:bg-black hover:text-white"
                   title="اشتراک‌گذاری"
@@ -821,191 +899,225 @@ export default function SinglePostPage() {
 
           <section className="w-full xl:flex-1">
             <article>
-              <div className="border-b border-neutral-200 px-4 py-6 md:px-8 md:py-8">
-                <div className="mb-4 flex flex-wrap items-center gap-3 text-xs text-neutral-500">
-                  <span className="rounded-full border border-neutral-300 bg-neutral-100 px-3 py-1 text-xs font-bold text-neutral-700">
-                    {postTypeLabel}
-                  </span>
-
-                  {isVideo && (
-                    <span className="inline-flex items-center gap-1 font-bold text-red-600">
-                      <Play size={14} />
-                      ویدیو
+              <header className="border-b border-neutral-200 px-4 py-6 md:px-8 md:py-8">
+                <div className="mx-auto max-w-4xl">
+                  <div className="mb-4 flex flex-wrap items-center gap-3 text-xs text-neutral-500">
+                    <span className="rounded-full border border-neutral-300 bg-neutral-100 px-3 py-1 text-xs font-bold text-neutral-700">
+                      {postTypeLabel}
                     </span>
+
+                    {isVideo && (
+                      <span className="inline-flex items-center gap-1 font-bold text-red-600">
+                        <Play size={14} />
+                        ویدیو
+                      </span>
+                    )}
+
+                    {isPodcast && (
+                      <span className="inline-flex items-center gap-1 font-bold text-emerald-700">
+                        <Volume2 size={14} />
+                        پادکست
+                      </span>
+                    )}
+
+                    <span className="inline-flex items-center gap-1">
+                      <Clock3 size={14} />
+                      {readTime(post?.content)} دقیقه مطالعه
+                    </span>
+
+                    <span className="inline-flex items-center gap-1">
+                      <Eye size={14} />
+                      {formattedViews} بازدید
+                    </span>
+                  </div>
+
+                  <h1 className="mb-4 text-2xl font-black leading-[1.55] tracking-tight text-neutral-950 md:text-4xl md:leading-[1.45]">
+                    {post?.title}
+                  </h1>
+
+                  {(post?.excerpt || post?.description) && (
+                    <p className="max-w-3xl text-[15px] leading-8 text-neutral-600 md:text-base">
+                      {post?.excerpt || post?.description}
+                    </p>
                   )}
 
-                  {isPodcast && (
-                    <span className="inline-flex items-center gap-1 font-bold text-emerald-700">
-                      <Volume2 size={14} />
-                      پادکست
+                  <div className="mt-5 flex flex-wrap items-center gap-x-5 gap-y-2 text-xs text-neutral-500 md:text-sm">
+                    <span className="inline-flex items-center gap-1">
+                      <User2 size={15} />
+                      <span className="font-bold text-neutral-900">
+                        {authorName}
+                      </span>
                     </span>
-                  )}
 
-                  <span className="inline-flex items-center gap-1">
-                    <Clock3 size={14} />
-                    {readTime(post?.content)} دقیقه مطالعه
-                  </span>
-
-                  <span className="inline-flex items-center gap-1">
-                    <Eye size={14} />
-                    {formattedViews} بازدید
-                  </span>
-                </div>
-
-                <h1 className="mb-4 text-2xl font-black leading-[1.5] md:text-4xl">
-                  {post?.title}
-                </h1>
-
-                {(post?.excerpt || post?.description) && (
-                  <p className="max-w-4xl text-[15px] leading-8 text-neutral-600 md:text-base">
-                    {post?.excerpt || post?.description}
-                  </p>
-                )}
-
-                <div className="mt-5 flex flex-wrap items-center gap-x-5 gap-y-2 text-xs text-neutral-500 md:text-sm">
-                  <span className="inline-flex items-center gap-1">
-                    <User2 size={15} />
-                    <span className="font-bold text-neutral-900">
-                      {authorName}
+                    <span className="inline-flex items-center gap-1">
+                      <CalendarDays size={15} />
+                      {formatDate(publishedAt)}
                     </span>
-                  </span>
-
-                  <span className="inline-flex items-center gap-1">
-                    <CalendarDays size={15} />
-                    {formatDate(publishedAt)}
-                  </span>
+                  </div>
                 </div>
-              </div>
+              </header>
 
               <MediaBlock post={post} />
 
               {!isVideo && !isPodcast && !!heroImage && (
-                <figure className="border-b border-neutral-200">
-                  <img
-                    src={heroImage}
-                    alt={post?.title}
-                    loading="lazy"
-                    className="h-[220px] w-full object-cover md:h-[380px]"
-                  />
+                <figure className="border-b border-neutral-200 bg-neutral-100 px-4 py-5 md:px-8 md:py-8">
+                  <div className="mx-auto w-full max-w-5xl overflow-hidden rounded-2xl bg-neutral-200">
+                    <img
+                      src={heroImage}
+                      alt={post?.title}
+                      loading="lazy"
+                      className="h-auto max-h-[620px] w-full object-cover"
+                    />
+                  </div>
                 </figure>
               )}
 
-              <div className="border-b border-neutral-200 px-4 py-8 md:px-8">
+              <div className="border-b border-neutral-200 px-4 py-8 md:px-8 md:py-10">
                 <div
-                  className="prose prose-neutral max-w-none prose-p:leading-[2.1] prose-p:text-[15px] prose-li:text-[15px] prose-headings:font-black md:prose-p:text-[17px] md:prose-li:text-[17px]"
+                  className="
+                    prose prose-neutral mx-auto max-w-3xl
+                    prose-headings:font-black
+                    prose-h2:mt-10 prose-h2:text-2xl
+                    prose-h3:mt-8 prose-h3:text-xl
+                    prose-p:text-[15px] prose-p:leading-[2.15] prose-p:text-neutral-800
+                    prose-li:text-[15px] prose-li:leading-8
+                    prose-a:font-bold prose-a:text-black prose-a:no-underline hover:prose-a:underline
+                    prose-img:mx-auto prose-img:max-h-[520px] prose-img:w-auto prose-img:max-w-full prose-img:rounded-2xl
+                    prose-video:mx-auto prose-video:w-full
+                    prose-iframe:mx-auto prose-iframe:aspect-video prose-iframe:w-full prose-iframe:rounded-2xl
+                    md:prose-p:text-[17px]
+                    md:prose-li:text-[17px]
+                  "
                   dangerouslySetInnerHTML={{ __html: safeHtml }}
                 />
               </div>
 
               <section className="border-b border-neutral-200 px-4 py-8 md:px-8">
-                <div className="mb-6 flex flex-wrap items-center justify-between gap-3">
-                  <div className="flex items-center gap-2">
-                    <MessageCircle size={20} />
-                    <h3 className="text-lg font-black md:text-xl">دیدگاه‌ها</h3>
-                    <span className="rounded-full bg-black px-2 py-0.5 text-[10px] font-bold text-white">
-                      {comments.length}
-                    </span>
-                  </div>
+                <div className="mx-auto max-w-3xl">
+                  <div className="mb-6 flex flex-wrap items-center justify-between gap-3">
+                    <div className="flex items-center gap-2">
+                      <MessageCircle size={20} />
+                      <h3 className="text-lg font-black md:text-xl">
+                        دیدگاه‌ها
+                      </h3>
+                      <span className="rounded-full bg-black px-2 py-0.5 text-[10px] font-bold text-white">
+                        {comments.length}
+                      </span>
+                    </div>
 
-                  <div className="flex items-center gap-2">
-                    <SlidersHorizontal size={14} className="text-neutral-500" />
-                    <select
-                      value={commentsSort}
-                      onChange={(e) => {
-                        setCommentsSort(e.target.value);
-                        setVisibleCommentsCount(COMMENTS_STEP);
-                      }}
-                      className="rounded-lg border border-neutral-300 bg-white px-2 py-1 text-[12px] outline-none"
-                    >
-                      <option value="newest">جدیدترین</option>
-                      <option value="oldest">قدیمی‌ترین</option>
-                    </select>
-                  </div>
-                </div>
+                    <div className="flex items-center gap-2">
+                      <SlidersHorizontal
+                        size={14}
+                        className="text-neutral-500"
+                      />
 
-                <form onSubmit={handleCommentSubmit} className="mb-7">
-                  <textarea
-                    value={commentText}
-                    onChange={(e) => setCommentText(e.target.value)}
-                    placeholder="دیدگاه خود را بنویسید..."
-                    rows={4}
-                    maxLength={500}
-                    className="w-full resize-none rounded-xl border border-neutral-300 p-4 text-sm outline-none"
-                  />
-                  <div className="mt-2 flex items-center justify-between">
-                    <span
-                      className={`text-xs ${
-                        commentText.length > 450
-                          ? "text-red-500"
-                          : "text-neutral-400"
-                      }`}
-                    >
-                      {commentText.length} / ۵۰۰
-                    </span>
-                    <button
-                      type="submit"
-                      disabled={!commentText.trim() || commentSubmitting}
-                      className="rounded-lg bg-black px-5 py-2 text-xs font-bold text-white disabled:cursor-not-allowed disabled:opacity-50"
-                    >
-                      {commentSubmitting ? "در حال ارسال..." : "ثبت دیدگاه"}
-                    </button>
-                  </div>
-                </form>
-
-                {commentsLoading ? (
-                  <div className="text-sm text-neutral-500">
-                    در حال دریافت دیدگاه‌ها...
-                  </div>
-                ) : (
-                  <div className="space-y-3">
-                    {visibleComments.map((c) => (
-                      <article
-                        key={c.id}
-                        className="rounded-xl border border-neutral-200 p-4"
+                      <select
+                        value={commentsSort}
+                        onChange={(e) => {
+                          setCommentsSort(e.target.value);
+                          setVisibleCommentsCount(COMMENTS_STEP);
+                        }}
+                        className="rounded-lg border border-neutral-300 bg-white px-2 py-1 text-[12px] outline-none"
                       >
-                        <div className="mb-2 flex items-center gap-2">
-                          <div className="grid h-9 w-9 shrink-0 place-items-center rounded-full bg-black text-xs font-bold text-white">
-                            {c.author?.charAt(0) || "ک"}
-                          </div>
-                          <div className="min-w-0">
-                            <p className="truncate text-sm font-bold">
-                              {c.author}
-                            </p>
-                            <p className="text-[11px] text-neutral-400">
-                              {c.date}
-                            </p>
-                          </div>
-                        </div>
-                        <p className="pr-11 text-[14px] leading-8 text-neutral-700 md:text-[15px]">
-                          {c.text}
-                        </p>
-                      </article>
-                    ))}
+                        <option value="newest">جدیدترین</option>
+                        <option value="oldest">قدیمی‌ترین</option>
+                      </select>
+                    </div>
                   </div>
-                )}
 
-                <div className="mt-6 flex items-center justify-center gap-3">
-                  {hasMoreComments && (
-                    <button
-                      onClick={() =>
-                        setVisibleCommentsCount((prev) => prev + COMMENTS_STEP)
-                      }
-                      className="inline-flex items-center gap-1.5 rounded-xl border border-neutral-300 px-4 py-2 text-sm font-bold"
-                    >
-                      مشاهده بیشتر
-                      <ChevronDown size={16} />
-                    </button>
+                  <form onSubmit={handleCommentSubmit} className="mb-7">
+                    <textarea
+                      value={commentText}
+                      onChange={(e) => setCommentText(e.target.value)}
+                      placeholder="دیدگاه خود را بنویسید..."
+                      rows={4}
+                      maxLength={500}
+                      className="w-full resize-none rounded-xl border border-neutral-300 p-4 text-sm outline-none focus:border-black"
+                    />
+
+                    <div className="mt-2 flex items-center justify-between">
+                      <span
+                        className={`text-xs ${
+                          commentText.length > 450
+                            ? "text-red-500"
+                            : "text-neutral-400"
+                        }`}
+                      >
+                        {commentText.length} / ۵۰۰
+                      </span>
+
+                      <button
+                        type="submit"
+                        disabled={!commentText.trim() || commentSubmitting}
+                        className="rounded-lg bg-black px-5 py-2 text-xs font-bold text-white disabled:cursor-not-allowed disabled:opacity-50"
+                      >
+                        {commentSubmitting ? "در حال ارسال..." : "ثبت دیدگاه"}
+                      </button>
+                    </div>
+                  </form>
+
+                  {commentsLoading ? (
+                    <div className="text-sm text-neutral-500">
+                      در حال دریافت دیدگاه‌ها...
+                    </div>
+                  ) : (
+                    <div className="space-y-3">
+                      {visibleComments.map((c) => (
+                        <article
+                          key={c.id}
+                          className="rounded-xl border border-neutral-200 p-4"
+                        >
+                          <div className="mb-2 flex items-center gap-2">
+                            <div className="grid h-9 w-9 shrink-0 place-items-center rounded-full bg-black text-xs font-bold text-white">
+                              {c.author?.charAt(0) || "ک"}
+                            </div>
+
+                            <div className="min-w-0">
+                              <p className="truncate text-sm font-bold">
+                                {c.author}
+                              </p>
+
+                              <p className="text-[11px] text-neutral-400">
+                                {c.date}
+                              </p>
+                            </div>
+                          </div>
+
+                          <p className="pr-11 text-[14px] leading-8 text-neutral-700 md:text-[15px]">
+                            {c.text}
+                          </p>
+                        </article>
+                      ))}
+                    </div>
                   )}
 
-                  {visibleCommentsCount > COMMENTS_STEP && (
-                    <button
-                      onClick={() => setVisibleCommentsCount(COMMENTS_STEP)}
-                      className="inline-flex items-center gap-1.5 rounded-xl border border-neutral-300 px-4 py-2 text-sm text-neutral-600"
-                    >
-                      نمایش کمتر
-                      <ChevronUp size={16} />
-                    </button>
-                  )}
+                  <div className="mt-6 flex items-center justify-center gap-3">
+                    {hasMoreComments && (
+                      <button
+                        type="button"
+                        onClick={() =>
+                          setVisibleCommentsCount(
+                            (prev) => prev + COMMENTS_STEP,
+                          )
+                        }
+                        className="inline-flex items-center gap-1.5 rounded-xl border border-neutral-300 px-4 py-2 text-sm font-bold"
+                      >
+                        مشاهده بیشتر
+                        <ChevronDown size={16} />
+                      </button>
+                    )}
+
+                    {visibleCommentsCount > COMMENTS_STEP && (
+                      <button
+                        type="button"
+                        onClick={() => setVisibleCommentsCount(COMMENTS_STEP)}
+                        className="inline-flex items-center gap-1.5 rounded-xl border border-neutral-300 px-4 py-2 text-sm text-neutral-600"
+                      >
+                        نمایش کمتر
+                        <ChevronUp size={16} />
+                      </button>
+                    )}
+                  </div>
                 </div>
               </section>
             </article>
@@ -1039,20 +1151,24 @@ export default function SinglePostPage() {
                       <span className="text-2xl font-black text-neutral-200">
                         {i + 1}
                       </span>
+
                       <div className="min-w-0">
                         <div className="mb-1 flex items-center gap-1.5">
                           <span className="text-[10px] font-bold text-neutral-400">
                             {a.tag}
                           </span>
+
                           {a.hot && (
                             <span className="rounded bg-red-500 px-1.5 py-0.5 text-[9px] text-white">
                               داغ
                             </span>
                           )}
                         </div>
+
                         <p className="line-clamp-2 text-[13px] leading-6 text-neutral-800">
                           {a.title}
                         </p>
+
                         <span className="text-[11px] text-neutral-400">
                           {a.time}
                         </span>
@@ -1096,6 +1212,7 @@ export default function SinglePostPage() {
 
       {showToTop && (
         <button
+          type="button"
           onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
           className="fixed bottom-6 left-6 z-40 grid h-11 w-11 place-items-center rounded-full bg-black text-white shadow-lg"
           title="بازگشت به بالا"

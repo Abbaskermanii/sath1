@@ -14,7 +14,7 @@ class MyContentSerializer(serializers.Serializer):
     duration = serializers.IntegerField(required=False, default=0)
     published_at = serializers.DateTimeField(required=False, allow_null=True)
     updated_at = serializers.DateTimeField(required=False, allow_null=True)
-    cover = serializers.CharField(required=False, allow_blank=True)
+    cover = serializers.CharField(required=False, allow_blank=True, allow_null=True)
 
 
 def build_dashboard_file_url(file_field, request=None):
@@ -62,9 +62,10 @@ class HomeHeroSelectionItemSerializer(serializers.ModelSerializer):
 
     def get_cover(self, obj):
         request = self.context.get("request")
-        return build_dashboard_file_url(
-            getattr(obj.post, "cover", None), request=request
-        )
+        post = getattr(obj, "post", None)
+        if not post:
+            return None
+        return build_dashboard_file_url(getattr(post, "cover", None), request=request)
 
 
 class HomeHeroSelectionUpdateSerializer(serializers.Serializer):
@@ -80,6 +81,23 @@ class HomeHeroSelectionUpdateSerializer(serializers.Serializer):
             raise serializers.ValidationError("Post not found.")
 
         return value
+
+    def validate(self, attrs):
+        post_id = attrs.get("post_id")
+        if post_id is None:
+            return attrs
+
+        post = Post.objects.filter(id=post_id).first()
+        if not post:
+            raise serializers.ValidationError({"post_id": "Post not found."})
+
+        # اگر فقط published باید قابل انتخاب باشد این را نگه دار
+        if post.status != "published":
+            raise serializers.ValidationError(
+                {"post_id": "Only published posts can be assigned to hero slots."}
+            )
+
+        return attrs
 
 
 class HomeHeroSelectionBulkUpdateSerializer(serializers.Serializer):
@@ -107,7 +125,11 @@ class HomeHeroSelectionBulkUpdateSerializer(serializers.Serializer):
 class DashboardPostSearchSerializer(serializers.ModelSerializer):
     cover = serializers.SerializerMethodField()
     category_title = serializers.CharField(source="category.title", read_only=True)
-    author_email = serializers.EmailField(source="author.email", read_only=True)
+    author_email = serializers.EmailField(
+        source="author.email",
+        read_only=True,
+        allow_null=True,
+    )
 
     class Meta:
         model = Post

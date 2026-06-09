@@ -67,6 +67,14 @@ const MARKET_ITEMS = [
   },
 ];
 
+const HERO_SLOT_ORDER = [
+  "main",
+  "top_left",
+  "bottom_left",
+  "bottom_center",
+  "bottom_right",
+];
+
 function getApiErrorMessage(
   error,
   fallback = "خطا در دریافت اطلاعات صفحه اصلی",
@@ -219,6 +227,50 @@ function getPostVisual(post) {
   return "";
 }
 
+function mapHeroResults(results) {
+  const mapped = {
+    main: null,
+    top_left: null,
+    bottom_left: null,
+    bottom_center: null,
+    bottom_right: null,
+  };
+
+  if (!Array.isArray(results)) return mapped;
+
+  results.forEach((item) => {
+    if (!item?.slot || !HERO_SLOT_ORDER.includes(item.slot)) return;
+
+    if (!item?.post_id || item?.is_active === false) {
+      mapped[item.slot] = null;
+      return;
+    }
+
+    mapped[item.slot] = {
+      id: item.post_id,
+      title: item.post_title || "بدون عنوان",
+      slug: item.post_slug || "",
+      status: item.post_status || "",
+      media_type: item.post_media_type || "",
+      post_type: item.post_type || "",
+      published_at: item.published_at || "",
+      cover: item.cover || "",
+      image: item.cover || "",
+      href: item.post_slug ? `/news/${item.post_slug}` : "#",
+      description: item.post_description || "",
+      excerpt: item.post_excerpt || "",
+      categoryTitle: item.category_title || item.category || "خبر",
+      category: item.category || item.category_title || "خبر",
+      video_file: item.video_file || "",
+      embed_url: item.embed_url || "",
+      audio_file: item.audio_file || "",
+      podcast_file: item.podcast_file || "",
+    };
+  });
+
+  return mapped;
+}
+
 function toLargeNewsData(post, bottomPost = null) {
   if (!post) {
     return {
@@ -242,12 +294,7 @@ function toLargeNewsData(post, bottomPost = null) {
   return {
     title: post?.title || "بدون عنوان",
     description: post?.description || post?.excerpt || "",
-    categoryText:
-      bottomPost?.categoryTitle ||
-      post?.categoryTitle ||
-      bottomPost?.category ||
-      post?.category ||
-      "خبر",
+    categoryText: post?.categoryTitle || post?.category || "خبر",
     image: getPostImage(post),
     cover: getPostVisual(post),
     href: post?.href || `/news/${post?.slug || ""}`,
@@ -297,7 +344,6 @@ function toMediumNewsData(post, bottomPost = null) {
     image: getPostImage(post),
     cover: getPostVisual(post),
     href: post?.href || `/news/${post?.slug || ""}`,
-
     bottomNewsTitle: bottomPost?.title || "",
     bottomNewsDescription: bottomPost?.description || bottomPost?.excerpt || "",
     bottomNewsHref: bottomPost?.href || `/news/${bottomPost?.slug || ""}`,
@@ -390,7 +436,6 @@ function HomeSkeleton() {
 
           <div className="w-full space-y-6 p-4 md:p-6 lg:w-2/3">
             <div className="h-96 animate-pulse rounded-2xl bg-neutral-100" />
-
             <div className="grid gap-4 md:grid-cols-3">
               {[1, 2, 3].map((i) => (
                 <div
@@ -399,7 +444,6 @@ function HomeSkeleton() {
                 />
               ))}
             </div>
-
             <div className="h-72 animate-pulse rounded-2xl bg-neutral-100" />
           </div>
         </div>
@@ -465,6 +509,7 @@ function useHomeData(categorySlug = null) {
       const isCategoryPage = Boolean(categorySlug);
 
       const [
+        heroResult,
         homeResult,
         latestResult,
         popularResult,
@@ -472,6 +517,8 @@ function useHomeData(categorySlug = null) {
         tagsResult,
         videosResult,
       ] = await Promise.allSettled([
+        newsApi.getHomeHero(),
+
         isCategoryPage
           ? newsApi.getPosts({
               category: categorySlug,
@@ -500,6 +547,17 @@ function useHomeData(categorySlug = null) {
           ordering: "-published_at",
         }),
       ]);
+
+      const heroSlots =
+        heroResult.status === "fulfilled"
+          ? mapHeroResults(heroResult.value?.results || [])
+          : {
+              main: null,
+              top_left: null,
+              bottom_left: null,
+              bottom_center: null,
+              bottom_right: null,
+            };
 
       const homePosts =
         homeResult.status === "fulfilled"
@@ -537,10 +595,12 @@ function useHomeData(categorySlug = null) {
         popularPosts.length +
         categories.length +
         tags.length +
-        videos.length;
+        videos.length +
+        Object.values(heroSlots).filter(Boolean).length;
 
       if (baseFeedCount === 0) {
         const firstRejected = [
+          heroResult,
           homeResult,
           latestResult,
           popularResult,
@@ -580,6 +640,7 @@ function useHomeData(categorySlug = null) {
       );
 
       setData({
+        heroSlots,
         homePosts: safeArray(homePosts),
         latestNews: safeArray(latestNews),
         popularPosts: safeArray(popularPosts),
@@ -620,6 +681,7 @@ export default function Home() {
     if (!data) return null;
 
     const {
+      heroSlots,
       homePosts,
       latestNews,
       popularPosts,
@@ -633,37 +695,83 @@ export default function Home() {
     } = data;
 
     const postsForHero = homePosts.length ? homePosts : latestNews;
-    const mainPost = pickFeatured(postsForHero);
 
-    const bottomPost =
+    // --- Hero Slot Mapping ---
+    const mainPost = heroSlots?.main || pickFeatured(postsForHero) || null;
+    const topLeftPost =
+      heroSlots?.top_left ||
       pickDifferentPost(postsForHero, [mainPost]) ||
-      pickDifferentPost(latestNews, [mainPost]) ||
-      pickDifferentPost(popularPosts, [mainPost]) ||
+      null;
+    const bottomLeftPost =
+      heroSlots?.bottom_left ||
+      pickDifferentPost(postsForHero, [mainPost, topLeftPost]) ||
+      null;
+    const bottomCenterPost =
+      heroSlots?.bottom_center ||
+      pickDifferentPost(postsForHero, [
+        mainPost,
+        topLeftPost,
+        bottomLeftPost,
+      ]) ||
+      null;
+    const bottomRightPost =
+      heroSlots?.bottom_right ||
+      pickDifferentPost(postsForHero, [
+        mainPost,
+        topLeftPost,
+        bottomLeftPost,
+        bottomCenterPost,
+      ]) ||
       null;
 
-    const mediumPost =
-      pickDifferentPost(postsForHero, [mainPost, bottomPost]) ||
-      pickDifferentPost(latestNews, [mainPost, bottomPost]) ||
-      pickDifferentPost(popularPosts, [mainPost, bottomPost]) ||
-      null;
+    // 1. LargNews (Main Title & Bottom Small Title)
+    // Using main slot for the large preview and top_left for the sub-news inside the box.
+    const largeNewsData = toLargeNewsData(mainPost, topLeftPost);
 
-    const mediumBottomPost =
-      pickDifferentPost(postsForHero, [mainPost, bottomPost, mediumPost]) ||
-      pickDifferentPost(latestNews, [mainPost, bottomPost, mediumPost]) ||
-      pickDifferentPost(popularPosts, [mainPost, bottomPost, mediumPost]) ||
-      null;
+    // 2. RelatedNews (3 Important Titles)
+    // Since main and top_left are used in LargNews, we use the remaining 3 for RelatedNews.
+    const heroRelatedPosts = [
+      bottomLeftPost,
+      bottomCenterPost,
+      bottomRightPost,
+    ].filter(Boolean);
 
-    const largeNewsData = toLargeNewsData(mainPost, bottomPost);
-    const mediumNewsData = toMediumNewsData(mediumPost, mediumBottomPost);
+    const excludedForRelated = [
+      mainPost,
+      topLeftPost,
+      bottomLeftPost,
+      bottomCenterPost,
+      bottomRightPost,
+    ].filter(Boolean);
 
-    const relatedNewsData = makeRelatedNews(
-      uniqueByIdOrTitle([
-        ...postsForHero.filter((item) => !isSamePost(item, mainPost)),
-        ...latestNews.filter((item) => !isSamePost(item, mainPost)),
-        ...popularPosts.filter((item) => !isSamePost(item, mainPost)),
-      ]),
-    );
+    const fallbackRelatedPosts = uniqueByIdOrTitle([
+      ...postsForHero.filter((item) =>
+        excludedForRelated.every((excluded) => !isSamePost(item, excluded)),
+      ),
+      ...latestNews.filter((item) =>
+        excludedForRelated.every((excluded) => !isSamePost(item, excluded)),
+      ),
+      ...popularPosts.filter((item) =>
+        excludedForRelated.every((excluded) => !isSamePost(item, excluded)),
+      ),
+    ]);
 
+    const relatedNewsData = makeRelatedNews([
+      ...heroRelatedPosts,
+      ...fallbackRelatedPosts,
+    ]);
+
+    // 3. MediumNews
+    // Since all 5 slots are assigned, we take the next best fresh posts for MediumNews
+    const mediumMainPost = pickDifferentPost(postsForHero, excludedForRelated);
+    const mediumBottomPost = pickDifferentPost(postsForHero, [
+      ...excludedForRelated,
+      mediumMainPost,
+    ]);
+
+    const mediumNewsData = toMediumNewsData(mediumMainPost, mediumBottomPost);
+
+    // 4. Video Data (Restored to normal behavior, ignoring top_left entirely for videos)
     const videoData = videos.slice(0, 3).map((video) => ({
       id: video.id,
       image: getPostVisual(video),
@@ -675,6 +783,7 @@ export default function Home() {
       isVideo: isVideoPost(video),
     }));
 
+    // MediumVideoNews
     const mediumVideoNewsData = {
       title: videos[0]?.title || "ویدیوی امروز",
       description: videos[0]?.description || videos[0]?.excerpt || "",
@@ -885,8 +994,10 @@ export default function Home() {
           </aside>
 
           <section className="w-full lg:w-2/3">
+            {/* LargNews includes main slot (big) and top_left slot (bottom) */}
             <LargNews {...largeNewsData} />
 
+            {/* RelatedNews uses bottom_left, bottom_center, bottom_right slots */}
             {relatedNewsData.length > 0 ? (
               <RelatedNews news={relatedNewsData} />
             ) : (

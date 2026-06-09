@@ -3,12 +3,21 @@ from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework.permissions import IsAuthenticated
 
-from apps.news.models import Comment, HomeHeroSelection, HomeHeroSlot, Post
+from apps.news.models import (
+    Comment,
+    HomeHeroSelection,
+    HomeHeroSlot,
+    Post,
+    MediaType,
+    PostStatus,
+)
+
 from .permissions import IsAdminOnly, IsAdminOrAuthor
 from .serializers import (
     DashboardPostSearchSerializer,
     HomeHeroSelectionBulkUpdateSerializer,
     HomeHeroSelectionItemSerializer,
+    build_dashboard_file_url,
 )
 
 
@@ -45,7 +54,6 @@ def serialize_home_hero_results(request):
     ).all()
 
     by_slot = {item.slot: item for item in selections}
-
     results = []
 
     for slot in ordered_home_hero_slots():
@@ -64,6 +72,32 @@ def serialize_home_hero_results(request):
     return results
 
 
+def get_post_content_q():
+    return Q(media_type="none") | Q(media_type="") | Q(media_type__isnull=True)
+
+
+def get_video_content_q():
+    return Q(media_type="video")
+
+
+def get_podcast_content_q():
+    return Q(media_type="podcast")
+
+
+def apply_owner_scope(queryset, user):
+    is_admin = getattr(user, "role", None) == "admin"
+    if is_admin:
+        return queryset
+    return queryset.filter(author=user)
+
+
+def safe_int(value, default):
+    try:
+        return int(value)
+    except (TypeError, ValueError):
+        return default
+
+
 class OverviewView(APIView):
     permission_classes = [IsAuthenticated, IsAdminOrAuthor]
 
@@ -71,53 +105,34 @@ class OverviewView(APIView):
         user = request.user
         is_admin = getattr(user, "role", None) == "admin"
 
-        posts = Post.objects.all()
+        qs = apply_owner_scope(Post.objects.all(), user)
 
-        if not is_admin:
-            posts = posts.filter(author=user)
+        post_q = Q(media_type=MediaType.NONE)
+        video_q = Q(media_type=MediaType.VIDEO)
+        podcast_q = Q(media_type=MediaType.PODCAST)
 
         data = {
             "posts": {
-                "total": posts.filter(
-                    Q(media_type="none") | Q(media_type="") | Q(media_type__isnull=True)
-                ).count(),
-                "draft": posts.filter(
-                    Q(media_type="none")
-                    | Q(media_type="")
-                    | Q(media_type__isnull=True),
-                    status="draft",
-                ).count(),
-                "published": posts.filter(
-                    Q(media_type="none")
-                    | Q(media_type="")
-                    | Q(media_type__isnull=True),
-                    status="published",
-                ).count(),
-                "views_sum": posts.filter(
-                    Q(media_type="none") | Q(media_type="") | Q(media_type__isnull=True)
-                ).aggregate(s=Sum("views"))["s"]
+                "total": qs.filter(post_q).count(),
+                "draft": qs.filter(post_q, status=PostStatus.DRAFT).count(),
+                "published": qs.filter(post_q, status=PostStatus.PUBLISHED).count(),
+                "views_sum": qs.filter(post_q).aggregate(total=Sum("views"))["total"]
                 or 0,
             },
             "videos": {
-                "total": posts.filter(media_type="video").count(),
-                "draft": posts.filter(media_type="video", status="draft").count(),
-                "published": posts.filter(
-                    media_type="video", status="published"
-                ).count(),
-                "views_sum": posts.filter(media_type="video").aggregate(s=Sum("views"))[
-                    "s"
-                ]
+                "total": qs.filter(video_q).count(),
+                "draft": qs.filter(video_q, status=PostStatus.DRAFT).count(),
+                "published": qs.filter(video_q, status=PostStatus.PUBLISHED).count(),
+                "views_sum": qs.filter(video_q).aggregate(total=Sum("views"))["total"]
                 or 0,
             },
             "podcasts": {
-                "total": posts.filter(media_type="podcast").count(),
-                "draft": posts.filter(media_type="podcast", status="draft").count(),
-                "published": posts.filter(
-                    media_type="podcast", status="published"
-                ).count(),
-                "listens_sum": posts.filter(media_type="podcast").aggregate(
-                    s=Sum("views")
-                )["s"]
+                "total": qs.filter(podcast_q).count(),
+                "draft": qs.filter(podcast_q, status=PostStatus.DRAFT).count(),
+                "published": qs.filter(podcast_q, status=PostStatus.PUBLISHED).count(),
+                "listens_sum": qs.filter(podcast_q).aggregate(total=Sum("views"))[
+                    "total"
+                ]
                 or 0,
             },
         }
@@ -144,8 +159,6 @@ class MyContentView(APIView):
 
     def get(self, request):
         user = request.user
-        is_admin = getattr(user, "role", None) == "admin"
-
         content_type = request.query_params.get("type", "all")
         status_param = request.query_params.get("status")
 
@@ -163,146 +176,65 @@ class MyContentView(APIView):
             )
         )
 
-        if not is_admin:
-            base_qs = base_qs.filter(author=user)
+        base_qs = apply_owner_scope(base_qs, user)
 
         if status_param:
             base_qs = base_qs.filter(status=status_param)
 
-        if content_type in ["all", "post"]:
-            posts = base_qs.filter(
-                Q(media_type="none") | Q(media_type="") | Q(media_type__isnull=True)
-            ).order_by("-published_at", "-created_at")[:200]
-
-            for p in posts:
-                result.append(
+        def serialize_item(obj, item_type):
+            return {
+                "type": item_type,
+                "id": obj.id,
+                "title": obj.title,
+                "slug": obj.slug,
+                "excerpt": obj.excerpt,
+                "cover": build_dashboard_file_url(getattr(obj, "cover", None), request),
+                "status": obj.status,
+                "post_type": obj.post_type,
+                "media_type": obj.media_type,
+                "created_at": obj.created_at,
+                "published_at": obj.published_at,
+                "updated_at": obj.updated_at,
+                "views": obj.views or 0,
+                "comments_count": obj.comments_count or 0,
+                "duration": getattr(obj, "media_duration", 0) or 0,
+                "listens": (obj.views or 0) if item_type == "podcast" else 0,
+                "category": (
                     {
-                        "type": "post",
-                        "id": p.id,
-                        "title": p.title,
-                        "slug": p.slug,
-                        "excerpt": p.excerpt,
-                        "cover": (
-                            request.build_absolute_uri(p.cover.url)
-                            if getattr(p, "cover", None)
-                            else None
-                        ),
-                        "status": p.status,
-                        "created_at": p.created_at,
-                        "published_at": p.published_at,
-                        "updated_at": p.updated_at,
-                        "views": p.views or 0,
-                        "comments_count": p.comments_count or 0,
-                        "category": (
-                            {
-                                "id": p.category.id,
-                                "title": p.category.title,
-                                "slug": p.category.slug,
-                            }
-                            if p.category
-                            else None
-                        ),
-                        "tags": [
-                            {
-                                "id": tag.id,
-                                "title": tag.title,
-                                "slug": tag.slug,
-                            }
-                            for tag in p.tags.all()
-                        ],
+                        "id": obj.category.id,
+                        "title": obj.category.title,
+                        "slug": obj.category.slug,
                     }
-                )
+                    if obj.category
+                    else None
+                ),
+                "tags": [
+                    {
+                        "id": tag.id,
+                        "title": tag.title,
+                        "slug": tag.slug,
+                    }
+                    for tag in obj.tags.all()
+                ],
+            }
+
+        if content_type in ["all", "post"]:
+            posts = base_qs.filter(get_post_content_q()).order_by(
+                "-published_at", "-created_at"
+            )[:200]
+            result.extend([serialize_item(p, "post") for p in posts])
 
         if content_type in ["all", "video"]:
-            videos = base_qs.filter(media_type="video").order_by(
+            videos = base_qs.filter(get_video_content_q()).order_by(
                 "-published_at", "-created_at"
             )[:200]
-
-            for v in videos:
-                result.append(
-                    {
-                        "type": "video",
-                        "id": v.id,
-                        "title": v.title,
-                        "slug": v.slug,
-                        "excerpt": v.excerpt,
-                        "cover": (
-                            request.build_absolute_uri(v.cover.url)
-                            if getattr(v, "cover", None)
-                            else None
-                        ),
-                        "status": v.status,
-                        "created_at": v.created_at,
-                        "published_at": v.published_at,
-                        "updated_at": v.updated_at,
-                        "views": v.views or 0,
-                        "comments_count": v.comments_count or 0,
-                        "duration": getattr(v, "media_duration", 0) or 0,
-                        "category": (
-                            {
-                                "id": v.category.id,
-                                "title": v.category.title,
-                                "slug": v.category.slug,
-                            }
-                            if v.category
-                            else None
-                        ),
-                        "tags": [
-                            {
-                                "id": tag.id,
-                                "title": tag.title,
-                                "slug": tag.slug,
-                            }
-                            for tag in v.tags.all()
-                        ],
-                    }
-                )
+            result.extend([serialize_item(v, "video") for v in videos])
 
         if content_type in ["all", "podcast"]:
-            podcasts = base_qs.filter(media_type="podcast").order_by(
+            podcasts = base_qs.filter(get_podcast_content_q()).order_by(
                 "-published_at", "-created_at"
             )[:200]
-
-            for p in podcasts:
-                result.append(
-                    {
-                        "type": "podcast",
-                        "id": p.id,
-                        "title": p.title,
-                        "slug": p.slug,
-                        "excerpt": p.excerpt,
-                        "cover": (
-                            request.build_absolute_uri(p.cover.url)
-                            if getattr(p, "cover", None)
-                            else None
-                        ),
-                        "status": p.status,
-                        "created_at": p.created_at,
-                        "published_at": p.published_at,
-                        "updated_at": p.updated_at,
-                        "views": p.views or 0,
-                        "comments_count": p.comments_count or 0,
-                        "listens": p.views or 0,
-                        "duration": getattr(p, "media_duration", 0) or 0,
-                        "category": (
-                            {
-                                "id": p.category.id,
-                                "title": p.category.title,
-                                "slug": p.category.slug,
-                            }
-                            if p.category
-                            else None
-                        ),
-                        "tags": [
-                            {
-                                "id": tag.id,
-                                "title": tag.title,
-                                "slug": tag.slug,
-                            }
-                            for tag in p.tags.all()
-                        ],
-                    }
-                )
+            result.extend([serialize_item(p, "podcast") for p in podcasts])
 
         result.sort(
             key=lambda x: (
@@ -346,7 +278,7 @@ class PendingCommentsModerationView(APIView):
                 {
                     "id": c.id,
                     "post_id": c.post_id,
-                    "post_title": c.post.title,
+                    "post_title": c.post.title if c.post else None,
                     "user_id": c.user_id,
                     "user": str(c.user) if c.user else None,
                     "text": c.text,
@@ -427,8 +359,8 @@ class DashboardPostSearchView(APIView):
         q = request.query_params.get("q", "").strip()
         status_param = request.query_params.get("status")
         media_type = request.query_params.get("media_type")
-        limit = int(request.query_params.get("limit", 20))
-        limit = min(limit, 50)
+        limit = safe_int(request.query_params.get("limit", 20), 20)
+        limit = min(max(limit, 1), 50)
 
         qs = Post.objects.select_related("author", "category").order_by(
             "-published_at",
@@ -444,7 +376,10 @@ class DashboardPostSearchView(APIView):
             qs = qs.filter(status=status_param)
 
         if media_type:
-            qs = qs.filter(media_type=media_type)
+            if media_type == "post":
+                qs = qs.filter(get_post_content_q())
+            else:
+                qs = qs.filter(media_type=media_type)
 
         qs = qs[:limit]
 

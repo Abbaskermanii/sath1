@@ -315,4 +315,9 @@ export const newsApi = {
     const list = normalizeBookmarks(normalizeListResponse(data));
     return list?.[0] || null;
   },
+
+  async getHomeHero() {
+    const { data } = await api.get("/dashboard/home-hero/");
+    return data;
+  },
 };

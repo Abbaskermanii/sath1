@@ -82,10 +82,26 @@ export default function DashboardPage() {
   }, []);
 
   const overview = useMemo(() => {
+    const postsTotal = Number(stats?.posts?.total ?? 0);
+    const videosTotal = Number(stats?.videos?.total ?? 0);
+    const podcastsTotal = Number(stats?.podcasts?.total ?? 0);
+
+    const postsViews = Number(stats?.posts?.views_sum ?? 0);
+    const videosViews = Number(stats?.videos?.views_sum ?? 0);
+    const podcastsListens = Number(stats?.podcasts?.listens_sum ?? 0);
+
     return {
-      postsCount: stats?.posts?.total ?? 0,
-      pendingComments: stats?.comments?.pending_total ?? 0,
-      totalViews: stats?.posts?.views_sum ?? 0,
+      postsCount: postsTotal + videosTotal + podcastsTotal,
+      pendingComments: Number(stats?.comments?.pending_total ?? 0),
+      totalViews: postsViews + videosViews + podcastsListens,
+
+      textPostsCount: postsTotal,
+      videosCount: videosTotal,
+      podcastsCount: podcastsTotal,
+
+      textPostsViews: postsViews,
+      videosViews,
+      podcastsListens,
     };
   }, [stats]);
 
@@ -126,28 +142,53 @@ export default function DashboardPage() {
           ))}
         </div>
       ) : (
-        <div className="grid grid-cols-1 gap-4 md:grid-cols-3">
-          <Stat
-            title="کل پست‌ها"
-            value={overview.postsCount}
-            hint="تعداد کل پست‌های ثبت‌شده در سیستم"
-            color="text-white"
-          />
+        <>
+          <div className="grid grid-cols-1 gap-4 md:grid-cols-3">
+            <Stat
+              title="کل محتوا"
+              value={overview.postsCount}
+              hint="مجموع پست‌های متنی، ویدیوها و پادکست‌ها"
+              color="text-white"
+            />
 
-          <Stat
-            title="کامنت‌های منتظر تایید"
-            value={overview.pendingComments}
-            hint="کامنت‌هایی که نیاز به بررسی دارند"
-            color="text-yellow-400"
-          />
+            <Stat
+              title="کامنت‌های منتظر تایید"
+              value={overview.pendingComments}
+              hint="کامنت‌هایی که نیاز به بررسی دارند"
+              color="text-yellow-400"
+            />
 
-          <Stat
-            title="بازدید کل"
-            value={overview.totalViews}
-            hint="مجموع بازدیدهای ثبت‌شده برای پست‌ها"
-            color="text-green-400"
-          />
-        </div>
+            <Stat
+              title="بازدید کل"
+              value={overview.totalViews}
+              hint="مجموع بازدید و شنیده‌شدن همه محتواها"
+              color="text-green-400"
+            />
+          </div>
+
+          <div className="grid grid-cols-1 gap-4 md:grid-cols-3">
+            <Stat
+              title="پست‌های متنی"
+              value={overview.textPostsCount}
+              hint={`مجموع بازدید: ${formatNumber(overview.textPostsViews)}`}
+              color="text-blue-400"
+            />
+
+            <Stat
+              title="ویدیوها"
+              value={overview.videosCount}
+              hint={`مجموع بازدید: ${formatNumber(overview.videosViews)}`}
+              color="text-purple-400"
+            />
+
+            <Stat
+              title="پادکست‌ها"
+              value={overview.podcastsCount}
+              hint={`مجموع شنیده‌شدن: ${formatNumber(overview.podcastsListens)}`}
+              color="text-pink-400"
+            />
+          </div>
+        </>
       )}
 
       <div className="grid grid-cols-1 gap-4 md:grid-cols-2">

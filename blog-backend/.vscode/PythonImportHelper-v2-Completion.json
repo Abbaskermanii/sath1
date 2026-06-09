@@ -716,6 +716,22 @@
         "documentation": {}
     },
     {
+        "label": "MediaType",
+        "importPath": "apps.news.models",
+        "description": "apps.news.models",
+        "isExtraImport": true,
+        "detail": "apps.news.models",
+        "documentation": {}
+    },
+    {
+        "label": "PostStatus",
+        "importPath": "apps.news.models",
+        "description": "apps.news.models",
+        "isExtraImport": true,
+        "detail": "apps.news.models",
+        "documentation": {}
+    },
+    {
         "label": "Category",
         "importPath": "apps.news.models",
         "description": "apps.news.models",
@@ -1655,7 +1671,7 @@
         "kind": 6,
         "importPath": "apps.dashboard.serializers",
         "description": "apps.dashboard.serializers",
-        "peekOfCode": "class DashboardPostSearchSerializer(serializers.ModelSerializer):\n    cover = serializers.SerializerMethodField()\n    category_title = serializers.CharField(source=\"category.title\", read_only=True)\n    author_email = serializers.EmailField(source=\"author.email\", read_only=True)\n    class Meta:\n        model = Post\n        fields = (\n            \"id\",\n            \"title\",\n            \"slug\",",
+        "peekOfCode": "class DashboardPostSearchSerializer(serializers.ModelSerializer):\n    cover = serializers.SerializerMethodField()\n    category_title = serializers.CharField(source=\"category.title\", read_only=True)\n    author_email = serializers.EmailField(\n        source=\"author.email\",\n        read_only=True,\n        allow_null=True,\n    )\n    class Meta:\n        model = Post",
         "detail": "apps.dashboard.serializers",
         "documentation": {}
     },
@@ -1682,7 +1698,7 @@
         "kind": 6,
         "importPath": "apps.dashboard.views",
         "description": "apps.dashboard.views",
-        "peekOfCode": "class OverviewView(APIView):\n    permission_classes = [IsAuthenticated, IsAdminOrAuthor]\n    def get(self, request):\n        user = request.user\n        is_admin = getattr(user, \"role\", None) == \"admin\"\n        posts = Post.objects.all()\n        if not is_admin:\n            posts = posts.filter(author=user)\n        data = {\n            \"posts\": {",
+        "peekOfCode": "class OverviewView(APIView):\n    permission_classes = [IsAuthenticated, IsAdminOrAuthor]\n    def get(self, request):\n        user = request.user\n        is_admin = getattr(user, \"role\", None) == \"admin\"\n        qs = apply_owner_scope(Post.objects.all(), user)\n        post_q = Q(media_type=MediaType.NONE)\n        video_q = Q(media_type=MediaType.VIDEO)\n        podcast_q = Q(media_type=MediaType.PODCAST)\n        data = {",
         "detail": "apps.dashboard.views",
         "documentation": {}
     },
@@ -1746,6 +1762,51 @@
         "importPath": "apps.dashboard.views",
         "description": "apps.dashboard.views",
         "peekOfCode": "def serialize_home_hero_results(request):\n    selections = HomeHeroSelection.objects.select_related(\n        \"post\",\n        \"post__author\",\n        \"post__category\",\n    ).all()\n    by_slot = {item.slot: item for item in selections}\n    results = []\n    for slot in ordered_home_hero_slots():\n        obj = by_slot.get(slot)",
+        "detail": "apps.dashboard.views",
+        "documentation": {}
+    },
+    {
+        "label": "get_post_content_q",
+        "kind": 2,
+        "importPath": "apps.dashboard.views",
+        "description": "apps.dashboard.views",
+        "peekOfCode": "def get_post_content_q():\n    return Q(media_type=\"none\") | Q(media_type=\"\") | Q(media_type__isnull=True)\ndef get_video_content_q():\n    return Q(media_type=\"video\")\ndef get_podcast_content_q():\n    return Q(media_type=\"podcast\")\ndef apply_owner_scope(queryset, user):\n    is_admin = getattr(user, \"role\", None) == \"admin\"\n    if is_admin:\n        return queryset",
+        "detail": "apps.dashboard.views",
+        "documentation": {}
+    },
+    {
+        "label": "get_video_content_q",
+        "kind": 2,
+        "importPath": "apps.dashboard.views",
+        "description": "apps.dashboard.views",
+        "peekOfCode": "def get_video_content_q():\n    return Q(media_type=\"video\")\ndef get_podcast_content_q():\n    return Q(media_type=\"podcast\")\ndef apply_owner_scope(queryset, user):\n    is_admin = getattr(user, \"role\", None) == \"admin\"\n    if is_admin:\n        return queryset\n    return queryset.filter(author=user)\ndef safe_int(value, default):",
+        "detail": "apps.dashboard.views",
+        "documentation": {}
+    },
+    {
+        "label": "get_podcast_content_q",
+        "kind": 2,
+        "importPath": "apps.dashboard.views",
+        "description": "apps.dashboard.views",
+        "peekOfCode": "def get_podcast_content_q():\n    return Q(media_type=\"podcast\")\ndef apply_owner_scope(queryset, user):\n    is_admin = getattr(user, \"role\", None) == \"admin\"\n    if is_admin:\n        return queryset\n    return queryset.filter(author=user)\ndef safe_int(value, default):\n    try:\n        return int(value)",
+        "detail": "apps.dashboard.views",
+        "documentation": {}
+    },
+    {
+        "label": "apply_owner_scope",
+        "kind": 2,
+        "importPath": "apps.dashboard.views",
+        "description": "apps.dashboard.views",
+        "peekOfCode": "def apply_owner_scope(queryset, user):\n    is_admin = getattr(user, \"role\", None) == \"admin\"\n    if is_admin:\n        return queryset\n    return queryset.filter(author=user)\ndef safe_int(value, default):\n    try:\n        return int(value)\n    except (TypeError, ValueError):\n        return default",
+        "detail": "apps.dashboard.views",
+        "documentation": {}
+    },
+    {
+        "label": "safe_int",
+        "kind": 2,
+        "importPath": "apps.dashboard.views",
+        "description": "apps.dashboard.views",
+        "peekOfCode": "def safe_int(value, default):\n    try:\n        return int(value)\n    except (TypeError, ValueError):\n        return default\nclass OverviewView(APIView):\n    permission_classes = [IsAuthenticated, IsAdminOrAuthor]\n    def get(self, request):\n        user = request.user\n        is_admin = getattr(user, \"role\", None) == \"admin\"",
         "detail": "apps.dashboard.views",
         "documentation": {}
     },

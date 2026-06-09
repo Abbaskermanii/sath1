@@ -6,6 +6,7 @@ const navItems = [
   { href: "/dashboard/comments", label: "کامنت‌ها" },
   { href: "/dashboard/categories", label: "دسته‌بندی‌ها" },
   { href: "/dashboard/tags", label: "تگ‌ها" },
+  { href: "/dashboard/home-hero", label: "هیرو صفحه اصلی" },
   { href: "/dashboard/profile", label: "پروفایل" },
 ];
 

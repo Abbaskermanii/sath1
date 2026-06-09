@@ -1,4 +1,3 @@
-// src/router/index.jsx
 import { createBrowserRouter } from "react-router-dom";
 
 import AuthLayout from "../layouts/AuthLayout";
@@ -17,13 +16,13 @@ import CategoriesPage from "../pages/dashboard/Categories";
 import CommentsPage from "../pages/dashboard/Comments";
 import TagsPage from "../pages/dashboard/Tags";
 import ProfilePage from "../pages/dashboard/Profile";
+import HomeHeroPage from "../pages/dashboard/HomeHeroPage";
 
 import SinglePostPage from "../pages/SinglePostPage";
 
 import PrivateRoute from "./PrivateRoute";
 
 export const router = createBrowserRouter([
-  // Public سایت
   {
     element: <SiteLayout />,
     children: [
@@ -35,16 +34,12 @@ export const router = createBrowserRouter([
         path: "/category/:categorySlug",
         element: <HomePage />,
       },
-
-      // عمومی - بدون نیاز به لاگین
       {
         path: "/news/:slug",
         element: <SinglePostPage />,
       },
     ],
   },
-
-  // صفحات احراز هویت
   {
     element: <AuthLayout />,
     children: [
@@ -58,8 +53,6 @@ export const router = createBrowserRouter([
       },
     ],
   },
-
-  // داشبورد - نیازمند لاگین
   {
     element: (
       <PrivateRoute>
@@ -94,6 +87,10 @@ export const router = createBrowserRouter([
       {
         path: "/dashboard/tags",
         element: <TagsPage />,
+      },
+      {
+        path: "/dashboard/home-hero",
+        element: <HomeHeroPage />,
       },
       {
         path: "/dashboard/profile",
