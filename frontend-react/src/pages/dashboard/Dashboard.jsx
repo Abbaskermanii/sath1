@@ -26,7 +26,7 @@ function getApiErrorMessage(error) {
 
 function formatNumber(value) {
   const number = Number(value || 0);
-  return new Intl.NumberFormat("fa-IR").format(number);
+  return new Intl.NumberFormat("en-US").format(number);
 }
 
 function Stat({ title, value, hint, color = "text-white" }) {
