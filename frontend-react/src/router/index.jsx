@@ -17,7 +17,7 @@ import CommentsPage from "../pages/dashboard/Comments";
 import TagsPage from "../pages/dashboard/Tags";
 import ProfilePage from "../pages/dashboard/Profile";
 import HomeHeroPage from "../pages/dashboard/HomeHeroPage";
-
+import AdsPage from "../pages/dashboard/AdsPage";
 import SinglePostPage from "../pages/SinglePostPage";
 
 import PrivateRoute from "./PrivateRoute";
@@ -91,6 +91,10 @@ export const router = createBrowserRouter([
       {
         path: "/dashboard/home-hero",
         element: <HomeHeroPage />,
+      },
+      {
+        path: "/dashboard/ads",
+        element: <AdsPage />,
       },
       {
         path: "/dashboard/profile",

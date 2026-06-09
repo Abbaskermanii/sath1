@@ -2,6 +2,7 @@ import { useCallback, useEffect, useMemo, useState } from "react";
 import { useParams } from "react-router-dom";
 import CategoryPostsFeed from "../components/home/CategoryPostsFeed";
 import { newsApi } from "../lib/news/newsApi";
+import { api } from "../lib/axiosClient";
 import {
   normalizeCategories,
   normalizePosts,
@@ -516,6 +517,7 @@ function useHomeData(categorySlug = null) {
         categoriesResult,
         tagsResult,
         videosResult,
+        adsResult,
       ] = await Promise.allSettled([
         newsApi.getHomeHero(),
 
@@ -546,6 +548,10 @@ function useHomeData(categorySlug = null) {
           media_type: "video",
           ordering: "-published_at",
         }),
+        api
+          .get("/marketing/public-ads/")
+          .then((res) => res.data)
+          .catch(() => ({})),
       ]);
 
       const heroSlots =
@@ -588,6 +594,11 @@ function useHomeData(categorySlug = null) {
         videosResult.status === "fulfilled"
           ? mapVideoPosts(normalizePosts(videosResult.value))
           : [];
+
+      const ads =
+        adsResult.status === "fulfilled" && adsResult.value
+          ? adsResult.value
+          : {};
 
       const baseFeedCount =
         homePosts.length +
@@ -651,6 +662,7 @@ function useHomeData(categorySlug = null) {
         postsByCategory: safeArray(postsByCategory),
         currentCategory: selectedCategory,
         isCategoryPage,
+        ads,
       });
     } catch (error) {
       console.error("Home API Error:", error);
@@ -692,11 +704,11 @@ export default function Home() {
       postsByCategory,
       currentCategory,
       isCategoryPage,
+      ads,
     } = data;
 
     const postsForHero = homePosts.length ? homePosts : latestNews;
 
-    // --- Hero Slot Mapping ---
     const mainPost = heroSlots?.main || pickFeatured(postsForHero) || null;
     const topLeftPost =
       heroSlots?.top_left ||
@@ -724,12 +736,8 @@ export default function Home() {
       ]) ||
       null;
 
-    // 1. LargNews (Main Title & Bottom Small Title)
-    // Using main slot for the large preview and top_left for the sub-news inside the box.
     const largeNewsData = toLargeNewsData(mainPost, topLeftPost);
 
-    // 2. RelatedNews (3 Important Titles)
-    // Since main and top_left are used in LargNews, we use the remaining 3 for RelatedNews.
     const heroRelatedPosts = [
       bottomLeftPost,
       bottomCenterPost,
@@ -761,8 +769,6 @@ export default function Home() {
       ...fallbackRelatedPosts,
     ]);
 
-    // 3. MediumNews
-    // Since all 5 slots are assigned, we take the next best fresh posts for MediumNews
     const mediumMainPost = pickDifferentPost(postsForHero, excludedForRelated);
     const mediumBottomPost = pickDifferentPost(postsForHero, [
       ...excludedForRelated,
@@ -771,7 +777,6 @@ export default function Home() {
 
     const mediumNewsData = toMediumNewsData(mediumMainPost, mediumBottomPost);
 
-    // 4. Video Data (Restored to normal behavior, ignoring top_left entirely for videos)
     const videoData = videos.slice(0, 3).map((video) => ({
       id: video.id,
       image: getPostVisual(video),
@@ -783,7 +788,6 @@ export default function Home() {
       isVideo: isVideoPost(video),
     }));
 
-    // MediumVideoNews
     const mediumVideoNewsData = {
       title: videos[0]?.title || "ویدیوی امروز",
       description: videos[0]?.description || videos[0]?.excerpt || "",
@@ -898,6 +902,7 @@ export default function Home() {
       latestList,
       popularPosts,
       videos,
+      ads,
     };
   }, [data]);
 
@@ -928,6 +933,7 @@ export default function Home() {
     latestList,
     popularPosts,
     videos,
+    ads,
   } = viewModel;
 
   return (
@@ -967,6 +973,19 @@ export default function Home() {
                 )}
               </div>
 
+              {ads?.home_sidebar && (
+                <div className="p-4">
+                  <AdBox
+                    image={ads.home_sidebar.image_url || ads.home_sidebar.image}
+                    label={ads.home_sidebar.label || "تبلیغ"}
+                    title={ads.home_sidebar.title}
+                    description={ads.home_sidebar.description}
+                    buttonText={ads.home_sidebar.button_text}
+                    href={ads.home_sidebar.href}
+                  />
+                </div>
+              )}
+
               <div className="p-4">
                 {inFocusItems.length > 0 ? (
                   <InFocusTopics items={inFocusItems} />
@@ -994,10 +1013,8 @@ export default function Home() {
           </aside>
 
           <section className="w-full lg:w-2/3">
-            {/* LargNews includes main slot (big) and top_left slot (bottom) */}
             <LargNews {...largeNewsData} />
 
-            {/* RelatedNews uses bottom_left, bottom_center, bottom_right slots */}
             {relatedNewsData.length > 0 ? (
               <RelatedNews news={relatedNewsData} />
             ) : (
@@ -1010,14 +1027,19 @@ export default function Home() {
               <div className="flex-1 border-b border-neutral-200 p-6 md:border-e md:border-b-0">
                 <MediumNews {...mediumNewsData} />
 
-                <AdBox
-                  image="/img/530x353.webp"
-                  label="تبلیغ"
-                  title="سرمایه‌گذاری هوشمند"
-                  description="فرصت‌های ویژه بازار امروز"
-                  buttonText="مشاهده بیشتر"
-                  href="/"
-                />
+                {ads?.home_medium_news && (
+                  <AdBox
+                    image={
+                      ads.home_medium_news.image_url ||
+                      ads.home_medium_news.image
+                    }
+                    label={ads.home_medium_news.label || "تبلیغ"}
+                    title={ads.home_medium_news.title}
+                    description={ads.home_medium_news.description}
+                    buttonText={ads.home_medium_news.button_text}
+                    href={ads.home_medium_news.href}
+                  />
+                )}
               </div>
 
               <div className="p-6 md:w-[320px]">
@@ -1067,6 +1089,19 @@ export default function Home() {
         ) : (
           <div className="border-t border-neutral-200 p-6">
             <EmptyBlock title="بخشی برای نمایش اخبار دسته‌بندی‌ها وجود ندارد." />
+          </div>
+        )}
+
+        {ads?.home_bottom && (
+          <div className="border-t border-neutral-200 p-6">
+            <AdBox
+              image={ads.home_bottom.image_url || ads.home_bottom.image}
+              label={ads.home_bottom.label || "تبلیغ"}
+              title={ads.home_bottom.title}
+              description={ads.home_bottom.description}
+              buttonText={ads.home_bottom.button_text}
+              href={ads.home_bottom.href}
+            />
           </div>
         )}
 

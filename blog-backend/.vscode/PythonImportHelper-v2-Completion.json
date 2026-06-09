@@ -92,6 +92,14 @@
         "documentation": {}
     },
     {
+        "label": "settings",
+        "importPath": "django.conf",
+        "description": "django.conf",
+        "isExtraImport": true,
+        "detail": "django.conf",
+        "documentation": {}
+    },
+    {
         "label": "migrations",
         "importPath": "django.db",
         "description": "django.db",
@@ -332,6 +340,38 @@
         "documentation": {}
     },
     {
+        "label": "SAFE_METHODS",
+        "importPath": "rest_framework.permissions",
+        "description": "rest_framework.permissions",
+        "isExtraImport": true,
+        "detail": "rest_framework.permissions",
+        "documentation": {}
+    },
+    {
+        "label": "BasePermission",
+        "importPath": "rest_framework.permissions",
+        "description": "rest_framework.permissions",
+        "isExtraImport": true,
+        "detail": "rest_framework.permissions",
+        "documentation": {}
+    },
+    {
+        "label": "AllowAny",
+        "importPath": "rest_framework.permissions",
+        "description": "rest_framework.permissions",
+        "isExtraImport": true,
+        "detail": "rest_framework.permissions",
+        "documentation": {}
+    },
+    {
+        "label": "IsAdminUser",
+        "importPath": "rest_framework.permissions",
+        "description": "rest_framework.permissions",
+        "isExtraImport": true,
+        "detail": "rest_framework.permissions",
+        "documentation": {}
+    },
+    {
         "label": "AllowAny",
         "importPath": "rest_framework.permissions",
         "description": "rest_framework.permissions",
@@ -405,6 +445,38 @@
     },
     {
         "label": "serializers",
+        "importPath": "rest_framework",
+        "description": "rest_framework",
+        "isExtraImport": true,
+        "detail": "rest_framework",
+        "documentation": {}
+    },
+    {
+        "label": "serializers",
+        "importPath": "rest_framework",
+        "description": "rest_framework",
+        "isExtraImport": true,
+        "detail": "rest_framework",
+        "documentation": {}
+    },
+    {
+        "label": "filters",
+        "importPath": "rest_framework",
+        "description": "rest_framework",
+        "isExtraImport": true,
+        "detail": "rest_framework",
+        "documentation": {}
+    },
+    {
+        "label": "status",
+        "importPath": "rest_framework",
+        "description": "rest_framework",
+        "isExtraImport": true,
+        "detail": "rest_framework",
+        "documentation": {}
+    },
+    {
+        "label": "viewsets",
         "importPath": "rest_framework",
         "description": "rest_framework",
         "isExtraImport": true,
@@ -532,6 +604,14 @@
         "documentation": {}
     },
     {
+        "label": "include",
+        "importPath": "django.urls",
+        "description": "django.urls",
+        "isExtraImport": true,
+        "detail": "django.urls",
+        "documentation": {}
+    },
+    {
         "label": "path",
         "importPath": "django.urls",
         "description": "django.urls",
@@ -561,6 +641,14 @@
         "description": "rest_framework_simplejwt.views",
         "isExtraImport": true,
         "detail": "rest_framework_simplejwt.views",
+        "documentation": {}
+    },
+    {
+        "label": "Response",
+        "importPath": "rest_framework.response",
+        "description": "rest_framework.response",
+        "isExtraImport": true,
+        "detail": "rest_framework.response",
         "documentation": {}
     },
     {
@@ -1108,11 +1196,99 @@
         "documentation": {}
     },
     {
-        "label": "render",
-        "importPath": "django.shortcuts",
-        "description": "django.shortcuts",
+        "label": "ValidationError",
+        "importPath": "django.core.exceptions",
+        "description": "django.core.exceptions",
         "isExtraImport": true,
-        "detail": "django.shortcuts",
+        "detail": "django.core.exceptions",
+        "documentation": {}
+    },
+    {
+        "label": "DefaultRouter",
+        "importPath": "rest_framework.routers",
+        "description": "rest_framework.routers",
+        "isExtraImport": true,
+        "detail": "rest_framework.routers",
+        "documentation": {}
+    },
+    {
+        "label": "DefaultRouter",
+        "importPath": "rest_framework.routers",
+        "description": "rest_framework.routers",
+        "isExtraImport": true,
+        "detail": "rest_framework.routers",
+        "documentation": {}
+    },
+    {
+        "label": "api_view",
+        "importPath": "rest_framework.decorators",
+        "description": "rest_framework.decorators",
+        "isExtraImport": true,
+        "detail": "rest_framework.decorators",
+        "documentation": {}
+    },
+    {
+        "label": "permission_classes",
+        "importPath": "rest_framework.decorators",
+        "description": "rest_framework.decorators",
+        "isExtraImport": true,
+        "detail": "rest_framework.decorators",
+        "documentation": {}
+    },
+    {
+        "label": "action",
+        "importPath": "rest_framework.decorators",
+        "description": "rest_framework.decorators",
+        "isExtraImport": true,
+        "detail": "rest_framework.decorators",
+        "documentation": {}
+    },
+    {
+        "label": "MultiPartParser",
+        "importPath": "rest_framework.parsers",
+        "description": "rest_framework.parsers",
+        "isExtraImport": true,
+        "detail": "rest_framework.parsers",
+        "documentation": {}
+    },
+    {
+        "label": "FormParser",
+        "importPath": "rest_framework.parsers",
+        "description": "rest_framework.parsers",
+        "isExtraImport": true,
+        "detail": "rest_framework.parsers",
+        "documentation": {}
+    },
+    {
+        "label": "JSONParser",
+        "importPath": "rest_framework.parsers",
+        "description": "rest_framework.parsers",
+        "isExtraImport": true,
+        "detail": "rest_framework.parsers",
+        "documentation": {}
+    },
+    {
+        "label": "MultiPartParser",
+        "importPath": "rest_framework.parsers",
+        "description": "rest_framework.parsers",
+        "isExtraImport": true,
+        "detail": "rest_framework.parsers",
+        "documentation": {}
+    },
+    {
+        "label": "FormParser",
+        "importPath": "rest_framework.parsers",
+        "description": "rest_framework.parsers",
+        "isExtraImport": true,
+        "detail": "rest_framework.parsers",
+        "documentation": {}
+    },
+    {
+        "label": "JSONParser",
+        "importPath": "rest_framework.parsers",
+        "description": "rest_framework.parsers",
+        "isExtraImport": true,
+        "detail": "rest_framework.parsers",
         "documentation": {}
     },
     {
@@ -1147,14 +1323,6 @@
         "importPath": "re",
         "description": "re",
         "detail": "re",
-        "documentation": {}
-    },
-    {
-        "label": "DefaultRouter",
-        "importPath": "rest_framework.routers",
-        "description": "rest_framework.routers",
-        "isExtraImport": true,
-        "detail": "rest_framework.routers",
         "documentation": {}
     },
     {
@@ -1211,38 +1379,6 @@
         "description": "django_filters.rest_framework",
         "isExtraImport": true,
         "detail": "django_filters.rest_framework",
-        "documentation": {}
-    },
-    {
-        "label": "action",
-        "importPath": "rest_framework.decorators",
-        "description": "rest_framework.decorators",
-        "isExtraImport": true,
-        "detail": "rest_framework.decorators",
-        "documentation": {}
-    },
-    {
-        "label": "MultiPartParser",
-        "importPath": "rest_framework.parsers",
-        "description": "rest_framework.parsers",
-        "isExtraImport": true,
-        "detail": "rest_framework.parsers",
-        "documentation": {}
-    },
-    {
-        "label": "FormParser",
-        "importPath": "rest_framework.parsers",
-        "description": "rest_framework.parsers",
-        "isExtraImport": true,
-        "detail": "rest_framework.parsers",
-        "documentation": {}
-    },
-    {
-        "label": "JSONParser",
-        "importPath": "rest_framework.parsers",
-        "description": "rest_framework.parsers",
-        "isExtraImport": true,
-        "detail": "rest_framework.parsers",
         "documentation": {}
     },
     {
@@ -1811,6 +1947,15 @@
         "documentation": {}
     },
     {
+        "label": "AdvertisementAdmin",
+        "kind": 6,
+        "importPath": "apps.marketing.admin",
+        "description": "apps.marketing.admin",
+        "peekOfCode": "class AdvertisementAdmin(admin.ModelAdmin):\n    list_display = (\"id\", \"title\", \"slot\", \"is_active\")\n    list_filter = (\"is_active\", \"slot\")\n    search_fields = (\"title\", \"description\", \"label\", \"href\")\n    ordering = (\"-id\",)",
+        "detail": "apps.marketing.admin",
+        "documentation": {}
+    },
+    {
         "label": "MarketingConfig",
         "kind": 6,
         "importPath": "apps.marketing.apps",
@@ -1820,12 +1965,66 @@
         "documentation": {}
     },
     {
+        "label": "Advertisement",
+        "kind": 6,
+        "importPath": "apps.marketing.models",
+        "description": "apps.marketing.models",
+        "peekOfCode": "class Advertisement(models.Model):\n    SLOT_HOME_MEDIUM_NEWS = \"home_medium_news\"\n    SLOT_HOME_SIDEBAR = \"home_sidebar\"\n    SLOT_HOME_BOTTOM = \"home_bottom\"\n    SLOT_CHOICES = [\n        (SLOT_HOME_MEDIUM_NEWS, \"زیر اخبار میانی (وسط صفحه)\"),\n        (SLOT_HOME_SIDEBAR, \"سایدبار (ستون کناری)\"),\n        (SLOT_HOME_BOTTOM, \"پایین صفحه\"),\n    ]\n    title = models.CharField(max_length=255, verbose_name=\"عنوان تبلیغ\")",
+        "detail": "apps.marketing.models",
+        "documentation": {}
+    },
+    {
+        "label": "IsAdminOrReadOnly",
+        "kind": 6,
+        "importPath": "apps.marketing.permissions",
+        "description": "apps.marketing.permissions",
+        "peekOfCode": "class IsAdminOrReadOnly(BasePermission):\n    def has_permission(self, request, view):\n        if request.method in SAFE_METHODS:\n            return True\n        return bool(request.user and request.user.is_staff)",
+        "detail": "apps.marketing.permissions",
+        "documentation": {}
+    },
+    {
+        "label": "AdvertisementSerializer",
+        "kind": 6,
+        "importPath": "apps.marketing.serializers",
+        "description": "apps.marketing.serializers",
+        "peekOfCode": "class AdvertisementSerializer(serializers.ModelSerializer):\n    image = serializers.ImageField(required=False)\n    image_url = serializers.SerializerMethodField(read_only=True)\n    slot_label = serializers.CharField(source=\"get_slot_display\", read_only=True)\n    class Meta:\n        model = Advertisement\n        fields = [\n            \"id\",\n            \"title\",\n            \"description\",",
+        "detail": "apps.marketing.serializers",
+        "documentation": {}
+    },
+    {
+        "label": "router",
+        "kind": 5,
+        "importPath": "apps.marketing.urls",
+        "description": "apps.marketing.urls",
+        "peekOfCode": "router = DefaultRouter()\nrouter.register(r\"ads\", AdvertisementViewSet, basename=\"marketing-ads\")\nurlpatterns = [\n    path(\"public-ads/\", active_ads_api, name=\"active-ads\"),\n    path(\"\", include(router.urls)),\n]",
+        "detail": "apps.marketing.urls",
+        "documentation": {}
+    },
+    {
         "label": "urlpatterns",
         "kind": 5,
         "importPath": "apps.marketing.urls",
         "description": "apps.marketing.urls",
-        "peekOfCode": "urlpatterns = []",
+        "peekOfCode": "urlpatterns = [\n    path(\"public-ads/\", active_ads_api, name=\"active-ads\"),\n    path(\"\", include(router.urls)),\n]",
         "detail": "apps.marketing.urls",
+        "documentation": {}
+    },
+    {
+        "label": "AdvertisementViewSet",
+        "kind": 6,
+        "importPath": "apps.marketing.views",
+        "description": "apps.marketing.views",
+        "peekOfCode": "class AdvertisementViewSet(viewsets.ModelViewSet):\n    serializer_class = AdvertisementSerializer\n    permission_classes = [IsAdminOrReadOnly]\n    parser_classes = [MultiPartParser, FormParser, JSONParser]\n    filter_backends = [filters.SearchFilter, filters.OrderingFilter]\n    search_fields = [\"title\", \"description\", \"label\", \"href\"]\n    ordering_fields = [\"id\", \"title\", \"slot\", \"is_active\"]\n    ordering = [\"-id\"]\n    def get_queryset(self):\n        return Advertisement.objects.all().order_by(\"-id\")",
+        "detail": "apps.marketing.views",
+        "documentation": {}
+    },
+    {
+        "label": "active_ads_api",
+        "kind": 2,
+        "importPath": "apps.marketing.views",
+        "description": "apps.marketing.views",
+        "peekOfCode": "def active_ads_api(request):\n    queryset = Advertisement.objects.filter(is_active=True).order_by(\"id\")\n    serializer = AdvertisementSerializer(\n        queryset,\n        many=True,\n        context={\"request\": request},\n    )\n    data = {item[\"slot\"]: item for item in serializer.data}\n    return Response(data, status=status.HTTP_200_OK)\nclass AdvertisementViewSet(viewsets.ModelViewSet):",
+        "detail": "apps.marketing.views",
         "documentation": {}
     },
     {
