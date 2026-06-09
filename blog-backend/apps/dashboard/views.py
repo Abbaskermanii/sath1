@@ -3,8 +3,65 @@ from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework.permissions import IsAuthenticated
 
-from apps.news.models import Post, Comment
-from .permissions import IsAdminOrAuthor
+from apps.news.models import Comment, HomeHeroSelection, HomeHeroSlot, Post
+from .permissions import IsAdminOnly, IsAdminOrAuthor
+from .serializers import (
+    DashboardPostSearchSerializer,
+    HomeHeroSelectionBulkUpdateSerializer,
+    HomeHeroSelectionItemSerializer,
+)
+
+
+def empty_home_hero_slot(slot):
+    return {
+        "slot": slot,
+        "is_active": False,
+        "post_id": None,
+        "post_title": None,
+        "post_slug": None,
+        "post_status": None,
+        "post_media_type": None,
+        "post_type": None,
+        "published_at": None,
+        "cover": None,
+    }
+
+
+def ordered_home_hero_slots():
+    return [
+        HomeHeroSlot.MAIN,
+        HomeHeroSlot.TOP_LEFT,
+        HomeHeroSlot.BOTTOM_LEFT,
+        HomeHeroSlot.BOTTOM_CENTER,
+        HomeHeroSlot.BOTTOM_RIGHT,
+    ]
+
+
+def serialize_home_hero_results(request):
+    selections = HomeHeroSelection.objects.select_related(
+        "post",
+        "post__author",
+        "post__category",
+    ).all()
+
+    by_slot = {item.slot: item for item in selections}
+
+    results = []
+
+    for slot in ordered_home_hero_slots():
+        obj = by_slot.get(slot)
+
+        if obj:
+            results.append(
+                HomeHeroSelectionItemSerializer(
+                    obj,
+                    context={"request": request},
+                ).data
+            )
+        else:
+            results.append(empty_home_hero_slot(slot))
+
+    return results
 
 
 class OverviewView(APIView):
@@ -79,8 +136,8 @@ class MyContentView(APIView):
     GET /api/dashboard/my-content/
 
     Query params:
-      - type: post|video|podcast|all (default=all)
-      - status: draft|published|archived (optional)
+      - type: post|video|podcast|all default=all
+      - status: draft|published|archived optional
     """
 
     permission_classes = [IsAuthenticated, IsAdminOrAuthor]
@@ -112,7 +169,6 @@ class MyContentView(APIView):
         if status_param:
             base_qs = base_qs.filter(status=status_param)
 
-        # POSTS
         if content_type in ["all", "post"]:
             posts = base_qs.filter(
                 Q(media_type="none") | Q(media_type="") | Q(media_type__isnull=True)
@@ -157,7 +213,6 @@ class MyContentView(APIView):
                     }
                 )
 
-        # VIDEOS
         if content_type in ["all", "video"]:
             videos = base_qs.filter(media_type="video").order_by(
                 "-published_at", "-created_at"
@@ -203,7 +258,6 @@ class MyContentView(APIView):
                     }
                 )
 
-        # PODCASTS
         if content_type in ["all", "podcast"]:
             podcasts = base_qs.filter(media_type="podcast").order_by(
                 "-published_at", "-created_at"
@@ -301,3 +355,108 @@ class PendingCommentsModerationView(APIView):
             )
 
         return Response({"count": len(data), "results": data})
+
+
+class HomeHeroManagementView(APIView):
+    """
+    GET  /api/dashboard/home-hero/
+    POST /api/dashboard/home-hero/
+
+    فقط ادمین می‌تواند مدیریت کند.
+    """
+
+    permission_classes = [IsAuthenticated, IsAdminOnly]
+
+    def get(self, request):
+        results = serialize_home_hero_results(request)
+
+        return Response(
+            {
+                "count": len(results),
+                "results": results,
+            }
+        )
+
+    def post(self, request):
+        serializer = HomeHeroSelectionBulkUpdateSerializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
+
+        items = serializer.validated_data["items"]
+
+        for item in items:
+            slot = item["slot"]
+            post_id = item.get("post_id")
+            is_active = item.get("is_active", True)
+
+            if post_id is None:
+                HomeHeroSelection.objects.filter(slot=slot).delete()
+                continue
+
+            post = Post.objects.get(id=post_id)
+
+            HomeHeroSelection.objects.update_or_create(
+                slot=slot,
+                defaults={
+                    "post": post,
+                    "is_active": is_active,
+                },
+            )
+
+        results = serialize_home_hero_results(request)
+
+        return Response(
+            {
+                "message": "Home hero updated successfully.",
+                "count": len(results),
+                "results": results,
+            }
+        )
+
+
+class DashboardPostSearchView(APIView):
+    """
+    GET /api/dashboard/post-search/?q=...
+
+    فقط ادمین.
+    برای پیدا کردن پست‌ها جهت انتخاب در Hero Homepage.
+    """
+
+    permission_classes = [IsAuthenticated, IsAdminOnly]
+
+    def get(self, request):
+        q = request.query_params.get("q", "").strip()
+        status_param = request.query_params.get("status")
+        media_type = request.query_params.get("media_type")
+        limit = int(request.query_params.get("limit", 20))
+        limit = min(limit, 50)
+
+        qs = Post.objects.select_related("author", "category").order_by(
+            "-published_at",
+            "-created_at",
+        )
+
+        if q:
+            qs = qs.filter(
+                Q(title__icontains=q) | Q(slug__icontains=q) | Q(excerpt__icontains=q)
+            )
+
+        if status_param:
+            qs = qs.filter(status=status_param)
+
+        if media_type:
+            qs = qs.filter(media_type=media_type)
+
+        qs = qs[:limit]
+
+        serializer = DashboardPostSearchSerializer(
+            qs,
+            many=True,
+            context={"request": request},
+        )
+
+        return Response(
+            {
+                "count": len(serializer.data),
+                "results": serializer.data,
+            }
+        )

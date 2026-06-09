@@ -1,14 +1,29 @@
 from django.urls import path
-from .views import OverviewView, MyContentView, PendingCommentsModerationView
 
-app_name = "dashboard"
+from .views import (
+    DashboardPostSearchView,
+    HomeHeroManagementView,
+    MyContentView,
+    OverviewView,
+    PendingCommentsModerationView,
+)
 
 urlpatterns = [
-    path("overview/", OverviewView.as_view(), name="overview"),
-    path("my-content/", MyContentView.as_view(), name="my-content"),
+    path("overview/", OverviewView.as_view(), name="dashboard-overview"),
+    path("my-content/", MyContentView.as_view(), name="dashboard-my-content"),
     path(
-        "moderation/comments/",
+        "pending-comments/",
         PendingCommentsModerationView.as_view(),
-        name="pending-comments",
+        name="dashboard-pending-comments",
+    ),
+    path(
+        "home-hero/",
+        HomeHeroManagementView.as_view(),
+        name="dashboard-home-hero",
+    ),
+    path(
+        "post-search/",
+        DashboardPostSearchView.as_view(),
+        name="dashboard-post-search",
     ),
 ]

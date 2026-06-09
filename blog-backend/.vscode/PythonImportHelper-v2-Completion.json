@@ -660,6 +660,22 @@
         "documentation": {}
     },
     {
+        "label": "HomeHeroSelection",
+        "importPath": "apps.news.models",
+        "description": "apps.news.models",
+        "isExtraImport": true,
+        "detail": "apps.news.models",
+        "documentation": {}
+    },
+    {
+        "label": "HomeHeroSlot",
+        "importPath": "apps.news.models",
+        "description": "apps.news.models",
+        "isExtraImport": true,
+        "detail": "apps.news.models",
+        "documentation": {}
+    },
+    {
         "label": "Post",
         "importPath": "apps.news.models",
         "description": "apps.news.models",
@@ -669,6 +685,30 @@
     },
     {
         "label": "Comment",
+        "importPath": "apps.news.models",
+        "description": "apps.news.models",
+        "isExtraImport": true,
+        "detail": "apps.news.models",
+        "documentation": {}
+    },
+    {
+        "label": "HomeHeroSelection",
+        "importPath": "apps.news.models",
+        "description": "apps.news.models",
+        "isExtraImport": true,
+        "detail": "apps.news.models",
+        "documentation": {}
+    },
+    {
+        "label": "HomeHeroSlot",
+        "importPath": "apps.news.models",
+        "description": "apps.news.models",
+        "isExtraImport": true,
+        "detail": "apps.news.models",
+        "documentation": {}
+    },
+    {
+        "label": "Post",
         "importPath": "apps.news.models",
         "description": "apps.news.models",
         "isExtraImport": true,
@@ -805,6 +845,22 @@
     },
     {
         "label": "Comment",
+        "importPath": "apps.news.models",
+        "description": "apps.news.models",
+        "isExtraImport": true,
+        "detail": "apps.news.models",
+        "documentation": {}
+    },
+    {
+        "label": "HomeHeroSelection",
+        "importPath": "apps.news.models",
+        "description": "apps.news.models",
+        "isExtraImport": true,
+        "detail": "apps.news.models",
+        "documentation": {}
+    },
+    {
+        "label": "HomeHeroSlot",
         "importPath": "apps.news.models",
         "description": "apps.news.models",
         "isExtraImport": true,
@@ -1545,7 +1601,16 @@
         "kind": 6,
         "importPath": "apps.dashboard.permissions",
         "description": "apps.dashboard.permissions",
-        "peekOfCode": "class IsAdminOrAuthor(BasePermission):\n    def has_permission(self, request, view):\n        user = request.user\n        return bool(\n            user\n            and user.is_authenticated\n            and getattr(user, \"role\", None) in [\"admin\", \"author\"]\n        )",
+        "peekOfCode": "class IsAdminOrAuthor(BasePermission):\n    def has_permission(self, request, view):\n        user = request.user\n        return bool(\n            user\n            and user.is_authenticated\n            and getattr(user, \"role\", None) in [\"admin\", \"author\"]\n        )\nclass IsAdminOnly(BasePermission):\n    def has_permission(self, request, view):",
+        "detail": "apps.dashboard.permissions",
+        "documentation": {}
+    },
+    {
+        "label": "IsAdminOnly",
+        "kind": 6,
+        "importPath": "apps.dashboard.permissions",
+        "description": "apps.dashboard.permissions",
+        "peekOfCode": "class IsAdminOnly(BasePermission):\n    def has_permission(self, request, view):\n        user = request.user\n        return bool(\n            user\n            and user.is_authenticated\n            and getattr(user, \"role\", None) == \"admin\"\n        )",
         "detail": "apps.dashboard.permissions",
         "documentation": {}
     },
@@ -1559,12 +1624,48 @@
         "documentation": {}
     },
     {
-        "label": "app_name",
-        "kind": 5,
-        "importPath": "apps.dashboard.urls",
-        "description": "apps.dashboard.urls",
-        "peekOfCode": "app_name = \"dashboard\"\nurlpatterns = [\n    path(\"overview/\", OverviewView.as_view(), name=\"overview\"),\n    path(\"my-content/\", MyContentView.as_view(), name=\"my-content\"),\n    path(\n        \"moderation/comments/\",\n        PendingCommentsModerationView.as_view(),\n        name=\"pending-comments\",\n    ),\n]",
-        "detail": "apps.dashboard.urls",
+        "label": "HomeHeroSelectionItemSerializer",
+        "kind": 6,
+        "importPath": "apps.dashboard.serializers",
+        "description": "apps.dashboard.serializers",
+        "peekOfCode": "class HomeHeroSelectionItemSerializer(serializers.ModelSerializer):\n    post_id = serializers.IntegerField(source=\"post.id\", read_only=True)\n    post_title = serializers.CharField(source=\"post.title\", read_only=True)\n    post_slug = serializers.CharField(source=\"post.slug\", read_only=True)\n    post_status = serializers.CharField(source=\"post.status\", read_only=True)\n    post_media_type = serializers.CharField(source=\"post.media_type\", read_only=True)\n    post_type = serializers.CharField(source=\"post.post_type\", read_only=True)\n    published_at = serializers.DateTimeField(source=\"post.published_at\", read_only=True)\n    cover = serializers.SerializerMethodField()\n    class Meta:",
+        "detail": "apps.dashboard.serializers",
+        "documentation": {}
+    },
+    {
+        "label": "HomeHeroSelectionUpdateSerializer",
+        "kind": 6,
+        "importPath": "apps.dashboard.serializers",
+        "description": "apps.dashboard.serializers",
+        "peekOfCode": "class HomeHeroSelectionUpdateSerializer(serializers.Serializer):\n    slot = serializers.ChoiceField(choices=HomeHeroSlot.choices)\n    post_id = serializers.IntegerField(required=False, allow_null=True)\n    is_active = serializers.BooleanField(required=False, default=True)\n    def validate_post_id(self, value):\n        if value is None:\n            return value\n        if not Post.objects.filter(id=value).exists():\n            raise serializers.ValidationError(\"Post not found.\")\n        return value",
+        "detail": "apps.dashboard.serializers",
+        "documentation": {}
+    },
+    {
+        "label": "HomeHeroSelectionBulkUpdateSerializer",
+        "kind": 6,
+        "importPath": "apps.dashboard.serializers",
+        "description": "apps.dashboard.serializers",
+        "peekOfCode": "class HomeHeroSelectionBulkUpdateSerializer(serializers.Serializer):\n    items = HomeHeroSelectionUpdateSerializer(many=True)\n    def validate(self, attrs):\n        items = attrs.get(\"items\", [])\n        slots = [item[\"slot\"] for item in items]\n        post_ids = [\n            item[\"post_id\"] for item in items if item.get(\"post_id\") is not None\n        ]\n        if len(slots) != len(set(slots)):\n            raise serializers.ValidationError(\"Duplicate slots are not allowed.\")",
+        "detail": "apps.dashboard.serializers",
+        "documentation": {}
+    },
+    {
+        "label": "DashboardPostSearchSerializer",
+        "kind": 6,
+        "importPath": "apps.dashboard.serializers",
+        "description": "apps.dashboard.serializers",
+        "peekOfCode": "class DashboardPostSearchSerializer(serializers.ModelSerializer):\n    cover = serializers.SerializerMethodField()\n    category_title = serializers.CharField(source=\"category.title\", read_only=True)\n    author_email = serializers.EmailField(source=\"author.email\", read_only=True)\n    class Meta:\n        model = Post\n        fields = (\n            \"id\",\n            \"title\",\n            \"slug\",",
+        "detail": "apps.dashboard.serializers",
+        "documentation": {}
+    },
+    {
+        "label": "build_dashboard_file_url",
+        "kind": 2,
+        "importPath": "apps.dashboard.serializers",
+        "description": "apps.dashboard.serializers",
+        "peekOfCode": "def build_dashboard_file_url(file_field, request=None):\n    if not file_field:\n        return None\n    try:\n        url = file_field.url\n    except Exception:\n        return None\n    if request:\n        try:\n            return request.build_absolute_uri(url)",
+        "detail": "apps.dashboard.serializers",
         "documentation": {}
     },
     {
@@ -1572,7 +1673,7 @@
         "kind": 5,
         "importPath": "apps.dashboard.urls",
         "description": "apps.dashboard.urls",
-        "peekOfCode": "urlpatterns = [\n    path(\"overview/\", OverviewView.as_view(), name=\"overview\"),\n    path(\"my-content/\", MyContentView.as_view(), name=\"my-content\"),\n    path(\n        \"moderation/comments/\",\n        PendingCommentsModerationView.as_view(),\n        name=\"pending-comments\",\n    ),\n]",
+        "peekOfCode": "urlpatterns = [\n    path(\"overview/\", OverviewView.as_view(), name=\"dashboard-overview\"),\n    path(\"my-content/\", MyContentView.as_view(), name=\"dashboard-my-content\"),\n    path(\n        \"pending-comments/\",\n        PendingCommentsModerationView.as_view(),\n        name=\"dashboard-pending-comments\",\n    ),\n    path(\n        \"home-hero/\",",
         "detail": "apps.dashboard.urls",
         "documentation": {}
     },
@@ -1590,7 +1691,7 @@
         "kind": 6,
         "importPath": "apps.dashboard.views",
         "description": "apps.dashboard.views",
-        "peekOfCode": "class MyContentView(APIView):\n    \"\"\"\n    GET /api/dashboard/my-content/\n    Query params:\n      - type: post|video|podcast|all (default=all)\n      - status: draft|published|archived (optional)\n    \"\"\"\n    permission_classes = [IsAuthenticated, IsAdminOrAuthor]\n    def get(self, request):\n        user = request.user",
+        "peekOfCode": "class MyContentView(APIView):\n    \"\"\"\n    GET /api/dashboard/my-content/\n    Query params:\n      - type: post|video|podcast|all default=all\n      - status: draft|published|archived optional\n    \"\"\"\n    permission_classes = [IsAuthenticated, IsAdminOrAuthor]\n    def get(self, request):\n        user = request.user",
         "detail": "apps.dashboard.views",
         "documentation": {}
     },
@@ -1600,6 +1701,51 @@
         "importPath": "apps.dashboard.views",
         "description": "apps.dashboard.views",
         "peekOfCode": "class PendingCommentsModerationView(APIView):\n    \"\"\"\n    کامنت‌های در انتظار تایید.\n    - ادمین: همه pending ها\n    - نویسنده: pending های پست‌های خودش\n    \"\"\"\n    permission_classes = [IsAuthenticated, IsAdminOrAuthor]\n    def get(self, request):\n        user = request.user\n        is_admin = getattr(user, \"role\", None) == \"admin\"",
+        "detail": "apps.dashboard.views",
+        "documentation": {}
+    },
+    {
+        "label": "HomeHeroManagementView",
+        "kind": 6,
+        "importPath": "apps.dashboard.views",
+        "description": "apps.dashboard.views",
+        "peekOfCode": "class HomeHeroManagementView(APIView):\n    \"\"\"\n    GET  /api/dashboard/home-hero/\n    POST /api/dashboard/home-hero/\n    فقط ادمین می‌تواند مدیریت کند.\n    \"\"\"\n    permission_classes = [IsAuthenticated, IsAdminOnly]\n    def get(self, request):\n        results = serialize_home_hero_results(request)\n        return Response(",
+        "detail": "apps.dashboard.views",
+        "documentation": {}
+    },
+    {
+        "label": "DashboardPostSearchView",
+        "kind": 6,
+        "importPath": "apps.dashboard.views",
+        "description": "apps.dashboard.views",
+        "peekOfCode": "class DashboardPostSearchView(APIView):\n    \"\"\"\n    GET /api/dashboard/post-search/?q=...\n    فقط ادمین.\n    برای پیدا کردن پست‌ها جهت انتخاب در Hero Homepage.\n    \"\"\"\n    permission_classes = [IsAuthenticated, IsAdminOnly]\n    def get(self, request):\n        q = request.query_params.get(\"q\", \"\").strip()\n        status_param = request.query_params.get(\"status\")",
+        "detail": "apps.dashboard.views",
+        "documentation": {}
+    },
+    {
+        "label": "empty_home_hero_slot",
+        "kind": 2,
+        "importPath": "apps.dashboard.views",
+        "description": "apps.dashboard.views",
+        "peekOfCode": "def empty_home_hero_slot(slot):\n    return {\n        \"slot\": slot,\n        \"is_active\": False,\n        \"post_id\": None,\n        \"post_title\": None,\n        \"post_slug\": None,\n        \"post_status\": None,\n        \"post_media_type\": None,\n        \"post_type\": None,",
+        "detail": "apps.dashboard.views",
+        "documentation": {}
+    },
+    {
+        "label": "ordered_home_hero_slots",
+        "kind": 2,
+        "importPath": "apps.dashboard.views",
+        "description": "apps.dashboard.views",
+        "peekOfCode": "def ordered_home_hero_slots():\n    return [\n        HomeHeroSlot.MAIN,\n        HomeHeroSlot.TOP_LEFT,\n        HomeHeroSlot.BOTTOM_LEFT,\n        HomeHeroSlot.BOTTOM_CENTER,\n        HomeHeroSlot.BOTTOM_RIGHT,\n    ]\ndef serialize_home_hero_results(request):\n    selections = HomeHeroSelection.objects.select_related(",
+        "detail": "apps.dashboard.views",
+        "documentation": {}
+    },
+    {
+        "label": "serialize_home_hero_results",
+        "kind": 2,
+        "importPath": "apps.dashboard.views",
+        "description": "apps.dashboard.views",
+        "peekOfCode": "def serialize_home_hero_results(request):\n    selections = HomeHeroSelection.objects.select_related(\n        \"post\",\n        \"post__author\",\n        \"post__category\",\n    ).all()\n    by_slot = {item.slot: item for item in selections}\n    results = []\n    for slot in ordered_home_hero_slots():\n        obj = by_slot.get(slot)",
         "detail": "apps.dashboard.views",
         "documentation": {}
     },
@@ -1789,6 +1935,24 @@
         "importPath": "apps.news.models",
         "description": "apps.news.models",
         "peekOfCode": "class Bookmark(TimeStampedModel):\n    post = models.ForeignKey(Post, on_delete=models.CASCADE, related_name=\"bookmarks\")\n    user = models.ForeignKey(\n        settings.AUTH_USER_MODEL,\n        on_delete=models.CASCADE,\n        related_name=\"news_bookmarks\",\n    )\n    class Meta:\n        unique_together = (\"post\", \"user\")\n        ordering = (\"-created_at\",)",
+        "detail": "apps.news.models",
+        "documentation": {}
+    },
+    {
+        "label": "HomeHeroSlot",
+        "kind": 6,
+        "importPath": "apps.news.models",
+        "description": "apps.news.models",
+        "peekOfCode": "class HomeHeroSlot(models.TextChoices):\n    MAIN = \"main\", \"Main\"\n    TOP_LEFT = \"top_left\", \"Top Left\"\n    BOTTOM_LEFT = \"bottom_left\", \"Bottom Left\"\n    BOTTOM_CENTER = \"bottom_center\", \"Bottom Center\"\n    BOTTOM_RIGHT = \"bottom_right\", \"Bottom Right\"\nclass HomeHeroSelection(TimeStampedModel):\n    slot = models.CharField(\n        max_length=30,\n        choices=HomeHeroSlot.choices,",
+        "detail": "apps.news.models",
+        "documentation": {}
+    },
+    {
+        "label": "HomeHeroSelection",
+        "kind": 6,
+        "importPath": "apps.news.models",
+        "description": "apps.news.models",
+        "peekOfCode": "class HomeHeroSelection(TimeStampedModel):\n    slot = models.CharField(\n        max_length=30,\n        choices=HomeHeroSlot.choices,\n        unique=True,\n    )\n    post = models.ForeignKey(\n        \"news.Post\",\n        on_delete=models.CASCADE,\n        related_name=\"home_hero_selections\",",
         "detail": "apps.news.models",
         "documentation": {}
     },

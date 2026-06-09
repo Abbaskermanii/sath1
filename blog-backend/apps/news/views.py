@@ -12,6 +12,8 @@ from apps.news.models import (
     Bookmark,
     Category,
     Comment,
+    HomeHeroSelection,
+    HomeHeroSlot,
     HomepageSection,
     MediaType,
     Post,
@@ -36,8 +38,10 @@ from apps.news.serializers import (
 
 def get_client_ip(request):
     x_forwarded_for = request.META.get("HTTP_X_FORWARDED_FOR")
+
     if x_forwarded_for:
         return x_forwarded_for.split(",")[0].strip()
+
     return request.META.get("REMOTE_ADDR", "")
 
 
@@ -48,6 +52,7 @@ def should_count_post_view(request, post_id):
         identity = f"user:{user.id}"
     else:
         session_key = request.session.session_key
+
         if not session_key:
             request.session.save()
             session_key = request.session.session_key
@@ -62,6 +67,7 @@ def should_count_post_view(request, post_id):
         return False
 
     cache.set(cache_key, True, timeout=60 * 60 * 6)
+
     return True
 
 
@@ -83,11 +89,13 @@ class CategoryViewSet(viewsets.ModelViewSet):
     def get_permissions(self):
         if self.action in ["list", "retrieve", "page"]:
             return [AllowAny()]
+
         return [IsAdminUser()]
 
     def get_serializer_class(self):
         if self.action in ["create", "update", "partial_update"]:
             return CategoryWriteSerializer
+
         return CategoryListSerializer
 
     @action(detail=True, methods=["get"], permission_classes=[AllowAny])
@@ -129,12 +137,26 @@ class CategoryViewSet(viewsets.ModelViewSet):
         return Response(
             {
                 "category": CategoryListSerializer(category, context=context).data,
-                "hero": PostListSerializer(hero, many=True, context=context).data,
-                "featured": PostListSerializer(
-                    featured, many=True, context=context
+                "hero": PostListSerializer(
+                    hero,
+                    many=True,
+                    context=context,
                 ).data,
-                "latest": PostListSerializer(latest, many=True, context=context).data,
-                "popular": PostListSerializer(popular, many=True, context=context).data,
+                "featured": PostListSerializer(
+                    featured,
+                    many=True,
+                    context=context,
+                ).data,
+                "latest": PostListSerializer(
+                    latest,
+                    many=True,
+                    context=context,
+                ).data,
+                "popular": PostListSerializer(
+                    popular,
+                    many=True,
+                    context=context,
+                ).data,
             }
         )
 
@@ -157,11 +179,13 @@ class TagViewSet(viewsets.ModelViewSet):
     def get_permissions(self):
         if self.action in ["list", "retrieve"]:
             return [AllowAny()]
+
         return [IsAdminUser()]
 
     def get_serializer_class(self):
         if self.action in ["create", "update", "partial_update"]:
             return TagWriteSerializer
+
         return TagListSerializer
 
 
@@ -202,6 +226,7 @@ class PostViewSet(viewsets.ModelViewSet):
             "latest",
             "popular",
             "home",
+            "home_hero_manual",
             "related",
             "mine",
             "post_types",
@@ -210,7 +235,9 @@ class PostViewSet(viewsets.ModelViewSet):
         ]:
             if self.action == "mine":
                 return [IsAuthenticated()]
+
             return [AllowAny()]
+
         return [IsAuthenticated()]
 
     def get_queryset(self):
@@ -238,7 +265,14 @@ class PostViewSet(viewsets.ModelViewSet):
                 Q(status=PostStatus.PUBLISHED) | Q(author=user)
             ).distinct()
 
-        if self.action in ["list", "latest", "popular", "home", "related"]:
+        if self.action in [
+            "list",
+            "latest",
+            "popular",
+            "home",
+            "home_hero_manual",
+            "related",
+        ]:
             return queryset.filter(status=PostStatus.PUBLISHED).distinct()
 
         if self.action == "retrieve":
@@ -246,6 +280,7 @@ class PostViewSet(viewsets.ModelViewSet):
                 return queryset.filter(
                     Q(status=PostStatus.PUBLISHED) | Q(author=user)
                 ).distinct()
+
             return queryset.filter(status=PostStatus.PUBLISHED).distinct()
 
         return queryset.distinct()
@@ -270,6 +305,7 @@ class PostViewSet(viewsets.ModelViewSet):
             instance.refresh_from_db(fields=["views"])
 
         serializer = self.get_serializer(instance, context={"request": request})
+
         return Response(serializer.data)
 
     @action(detail=False, methods=["get"], permission_classes=[AllowAny])
@@ -287,6 +323,7 @@ class PostViewSet(viewsets.ModelViewSet):
             many=True,
             context={"request": request},
         )
+
         return Response(serializer.data)
 
     @action(detail=False, methods=["get"], permission_classes=[AllowAny])
@@ -305,6 +342,7 @@ class PostViewSet(viewsets.ModelViewSet):
             many=True,
             context={"request": request},
         )
+
         return Response(serializer.data)
 
     @action(detail=False, methods=["get"], permission_classes=[AllowAny])
@@ -395,6 +433,60 @@ class PostViewSet(viewsets.ModelViewSet):
 
         return Response(data)
 
+    @action(detail=False, methods=["get"], permission_classes=[AllowAny])
+    def home_hero_manual(self, request):
+        """
+        GET /api/posts/home_hero_manual/
+
+        خروجی دستی Hero Homepage.
+        این endpoint فقط پست‌های published و slotهای active را برمی‌گرداند.
+        """
+
+        selections = HomeHeroSelection.objects.filter(
+            is_active=True,
+            post__status=PostStatus.PUBLISHED,
+        ).values_list("slot", "post_id")
+
+        slot_to_post_id = dict(selections)
+        post_ids = list(slot_to_post_id.values())
+
+        posts = (
+            Post.objects.filter(
+                id__in=post_ids,
+                status=PostStatus.PUBLISHED,
+            )
+            .select_related("author", "category")
+            .prefetch_related("tags", "comments")
+            .annotate(
+                comments_count=Count(
+                    "comments",
+                    filter=Q(comments__is_approved=True),
+                )
+            )
+        )
+
+        posts_by_id = {post.id: post for post in posts}
+        context = {"request": request}
+
+        def serialize_slot(slot):
+            post_id = slot_to_post_id.get(slot)
+            post = posts_by_id.get(post_id)
+
+            if not post:
+                return None
+
+            return PostListSerializer(post, context=context).data
+
+        data = {
+            "main": serialize_slot(HomeHeroSlot.MAIN),
+            "top_left": serialize_slot(HomeHeroSlot.TOP_LEFT),
+            "bottom_left": serialize_slot(HomeHeroSlot.BOTTOM_LEFT),
+            "bottom_center": serialize_slot(HomeHeroSlot.BOTTOM_CENTER),
+            "bottom_right": serialize_slot(HomeHeroSlot.BOTTOM_RIGHT),
+        }
+
+        return Response(data)
+
     @action(detail=True, methods=["get"], permission_classes=[AllowAny])
     def related(self, request, slug=None):
         post = self.get_object()
@@ -412,6 +504,7 @@ class PostViewSet(viewsets.ModelViewSet):
             many=True,
             context={"request": request},
         )
+
         return Response(serializer.data)
 
     @action(detail=False, methods=["get"], permission_classes=[IsAuthenticated])
@@ -434,16 +527,17 @@ class PostViewSet(viewsets.ModelViewSet):
             .order_by("draft_priority", "-updated_at", "-created_at")
         )
 
-        # اگر خواستی فیلتر/search/order خود DRF هم روی mine اعمال شود
         qs = self.filter_queryset(qs)
 
         page = self.paginate_queryset(qs)
+
         if page is not None:
             serializer = PostListSerializer(
                 page,
                 many=True,
                 context={"request": request},
             )
+
             return self.get_paginated_response(serializer.data)
 
         serializer = PostListSerializer(
@@ -451,19 +545,29 @@ class PostViewSet(viewsets.ModelViewSet):
             many=True,
             context={"request": request},
         )
+
         return Response(serializer.data)
 
     @action(detail=False, methods=["get"], permission_classes=[AllowAny])
     def post_types(self, request):
         return Response(
-            [{"value": value, "label": label} for value, label in PostType.choices]
+            [
+                {
+                    "value": value,
+                    "label": label,
+                }
+                for value, label in PostType.choices
+            ]
         )
 
     @action(detail=False, methods=["get"], permission_classes=[AllowAny])
     def homepage_sections(self, request):
         return Response(
             [
-                {"value": value, "label": label}
+                {
+                    "value": value,
+                    "label": label,
+                }
                 for value, label in HomepageSection.choices
             ]
         )
@@ -471,7 +575,13 @@ class PostViewSet(viewsets.ModelViewSet):
     @action(detail=False, methods=["get"], permission_classes=[AllowAny])
     def media_types(self, request):
         return Response(
-            [{"value": value, "label": label} for value, label in MediaType.choices]
+            [
+                {
+                    "value": value,
+                    "label": label,
+                }
+                for value, label in MediaType.choices
+            ]
         )
 
 
@@ -487,6 +597,7 @@ class CommentViewSet(
         queryset = Comment.objects.select_related("user", "post")
 
         post_id = self.request.query_params.get("post")
+
         if post_id:
             queryset = queryset.filter(post_id=post_id)
 
@@ -495,6 +606,7 @@ class CommentViewSet(
     def get_serializer_class(self):
         if self.action == "create":
             return CommentWriteSerializer
+
         return CommentSerializer
 
     def perform_create(self, serializer):
@@ -523,6 +635,7 @@ class BookmarkViewSet(
     def get_serializer_class(self):
         if self.action == "create":
             return BookmarkCreateSerializer
+
         return BookmarkSerializer
 
     def get_queryset(self):

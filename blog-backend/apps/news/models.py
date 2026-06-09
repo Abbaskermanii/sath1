@@ -214,3 +214,31 @@ class Bookmark(TimeStampedModel):
 
     def __str__(self):
         return f"Bookmark({self.post_id}, {self.user_id})"
+
+
+class HomeHeroSlot(models.TextChoices):
+    MAIN = "main", "Main"
+    TOP_LEFT = "top_left", "Top Left"
+    BOTTOM_LEFT = "bottom_left", "Bottom Left"
+    BOTTOM_CENTER = "bottom_center", "Bottom Center"
+    BOTTOM_RIGHT = "bottom_right", "Bottom Right"
+
+
+class HomeHeroSelection(TimeStampedModel):
+    slot = models.CharField(
+        max_length=30,
+        choices=HomeHeroSlot.choices,
+        unique=True,
+    )
+    post = models.ForeignKey(
+        "news.Post",
+        on_delete=models.CASCADE,
+        related_name="home_hero_selections",
+    )
+    is_active = models.BooleanField(default=True)
+
+    class Meta:
+        ordering = ("slot",)
+
+    def __str__(self):
+        return f"{self.slot} -> {self.post.title}"
