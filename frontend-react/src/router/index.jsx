@@ -19,6 +19,7 @@ import ProfilePage from "../pages/dashboard/Profile";
 import HomeHeroPage from "../pages/dashboard/HomeHeroPage";
 import AdsPage from "../pages/dashboard/AdsPage";
 import SinglePostPage from "../pages/SinglePostPage";
+import UsersPage from "../pages/dashboard/UsersPage"
 
 import PrivateRoute from "./PrivateRoute";
 
@@ -99,6 +100,10 @@ export const router = createBrowserRouter([
       {
         path: "/dashboard/profile",
         element: <ProfilePage />,
+      },
+      {
+        path: "/dashboard/users",
+        element: <UsersPage />,
       },
     ],
   },

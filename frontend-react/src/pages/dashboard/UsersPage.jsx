@@ -1,7 +1,8 @@
 import { useEffect, useState } from "react";
-import axios from "@/api/axios"; // مسیر axios خودت
+import {api} from "../../lib/axiosClient";
+import AdminGuard from "../../lib/AdminGuard";
 
-export default function UsersPage() {
+function UsersPageContent() {
   const [users, setUsers] = useState([]);
   const [search, setSearch] = useState("");
   const [next, setNext] = useState(null);
@@ -11,7 +12,7 @@ export default function UsersPage() {
   const fetchUsers = async (url = "/accounts/admin/users/") => {
     try {
       setLoading(true);
-      const res = await axios.get(url);
+      const res = await api.get(url);
       setUsers(res.data.results);
       setNext(res.data.next);
       setPrevious(res.data.previous);
@@ -34,7 +35,7 @@ export default function UsersPage() {
     if (!window.confirm("مطمئنی میخوای حذف کنی؟")) return;
 
     try {
-      await axios.delete(`/accounts/admin/users/${id}/`);
+      await api.delete(`/accounts/admin/users/${id}/`);
       fetchUsers();
     } catch (err) {
       console.error(err);
@@ -43,7 +44,7 @@ export default function UsersPage() {
 
   const handleRoleChange = async (id, role) => {
     try {
-      await axios.patch(`/accounts/admin/users/${id}/`, { role });
+      await api.patch(`/accounts/admin/users/${id}/`, { role });
       fetchUsers();
     } catch (err) {
       console.error(err);
@@ -138,5 +139,13 @@ export default function UsersPage() {
         )}
       </div>
     </div>
+  );
+}
+
+export default function UsersPage() {
+  return (
+    <AdminGuard>
+      <UsersPageContent />
+    </AdminGuard>
   );
 }

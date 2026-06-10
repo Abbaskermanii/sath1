@@ -1,23 +1,33 @@
 import { Link, useLocation } from "react-router-dom";
+import useRequireAuth from "../../hooks/useRequireAuth";
 
 const navItems = [
   { href: "/dashboard", label: "داشبورد" },
   { href: "/dashboard/posts", label: "پست‌ها" },
   { href: "/dashboard/comments", label: "کامنت‌ها" },
-  { href: "/dashboard/categories", label: "دسته‌بندی‌ها" },
-  { href: "/dashboard/tags", label: "تگ‌ها" },
-  { href: "/dashboard/home-hero", label: "هیرو صفحه اصلی" },
-  { href: "/dashboard/ads", label: "مدیریت تبلیغات" }, // این خط اضافه شد
+
+  { href: "/dashboard/categories", label: "دسته‌بندی‌ها", adminOnly: true },
+  { href: "/dashboard/tags", label: "تگ‌ها", adminOnly: true },
+  { href: "/dashboard/home-hero", label: "هیرو صفحه اصلی", adminOnly: true },
+  { href: "/dashboard/ads", label: "مدیریت تبلیغات", adminOnly: true },
+  { href: "/dashboard/users", label: "کاربران", adminOnly: true },
+
   { href: "/dashboard/profile", label: "پروفایل" },
 ];
 
 export default function DashboardSidebar() {
   const { pathname } = useLocation();
+  const { user } = useRequireAuth(); // ✅ گرفتن یوزر
 
   const isActive = (href) => {
     if (href === "/dashboard") return pathname === "/dashboard";
     return pathname === href || pathname.startsWith(`${href}/`);
   };
+
+  const visibleItems = navItems.filter((item) => {
+    if (item.adminOnly && user?.role !== "admin") return false;
+    return true;
+  });
 
   return (
     <aside className="hidden w-64 shrink-0 border-l border-zinc-800 bg-zinc-950 lg:flex lg:flex-col">
@@ -27,7 +37,7 @@ export default function DashboardSidebar() {
       </div>
 
       <nav className="flex-1 space-y-1 p-3">
-        {navItems.map((item) => (
+        {visibleItems.map((item) => (
           <Link
             key={item.href}
             to={item.href}

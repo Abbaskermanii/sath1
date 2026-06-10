@@ -1,7 +1,7 @@
 from django.db.models import Sum, Count, Q
 from rest_framework.views import APIView
 from rest_framework.response import Response
-from rest_framework.permissions import IsAuthenticated
+from rest_framework.permissions import AllowAny, IsAuthenticated
 
 from apps.news.models import (
     Comment,
@@ -294,10 +294,14 @@ class HomeHeroManagementView(APIView):
     GET  /api/dashboard/home-hero/
     POST /api/dashboard/home-hero/
 
-    فقط ادمین می‌تواند مدیریت کند.
+    GET: عمومی
+    POST: فقط ادمین
     """
 
-    permission_classes = [IsAuthenticated, IsAdminOnly]
+    def get_permissions(self):
+        if self.request.method == "GET":
+            return [AllowAny()]
+        return [IsAuthenticated(), IsAdminOnly()]
 
     def get(self, request):
         results = serialize_home_hero_results(request)

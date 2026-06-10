@@ -164,14 +164,6 @@
         "documentation": {}
     },
     {
-        "label": "migrations",
-        "importPath": "django.db",
-        "description": "django.db",
-        "isExtraImport": true,
-        "detail": "django.db",
-        "documentation": {}
-    },
-    {
         "label": "models",
         "importPath": "django.db",
         "description": "django.db",
@@ -196,11 +188,35 @@
         "documentation": {}
     },
     {
+        "label": "migrations",
+        "importPath": "django.db",
+        "description": "django.db",
+        "isExtraImport": true,
+        "detail": "django.db",
+        "documentation": {}
+    },
+    {
         "label": "models",
         "importPath": "django.db",
         "description": "django.db",
         "isExtraImport": true,
         "detail": "django.db",
+        "documentation": {}
+    },
+    {
+        "label": "models",
+        "importPath": "django.db",
+        "description": "django.db",
+        "isExtraImport": true,
+        "detail": "django.db",
+        "documentation": {}
+    },
+    {
+        "label": "admin",
+        "importPath": "django.contrib",
+        "description": "django.contrib",
+        "isExtraImport": true,
+        "detail": "django.contrib",
         "documentation": {}
     },
     {
@@ -300,6 +316,14 @@
         "documentation": {}
     },
     {
+        "label": "AppConfig",
+        "importPath": "django.apps",
+        "description": "django.apps",
+        "isExtraImport": true,
+        "detail": "django.apps",
+        "documentation": {}
+    },
+    {
         "label": "gettext_lazy",
         "importPath": "django.utils.translation",
         "description": "django.utils.translation",
@@ -340,6 +364,14 @@
         "documentation": {}
     },
     {
+        "label": "AllowAny",
+        "importPath": "rest_framework.permissions",
+        "description": "rest_framework.permissions",
+        "isExtraImport": true,
+        "detail": "rest_framework.permissions",
+        "documentation": {}
+    },
+    {
         "label": "IsAuthenticated",
         "importPath": "rest_framework.permissions",
         "description": "rest_framework.permissions",
@@ -373,6 +405,14 @@
     },
     {
         "label": "IsAdminUser",
+        "importPath": "rest_framework.permissions",
+        "description": "rest_framework.permissions",
+        "isExtraImport": true,
+        "detail": "rest_framework.permissions",
+        "documentation": {}
+    },
+    {
+        "label": "AllowAny",
         "importPath": "rest_framework.permissions",
         "description": "rest_framework.permissions",
         "isExtraImport": true,
@@ -516,6 +556,14 @@
         "documentation": {}
     },
     {
+        "label": "serializers",
+        "importPath": "rest_framework",
+        "description": "rest_framework",
+        "isExtraImport": true,
+        "detail": "rest_framework",
+        "documentation": {}
+    },
+    {
         "label": "filters",
         "importPath": "rest_framework",
         "description": "rest_framework",
@@ -604,6 +652,14 @@
         "documentation": {}
     },
     {
+        "label": "TestCase",
+        "importPath": "django.test",
+        "description": "django.test",
+        "isExtraImport": true,
+        "detail": "django.test",
+        "documentation": {}
+    },
+    {
         "label": "path",
         "importPath": "django.urls",
         "description": "django.urls",
@@ -629,6 +685,14 @@
     },
     {
         "label": "include",
+        "importPath": "django.urls",
+        "description": "django.urls",
+        "isExtraImport": true,
+        "detail": "django.urls",
+        "documentation": {}
+    },
+    {
+        "label": "path",
         "importPath": "django.urls",
         "description": "django.urls",
         "isExtraImport": true,
@@ -1340,6 +1404,169 @@
         "documentation": {}
     },
     {
+        "label": "BaseCommand",
+        "importPath": "django.core.management.base",
+        "description": "django.core.management.base",
+        "isExtraImport": true,
+        "detail": "django.core.management.base",
+        "documentation": {}
+    },
+    {
+        "label": "sync_market_prices_task",
+        "importPath": "apps.markets.tasks",
+        "description": "apps.markets.tasks",
+        "isExtraImport": true,
+        "detail": "apps.markets.tasks",
+        "documentation": {}
+    },
+    {
+        "label": "os",
+        "kind": 6,
+        "isExtraImport": true,
+        "importPath": "os",
+        "description": "os",
+        "detail": "os",
+        "documentation": {}
+    },
+    {
+        "label": "time",
+        "kind": 6,
+        "isExtraImport": true,
+        "importPath": "time",
+        "description": "time",
+        "detail": "time",
+        "documentation": {}
+    },
+    {
+        "label": "Decimal",
+        "importPath": "decimal",
+        "description": "decimal",
+        "isExtraImport": true,
+        "detail": "decimal",
+        "documentation": {}
+    },
+    {
+        "label": "InvalidOperation",
+        "importPath": "decimal",
+        "description": "decimal",
+        "isExtraImport": true,
+        "detail": "decimal",
+        "documentation": {}
+    },
+    {
+        "label": "requests",
+        "kind": 6,
+        "isExtraImport": true,
+        "importPath": "requests",
+        "description": "requests",
+        "detail": "requests",
+        "documentation": {}
+    },
+    {
+        "label": "timezone",
+        "importPath": "django.utils",
+        "description": "django.utils",
+        "isExtraImport": true,
+        "detail": "django.utils",
+        "documentation": {}
+    },
+    {
+        "label": "MarketSymbol",
+        "importPath": "apps.markets.models",
+        "description": "apps.markets.models",
+        "isExtraImport": true,
+        "detail": "apps.markets.models",
+        "documentation": {}
+    },
+    {
+        "label": "MarketSymbol",
+        "importPath": "apps.markets.models",
+        "description": "apps.markets.models",
+        "isExtraImport": true,
+        "detail": "apps.markets.models",
+        "documentation": {}
+    },
+    {
+        "label": "MarketPrice",
+        "importPath": "apps.markets.models",
+        "description": "apps.markets.models",
+        "isExtraImport": true,
+        "detail": "apps.markets.models",
+        "documentation": {}
+    },
+    {
+        "label": "MarketPrice",
+        "importPath": "apps.markets.models",
+        "description": "apps.markets.models",
+        "isExtraImport": true,
+        "detail": "apps.markets.models",
+        "documentation": {}
+    },
+    {
+        "label": "MarketPrice",
+        "importPath": "apps.markets.models",
+        "description": "apps.markets.models",
+        "isExtraImport": true,
+        "detail": "apps.markets.models",
+        "documentation": {}
+    },
+    {
+        "label": "MarketPrice",
+        "importPath": "apps.markets.models",
+        "description": "apps.markets.models",
+        "isExtraImport": true,
+        "detail": "apps.markets.models",
+        "documentation": {}
+    },
+    {
+        "label": "shared_task",
+        "importPath": "celery",
+        "description": "celery",
+        "isExtraImport": true,
+        "detail": "celery",
+        "documentation": {}
+    },
+    {
+        "label": "Celery",
+        "importPath": "celery",
+        "description": "celery",
+        "isExtraImport": true,
+        "detail": "celery",
+        "documentation": {}
+    },
+    {
+        "label": "get_market_prices_from_alpha_vantage",
+        "importPath": "apps.markets.services.alpha_vantage",
+        "description": "apps.markets.services.alpha_vantage",
+        "isExtraImport": true,
+        "detail": "apps.markets.services.alpha_vantage",
+        "documentation": {}
+    },
+    {
+        "label": "MarketPriceListView",
+        "importPath": "apps.markets.views",
+        "description": "apps.markets.views",
+        "isExtraImport": true,
+        "detail": "apps.markets.views",
+        "documentation": {}
+    },
+    {
+        "label": "ListAPIView",
+        "importPath": "rest_framework.generics",
+        "description": "rest_framework.generics",
+        "isExtraImport": true,
+        "detail": "rest_framework.generics",
+        "documentation": {}
+    },
+    {
+        "label": "MarketPriceSerializer",
+        "importPath": "apps.markets.serializers",
+        "description": "apps.markets.serializers",
+        "isExtraImport": true,
+        "detail": "apps.markets.serializers",
+        "documentation": {}
+    },
+    {
         "label": "django_filters",
         "kind": 6,
         "isExtraImport": true,
@@ -1430,20 +1657,19 @@
         "documentation": {}
     },
     {
-        "label": "os",
-        "kind": 6,
-        "isExtraImport": true,
-        "importPath": "os",
-        "description": "os",
-        "detail": "os",
-        "documentation": {}
-    },
-    {
         "label": "get_asgi_application",
         "importPath": "django.core.asgi",
         "description": "django.core.asgi",
         "isExtraImport": true,
         "detail": "django.core.asgi",
+        "documentation": {}
+    },
+    {
+        "label": "crontab",
+        "importPath": "celery.schedules",
+        "description": "celery.schedules",
+        "isExtraImport": true,
+        "detail": "celery.schedules",
         "documentation": {}
     },
     {
@@ -1928,7 +2154,7 @@
         "kind": 6,
         "importPath": "apps.dashboard.views",
         "description": "apps.dashboard.views",
-        "peekOfCode": "class HomeHeroManagementView(APIView):\n    \"\"\"\n    GET  /api/dashboard/home-hero/\n    POST /api/dashboard/home-hero/\n    فقط ادمین می‌تواند مدیریت کند.\n    \"\"\"\n    permission_classes = [IsAuthenticated, IsAdminOnly]\n    def get(self, request):\n        results = serialize_home_hero_results(request)\n        return Response(",
+        "peekOfCode": "class HomeHeroManagementView(APIView):\n    \"\"\"\n    GET  /api/dashboard/home-hero/\n    POST /api/dashboard/home-hero/\n    GET: عمومی\n    POST: فقط ادمین\n    \"\"\"\n    def get_permissions(self):\n        if self.request.method == \"GET\":\n            return [AllowAny()]",
         "detail": "apps.dashboard.views",
         "documentation": {}
     },
@@ -2092,6 +2318,231 @@
         "description": "apps.marketing.views",
         "peekOfCode": "def active_ads_api(request):\n    queryset = Advertisement.objects.filter(is_active=True).order_by(\"id\")\n    serializer = AdvertisementSerializer(\n        queryset,\n        many=True,\n        context={\"request\": request},\n    )\n    data = {item[\"slot\"]: item for item in serializer.data}\n    return Response(data, status=status.HTTP_200_OK)\nclass AdvertisementViewSet(viewsets.ModelViewSet):",
         "detail": "apps.marketing.views",
+        "documentation": {}
+    },
+    {
+        "label": "Command",
+        "kind": 6,
+        "importPath": "apps.markets.management.commands.sync_market_prices",
+        "description": "apps.markets.management.commands.sync_market_prices",
+        "peekOfCode": "class Command(BaseCommand):\n    help = \"Sync market prices from Alpha Vantage\"\n    def handle(self, *args, **options):\n        result = sync_market_prices_task()\n        self.stdout.write(\n            self.style.SUCCESS(\n                f\"{result['synced']} market prices synced successfully.\"\n            )\n        )",
+        "detail": "apps.markets.management.commands.sync_market_prices",
+        "documentation": {}
+    },
+    {
+        "label": "to_decimal",
+        "kind": 2,
+        "importPath": "apps.markets.services.alpha_vantage",
+        "description": "apps.markets.services.alpha_vantage",
+        "peekOfCode": "def to_decimal(value):\n    if value is None:\n        return None\n    try:\n        return Decimal(str(value))\n    except (InvalidOperation, TypeError, ValueError):\n        return None\ndef to_persian_digits(value):\n    if value is None:\n        return \"\"",
+        "detail": "apps.markets.services.alpha_vantage",
+        "documentation": {}
+    },
+    {
+        "label": "to_persian_digits",
+        "kind": 2,
+        "importPath": "apps.markets.services.alpha_vantage",
+        "description": "apps.markets.services.alpha_vantage",
+        "peekOfCode": "def to_persian_digits(value):\n    if value is None:\n        return \"\"\n    english = \"0123456789\"\n    persian = \"۰۱۲۳۴۵۶۷۸۹\"\n    text = str(value)\n    for e, p in zip(english, persian):\n        text = text.replace(e, p)\n    return text\ndef format_number(value, decimal_places=2):",
+        "detail": "apps.markets.services.alpha_vantage",
+        "documentation": {}
+    },
+    {
+        "label": "format_number",
+        "kind": 2,
+        "importPath": "apps.markets.services.alpha_vantage",
+        "description": "apps.markets.services.alpha_vantage",
+        "peekOfCode": "def format_number(value, decimal_places=2):\n    decimal_value = to_decimal(value)\n    if decimal_value is None:\n        return \"-\"\n    formatted = f\"{decimal_value:,.{decimal_places}f}\"\n    if decimal_places > 0:\n        formatted = formatted.rstrip(\"0\").rstrip(\".\")\n    return to_persian_digits(formatted)\ndef get_api_key():\n    api_key = os.getenv(\"ALPHA_VANTAGE_API_KEY\", \"\").strip()",
+        "detail": "apps.markets.services.alpha_vantage",
+        "documentation": {}
+    },
+    {
+        "label": "get_api_key",
+        "kind": 2,
+        "importPath": "apps.markets.services.alpha_vantage",
+        "description": "apps.markets.services.alpha_vantage",
+        "peekOfCode": "def get_api_key():\n    api_key = os.getenv(\"ALPHA_VANTAGE_API_KEY\", \"\").strip()\n    if not api_key:\n        raise RuntimeError(\"ALPHA_VANTAGE_API_KEY is missing\")\n    return api_key\ndef call_alpha_vantage(function_name, params=None, retries=MAX_RETRIES):\n    request_params = {\n        \"function\": function_name,\n        \"apikey\": get_api_key(),\n    }",
+        "detail": "apps.markets.services.alpha_vantage",
+        "documentation": {}
+    },
+    {
+        "label": "call_alpha_vantage",
+        "kind": 2,
+        "importPath": "apps.markets.services.alpha_vantage",
+        "description": "apps.markets.services.alpha_vantage",
+        "peekOfCode": "def call_alpha_vantage(function_name, params=None, retries=MAX_RETRIES):\n    request_params = {\n        \"function\": function_name,\n        \"apikey\": get_api_key(),\n    }\n    if params:\n        request_params.update(params)\n    last_error = None\n    for attempt in range(retries + 1):\n        try:",
+        "detail": "apps.markets.services.alpha_vantage",
+        "documentation": {}
+    },
+    {
+        "label": "fetch_exchange_rate",
+        "kind": 2,
+        "importPath": "apps.markets.services.alpha_vantage",
+        "description": "apps.markets.services.alpha_vantage",
+        "peekOfCode": "def fetch_exchange_rate(from_currency, to_currency):\n    data = call_alpha_vantage(\n        \"CURRENCY_EXCHANGE_RATE\",\n        {\n            \"from_currency\": from_currency,\n            \"to_currency\": to_currency,\n        },\n    )\n    rate_data = data.get(\"Realtime Currency Exchange Rate\") or {}\n    rate = rate_data.get(\"5. Exchange Rate\")",
+        "detail": "apps.markets.services.alpha_vantage",
+        "documentation": {}
+    },
+    {
+        "label": "fetch_commodity_rate",
+        "kind": 2,
+        "importPath": "apps.markets.services.alpha_vantage",
+        "description": "apps.markets.services.alpha_vantage",
+        "peekOfCode": "def fetch_commodity_rate(provider_function):\n    data = call_alpha_vantage(provider_function)\n    records = data.get(\"data\") or []\n    if not records:\n        raise RuntimeError(f\"No data returned for {provider_function}\")\n    latest = records[0]\n    value = latest.get(\"value\")\n    if not value or value == \".\":\n        raise RuntimeError(f\"Value not found for {provider_function}\")\n    return {",
+        "detail": "apps.markets.services.alpha_vantage",
+        "documentation": {}
+    },
+    {
+        "label": "fetch_usd_to_irr_rate",
+        "kind": 2,
+        "importPath": "apps.markets.services.alpha_vantage",
+        "description": "apps.markets.services.alpha_vantage",
+        "peekOfCode": "def fetch_usd_to_irr_rate():\n    return fetch_exchange_rate(\"USD\", \"IRR\")\ndef fetch_market_rate(market):\n    provider_function = (market.provider_function or \"CURRENCY_EXCHANGE_RATE\").strip().upper()\n    if provider_function == \"CURRENCY_EXCHANGE_RATE\":\n        from_currency = (market.from_currency or \"\").strip().upper()\n        to_currency = (market.to_currency or \"\").strip().upper()\n        if not from_currency or not to_currency:\n            raise RuntimeError(f\"from_currency/to_currency missing for {market.symbol}\")\n        if from_currency == \"XAU\":",
+        "detail": "apps.markets.services.alpha_vantage",
+        "documentation": {}
+    },
+    {
+        "label": "fetch_market_rate",
+        "kind": 2,
+        "importPath": "apps.markets.services.alpha_vantage",
+        "description": "apps.markets.services.alpha_vantage",
+        "peekOfCode": "def fetch_market_rate(market):\n    provider_function = (market.provider_function or \"CURRENCY_EXCHANGE_RATE\").strip().upper()\n    if provider_function == \"CURRENCY_EXCHANGE_RATE\":\n        from_currency = (market.from_currency or \"\").strip().upper()\n        to_currency = (market.to_currency or \"\").strip().upper()\n        if not from_currency or not to_currency:\n            raise RuntimeError(f\"from_currency/to_currency missing for {market.symbol}\")\n        if from_currency == \"XAU\":\n            raise RuntimeError(\"XAU is not supported via CURRENCY_EXCHANGE_RATE\")\n        return fetch_exchange_rate(from_currency, to_currency)",
+        "detail": "apps.markets.services.alpha_vantage",
+        "documentation": {}
+    },
+    {
+        "label": "resolve_market_rate",
+        "kind": 2,
+        "importPath": "apps.markets.services.alpha_vantage",
+        "description": "apps.markets.services.alpha_vantage",
+        "peekOfCode": "def resolve_market_rate(market, usd_to_irr_rate=None, usd_to_irr_raw=None):\n    target_currency = (market.target_currency or \"USD\").strip().upper()\n    result = fetch_market_rate(market)\n    rate = result[\"rate\"]\n    quote_currency = (result[\"quote_currency\"] or \"\").strip().upper()\n    if rate is None:\n        raise RuntimeError(f\"Invalid rate for {market.symbol}\")\n    if target_currency == quote_currency:\n        return {\n            \"value\": rate,",
+        "detail": "apps.markets.services.alpha_vantage",
+        "documentation": {}
+    },
+    {
+        "label": "get_market_prices_from_alpha_vantage",
+        "kind": 2,
+        "importPath": "apps.markets.services.alpha_vantage",
+        "description": "apps.markets.services.alpha_vantage",
+        "peekOfCode": "def get_market_prices_from_alpha_vantage():\n    symbols = list(\n        MarketSymbol.objects.filter(enabled_for_sync=True, active=True).order_by(\"sort_order\", \"id\")\n    )\n    items = []\n    now = timezone.now()\n    needs_irr_conversion = any(\n        (symbol.target_currency or \"\").strip().upper() == \"IRR\" for symbol in symbols\n    )\n    usd_to_irr_rate = None",
+        "detail": "apps.markets.services.alpha_vantage",
+        "documentation": {}
+    },
+    {
+        "label": "BASE_URL",
+        "kind": 5,
+        "importPath": "apps.markets.services.alpha_vantage",
+        "description": "apps.markets.services.alpha_vantage",
+        "peekOfCode": "BASE_URL = \"https://www.alphavantage.co/query\"\nREQUEST_TIMEOUT = 20\nREQUEST_DELAY_SECONDS = 1.3\nMAX_RETRIES = 2\ndef to_decimal(value):\n    if value is None:\n        return None\n    try:\n        return Decimal(str(value))\n    except (InvalidOperation, TypeError, ValueError):",
+        "detail": "apps.markets.services.alpha_vantage",
+        "documentation": {}
+    },
+    {
+        "label": "REQUEST_TIMEOUT",
+        "kind": 5,
+        "importPath": "apps.markets.services.alpha_vantage",
+        "description": "apps.markets.services.alpha_vantage",
+        "peekOfCode": "REQUEST_TIMEOUT = 20\nREQUEST_DELAY_SECONDS = 1.3\nMAX_RETRIES = 2\ndef to_decimal(value):\n    if value is None:\n        return None\n    try:\n        return Decimal(str(value))\n    except (InvalidOperation, TypeError, ValueError):\n        return None",
+        "detail": "apps.markets.services.alpha_vantage",
+        "documentation": {}
+    },
+    {
+        "label": "REQUEST_DELAY_SECONDS",
+        "kind": 5,
+        "importPath": "apps.markets.services.alpha_vantage",
+        "description": "apps.markets.services.alpha_vantage",
+        "peekOfCode": "REQUEST_DELAY_SECONDS = 1.3\nMAX_RETRIES = 2\ndef to_decimal(value):\n    if value is None:\n        return None\n    try:\n        return Decimal(str(value))\n    except (InvalidOperation, TypeError, ValueError):\n        return None\ndef to_persian_digits(value):",
+        "detail": "apps.markets.services.alpha_vantage",
+        "documentation": {}
+    },
+    {
+        "label": "MAX_RETRIES",
+        "kind": 5,
+        "importPath": "apps.markets.services.alpha_vantage",
+        "description": "apps.markets.services.alpha_vantage",
+        "peekOfCode": "MAX_RETRIES = 2\ndef to_decimal(value):\n    if value is None:\n        return None\n    try:\n        return Decimal(str(value))\n    except (InvalidOperation, TypeError, ValueError):\n        return None\ndef to_persian_digits(value):\n    if value is None:",
+        "detail": "apps.markets.services.alpha_vantage",
+        "documentation": {}
+    },
+    {
+        "label": "MarketSymbolAdmin",
+        "kind": 6,
+        "importPath": "apps.markets.admin",
+        "description": "apps.markets.admin",
+        "peekOfCode": "class MarketSymbolAdmin(admin.ModelAdmin):\n    list_display = (\n        \"title\",\n        \"symbol\",\n        \"type\",\n        \"from_currency\",\n        \"to_currency\",\n        \"target_currency\",\n        \"enabled_for_sync\",\n        \"active\",",
+        "detail": "apps.markets.admin",
+        "documentation": {}
+    },
+    {
+        "label": "MarketPriceAdmin",
+        "kind": 6,
+        "importPath": "apps.markets.admin",
+        "description": "apps.markets.admin",
+        "peekOfCode": "class MarketPriceAdmin(admin.ModelAdmin):\n    list_display = (\n        \"title\",\n        \"symbol\",\n        \"type\",\n        \"display_value\",\n        \"active\",\n        \"fetched_at\",\n        \"sort_order\",\n    )",
+        "detail": "apps.markets.admin",
+        "documentation": {}
+    },
+    {
+        "label": "MarketsConfig",
+        "kind": 6,
+        "importPath": "apps.markets.apps",
+        "description": "apps.markets.apps",
+        "peekOfCode": "class MarketsConfig(AppConfig):\n    default_auto_field = \"django.db.models.BigAutoField\"\n    name = \"apps.markets\"",
+        "detail": "apps.markets.apps",
+        "documentation": {}
+    },
+    {
+        "label": "MarketSymbol",
+        "kind": 6,
+        "importPath": "apps.markets.models",
+        "description": "apps.markets.models",
+        "peekOfCode": "class MarketSymbol(models.Model):\n    PROVIDER_ALPHA_VANTAGE = \"alpha_vantage\"\n    TYPE_CRYPTO = \"crypto\"\n    TYPE_FOREX = \"forex\"\n    TYPE_COMMODITY = \"commodity\"\n    TYPE_INDEX = \"index\"\n    TYPE_CHOICES = [\n        (TYPE_CRYPTO, \"Crypto\"),\n        (TYPE_FOREX, \"Forex\"),\n        (TYPE_COMMODITY, \"Commodity\"),",
+        "detail": "apps.markets.models",
+        "documentation": {}
+    },
+    {
+        "label": "MarketPrice",
+        "kind": 6,
+        "importPath": "apps.markets.models",
+        "description": "apps.markets.models",
+        "peekOfCode": "class MarketPrice(models.Model):\n    TYPE_CRYPTO = \"crypto\"\n    TYPE_FOREX = \"forex\"\n    TYPE_COMMODITY = \"commodity\"\n    TYPE_INDEX = \"index\"\n    TYPE_CHOICES = [\n        (TYPE_CRYPTO, \"Crypto\"),\n        (TYPE_FOREX, \"Forex\"),\n        (TYPE_COMMODITY, \"Commodity\"),\n        (TYPE_INDEX, \"Index\"),",
+        "detail": "apps.markets.models",
+        "documentation": {}
+    },
+    {
+        "label": "MarketPriceSerializer",
+        "kind": 6,
+        "importPath": "apps.markets.serializers",
+        "description": "apps.markets.serializers",
+        "peekOfCode": "class MarketPriceSerializer(serializers.ModelSerializer):\n    value = serializers.CharField(source=\"display_value\", read_only=True)\n    class Meta:\n        model = MarketPrice\n        fields = [\n            \"id\",\n            \"symbol\",\n            \"title\",\n            \"subtitle\",\n            \"type\",",
+        "detail": "apps.markets.serializers",
+        "documentation": {}
+    },
+    {
+        "label": "sync_market_prices_task",
+        "kind": 2,
+        "importPath": "apps.markets.tasks",
+        "description": "apps.markets.tasks",
+        "peekOfCode": "def sync_market_prices_task():\n    items = get_market_prices_from_alpha_vantage()\n    MarketPrice.objects.all().delete()\n    MarketPrice.objects.bulk_create(\n        [\n            MarketPrice(\n                symbol=item[\"symbol\"],\n                title=item[\"title\"],\n                subtitle=item[\"subtitle\"],\n                type=item[\"type\"],",
+        "detail": "apps.markets.tasks",
+        "documentation": {}
+    },
+    {
+        "label": "urlpatterns",
+        "kind": 5,
+        "importPath": "apps.markets.urls",
+        "description": "apps.markets.urls",
+        "peekOfCode": "urlpatterns = [\n    path(\"\", MarketPriceListView.as_view(), name=\"market-price-list\"),\n]",
+        "detail": "apps.markets.urls",
+        "documentation": {}
+    },
+    {
+        "label": "MarketPriceListView",
+        "kind": 6,
+        "importPath": "apps.markets.views",
+        "description": "apps.markets.views",
+        "peekOfCode": "class MarketPriceListView(ListAPIView):\n    permission_classes = [AllowAny]\n    serializer_class = MarketPriceSerializer\n    queryset = MarketPrice.objects.all().order_by(\"sort_order\", \"id\")\n    pagination_class = None",
+        "detail": "apps.markets.views",
         "documentation": {}
     },
     {
@@ -2518,6 +2969,24 @@
         "documentation": {}
     },
     {
+        "label": "app",
+        "kind": 5,
+        "importPath": "config.celery",
+        "description": "config.celery",
+        "peekOfCode": "app = Celery(\"blog_backend\")\napp.config_from_object(\"django.conf:settings\", namespace=\"CELERY\")\napp.autodiscover_tasks()\napp.conf.beat_schedule = {\n    \"sync-market-prices-hourly\": {\n        \"task\": \"apps.markets.tasks.sync_market_prices_task\",\n        \"schedule\": crontab(minute=0),\n    },\n}",
+        "detail": "config.celery",
+        "documentation": {}
+    },
+    {
+        "label": "app.conf.beat_schedule",
+        "kind": 5,
+        "importPath": "config.celery",
+        "description": "config.celery",
+        "peekOfCode": "app.conf.beat_schedule = {\n    \"sync-market-prices-hourly\": {\n        \"task\": \"apps.markets.tasks.sync_market_prices_task\",\n        \"schedule\": crontab(minute=0),\n    },\n}",
+        "detail": "config.celery",
+        "documentation": {}
+    },
+    {
         "label": "BASE_DIR",
         "kind": 5,
         "importPath": "config.settings",
@@ -2846,7 +3315,43 @@
         "kind": 5,
         "importPath": "config.settings",
         "description": "config.settings",
-        "peekOfCode": "CACHES = {\n    \"default\": {\n        \"BACKEND\": \"django.core.cache.backends.locmem.LocMemCache\",\n        \"LOCATION\": \"news-blog-cache\",\n    }\n}",
+        "peekOfCode": "CACHES = {\n    \"default\": {\n        \"BACKEND\": \"django.core.cache.backends.locmem.LocMemCache\",\n        \"LOCATION\": \"news-blog-cache\",\n    }\n}\nCELERY_BROKER_URL = os.getenv(\"CELERY_BROKER_URL\", \"redis://redis:6379/0\")\nCELERY_RESULT_BACKEND = os.getenv(\"CELERY_RESULT_BACKEND\", \"redis://redis:6379/1\")\nCELERY_TIMEZONE = TIME_ZONE\nCELERY_ENABLE_UTC = True",
+        "detail": "config.settings",
+        "documentation": {}
+    },
+    {
+        "label": "CELERY_BROKER_URL",
+        "kind": 5,
+        "importPath": "config.settings",
+        "description": "config.settings",
+        "peekOfCode": "CELERY_BROKER_URL = os.getenv(\"CELERY_BROKER_URL\", \"redis://redis:6379/0\")\nCELERY_RESULT_BACKEND = os.getenv(\"CELERY_RESULT_BACKEND\", \"redis://redis:6379/1\")\nCELERY_TIMEZONE = TIME_ZONE\nCELERY_ENABLE_UTC = True",
+        "detail": "config.settings",
+        "documentation": {}
+    },
+    {
+        "label": "CELERY_RESULT_BACKEND",
+        "kind": 5,
+        "importPath": "config.settings",
+        "description": "config.settings",
+        "peekOfCode": "CELERY_RESULT_BACKEND = os.getenv(\"CELERY_RESULT_BACKEND\", \"redis://redis:6379/1\")\nCELERY_TIMEZONE = TIME_ZONE\nCELERY_ENABLE_UTC = True",
+        "detail": "config.settings",
+        "documentation": {}
+    },
+    {
+        "label": "CELERY_TIMEZONE",
+        "kind": 5,
+        "importPath": "config.settings",
+        "description": "config.settings",
+        "peekOfCode": "CELERY_TIMEZONE = TIME_ZONE\nCELERY_ENABLE_UTC = True",
+        "detail": "config.settings",
+        "documentation": {}
+    },
+    {
+        "label": "CELERY_ENABLE_UTC",
+        "kind": 5,
+        "importPath": "config.settings",
+        "description": "config.settings",
+        "peekOfCode": "CELERY_ENABLE_UTC = True",
         "detail": "config.settings",
         "documentation": {}
     },

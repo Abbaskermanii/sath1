@@ -2,6 +2,7 @@ import { useCallback, useEffect, useMemo, useState } from "react";
 import { useParams } from "react-router-dom";
 import CategoryPostsFeed from "../components/home/CategoryPostsFeed";
 import { newsApi } from "../lib/news/newsApi";
+import { useMarketData } from "../hooks/useMarketData";
 import { api } from "../lib/axiosClient";
 import {
   normalizeCategories,
@@ -22,51 +23,6 @@ import LatestNewsList from "../components/home/LatestNewsList";
 import InFocusTopics from "../components/home/InFocusTopics";
 import AuthorsSection from "../components/home/AuthorsSection";
 import CategoryNewsSection from "../components/home/CategoryNewsSection";
-
-const MARKET_ITEMS = [
-  {
-    id: 1,
-    title: "بیت‌کوین",
-    subtitle: "BTC / USDT",
-    value: "۶۴٬۲۵۰",
-    active: true,
-  },
-  {
-    id: 2,
-    title: "اتریوم",
-    subtitle: "ETH / USDT",
-    value: "۳٬۴۲۰",
-    active: true,
-  },
-  {
-    id: 3,
-    title: "یورو / دلار",
-    subtitle: "EUR / USD",
-    value: "1.0842",
-    active: true,
-  },
-  {
-    id: 4,
-    title: "طلا",
-    subtitle: "XAU / USD",
-    value: "۲٬۳۵۸",
-    active: true,
-  },
-  {
-    id: 5,
-    title: "نفت برنت",
-    subtitle: "BRENT",
-    value: "۸۲.۴۰",
-    active: false,
-  },
-  {
-    id: 6,
-    title: "نزدک",
-    subtitle: "NASDAQ",
-    value: "۱۸٬۴۳۰",
-    active: false,
-  },
-];
 
 const HERO_SLOT_ORDER = [
   "main",
@@ -688,6 +644,7 @@ function useHomeData(categorySlug = null) {
 export default function Home() {
   const { categorySlug } = useParams();
   const { data, loading, error, refresh } = useHomeData(categorySlug);
+  const { marketItems, marketLoading } = useMarketData();
 
   const viewModel = useMemo(() => {
     if (!data) return null;
@@ -996,9 +953,10 @@ export default function Home() {
 
               <div className="p-4">
                 <MarketPriceFeed
-                  title="آخرین قیمت بازارها"
+                  title="قیمت بازارها"
                   filterLabel="همه بازارها"
-                  items={MARKET_ITEMS}
+                  items={marketItems}
+                  loading={marketLoading}
                 />
               </div>
 
