@@ -2,6 +2,7 @@ import { Link } from "react-router-dom";
 import { useState } from "react";
 import { Play, Volume2 } from "lucide-react";
 
+/* ========================= LINK ========================= */
 function getSafeHref(href) {
   return typeof href === "string" ? href.trim() : "";
 }
@@ -43,57 +44,33 @@ function Clickable({ href, className = "", children, fallback = "div" }) {
   );
 }
 
+/* ========================= EMBED ========================= */
 function normalizeEmbedUrl(url = "") {
-  if (typeof url !== "string") return "";
-
-  const raw = url.trim();
-  if (!raw) return "";
-
-  const iframeSrcMatch = raw.match(/src=["']([^"']+)["']/i);
-  const extracted = iframeSrcMatch?.[1]?.trim() || raw;
-
   try {
-    const parsed = new URL(extracted);
+    const raw = String(url || "").trim();
+    if (!raw) return "";
 
-    if (
-      parsed.hostname.includes("youtube.com") &&
-      parsed.pathname === "/watch" &&
-      parsed.searchParams.get("v")
-    ) {
-      const videoId = parsed.searchParams.get("v");
-      return `https://www.youtube.com/embed/${videoId}?rel=0`;
-    }
+    const match = raw.match(/src=["']([^"']+)["']/i);
+    const extracted = match?.[1] || raw;
 
-    if (parsed.hostname === "youtu.be") {
-      const id = parsed.pathname.replace(/^\/+/, "");
+    const u = new URL(extracted);
+
+    if (u.hostname.includes("youtube.com") && u.pathname === "/watch") {
+      const id = u.searchParams.get("v");
       return id ? `https://www.youtube.com/embed/${id}?rel=0` : "";
     }
 
-    if (
-      parsed.hostname.includes("youtube.com") &&
-      parsed.pathname.startsWith("/embed/")
-    ) {
-      return extracted;
+    if (u.hostname === "youtu.be") {
+      return `https://www.youtube.com/embed/${u.pathname.slice(1)}?rel=0`;
     }
 
-    if (parsed.hostname.includes("aparat.com")) {
-      if (parsed.pathname.startsWith("/embed/")) {
-        return extracted;
-      }
+    if (u.pathname.startsWith("/embed/")) return extracted;
 
-      const aparatShortMatch = parsed.pathname.match(/^\/v\/([^/]+)/);
-      if (aparatShortMatch?.[1]) {
-        return `https://www.aparat.com/video/video/embed/videohash/${aparatShortMatch[1]}/vt/frame`;
+    if (u.hostname.includes("aparat.com")) {
+      const m = u.pathname.match(/\/v\/([^/]+)/);
+      if (m) {
+        return `https://www.aparat.com/video/video/embed/videohash/${m[1]}/vt/frame`;
       }
-
-      const aparatEmbedMatch = parsed.pathname.match(
-        /\/video\/video\/embed\/videohash\/([^/]+)\/vt\/frame/i,
-      );
-      if (aparatEmbedMatch?.[1]) {
-        return extracted;
-      }
-
-      return extracted;
     }
 
     return extracted;
@@ -102,6 +79,7 @@ function normalizeEmbedUrl(url = "") {
   }
 }
 
+/* ========================= MEDIA RESOLVER ========================= */
 function getMediaSource({
   image,
   cover,
@@ -114,190 +92,87 @@ function getMediaSource({
   podcastFile,
   podcast_file,
 }) {
-  const resolvedImage = cover || image || "";
-  const resolvedVideo = videoFile || video_file || "";
-  const resolvedEmbed = normalizeEmbedUrl(embedUrl || embed_url || "");
-  const resolvedAudio =
-    audioFile || audio_file || podcastFile || podcast_file || "";
+  const img = cover || image || "";
+  const video = videoFile || video_file || "";
+  const embed = normalizeEmbedUrl(embedUrl || embed_url || "");
+  const audio = audioFile || audio_file || podcastFile || podcast_file || "";
 
-  if (resolvedImage) {
-    return { type: "image", src: resolvedImage };
-  }
+  // ✅ FIXED priority
+  if (video) return { type: "video", src: video };
+  if (embed) return { type: "embed", src: embed };
+  if (audio) return { type: "audio", src: audio };
+  if (img) return { type: "image", src: img };
 
-  if (resolvedVideo) {
-    return { type: "video", src: resolvedVideo };
-  }
-
-  if (resolvedEmbed) {
-    return { type: "embed", src: resolvedEmbed };
-  }
-
-  if (resolvedAudio) {
-    return { type: "audio", src: resolvedAudio };
-  }
-
-  return { type: "none", src: "" };
+  return { type: "none" };
 }
 
-function MediaView({
-  title,
-  image,
-  cover,
-  videoFile,
-  video_file,
-  embedUrl,
-  embed_url,
-  audioFile,
-  audio_file,
-  podcastFile,
-  podcast_file,
-  duration = "",
-}) {
-  const [imageFailed, setImageFailed] = useState(false);
+/* ========================= MEDIA VIEW ========================= */
+function MediaView(props) {
+  const [isPlaying, setIsPlaying] = useState(false);
+  const [imgFail, setImgFail] = useState(false);
 
   const media = getMediaSource({
-    image: imageFailed ? "" : image,
-    cover: imageFailed ? "" : cover,
-    videoFile,
-    video_file,
-    embedUrl,
-    embed_url,
-    audioFile,
-    audio_file,
-    podcastFile,
-    podcast_file,
+    ...props,
+    image: imgFail ? "" : props.image,
+    cover: imgFail ? "" : props.cover,
   });
 
   if (media.type === "none") return null;
 
-  if (media.type === "image") {
-    const hasPlayableFallback = Boolean(
-      videoFile ||
-      video_file ||
-      embedUrl ||
-      embed_url ||
-      audioFile ||
-      audio_file ||
-      podcastFile ||
-      podcast_file,
-    );
-
-    const isAudioLike = Boolean(
-      audioFile || audio_file || podcastFile || podcast_file,
-    );
-
-    return (
-      <div className="relative overflow-hidden rounded-lg bg-neutral-100">
-        <img
-          src={media.src}
-          alt={title || "image"}
-          loading="lazy"
-          onError={() => setImageFailed(true)}
-          className="h-auto w-full object-cover transition-transform duration-300 group-hover:scale-105"
-        />
-
-        {hasPlayableFallback && (
-          <>
-            <div className="absolute inset-0 bg-black/10" />
-            <span className="absolute inset-0 flex items-center justify-center">
-              <span
-                className={`flex h-11 w-11 items-center justify-center rounded-full bg-white/90 shadow ${
-                  isAudioLike ? "text-neutral-800" : "text-red-600"
-                }`}
-              >
-                {isAudioLike ? (
-                  <Volume2 size={18} />
-                ) : (
-                  <Play size={18} fill="currentColor" />
-                )}
-              </span>
-            </span>
-
-            {duration && !isAudioLike && (
-              <span className="absolute bottom-2 right-2 rounded bg-black/85 px-2 py-0.5 text-[11px] font-bold text-white">
-                {duration}
-              </span>
-            )}
-          </>
-        )}
-      </div>
-    );
-  }
-
-  if (media.type === "video") {
-    return (
-      <div className="overflow-hidden rounded-lg bg-black">
-        <video
-          className="h-auto w-full"
-          controls
-          preload="metadata"
-          playsInline
-        >
-          <source src={media.src} />
-          مرورگر شما از پخش ویدیو پشتیبانی نمی‌کند.
-        </video>
-      </div>
-    );
-  }
-
-  if (media.type === "embed") {
-    return (
-      <div className="overflow-hidden rounded-lg bg-black">
-        <div className="aspect-video w-full">
-          <iframe
-            src={media.src}
-            title={title || "Embedded media"}
-            className="h-full w-full border-0"
-            loading="lazy"
-            referrerPolicy="strict-origin-when-cross-origin"
-            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-            allowFullScreen
-          />
-        </div>
-      </div>
-    );
-  }
-
-  if (media.type === "audio") {
-    return (
-      <div className="rounded-lg border border-neutral-200 bg-neutral-50 p-4">
-        <div className="mb-3 flex items-center gap-2 text-neutral-700">
-          <Volume2 size={18} />
-          <span className="text-sm font-medium">پادکست / فایل صوتی</span>
-        </div>
-
-        <audio className="w-full" controls preload="none">
-          <source src={media.src} />
-          مرورگر شما از پخش صوت پشتیبانی نمی‌کند.
-        </audio>
-      </div>
-    );
-  }
-
-  return null;
-}
-
-function BottomPodcastThumb({ src, alt }) {
-  if (!src) return null;
+  const preview = props.cover || props.image;
 
   return (
-    <div className="relative h-16 w-16 shrink-0 overflow-hidden rounded-md bg-neutral-100">
-      <img
-        src={src}
-        alt={alt || "podcast cover"}
-        loading="lazy"
-        className="h-full w-full object-cover"
-      />
+    <div className="relative overflow-hidden rounded-xl bg-black aspect-video group">
+      {/* PREVIEW */}
+      {!isPlaying && preview && (
+        <>
+          <img
+            src={preview}
+            onError={() => setImgFail(true)}
+            className="h-full w-full object-cover transition duration-500 group-hover:scale-105"
+          />
 
-      <span className="absolute inset-0 flex items-center justify-center bg-black/15">
-        <span className="flex h-7 w-7 items-center justify-center rounded-full bg-white/90 text-neutral-800 shadow">
-          <Volume2 size={14} />
-        </span>
-      </span>
+          {media.type !== "image" && (
+            <button
+              onClick={() => setIsPlaying(true)}
+              className="absolute inset-0 flex items-center justify-center"
+            >
+              <span className="flex h-14 w-14 items-center justify-center rounded-full bg-black/70 text-white backdrop-blur">
+                {media.type === "audio" ? <Volume2 /> : <Play fill="white" />}
+              </span>
+            </button>
+          )}
+        </>
+      )}
+
+      {/* VIDEO */}
+      {media.type === "video" && isPlaying && (
+        <video
+          src={media.src}
+          controls
+          autoPlay
+          className="h-full w-full object-cover"
+        />
+      )}
+
+      {/* EMBED */}
+      {media.type === "embed" && isPlaying && (
+        <iframe src={media.src} className="h-full w-full" allowFullScreen />
+      )}
+
+      {/* AUDIO */}
+      {media.type === "audio" && (
+        <div className="flex h-full w-full flex-col justify-center p-4">
+          <audio controls className="w-full">
+            <source src={media.src} />
+          </audio>
+        </div>
+      )}
     </div>
   );
 }
 
+/* ========================= MAIN ========================= */
 function MediumNews({
   title,
   description,
@@ -308,101 +183,44 @@ function MediumNews({
   bottomNewsTitle,
   bottomNewsDescription,
   bottomNewsHref = "",
-  bottomNewsImage,
-  bottomNewsCover,
-  bottomNewsMediaType,
-  bottomNewsAudioFile,
-  bottomNewsAudio_file,
-  bottomNewsPodcastFile,
-  bottomNewsPodcast_file,
-  duration = "",
-  videoFile,
-  video_file,
-  embedUrl,
-  embed_url,
-  audioFile,
-  audio_file,
-  podcastFile,
-  podcast_file,
 }) {
-  const showBottomNews = Boolean(bottomNewsTitle || bottomNewsDescription);
-
-  const bottomIsPodcast = Boolean(
-    String(bottomNewsMediaType || "").toLowerCase() === "audio" ||
-    String(bottomNewsMediaType || "").toLowerCase() === "podcast" ||
-    String(bottomNewsMediaType || "").toLowerCase() === "voice" ||
-    String(bottomNewsMediaType || "").toLowerCase() === "sound" ||
-    bottomNewsAudioFile ||
-    bottomNewsAudio_file ||
-    bottomNewsPodcastFile ||
-    bottomNewsPodcast_file,
-  );
-
-  const bottomThumb = bottomNewsCover || bottomNewsImage || "";
-
   return (
-    <article className="bg-white px-6" dir="rtl">
+    <article className="bg-white px-4 sm:px-6" dir="rtl">
       <div className="mx-auto max-w-2xl space-y-4">
-        <Clickable href={href} fallback="div" className="group block space-y-4">
-          <MediaView
-            title={title}
-            image={image}
-            cover={cover}
-            videoFile={videoFile}
-            video_file={video_file}
-            embedUrl={embedUrl}
-            embed_url={embed_url}
-            audioFile={audioFile}
-            audio_file={audio_file}
-            podcastFile={podcastFile}
-            podcast_file={podcast_file}
-            duration={duration}
-          />
+        <Clickable href={href} className="group block space-y-4">
+          <MediaView title={title} image={image} cover={cover} />
 
-          <div className="space-y-3">
+          <div className="space-y-2">
             {categoryText && (
-              <div className="text-xs text-neutral-500">{categoryText}</div>
+              <span className="text-xs text-neutral-500">{categoryText}</span>
             )}
 
-            {title && (
-              <h2 className="text-right text-base font-semibold leading-snug text-neutral-900 transition-colors duration-200 group-hover:text-neutral-700">
-                {title}
-              </h2>
-            )}
+            <h2 className="text-base sm:text-lg font-bold text-neutral-900 group-hover:text-neutral-700">
+              {title}
+            </h2>
 
             {description && (
-              <p className="text-right text-sm leading-relaxed text-neutral-600 transition-colors duration-200 group-hover:text-neutral-800">
+              <p className="text-sm text-neutral-600 line-clamp-2">
                 {description}
               </p>
             )}
           </div>
         </Clickable>
 
-        {showBottomNews && (
+        {bottomNewsTitle && (
           <Clickable
             href={bottomNewsHref}
-            fallback="div"
-            className="group block border-t border-neutral-200 pt-4"
+            className="group block border-t pt-4"
           >
-            <div className="flex items-start gap-3">
-              {bottomIsPodcast && bottomThumb ? (
-                <BottomPodcastThumb src={bottomThumb} alt={bottomNewsTitle} />
-              ) : null}
+            <h3 className="text-sm font-semibold text-neutral-800 group-hover:text-neutral-700">
+              {bottomNewsTitle}
+            </h3>
 
-              <div className="min-w-0 flex-1">
-                {bottomNewsTitle && (
-                  <h3 className="text-sm font-semibold leading-snug text-neutral-800 transition-colors duration-200 group-hover:text-neutral-700">
-                    {bottomNewsTitle}
-                  </h3>
-                )}
-
-                {bottomNewsDescription && (
-                  <p className="mt-2 text-sm leading-6 text-neutral-600 transition-colors duration-200 group-hover:text-neutral-800">
-                    {bottomNewsDescription}
-                  </p>
-                )}
-              </div>
-            </div>
+            {bottomNewsDescription && (
+              <p className="mt-2 text-sm text-neutral-600">
+                {bottomNewsDescription}
+              </p>
+            )}
           </Clickable>
         )}
       </div>

@@ -55,50 +55,78 @@ export default function LatestNewsList({
 
   return (
     <section dir="rtl" className="w-full bg-white">
-      <SectionHeader title={title} href={href} />
+      <div className="px-4 sm:px-6">
+        <SectionHeader title={title} href={href} />
 
-      <div className="divide-y divide-neutral-200">
-        {safeItems.map((item, index) => (
-          <Clickable
-            key={item.id || index}
-            href={item.href || "#"}
-            fallback="div"
-            className="group grid grid-cols-[32px_1fr] gap-3 py-3"
-          >
-            {showNumbers ? (
-              <div className="text-left text-[13px] font-extrabold text-neutral-400 transition group-hover:text-red-600">
-                {index + 1}
-              </div>
-            ) : (
-              <div />
-            )}
-
-            <div className="min-w-0 text-right">
-              {item.category && (
-                <div className="mb-1 text-[10px] font-bold uppercase tracking-wide text-red-600">
-                  {item.category}
+        <div className="divide-y divide-neutral-200">
+          {safeItems.map((item, index) => (
+            <Clickable
+              key={item.id || index}
+              href={item.href || "#"}
+              fallback="div"
+              className="
+                group grid grid-cols-[36px_1fr] gap-3
+                py-3 sm:py-4
+                transition-all duration-200
+                hover:bg-neutral-50
+                active:scale-[0.99]
+                rounded-lg px-2 -mx-2
+              "
+            >
+              {/* NUMBER */}
+              {showNumbers ? (
+                <div
+                  className="
+                    flex items-start justify-center
+                    text-sm font-extrabold
+                    text-neutral-300
+                    transition-all duration-200
+                    group-hover:text-red-600
+                  "
+                >
+                  {index + 1}
                 </div>
+              ) : (
+                <div />
               )}
 
-              <h3 className="line-clamp-2 text-[13px] font-bold leading-5 text-neutral-950 transition group-hover:text-neutral-700">
-                {item.title}
-              </h3>
+              {/* CONTENT */}
+              <div className="min-w-0">
+                {item.category && (
+                  <div
+                    className="
+                      mb-1 text-[10px] font-bold
+                      uppercase tracking-wide
+                      text-red-600
+                    "
+                  >
+                    {item.category}
+                  </div>
+                )}
 
-              {item.time && (
-                <p className="mt-1 text-[10px] text-neutral-500">{item.time}</p>
-              )}
-            </div>
-          </Clickable>
-        ))}
+                <h3
+                  className="
+                    line-clamp-2
+                    text-sm sm:text-[15px]
+                    font-bold leading-5
+                    text-neutral-900
+                    transition-colors duration-200
+                    group-hover:text-neutral-700
+                  "
+                >
+                  {item.title}
+                </h3>
+
+                {item.time && (
+                  <p className="mt-1 text-[11px] text-neutral-500">
+                    {item.time}
+                  </p>
+                )}
+              </div>
+            </Clickable>
+          ))}
+        </div>
       </div>
-
-      <Clickable
-        href={href}
-        fallback="div"
-        className="mt-2 inline-flex text-[12px] font-semibold text-neutral-600 transition hover:text-neutral-950"
-      >
-        بیشتر
-      </Clickable>
     </section>
   );
 }

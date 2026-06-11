@@ -31,25 +31,48 @@ export default function InFocusTopics({ title = "در کانون توجه", item
 
   const normalizedItems = items.map(normalizeTopicItem);
 
-  const linkClassName = `
-    inline-flex items-center rounded-full border border-neutral-300
-    bg-white px-3 py-1.5 text-[12px] font-semibold text-neutral-800
-    transition hover:border-neutral-950 hover:bg-neutral-950 hover:text-white
+  const baseClass = `
+    group flex-shrink-0 inline-flex items-center
+    rounded-full border border-neutral-300
+    bg-white
+    px-3 py-1.5
+    text-xs sm:text-sm font-semibold
+    text-neutral-800
+    transition-all duration-200
+    whitespace-nowrap
+  `;
+
+  const interactiveClass = `
+    ${baseClass}
+    hover:border-neutral-900
+    hover:bg-neutral-900
+    hover:text-white
     active:scale-95
   `;
 
-  const staticClassName = `
-    inline-flex items-center rounded-full border border-neutral-300
-    bg-white px-3 py-1.5 text-[12px] font-semibold text-neutral-800
-  `;
+  const staticClass = `${baseClass} opacity-70`;
 
   return (
     <section dir="rtl" className="w-full">
-      <h3 className="mb-3 text-[13px] font-extrabold text-neutral-950">
-        {title}
-      </h3>
+      {/* HEADER */}
+      <div className="mb-3 flex items-center justify-between">
+        <h3 className="text-sm sm:text-base font-extrabold text-neutral-900">
+          {title}
+        </h3>
 
-      <div className="flex flex-wrap gap-2">
+        <span className="text-xs text-neutral-400">
+          {normalizedItems.length} موضوع
+        </span>
+      </div>
+
+      {/* MOBILE: scroll | DESKTOP: wrap */}
+      <div
+        className="
+          flex gap-2 overflow-x-auto pb-2
+          scrollbar-hide
+          sm:flex-wrap sm:overflow-visible
+        "
+      >
         {normalizedItems.map((item, index) => {
           if (hasValidHref(item.href)) {
             if (isExternalHref(item.href)) {
@@ -59,7 +82,7 @@ export default function InFocusTopics({ title = "در کانون توجه", item
                   href={item.href}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className={linkClassName}
+                  className={interactiveClass}
                 >
                   {item.label}
                 </a>
@@ -70,7 +93,7 @@ export default function InFocusTopics({ title = "در کانون توجه", item
               <Link
                 key={getItemKey(item, index)}
                 to={item.href}
-                className={linkClassName}
+                className={interactiveClass}
               >
                 {item.label}
               </Link>
@@ -78,7 +101,7 @@ export default function InFocusTopics({ title = "در کانون توجه", item
           }
 
           return (
-            <span key={getItemKey(item, index)} className={staticClassName}>
+            <span key={getItemKey(item, index)} className={staticClass}>
               {item.label}
             </span>
           );

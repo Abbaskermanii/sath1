@@ -9,7 +9,7 @@ export default function Menue() {
   const activeClass = "border-red-500 text-red-400";
 
   return (
-    <div className="bg-neutral-800" dir="rtl">
+    <div className="hidden bg-neutral-800 md:block" dir="rtl">
       <ul className="max-w-7xl mx-auto flex gap-6 text-sm font-md py-4 overflow-x-auto px-4">
         <li className="shrink-0">
           <NavLink

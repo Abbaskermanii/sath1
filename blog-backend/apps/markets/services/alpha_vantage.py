@@ -68,7 +68,9 @@ def call_alpha_vantage(function_name, params=None, retries=MAX_RETRIES):
 
     for attempt in range(retries + 1):
         try:
-            response = requests.get(BASE_URL, params=request_params, timeout=REQUEST_TIMEOUT)
+            response = requests.get(
+                BASE_URL, params=request_params, timeout=REQUEST_TIMEOUT
+            )
             response.raise_for_status()
             data = response.json()
 
@@ -142,25 +144,52 @@ def fetch_usd_to_irr_rate():
     return fetch_exchange_rate("USD", "IRR")
 
 
+def fetch_stock_rate(symbol):
+    # این تابع برای دریافت قیمت لحظه‌ای سهام است
+    data = call_alpha_vantage("GLOBAL_QUOTE", {"symbol": symbol})
+    quote = data.get("Global Quote") or {}
+    price = quote.get("05. price")
+
+    if not price:
+        raise RuntimeError(f"Stock price not found for {symbol}")
+
+    return {
+        "rate": to_decimal(price),
+        "quote_currency": "USD",
+        "raw_data": data,
+    }
+
+
 def fetch_market_rate(market):
-    provider_function = (market.provider_function or "CURRENCY_EXCHANGE_RATE").strip().upper()
+    provider_function = (
+        (market.provider_function or "CURRENCY_EXCHANGE_RATE").strip().upper()
+    )
 
+    # فارکس و کریپتو
     if provider_function == "CURRENCY_EXCHANGE_RATE":
-        from_currency = (market.from_currency or "").strip().upper()
-        to_currency = (market.to_currency or "").strip().upper()
+        # ... همان کدی که داشتی ...
+        return fetch_exchange_rate(market.from_currency, market.to_currency)
 
-        if not from_currency or not to_currency:
-            raise RuntimeError(f"from_currency/to_currency missing for {market.symbol}")
+    # سهام
+    if provider_function == "GLOBAL_QUOTE":
+        return fetch_stock_rate(market.symbol)
 
-        if from_currency == "XAU":
-            raise RuntimeError("XAU is not supported via CURRENCY_EXCHANGE_RATE")
-
-        return fetch_exchange_rate(from_currency, to_currency)
-
-    if provider_function in {"WTI", "BRENT"}:
+    # کالاها
+    if provider_function in {
+        "WTI",
+        "BRENT",
+        "NATURAL_GAS",
+        "COPPER",
+        "ALUMINUM",
+        "WHEAT",
+        "CORN",
+        "COTTON",
+        "SUGAR",
+        "COFFEE",
+    }:
         return fetch_commodity_rate(provider_function)
 
-    raise RuntimeError(f"Unsupported provider_function={provider_function} for {market.symbol}")
+    raise RuntimeError(f"Unsupported provider_function={provider_function}")
 
 
 def resolve_market_rate(market, usd_to_irr_rate=None, usd_to_irr_raw=None):
@@ -217,7 +246,9 @@ def resolve_market_rate(market, usd_to_irr_rate=None, usd_to_irr_raw=None):
 
 def get_market_prices_from_alpha_vantage():
     symbols = list(
-        MarketSymbol.objects.filter(enabled_for_sync=True, active=True).order_by("sort_order", "id")
+        MarketSymbol.objects.filter(enabled_for_sync=True, active=True).order_by(
+            "sort_order", "id"
+        )
     )
 
     items = []

@@ -4,32 +4,28 @@ import { Link } from "react-router-dom";
 import { newsApi } from "../../lib/news/newsApi";
 import { normalizePosts } from "../../lib/normalizers";
 
+// ... (توابع کمکی بدون تغییر باقی می‌مانند)
 function getApiErrorMessage(
   error,
   fallback = "خطا در دریافت اخبار این دسته‌بندی",
 ) {
   const data = error?.response?.data;
-
   if (!data) return error?.message || fallback;
   if (typeof data === "string") return data;
   if (data.detail) return data.detail;
   if (data.message) return data.message;
   if (data.error) return data.error;
-
   if (typeof data === "object") {
     const firstKey = Object.keys(data)[0];
     const firstValue = data[firstKey];
-
     if (Array.isArray(firstValue)) return firstValue[0];
     if (typeof firstValue === "string") return firstValue;
   }
-
   return fallback;
 }
 
 function uniqueByIdOrTitle(items = []) {
   const seen = new Set();
-
   return items.filter((item, index) => {
     const key =
       item?.id ?? item?.slug ?? item?.href ?? item?.title ?? `item-${index}`;
@@ -45,29 +41,16 @@ function toPersianDigits(value) {
 
 function formatRelativeTime(dateValue) {
   if (!dateValue) return "";
-
   const now = new Date();
   const date = new Date(dateValue);
-
   if (Number.isNaN(date.getTime())) return "";
-
   const diffMs = now.getTime() - date.getTime();
   const diffMinutes = Math.max(1, Math.floor(diffMs / 60000));
-
-  if (diffMinutes < 60) {
-    return `${toPersianDigits(diffMinutes)} دقیقه پیش`;
-  }
-
+  if (diffMinutes < 60) return `${toPersianDigits(diffMinutes)} دقیقه پیش`;
   const diffHours = Math.floor(diffMinutes / 60);
-  if (diffHours < 24) {
-    return `${toPersianDigits(diffHours)} ساعت پیش`;
-  }
-
+  if (diffHours < 24) return `${toPersianDigits(diffHours)} ساعت پیش`;
   const diffDays = Math.floor(diffHours / 24);
-  if (diffDays < 30) {
-    return `${toPersianDigits(diffDays)} روز پیش`;
-  }
-
+  if (diffDays < 30) return `${toPersianDigits(diffDays)} روز پیش`;
   return new Intl.DateTimeFormat("fa-IR", {
     year: "numeric",
     month: "long",
@@ -77,13 +60,10 @@ function formatRelativeTime(dateValue) {
 
 function buildPageNumbers(currentPage, totalPages) {
   if (totalPages <= 1) return [1];
-
   const pages = new Set([1, totalPages]);
-
   for (let i = currentPage - 1; i <= currentPage + 1; i += 1) {
     if (i > 1 && i < totalPages) pages.add(i);
   }
-
   return [...pages].sort((a, b) => a - b);
 }
 
@@ -94,9 +74,7 @@ function extractPaginatedPostsResponse(raw) {
     : Array.isArray(data)
       ? data
       : [];
-
   const normalizedItems = normalizePosts(rawResults);
-
   return {
     items: uniqueByIdOrTitle(normalizedItems),
     count: Number(data?.count ?? rawResults.length ?? 0),
@@ -120,7 +98,6 @@ function CategoryFeedCard({ item }) {
     item?.published_at ||
     item?.createdAt ||
     item?.created_at;
-
   const timeText = formatRelativeTime(publishedAt);
 
   return (
@@ -142,12 +119,10 @@ function CategoryFeedCard({ item }) {
             )}
           </div>
         </div>
-
         <div className="flex min-w-0 flex-1 flex-col justify-between">
           <h3 className="line-clamp-2 text-[14px] font-bold leading-5 text-neutral-900 sm:text-[15px] sm:leading-6">
             {title}
           </h3>
-
           <div className="mt-2 flex items-center gap-2 text-[11px] text-neutral-500">
             <span className="inline-block h-1.5 w-1.5 rounded-full bg-emerald-500" />
             <span className="truncate">{timeText}</span>
@@ -158,28 +133,24 @@ function CategoryFeedCard({ item }) {
   );
 }
 
-function FeedSkeletonCard() {
-  return (
-    <div className="overflow-hidden rounded-2xl border border-neutral-200 bg-white p-3 shadow-[0_1px_2px_rgba(0,0,0,0.03)] sm:p-3.5">
-      <div className="flex gap-3">
-        <div className="h-[82px] w-[108px] animate-pulse rounded-xl bg-neutral-100 sm:h-[88px] sm:w-[118px]" />
-        <div className="flex min-w-0 flex-1 flex-col justify-between">
-          <div className="space-y-2">
-            <div className="h-4 w-[88%] animate-pulse rounded bg-neutral-100" />
-            <div className="h-4 w-[68%] animate-pulse rounded bg-neutral-100" />
-          </div>
-          <div className="mt-3 h-3 w-24 animate-pulse rounded bg-neutral-100" />
-        </div>
-      </div>
-    </div>
-  );
-}
-
 function FeedSkeleton({ pageSize = 6 }) {
   return (
-    <div className="grid grid-cols-1 gap-3 sm:gap-4 lg:grid-cols-2">
+    <div className="flex w-full gap-3 overflow-x-auto pb-4 snap-x snap-mandatory [&::-webkit-scrollbar]:hidden sm:grid sm:grid-cols-2 sm:gap-4 sm:overflow-visible">
       {Array.from({ length: pageSize }).map((_, index) => (
-        <FeedSkeletonCard key={index} />
+        <div key={index} className="snap-start shrink-0 w-[260px] sm:w-auto">
+          <div className="overflow-hidden rounded-2xl border border-neutral-200 bg-white p-3 shadow-[0_1px_2px_rgba(0,0,0,0.03)] sm:p-3.5">
+            <div className="flex gap-3">
+              <div className="h-[82px] w-[108px] animate-pulse rounded-xl bg-neutral-100 sm:h-[88px] sm:w-[118px]" />
+              <div className="flex min-w-0 flex-1 flex-col justify-between">
+                <div className="space-y-2">
+                  <div className="h-4 w-[88%] animate-pulse rounded bg-neutral-100" />
+                  <div className="h-4 w-[68%] animate-pulse rounded bg-neutral-100" />
+                </div>
+                <div className="mt-3 h-3 w-24 animate-pulse rounded bg-neutral-100" />
+              </div>
+            </div>
+          </div>
+        </div>
       ))}
     </div>
   );
@@ -206,12 +177,9 @@ export default function CategoryPostsFeed({
   const fetchPage = useCallback(
     async (pageNumber) => {
       if (!categorySlug) return;
-
       const safePage = Math.max(1, pageNumber);
-
       setLoading(true);
       setPageError("");
-
       try {
         const raw = await newsApi.getPosts({
           category: categorySlug,
@@ -219,9 +187,7 @@ export default function CategoryPostsFeed({
           page: safePage,
           page_size: pageSize,
         });
-
         const paginated = extractPaginatedPostsResponse(raw);
-
         setItems(paginated.items);
         setCount(paginated.count);
         setNext(paginated.next);
@@ -229,7 +195,6 @@ export default function CategoryPostsFeed({
         setPage(safePage);
       } catch (error) {
         const message = getApiErrorMessage(error);
-
         if (
           typeof message === "string" &&
           message.toLowerCase().includes("invalid page")
@@ -241,10 +206,8 @@ export default function CategoryPostsFeed({
               page: 1,
               page_size: pageSize,
             });
-
             const fallbackPaginated =
               extractPaginatedPostsResponse(fallbackRaw);
-
             setItems(fallbackPaginated.items);
             setCount(fallbackPaginated.count);
             setNext(fallbackPaginated.next);
@@ -255,19 +218,11 @@ export default function CategoryPostsFeed({
           } catch (fallbackError) {
             setPageError(getApiErrorMessage(fallbackError));
             setItems([]);
-            setCount(0);
-            setNext(null);
-            setPrevious(null);
-            setPage(1);
-            return;
           }
+        } else {
+          setPageError(message);
+          setItems([]);
         }
-
-        setPageError(message);
-        setItems([]);
-        setCount(0);
-        setNext(null);
-        setPrevious(null);
       } finally {
         setLoading(false);
       }
@@ -277,14 +232,12 @@ export default function CategoryPostsFeed({
 
   useEffect(() => {
     if (!isCategoryPage || !categorySlug) return;
-
     setItems([]);
     setCount(0);
     setNext(null);
     setPrevious(null);
     setPage(1);
     setPageError("");
-
     fetchPage(1);
   }, [fetchPage, categorySlug, isCategoryPage]);
 
@@ -313,12 +266,15 @@ export default function CategoryPostsFeed({
           </div>
         ) : items.length > 0 ? (
           <>
-            <div className="grid grid-cols-1 gap-3 sm:gap-4 lg:grid-cols-2">
+            {/* کانتینر اصلی با تغییر به اسلایدر در موبایل */}
+            <div className="flex w-full gap-3 overflow-x-auto pb-4 snap-x snap-mandatory [&::-webkit-scrollbar]:hidden sm:grid sm:grid-cols-2 sm:gap-4 sm:overflow-visible">
               {items.map((item) => (
-                <CategoryFeedCard
+                <div
                   key={item?.id || item?.slug || item?.href || item?.title}
-                  item={item}
-                />
+                  className="snap-start shrink-0 w-[260px] sm:w-auto"
+                >
+                  <CategoryFeedCard item={item} />
+                </div>
               ))}
             </div>
 
@@ -334,13 +290,11 @@ export default function CategoryPostsFeed({
                 >
                   قبلی
                 </button>
-
                 {pageNumbers.map((pageNumber, index) => {
                   const prevPageNumber = pageNumbers[index - 1];
                   const hasGap =
                     typeof prevPageNumber === "number" &&
                     pageNumber - prevPageNumber > 1;
-
                   return (
                     <div key={pageNumber} className="flex items-center gap-2">
                       {hasGap && (
@@ -348,7 +302,6 @@ export default function CategoryPostsFeed({
                           ...
                         </span>
                       )}
-
                       <button
                         type="button"
                         onClick={() => {
@@ -357,22 +310,16 @@ export default function CategoryPostsFeed({
                             pageNumber >= 1 &&
                             pageNumber <= totalPages &&
                             pageNumber !== page
-                          ) {
+                          )
                             fetchPage(pageNumber);
-                          }
                         }}
-                        className={`min-w-[38px] rounded-full px-3.5 py-2 text-xs font-semibold transition ${
-                          page === pageNumber
-                            ? "bg-neutral-900 text-white shadow-sm"
-                            : "border border-neutral-300 bg-white text-neutral-700 hover:bg-neutral-100"
-                        }`}
+                        className={`min-w-[38px] rounded-full px-3.5 py-2 text-xs font-semibold transition ${page === pageNumber ? "bg-neutral-900 text-white shadow-sm" : "border border-neutral-300 bg-white text-neutral-700 hover:bg-neutral-100"}`}
                       >
                         {toPersianDigits(pageNumber)}
                       </button>
                     </div>
                   );
                 })}
-
                 <button
                   type="button"
                   disabled={page >= totalPages || loading || !next}

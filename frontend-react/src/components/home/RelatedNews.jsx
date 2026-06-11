@@ -1,5 +1,6 @@
 import { Link } from "react-router-dom";
 
+/* ========================= HELPERS ========================= */
 function getSafeHref(href) {
   return typeof href === "string" ? href.trim() : "";
 }
@@ -13,6 +14,7 @@ function hasValidHref(href) {
   return value.length > 0 && value !== "#";
 }
 
+/* ========================= CLICKABLE ========================= */
 function Clickable({ href, className = "", children, fallback = "div" }) {
   const safeHref = getSafeHref(href);
 
@@ -41,43 +43,68 @@ function Clickable({ href, className = "", children, fallback = "div" }) {
   );
 }
 
+/* ========================= MAIN ========================= */
 function RelatedNews({ news = [] }) {
   const safeNews = Array.isArray(news) ? news.filter(Boolean) : [];
 
   if (!safeNews.length) return null;
 
   return (
-    <div className="mt-5 border-t border-neutral-300 py-8" dir="rtl">
-      <div className="mx-auto max-w-5xl px-6">
-        <div className="grid grid-cols-3">
+    <section
+      className="mt-6 border-t border-neutral-300 py-6 sm:py-8"
+      dir="rtl"
+    >
+      <div className="mx-auto max-w-6xl px-4 sm:px-6">
+        {/* HEADER */}
+        <h2 className="mb-4 text-sm sm:text-base font-bold text-neutral-900">
+          خبرهای مرتبط
+        </h2>
+
+        {/* GRID */}
+        <div
+          className="
+            grid gap-4
+            grid-cols-1
+            sm:grid-cols-2
+            lg:grid-cols-3
+          "
+        >
           {safeNews.map((item, index) => {
             const title = typeof item === "string" ? item : item?.title || "";
             const href = typeof item === "string" ? "#" : item?.href || "#";
 
             return (
-              <div
+              <Clickable
                 key={item?.id || index}
-                className="group border-l border-neutral-300 px-4 last:border-0"
+                href={href}
+                fallback="div"
+                className="
+                  group block rounded-lg border border-neutral-200
+                  bg-white p-4
+                  transition-all duration-300
+                  hover:border-neutral-900
+                  hover:bg-neutral-50
+                  hover:shadow-sm
+                  active:scale-[0.98]
+                "
               >
-                {title && (
-                  <Clickable href={href} fallback="div" className="block">
-                    <h3
-                      className="
-                        cursor-pointer text-right text-[15px] font-medium leading-tight
-                        transition-all duration-300 ease-out
-                        group-hover:text-blue-600
-                      "
-                    >
-                      {title}
-                    </h3>
-                  </Clickable>
-                )}
-              </div>
+                <h3
+                  className="
+                    text-right text-[14px] sm:text-[15px]
+                    font-semibold leading-relaxed
+                    text-neutral-900
+                    transition-colors duration-200
+                    group-hover:text-neutral-700
+                  "
+                >
+                  {title}
+                </h3>
+              </Clickable>
             );
           })}
         </div>
       </div>
-    </div>
+    </section>
   );
 }
 

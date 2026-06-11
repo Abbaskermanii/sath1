@@ -1,77 +1,63 @@
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import { useEffect, useMemo, useState } from "react";
 
+/* ========================= EMBED ========================= */
 function normalizeEmbedUrl(url = "") {
   if (!url) return "";
 
   const trimmed = String(url).trim();
+  const match = trimmed.match(/src=["']([^"']+)["']/i);
+  const raw = match ? match[1] : trimmed;
 
-  const scriptSrcMatch = trimmed.match(/src=["']([^"']+)["']/i);
-  const rawUrl = scriptSrcMatch ? scriptSrcMatch[1] : trimmed;
+  if (!raw) return "";
 
-  if (!rawUrl) return "";
-
-  if (rawUrl.includes("youtube.com/watch?v=")) {
-    const videoId = rawUrl.split("v=")[1]?.split("&")[0];
-    return videoId ? `https://www.youtube.com/embed/${videoId}?rel=0` : rawUrl;
+  if (raw.includes("youtube.com/watch?v=")) {
+    const id = raw.split("v=")[1]?.split("&")[0];
+    return id ? `https://www.youtube.com/embed/${id}?rel=0` : raw;
   }
 
-  if (rawUrl.includes("youtu.be/")) {
-    const videoId = rawUrl.split("youtu.be/")[1]?.split("?")[0];
-    return videoId ? `https://www.youtube.com/embed/${videoId}?rel=0` : rawUrl;
+  if (raw.includes("youtu.be/")) {
+    const id = raw.split("youtu.be/")[1]?.split("?")[0];
+    return id ? `https://www.youtube.com/embed/${id}?rel=0` : raw;
   }
 
-  if (rawUrl.includes("youtube.com/embed/")) {
-    return rawUrl;
+  if (raw.includes("youtube.com/embed/")) return raw;
+
+  const aparatMatch = raw.match(/aparat\.com\/v\/([^/?&]+)/i);
+  if (aparatMatch) {
+    return `https://www.aparat.com/video/video/embed/videohash/${aparatMatch[1]}/vt/frame`;
   }
 
-  const aparatEmbedMatch = rawUrl.match(/aparat\.com\/embed\/([^/?&]+)/i);
-  if (aparatEmbedMatch) {
-    const videoHash = aparatEmbedMatch[1];
-    return `https://www.aparat.com/video/video/embed/videohash/${videoHash}/vt/frame`;
-  }
-
-  const aparatVideoMatch = rawUrl.match(/aparat\.com\/v\/([^/?&]+)/i);
-  if (aparatVideoMatch) {
-    const videoHash = aparatVideoMatch[1];
-    return `https://www.aparat.com/video/video/embed/videohash/${videoHash}/vt/frame`;
-  }
-
-  if (rawUrl.includes("/video/video/embed/videohash/")) {
-    return rawUrl;
-  }
-
-  return rawUrl;
+  return raw;
 }
 
-export default function SnowflakeVideoCard({ videos = [] }) {
+/* ========================= COMPONENT ========================= */
+export default function SnowflakeVideoCard({
+  videos = [],
+  mode = "widget", // 🔥 NEW (widget | page)
+}) {
   const safeVideos = useMemo(
     () => (Array.isArray(videos) ? videos : []),
     [videos],
   );
 
   const [index, setIndex] = useState(0);
+  const [isPlaying, setIsPlaying] = useState(false);
 
   useEffect(() => {
-    if (index >= safeVideos.length) {
-      setIndex(0);
-    }
+    if (index >= safeVideos.length) setIndex(0);
   }, [index, safeVideos.length]);
 
   const current = safeVideos[index];
 
   const next = () => {
-    setIndex((prev) =>
-      safeVideos.length ? (prev + 1) % safeVideos.length : 0,
-    );
+    setIsPlaying(false);
+    setIndex((p) => (p + 1) % safeVideos.length);
   };
 
   const prev = () => {
-    setIndex((prev) =>
-      safeVideos.length
-        ? (prev - 1 + safeVideos.length) % safeVideos.length
-        : 0,
-    );
+    setIsPlaying(false);
+    setIndex((p) => (p - 1 + safeVideos.length) % safeVideos.length);
   };
 
   if (!current) return null;
@@ -81,108 +67,124 @@ export default function SnowflakeVideoCard({ videos = [] }) {
   );
 
   const videoFile = current.videoFile || current.video_file || "";
-  const previewImage =
-    current.image ||
-    current.cover ||
-    current.thumbnail ||
-    current.video_thumbnail ||
-    current.poster ||
-    "";
 
-  const hasVideoFile = Boolean(videoFile);
-  const hasEmbed = Boolean(embedSrc);
-  const hasPreview = Boolean(previewImage);
+  const preview =
+    current.image || current.cover || current.thumbnail || current.poster || "";
+
+  const isWidget = mode === "widget";
 
   return (
-    <div dir="rtl" className="mx-auto max-w-md overflow-hidden bg-white">
-      <div className="flex items-center justify-between border-b border-neutral-200 px-5 py-4">
-        <h2 className="text-lg font-bold text-gray-900">ویدیوهای امروز</h2>
+    <section
+      dir="rtl"
+      className={`w-full ${
+        isWidget ? "max-w-md mx-auto" : "max-w-5xl mx-auto"
+      }`}
+    >
+      {/* HEADER */}
+      <div className="flex items-center justify-between border-b px-4 py-3 sm:px-5">
+        <h2 className="text-base sm:text-lg font-bold text-gray-900">
+          ویدیوهای امروز
+        </h2>
       </div>
 
-      <div className="m-4 overflow-hidden rounded-xl bg-black">
-        <div className="relative aspect-video w-full bg-black">
-          {hasVideoFile ? (
+      {/* VIDEO */}
+      <div
+        className={`relative bg-black ${
+          isWidget ? "m-3 rounded-xl" : "my-6 rounded-2xl"
+        }`}
+      >
+        <div className="relative aspect-video">
+          {/* PREVIEW */}
+          {!isPlaying && preview && (
+            <>
+              <img src={preview} className="h-full w-full object-cover" />
+
+              <button
+                onClick={() => setIsPlaying(true)}
+                className="absolute inset-0 flex items-center justify-center"
+              >
+                <span className="flex h-14 w-14 items-center justify-center rounded-full bg-black/70 text-white backdrop-blur">
+                  ▶
+                </span>
+              </button>
+            </>
+          )}
+
+          {/* VIDEO FILE */}
+          {isPlaying && videoFile && (
             <video
-              key={current.id || current.slug || index}
               src={videoFile}
               controls
-              playsInline
-              preload="metadata"
-              poster={hasPreview ? previewImage : undefined}
-              className="h-full w-full object-cover"
-            />
-          ) : hasEmbed ? (
-            <iframe
-              key={current.id || current.slug || index}
-              src={embedSrc}
-              title={current.title || "video"}
-              allow="autoplay; encrypted-media; picture-in-picture; fullscreen"
-              allowFullScreen
+              autoPlay
               className="h-full w-full"
             />
-          ) : hasPreview ? (
-            <img
-              src={previewImage}
-              alt={current.title || "video"}
-              className="h-full w-full object-cover"
-            />
-          ) : (
-            <div className="flex h-full min-h-[220px] w-full items-center justify-center text-sm text-white">
-              منبعی برای نمایش وجود ندارد
+          )}
+
+          {/* EMBED */}
+          {isPlaying && !videoFile && embedSrc && (
+            <iframe src={embedSrc} className="h-full w-full" allowFullScreen />
+          )}
+
+          {/* EMPTY */}
+          {!preview && !videoFile && !embedSrc && (
+            <div className="flex h-full items-center justify-center text-white">
+              ویدیویی وجود ندارد
             </div>
           )}
 
-          {current.duration ? (
-            <div className="absolute bottom-3 right-3 z-20 rounded bg-black/70 px-2 py-1 text-xs text-white">
+          {/* DURATION */}
+          {current.duration && (
+            <span className="absolute bottom-3 right-3 bg-black/70 px-2 py-1 text-xs text-white rounded">
               {current.duration}
-            </div>
-          ) : null}
+            </span>
+          )}
         </div>
       </div>
 
-      <div className="px-5 pb-3 text-right">
-        <h3 className="min-h-12 line-clamp-2 text-base font-bold leading-snug text-gray-900">
+      {/* TITLE */}
+      <div className="px-4 sm:px-5 text-right">
+        <h3 className="text-sm sm:text-base lg:text-lg font-bold leading-snug line-clamp-2 text-gray-900">
           {current.title}
         </h3>
       </div>
 
-      <div className="flex items-center justify-between px-5 pb-5">
-        <div className="flex gap-2">
-          {safeVideos.map((item, i) => (
+      {/* CONTROLS */}
+      <div className="flex flex-col gap-4 px-4 pb-5 sm:px-5">
+        {/* DOTS */}
+        <div className="flex justify-center gap-2">
+          {safeVideos.map((_, i) => (
             <button
-              key={item?.id || item?.slug || i}
-              type="button"
-              onClick={() => setIndex(i)}
-              className={
+              key={i}
+              onClick={() => {
+                setIndex(i);
+                setIsPlaying(false);
+              }}
+              className={`transition-all ${
                 i === index
-                  ? "h-2.5 w-2.5 scale-110 rounded-full bg-gray-900 transition-all duration-300"
-                  : "h-2.5 w-2.5 rounded-full bg-gray-300 transition-all duration-300"
-              }
-              aria-label={`رفتن به اسلاید ${i + 1}`}
+                  ? "w-3 h-3 bg-gray-900 scale-110 rounded-full"
+                  : "w-2.5 h-2.5 bg-gray-300 rounded-full"
+              }`}
             />
           ))}
         </div>
 
-        <div className="flex items-center gap-2">
+        {/* ARROWS */}
+        <div className="flex justify-between">
           <button
-            type="button"
             onClick={prev}
-            className="flex h-8 w-8 items-center justify-center rounded-full border border-gray-300 transition-all duration-300 hover:scale-105 hover:bg-gray-100"
-            aria-label="قبلی"
+            className="flex h-9 w-9 items-center justify-center rounded-full border hover:bg-gray-100"
           >
-            <ChevronRight className="h-4 w-4" />
+            <ChevronRight size={18} />
           </button>
 
           <button
-            type="button"
             onClick={next}
-            className="flex h-8 w-8 items-center justify-center rounded-full border border-gray-300 transition-all duration-300 hover:scale-105 hover:bg-gray-100"
-            aria-label="بعدی"
+            className="flex h-9 w-9 items-center justify-center rounded-full border hover:bg-gray-100"
           >
-            <ChevronLeft className="h-4 w-4" />
+            <ChevronLeft size={18} />
           </button>
         </div>
       </div>
-    </div>
+    </section>
   );
 }

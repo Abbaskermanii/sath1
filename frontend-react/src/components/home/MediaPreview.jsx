@@ -15,40 +15,67 @@ export default function MediaPreview({
   const hasImage = Boolean(image);
   const previewPoster = poster || image || "";
 
-  if (hasVideoFile) {
-    return (
-      <video
-        src={videoFile}
-        controls
-        playsInline
-        preload="metadata"
-        poster={previewPoster || undefined}
-        className={className}
-      />
-    );
-  }
-
-  if (hasEmbed) {
-    return (
-      <iframe
-        src={normalizedEmbed}
-        title={title || "video"}
-        allow="autoplay; encrypted-media; picture-in-picture; fullscreen"
-        allowFullScreen
-        className={className}
-      />
-    );
-  }
-
-  if (hasImage) {
-    return <img src={image} alt={title || "image"} className={className} />;
-  }
-
   return (
     <div
-      className={`flex items-center justify-center bg-neutral-100 text-sm text-neutral-500 ${className}`}
+      className={`
+        relative overflow-hidden rounded-lg
+        bg-neutral-100
+        aspect-[16/9]
+        ${className}
+      `}
     >
-      منبعی برای نمایش وجود ندارد
+      {/* VIDEO FILE */}
+      {hasVideoFile && (
+        <video
+          src={videoFile}
+          controls
+          playsInline
+          preload="metadata"
+          poster={previewPoster || undefined}
+          className="h-full w-full object-cover"
+        />
+      )}
+
+      {/* EMBED */}
+      {!hasVideoFile && hasEmbed && (
+        <iframe
+          src={normalizedEmbed}
+          title={title || "video"}
+          allow="autoplay; encrypted-media; picture-in-picture; fullscreen"
+          allowFullScreen
+          className="h-full w-full"
+        />
+      )}
+
+      {/* IMAGE */}
+      {!hasVideoFile && !hasEmbed && hasImage && (
+        <img
+          src={image}
+          alt={title || "image"}
+          loading="lazy"
+          className="
+            h-full w-full object-cover
+            transition-transform duration-500
+            hover:scale-105
+          "
+        />
+      )}
+
+      {/* EMPTY STATE */}
+      {!hasVideoFile && !hasEmbed && !hasImage && (
+        <div className="flex h-full w-full items-center justify-center text-sm text-neutral-500">
+          منبعی برای نمایش وجود ندارد
+        </div>
+      )}
+
+      {/* VIDEO OVERLAY (برای UX بهتر) */}
+      {(hasVideoFile || hasEmbed) && (
+        <div className="pointer-events-none absolute inset-0 flex items-center justify-center">
+          <div className="rounded-full bg-black/60 p-3 text-white text-sm backdrop-blur">
+            ▶
+          </div>
+        </div>
+      )}
     </div>
   );
 }

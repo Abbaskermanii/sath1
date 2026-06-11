@@ -241,7 +241,7 @@ function CategoriesPageContent() {
     const toastId = toast.loading(
       editingSlug
         ? "در حال ذخیره تغییرات دسته‌بندی..."
-        : "در حال ایجاد دسته‌بندی..."
+        : "در حال ایجاد دسته‌بندی...",
     );
 
     try {
@@ -359,7 +359,7 @@ function CategoriesPageContent() {
 
                   const message = getApiErrorMessage(
                     err,
-                    "حذف دسته‌بندی انجام نشد."
+                    "حذف دسته‌بندی انجام نشد.",
                   );
 
                   setError(message);
@@ -392,12 +392,12 @@ function CategoriesPageContent() {
         autoClose: false,
         closeOnClick: false,
         draggable: false,
-      }
+      },
     );
   }
 
   return (
-    <div className="mx-auto max-w-6xl space-y-6 pb-10" dir="rtl">
+    <div className="mx-auto max-w-6xl space-y-6 pb-10 px-4 sm:px-0" dir="rtl">
       <section className="flex flex-col gap-4 rounded-3xl border border-zinc-800 bg-gradient-to-l from-zinc-900 to-zinc-950 p-6 shadow-2xl md:flex-row md:items-center md:justify-between">
         <div>
           <h1 className="text-2xl font-black text-white">
@@ -419,7 +419,7 @@ function CategoriesPageContent() {
         </button>
       </section>
 
-      <section className="grid gap-4 md:grid-cols-3">
+      <section className="grid gap-4 sm:grid-cols-3">
         <div className="rounded-2xl border border-zinc-800 bg-zinc-950 p-5">
           <p className="text-sm text-zinc-500">کل دسته‌بندی‌ها</p>
           <p className="mt-2 text-2xl font-black text-white">{items.length}</p>
@@ -444,8 +444,8 @@ function CategoriesPageContent() {
         </div>
       </section>
 
-      <section className="rounded-3xl border border-zinc-800 bg-zinc-950 p-6 shadow-2xl">
-        <div className="mb-5 flex items-center justify-between gap-3">
+      <section className="rounded-3xl border border-zinc-800 bg-zinc-950 p-4 sm:p-6 shadow-2xl">
+        <div className="mb-5 flex flex-col sm:flex-row sm:items-center justify-between gap-3">
           <div>
             <h2 className="text-lg font-black text-white">فیلتر و جستجو</h2>
             <p className="mt-1 text-sm text-zinc-500">
@@ -454,7 +454,7 @@ function CategoriesPageContent() {
           </div>
 
           {hasActiveFilters && (
-            <span className="rounded-xl border border-yellow-500/20 bg-yellow-500/10 px-3 py-1.5 text-xs font-bold text-yellow-300">
+            <span className="self-start sm:self-auto rounded-xl border border-yellow-500/20 bg-yellow-500/10 px-3 py-1.5 text-xs font-bold text-yellow-300">
               فیلتر فعال
             </span>
           )}
@@ -506,9 +506,9 @@ function CategoriesPageContent() {
 
       <form
         onSubmit={handleSubmit}
-        className="space-y-5 rounded-3xl border border-zinc-800 bg-zinc-950 p-6 shadow-2xl"
+        className="space-y-5 rounded-3xl border border-zinc-800 bg-zinc-950 p-4 sm:p-6 shadow-2xl"
       >
-        <div className="flex flex-col gap-3 md:flex-row md:items-center md:justify-between">
+        <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
           <div>
             <h2 className="text-lg font-black text-white">
               {editingSlug ? "ویرایش دسته‌بندی" : "ایجاد دسته‌بندی جدید"}
@@ -520,7 +520,7 @@ function CategoriesPageContent() {
           </div>
 
           {editingSlug && (
-            <span className="rounded-xl border border-blue-500/20 bg-blue-500/10 px-3 py-1.5 text-xs font-bold text-blue-300">
+            <span className="self-start sm:self-auto rounded-xl border border-blue-500/20 bg-blue-500/10 px-3 py-1.5 text-xs font-bold text-blue-300">
               در حال ویرایش
             </span>
           )}
@@ -563,11 +563,11 @@ function CategoriesPageContent() {
           </div>
         )}
 
-        <div className="flex flex-col gap-3 sm:flex-row">
+        <div className="flex flex-col gap-3 sm:flex-row border-t border-zinc-800 pt-4 mt-2">
           <button
             type="submit"
             disabled={saving}
-            className="rounded-xl bg-white px-5 py-3 text-sm font-black text-black transition hover:bg-zinc-200 disabled:cursor-not-allowed disabled:opacity-50"
+            className="rounded-xl bg-white px-8 py-3 text-sm font-black text-black transition hover:bg-zinc-200 disabled:cursor-not-allowed disabled:opacity-50"
           >
             {saving
               ? "در حال ذخیره..."
@@ -581,7 +581,7 @@ function CategoriesPageContent() {
               type="button"
               onClick={resetForm}
               disabled={saving}
-              className="rounded-xl border border-zinc-700 px-5 py-3 text-sm font-bold text-white transition hover:bg-zinc-800 disabled:cursor-not-allowed disabled:opacity-50"
+              className="rounded-xl border border-zinc-700 px-8 py-3 text-sm font-bold text-white transition hover:bg-zinc-800 disabled:cursor-not-allowed disabled:opacity-50"
             >
               انصراف
             </button>
@@ -589,11 +589,11 @@ function CategoriesPageContent() {
         </div>
       </form>
 
-      <section className="rounded-3xl border border-zinc-800 bg-zinc-950 p-6 shadow-2xl">
+      <section className="rounded-3xl border border-zinc-800 bg-zinc-950 p-4 sm:p-6 shadow-2xl">
         <div className="mb-5 flex items-center justify-between gap-3">
           <div>
             <h2 className="text-lg font-black text-white">لیست دسته‌بندی‌ها</h2>
-            <p className="mt-1 text-sm text-zinc-500">
+            <p className="mt-1 text-sm text-zinc-500 hidden sm:block">
               دسته‌بندی‌های ثبت‌شده در سیستم.
             </p>
           </div>
@@ -622,68 +622,120 @@ function CategoriesPageContent() {
             )}
           </div>
         ) : (
-          <div className="overflow-x-auto">
-            <table className="w-full min-w-[720px] text-right text-sm">
-              <thead>
-                <tr className="border-b border-zinc-800 text-zinc-400">
-                  <th className="px-3 py-4 font-medium">عنوان</th>
-                  <th className="px-3 py-4 font-medium">اسلاگ</th>
-                  <th className="px-3 py-4 font-medium">تعداد پست</th>
-                  <th className="px-3 py-4 font-medium">عملیات</th>
-                </tr>
-              </thead>
+          <>
+            {/* حالت موبایل: کارت‌ها */}
+            <div className="flex flex-col gap-4 md:hidden">
+              {items.map((item) => (
+                <div
+                  key={item.slug}
+                  className="flex flex-col gap-3 rounded-2xl border border-zinc-800 bg-zinc-900/40 p-4"
+                >
+                  <div className="flex justify-between items-start gap-2">
+                    <div className="font-bold text-white text-base">
+                      {item.title || "-"}
+                    </div>
+                    <span className="shrink-0 rounded-lg border border-zinc-700 bg-zinc-800 px-2 py-1 text-[11px] text-zinc-300">
+                      {item.posts_count ?? 0} پست
+                    </span>
+                  </div>
 
-              <tbody>
-                {items.map((item) => (
-                  <tr
-                    key={item.slug}
-                    className="border-b border-zinc-800/70 transition hover:bg-zinc-900/60"
-                  >
-                    <td className="px-3 py-4">
-                      <div className="font-bold text-white">
-                        {item.title || "-"}
-                      </div>
-                    </td>
+                  <div className="flex items-center gap-2">
+                    <span className="text-xs text-zinc-500">اسلاگ:</span>
+                    <code
+                      className="rounded-md border border-zinc-800 bg-zinc-950 px-2 py-1 text-xs text-zinc-300"
+                      dir="ltr"
+                    >
+                      {item.slug || "-"}
+                    </code>
+                  </div>
 
-                    <td className="px-3 py-4">
-                      <code
-                        className="rounded-lg border border-zinc-800 bg-zinc-900 px-2 py-1 text-xs text-zinc-300"
-                        dir="ltr"
-                      >
-                        {item.slug || "-"}
-                      </code>
-                    </td>
+                  <div className="mt-2 flex gap-2 pt-3 border-t border-zinc-800/60">
+                    <button
+                      type="button"
+                      onClick={() => handleEdit(item)}
+                      disabled={saving}
+                      className="flex-1 rounded-xl border border-zinc-700 py-2.5 text-xs font-bold text-white transition hover:bg-zinc-800 disabled:cursor-not-allowed disabled:opacity-50"
+                    >
+                      ویرایش
+                    </button>
 
-                    <td className="px-3 py-4 text-zinc-300">
-                      {item.posts_count ?? 0}
-                    </td>
+                    <button
+                      type="button"
+                      onClick={() => handleDelete(item)}
+                      disabled={saving}
+                      className="flex-1 rounded-xl border border-red-500/40 py-2.5 text-xs font-bold text-red-300 transition hover:bg-red-500/10 disabled:cursor-not-allowed disabled:opacity-50"
+                    >
+                      حذف
+                    </button>
+                  </div>
+                </div>
+              ))}
+            </div>
 
-                    <td className="px-3 py-4">
-                      <div className="flex gap-2">
-                        <button
-                          type="button"
-                          onClick={() => handleEdit(item)}
-                          disabled={saving}
-                          className="rounded-xl border border-zinc-700 px-3 py-2 text-xs font-bold text-white transition hover:bg-zinc-800 disabled:cursor-not-allowed disabled:opacity-50"
-                        >
-                          ویرایش
-                        </button>
-
-                        <button
-                          type="button"
-                          onClick={() => handleDelete(item)}
-                          disabled={saving}
-                          className="rounded-xl border border-red-500/40 px-3 py-2 text-xs font-bold text-red-300 transition hover:bg-red-500/10 disabled:cursor-not-allowed disabled:opacity-50"
-                        >
-                          حذف
-                        </button>
-                      </div>
-                    </td>
+            {/* حالت دسکتاپ: جدول */}
+            <div className="hidden md:block overflow-x-auto">
+              <table className="w-full min-w-[720px] text-right text-sm">
+                <thead>
+                  <tr className="border-b border-zinc-800 text-zinc-400">
+                    <th className="px-3 py-4 font-medium">عنوان</th>
+                    <th className="px-3 py-4 font-medium">اسلاگ</th>
+                    <th className="px-3 py-4 font-medium">تعداد پست</th>
+                    <th className="px-3 py-4 font-medium">عملیات</th>
                   </tr>
-                ))}
-              </tbody>
-            </table>
-          </div>
+                </thead>
+
+                <tbody>
+                  {items.map((item) => (
+                    <tr
+                      key={item.slug}
+                      className="border-b border-zinc-800/70 transition hover:bg-zinc-900/60"
+                    >
+                      <td className="px-3 py-4">
+                        <div className="font-bold text-white">
+                          {item.title || "-"}
+                        </div>
+                      </td>
+
+                      <td className="px-3 py-4">
+                        <code
+                          className="rounded-lg border border-zinc-800 bg-zinc-900 px-2 py-1 text-xs text-zinc-300"
+                          dir="ltr"
+                        >
+                          {item.slug || "-"}
+                        </code>
+                      </td>
+
+                      <td className="px-3 py-4 text-zinc-300">
+                        {item.posts_count ?? 0}
+                      </td>
+
+                      <td className="px-3 py-4">
+                        <div className="flex gap-2">
+                          <button
+                            type="button"
+                            onClick={() => handleEdit(item)}
+                            disabled={saving}
+                            className="rounded-xl border border-zinc-700 px-3 py-2 text-xs font-bold text-white transition hover:bg-zinc-800 disabled:cursor-not-allowed disabled:opacity-50"
+                          >
+                            ویرایش
+                          </button>
+
+                          <button
+                            type="button"
+                            onClick={() => handleDelete(item)}
+                            disabled={saving}
+                            className="rounded-xl border border-red-500/40 px-3 py-2 text-xs font-bold text-red-300 transition hover:bg-red-500/10 disabled:cursor-not-allowed disabled:opacity-50"
+                          >
+                            حذف
+                          </button>
+                        </div>
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+          </>
         )}
       </section>
     </div>

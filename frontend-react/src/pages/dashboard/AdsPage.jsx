@@ -380,7 +380,7 @@ function AdsPageContent() {
   }
 
   return (
-    <div className="mx-auto max-w-6xl space-y-6 pb-10" dir="rtl">
+    <div className="mx-auto max-w-6xl space-y-6 pb-10 px-4 sm:px-0" dir="rtl">
       <div className="flex flex-col gap-4 rounded-3xl border border-zinc-800 bg-gradient-to-l from-zinc-900 to-zinc-950 p-6 shadow-2xl md:flex-row md:items-center md:justify-between">
         <div>
           <h1 className="text-2xl font-black text-white">مدیریت تبلیغات</h1>
@@ -399,7 +399,7 @@ function AdsPageContent() {
         </button>
       </div>
 
-      <div className="grid gap-4 md:grid-cols-3">
+      <div className="grid grid-cols-1 gap-4 sm:grid-cols-3">
         <div className="rounded-2xl border border-zinc-800 bg-zinc-950 p-5">
           <p className="text-sm text-zinc-500">کل تبلیغات</p>
           <p className="mt-2 text-2xl font-black text-white">{totalAds}</p>
@@ -422,13 +422,13 @@ function AdsPageContent() {
         onSubmit={handleSubmit}
         className="space-y-5 rounded-3xl border border-zinc-800 bg-zinc-950 p-6 shadow-2xl"
       >
-        <div className="flex items-center justify-between gap-3">
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
           <h2 className="text-lg font-black text-white">
             {editingId ? "ویرایش تبلیغ" : "ایجاد تبلیغ جدید"}
           </h2>
 
           {editingId && (
-            <span className="rounded-lg border border-blue-500/20 bg-blue-500/10 px-3 py-1 text-xs font-bold text-blue-300">
+            <span className="self-start sm:self-auto rounded-lg border border-blue-500/20 bg-blue-500/10 px-3 py-1 text-xs font-bold text-blue-300">
               در حال ویرایش
             </span>
           )}
@@ -487,7 +487,7 @@ function AdsPageContent() {
               name="image"
               accept="image/*"
               onChange={handleImageChange}
-              className={`${inputClass} file:ml-3 file:rounded-lg file:border-0 file:bg-white file:px-3 file:py-2 file:text-sm file:font-bold file:text-black hover:file:bg-zinc-200`}
+              className={`${inputClass} w-full file:ml-3 file:rounded-lg file:border-0 file:bg-white file:px-3 file:py-2 file:text-sm file:font-bold file:text-black hover:file:bg-zinc-200`}
             />
             <FieldError message={fieldErrors.image} />
 
@@ -575,7 +575,7 @@ function AdsPageContent() {
           <button
             type="submit"
             disabled={saving}
-            className="rounded-xl bg-white px-5 py-2.5 text-sm font-black text-black transition hover:bg-zinc-200 disabled:cursor-not-allowed disabled:opacity-50"
+            className="rounded-xl bg-white px-5 py-3 sm:py-2.5 text-sm font-black text-black transition hover:bg-zinc-200 disabled:cursor-not-allowed disabled:opacity-50"
           >
             {saving
               ? "در حال ذخیره..."
@@ -588,7 +588,7 @@ function AdsPageContent() {
             <button
               type="button"
               onClick={resetForm}
-              className="rounded-xl border border-zinc-700 px-5 py-2.5 text-sm font-bold text-white transition hover:bg-zinc-900"
+              className="rounded-xl border border-zinc-700 px-5 py-3 sm:py-2.5 text-sm font-bold text-white transition hover:bg-zinc-900"
             >
               انصراف
             </button>
@@ -596,7 +596,7 @@ function AdsPageContent() {
         </div>
       </form>
 
-      <div className="rounded-3xl border border-zinc-800 bg-zinc-950 p-6 shadow-2xl">
+      <div className="rounded-3xl border border-zinc-800 bg-zinc-950 p-4 sm:p-6 shadow-2xl">
         <div className="mb-4 flex items-center justify-between gap-3">
           <h2 className="text-lg font-black text-white">لیست تبلیغات</h2>
           <span className="text-sm text-zinc-500">{totalAds} مورد</span>
@@ -612,7 +612,7 @@ function AdsPageContent() {
             </div>
           </div>
         ) : ads.length === 0 ? (
-          <div className="flex min-h-[220px] items-center justify-center rounded-2xl border border-dashed border-zinc-800 bg-zinc-900/40 p-10 text-center">
+          <div className="flex min-h-[220px] items-center justify-center rounded-2xl border border-dashed border-zinc-800 bg-zinc-900/40 p-6 sm:p-10 text-center">
             <div>
               <p className="text-lg font-bold text-white">
                 هنوز تبلیغی ثبت نشده است
@@ -623,110 +623,208 @@ function AdsPageContent() {
             </div>
           </div>
         ) : (
-          <div className="overflow-x-auto">
-            <table className="w-full min-w-[1100px] text-right text-sm">
-              <thead>
-                <tr className="border-b border-zinc-800 text-zinc-400">
-                  <th className="px-2 py-3 font-medium">تصویر</th>
-                  <th className="px-2 py-3 font-medium">عنوان</th>
-                  <th className="px-2 py-3 font-medium">جایگاه</th>
-                  <th className="px-2 py-3 font-medium">لینک</th>
-                  <th className="px-2 py-3 font-medium">وضعیت</th>
-                  <th className="px-2 py-3 font-medium">عملیات</th>
-                </tr>
-              </thead>
+          <>
+            {/* نمایش در موبایل به صورت کارت‌های زیر هم */}
+            <div className="flex flex-col gap-4 lg:hidden">
+              {ads.map((ad) => {
+                const isDeleting = deletingId === ad?.id;
+                const slotLabel =
+                  AD_SLOTS.find((item) => item.value === ad?.slot)?.label ||
+                  ad?.slot ||
+                  "-";
+                const imageSrc = ad?.image_url || ad?.image || "";
 
-              <tbody className="divide-y divide-zinc-800/70">
-                {ads.map((ad) => {
-                  const isDeleting = deletingId === ad?.id;
-                  const slotLabel =
-                    AD_SLOTS.find((item) => item.value === ad?.slot)?.label ||
-                    ad?.slot ||
-                    "-";
+                return (
+                  <div
+                    key={ad?.id}
+                    className="flex flex-col gap-4 rounded-2xl border border-zinc-800 bg-zinc-900/30 p-4"
+                  >
+                    <div className="flex gap-4">
+                      {imageSrc ? (
+                        <img
+                          src={imageSrc}
+                          alt={ad?.title || "ad"}
+                          className="h-16 w-24 rounded-xl border border-zinc-800 object-cover shrink-0"
+                        />
+                      ) : (
+                        <div className="flex h-16 w-24 shrink-0 items-center justify-center rounded-xl border border-dashed border-zinc-700 text-xs text-zinc-500">
+                          بدون تصویر
+                        </div>
+                      )}
 
-                  const imageSrc = ad?.image_url || ad?.image || "";
-
-                  return (
-                    <tr
-                      key={ad?.id}
-                      className="transition hover:bg-zinc-900/70"
-                    >
-                      <td className="px-2 py-4">
-                        {imageSrc ? (
-                          <img
-                            src={imageSrc}
-                            alt={ad?.title || "ad"}
-                            className="h-16 w-24 rounded-xl border border-zinc-800 object-cover"
-                          />
-                        ) : (
-                          <div className="flex h-16 w-24 items-center justify-center rounded-xl border border-dashed border-zinc-700 text-xs text-zinc-500">
-                            بدون تصویر
-                          </div>
-                        )}
-                      </td>
-
-                      <td className="px-2 py-4 text-white">
-                        <div className="space-y-1">
-                          <p className="font-bold">{ad?.title || "-"}</p>
-                          {ad?.label ? (
-                            <span className="inline-flex rounded-lg border border-zinc-700 bg-zinc-800 px-2 py-1 text-[11px] text-zinc-300">
+                      <div className="flex flex-col justify-between overflow-hidden">
+                        <p className="font-bold text-white truncate">
+                          {ad?.title || "-"}
+                        </p>
+                        <div className="flex flex-wrap items-center gap-2 mt-1">
+                          {ad?.label && (
+                            <span className="inline-flex rounded-md border border-zinc-700 bg-zinc-800 px-2 py-0.5 text-[10px] text-zinc-300">
                               {ad.label}
                             </span>
-                          ) : null}
+                          )}
+                          <span
+                            className={`inline-flex rounded-full border px-2 py-0.5 text-[10px] font-bold ${
+                              ad?.is_active
+                                ? "border-green-500/20 bg-green-500/10 text-green-400"
+                                : "border-red-500/20 bg-red-500/10 text-red-400"
+                            }`}
+                          >
+                            {ad?.is_active ? "فعال" : "غیرفعال"}
+                          </span>
                         </div>
-                      </td>
+                      </div>
+                    </div>
 
-                      <td className="px-2 py-4 text-zinc-300">{slotLabel}</td>
-
-                      <td className="px-2 py-4 text-zinc-400" dir="ltr">
+                    <div className="space-y-2 text-xs sm:text-sm text-zinc-400 bg-zinc-950/50 p-3 rounded-xl border border-zinc-800/50">
+                      <p className="flex justify-between">
+                        <span className="text-zinc-500">جایگاه:</span>{" "}
+                        <span>{slotLabel}</span>
+                      </p>
+                      <div className="flex justify-between items-center gap-2">
+                        <span className="text-zinc-500 whitespace-nowrap">
+                          لینک:
+                        </span>
                         <a
                           href={ad?.href || "#"}
                           target="_blank"
                           rel="noreferrer"
-                          className="inline-block max-w-[280px] truncate text-blue-400 hover:text-blue-300"
+                          dir="ltr"
+                          className="truncate text-blue-400 hover:text-blue-300 text-left"
                         >
                           {ad?.href || "-"}
                         </a>
-                      </td>
+                      </div>
+                    </div>
 
-                      <td className="px-2 py-4">
-                        <span
-                          className={`inline-flex rounded-full border px-2.5 py-1 text-xs font-bold ${
-                            ad?.is_active
-                              ? "border-green-500/20 bg-green-500/10 text-green-400"
-                              : "border-red-500/20 bg-red-500/10 text-red-400"
-                          }`}
-                        >
-                          {ad?.is_active ? "فعال" : "غیرفعال"}
-                        </span>
-                      </td>
+                    <div className="flex gap-2 pt-2 border-t border-zinc-800/50">
+                      <button
+                        type="button"
+                        onClick={() => handleEdit(ad)}
+                        className="flex-1 rounded-lg border border-zinc-700 py-2.5 text-xs font-bold text-white transition hover:bg-zinc-800"
+                      >
+                        ویرایش
+                      </button>
 
-                      <td className="px-2 py-4">
-                        <div className="flex gap-2">
-                          <button
-                            type="button"
-                            onClick={() => handleEdit(ad)}
-                            className="rounded-lg border border-zinc-700 px-3 py-2 text-xs font-bold text-white transition hover:bg-zinc-800"
+                      <button
+                        type="button"
+                        onClick={() => confirmDelete(ad)}
+                        disabled={isDeleting}
+                        className="flex-1 rounded-lg border border-red-500/30 py-2.5 text-xs font-bold text-red-300 transition hover:bg-red-500/10 disabled:cursor-not-allowed disabled:opacity-50"
+                      >
+                        {isDeleting ? "در حال حذف..." : "حذف"}
+                      </button>
+                    </div>
+                  </div>
+                );
+              })}
+            </div>
+
+            {/* نمایش در دسکتاپ به صورت جدول اصلی */}
+            <div className="hidden lg:block overflow-x-auto">
+              <table className="w-full min-w-[1100px] text-right text-sm">
+                <thead>
+                  <tr className="border-b border-zinc-800 text-zinc-400">
+                    <th className="px-2 py-3 font-medium">تصویر</th>
+                    <th className="px-2 py-3 font-medium">عنوان</th>
+                    <th className="px-2 py-3 font-medium">جایگاه</th>
+                    <th className="px-2 py-3 font-medium">لینک</th>
+                    <th className="px-2 py-3 font-medium">وضعیت</th>
+                    <th className="px-2 py-3 font-medium">عملیات</th>
+                  </tr>
+                </thead>
+
+                <tbody className="divide-y divide-zinc-800/70">
+                  {ads.map((ad) => {
+                    const isDeleting = deletingId === ad?.id;
+                    const slotLabel =
+                      AD_SLOTS.find((item) => item.value === ad?.slot)?.label ||
+                      ad?.slot ||
+                      "-";
+
+                    const imageSrc = ad?.image_url || ad?.image || "";
+
+                    return (
+                      <tr
+                        key={ad?.id}
+                        className="transition hover:bg-zinc-900/70"
+                      >
+                        <td className="px-2 py-4">
+                          {imageSrc ? (
+                            <img
+                              src={imageSrc}
+                              alt={ad?.title || "ad"}
+                              className="h-16 w-24 rounded-xl border border-zinc-800 object-cover"
+                            />
+                          ) : (
+                            <div className="flex h-16 w-24 items-center justify-center rounded-xl border border-dashed border-zinc-700 text-xs text-zinc-500">
+                              بدون تصویر
+                            </div>
+                          )}
+                        </td>
+
+                        <td className="px-2 py-4 text-white">
+                          <div className="space-y-1">
+                            <p className="font-bold">{ad?.title || "-"}</p>
+                            {ad?.label ? (
+                              <span className="inline-flex rounded-lg border border-zinc-700 bg-zinc-800 px-2 py-1 text-[11px] text-zinc-300">
+                                {ad.label}
+                              </span>
+                            ) : null}
+                          </div>
+                        </td>
+
+                        <td className="px-2 py-4 text-zinc-300">{slotLabel}</td>
+
+                        <td className="px-2 py-4 text-zinc-400" dir="ltr">
+                          <a
+                            href={ad?.href || "#"}
+                            target="_blank"
+                            rel="noreferrer"
+                            className="inline-block max-w-[280px] truncate text-blue-400 hover:text-blue-300"
                           >
-                            ویرایش
-                          </button>
+                            {ad?.href || "-"}
+                          </a>
+                        </td>
 
-                          <button
-                            type="button"
-                            onClick={() => confirmDelete(ad)}
-                            disabled={isDeleting}
-                            className="rounded-lg border border-red-500/30 px-3 py-2 text-xs font-bold text-red-300 transition hover:bg-red-500/10 disabled:cursor-not-allowed disabled:opacity-50"
+                        <td className="px-2 py-4">
+                          <span
+                            className={`inline-flex rounded-full border px-2.5 py-1 text-xs font-bold ${
+                              ad?.is_active
+                                ? "border-green-500/20 bg-green-500/10 text-green-400"
+                                : "border-red-500/20 bg-red-500/10 text-red-400"
+                            }`}
                           >
-                            {isDeleting ? "در حال حذف..." : "حذف"}
-                          </button>
-                        </div>
-                      </td>
-                    </tr>
-                  );
-                })}
-              </tbody>
-            </table>
-          </div>
+                            {ad?.is_active ? "فعال" : "غیرفعال"}
+                          </span>
+                        </td>
+
+                        <td className="px-2 py-4">
+                          <div className="flex gap-2">
+                            <button
+                              type="button"
+                              onClick={() => handleEdit(ad)}
+                              className="rounded-lg border border-zinc-700 px-3 py-2 text-xs font-bold text-white transition hover:bg-zinc-800"
+                            >
+                              ویرایش
+                            </button>
+
+                            <button
+                              type="button"
+                              onClick={() => confirmDelete(ad)}
+                              disabled={isDeleting}
+                              className="rounded-lg border border-red-500/30 px-3 py-2 text-xs font-bold text-red-300 transition hover:bg-red-500/10 disabled:cursor-not-allowed disabled:opacity-50"
+                            >
+                              {isDeleting ? "در حال حذف..." : "حذف"}
+                            </button>
+                          </div>
+                        </td>
+                      </tr>
+                    );
+                  })}
+                </tbody>
+              </table>
+            </div>
+          </>
         )}
       </div>
     </div>

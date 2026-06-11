@@ -17,6 +17,9 @@ class MyContentSerializer(serializers.Serializer):
     cover = serializers.CharField(required=False, allow_blank=True, allow_null=True)
 
 
+from django.conf import settings
+
+
 def build_dashboard_file_url(file_field, request=None):
     if not file_field:
         return None
@@ -26,11 +29,11 @@ def build_dashboard_file_url(file_field, request=None):
     except Exception:
         return None
 
-    if request:
-        try:
-            return request.build_absolute_uri(url)
-        except Exception:
-            return url
+    internal = getattr(settings, "MINIO_INTERNAL_URL", "")
+    public = getattr(settings, "MINIO_PUBLIC_URL", "")
+
+    if internal and public and internal in url:
+        return url.replace(internal, public)
 
     return url
 

@@ -13,7 +13,7 @@ export default function AdBox({
   const hasLink = safeHref.length > 0 && safeHref !== "#";
 
   const wrapperClassName =
-    "group relative flex w-full mx-5 flex-row-reverse items-center gap-5 rounded-2xl border border-neutral-200 bg-neutral-50 p-5 transition hover:bg-neutral-100";
+    "group relative flex w-full flex-row-reverse items-center gap-3 sm:gap-5 rounded-2xl border border-neutral-200 bg-neutral-50 p-4 sm:p-5 transition hover:bg-neutral-100";
 
   const content = (
     <>
@@ -22,7 +22,7 @@ export default function AdBox({
       </span>
 
       {image && (
-        <div className="relative h-20 w-20 shrink-0 overflow-hidden rounded-xl bg-neutral-200">
+        <div className="relative h-16 w-16 sm:h-20 sm:w-20 shrink-0 overflow-hidden rounded-xl bg-neutral-200">
           <img
             src={image}
             alt={title || "Advertisement"}
@@ -57,7 +57,7 @@ export default function AdBox({
   );
 
   return (
-    <div className="pt-6 flex justify-center">
+    <div className="w-full px-4 pt-6 flex justify-center">
       {hasLink ? (
         isExternal ? (
           <a

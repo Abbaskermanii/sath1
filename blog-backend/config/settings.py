@@ -213,8 +213,11 @@ SPECTACULAR_SETTINGS = {
 
 CACHES = {
     "default": {
-        "BACKEND": "django.core.cache.backends.locmem.LocMemCache",
-        "LOCATION": "news-blog-cache",
+        "BACKEND": "django_redis.cache.RedisCache",
+        "LOCATION": os.getenv("CELERY_BROKER_URL", "redis://redis:6379/0"),
+        "OPTIONS": {
+            "CLIENT_CLASS": "django_redis.client.DefaultClient",
+        },
     }
 }
 

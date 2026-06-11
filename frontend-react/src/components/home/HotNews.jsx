@@ -57,7 +57,8 @@ function HotNewsItem({ item, className }) {
 
   const content = (
     <>
-      <span>{item?.label}</span>
+      <span className="whitespace-nowrap">{item?.label}</span>
+
       {showVideoIndicator && (
         <span
           className="mr-1 inline-flex items-center text-red-500 group-hover:text-white"
@@ -96,26 +97,39 @@ function HotNewsItem({ item, className }) {
 
 export default function HotNews({ items = [] }) {
   const baseClassName = `
-    group inline-flex items-center rounded-md
+    group flex-shrink-0 inline-flex items-center gap-1
+    rounded-full
     border border-neutral-300
-    bg-white px-4 py-2 text-sm text-neutral-800
+    bg-white
+    px-3 py-1.5
+    text-xs sm:text-sm
+    text-neutral-800
     transition-all duration-200
     hover:border-neutral-800
     hover:bg-neutral-900
     hover:text-white
-    hover:shadow-md
     active:scale-95
+    whitespace-nowrap
   `;
 
   return (
-    <div dir="rtl" className="flex flex-wrap gap-2">
-      {items.map((item, index) => (
-        <HotNewsItem
-          key={getItemKey(item, index)}
-          item={item}
-          className={baseClassName}
-        />
-      ))}
+    <div dir="rtl" className="w-full">
+      {/* موبایل: اسکرول افقی */}
+      <div
+        className="
+          flex gap-2 overflow-x-auto pb-2
+          scrollbar-hide
+          sm:flex-wrap sm:overflow-visible
+        "
+      >
+        {items.map((item, index) => (
+          <HotNewsItem
+            key={getItemKey(item, index)}
+            item={item}
+            className={baseClassName}
+          />
+        ))}
+      </div>
     </div>
   );
 }

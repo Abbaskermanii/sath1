@@ -184,6 +184,49 @@ function getPostVisual(post) {
   return "";
 }
 
+function getPostIdentity(item) {
+  return item?.id ?? item?.slug ?? item?.href ?? item?.title ?? null;
+}
+
+function filterUniquePosts(
+  items = [],
+  excludedPosts = [],
+  usedKeys = new Set(),
+) {
+  return uniqueByIdOrTitle(safeArray(items)).filter((item) => {
+    const key = getPostIdentity(item);
+
+    if (!key) return false;
+    if (usedKeys.has(key)) return false;
+
+    return excludedPosts.every((excluded) => !isSamePost(item, excluded));
+  });
+}
+
+function takePosts(
+  items = [],
+  count,
+  usedKeys = new Set(),
+  excludedPosts = [],
+) {
+  const selected = [];
+
+  for (const item of safeArray(items)) {
+    const key = getPostIdentity(item);
+
+    if (!key) continue;
+    if (usedKeys.has(key)) continue;
+    if (excludedPosts.some((excluded) => isSamePost(item, excluded))) continue;
+
+    selected.push(item);
+    usedKeys.add(key);
+
+    if (selected.length >= count) break;
+  }
+
+  return selected;
+}
+
 function mapHeroResults(results) {
   const mapped = {
     main: null,
@@ -338,7 +381,11 @@ function makeRelatedNews(posts = []) {
     .filter((item) => item.title);
 }
 
-function makeCategorySections(categories = [], postsByCategory = []) {
+function makeCategorySections(
+  categories = [],
+  postsByCategory = [],
+  fallbackPosts = [],
+) {
   const layouts = [
     "grid-4",
     "feature-list-sidebar",
@@ -347,52 +394,96 @@ function makeCategorySections(categories = [], postsByCategory = []) {
     "feature-list-sidebar",
   ];
 
-  return categories.slice(0, 4).map((category, index) => {
-    const posts = safeArray(postsByCategory[index]);
-    const featured = pickFeatured(posts);
+  const usedKeys = new Set();
+  const sharedFallback = uniqueByIdOrTitle(safeArray(fallbackPosts));
 
-    const stories = posts.filter((item) => {
-      if (!featured) return true;
-      return !isSamePost(item, featured);
+  return safeArray(categories)
+    .slice(0, 4)
+    .map((category, index) => {
+      const layout = layouts[index % layouts.length];
+      const categoryPosts = uniqueByIdOrTitle(
+        safeArray(postsByCategory[index]),
+      );
+      const featured = pickFeatured(categoryPosts);
+
+      const excludedForSection = featured ? [featured] : [];
+      const availableCategoryPosts = filterUniquePosts(
+        categoryPosts,
+        excludedForSection,
+        usedKeys,
+      );
+      const availableFallbackPosts = filterUniquePosts(
+        sharedFallback,
+        [...excludedForSection, ...availableCategoryPosts],
+        usedKeys,
+      );
+      const sectionPool = [
+        ...availableCategoryPosts,
+        ...availableFallbackPosts,
+      ];
+
+      let stories = [];
+      let sidebar = [];
+
+      if (featured) {
+        const featuredKey = getPostIdentity(featured);
+        if (featuredKey && !usedKeys.has(featuredKey)) {
+          usedKeys.add(featuredKey);
+        }
+      }
+
+      if (layout === "grid-4") {
+        stories = takePosts(sectionPool, 7, usedKeys);
+      }
+
+      if (layout === "feature-list-sidebar") {
+        stories = takePosts(sectionPool, 8, usedKeys);
+        sidebar = stories.slice(4, 6);
+      }
+
+      if (layout === "magazine") {
+        stories = takePosts(sectionPool, 7, usedKeys);
+      }
+
+      return {
+        title: category?.title || "دسته‌بندی",
+        href: category?.href || `/category/${category?.slug || ""}`,
+        layout,
+        featured,
+        stories,
+        sidebar,
+        tabs: safeArray(categories)
+          .slice(0, 5)
+          .map((cat) => ({
+            label: cat?.title,
+            value: cat?.slug,
+            href: cat?.href || `/category/${cat?.slug || ""}`,
+          })),
+        activeTab: category?.slug,
+      };
     });
-
-    return {
-      title: category.title || "دسته‌بندی",
-      href: category.href || `/category/${category.slug}`,
-      layout: layouts[index % layouts.length],
-      featured,
-      stories,
-      sidebar: stories.slice(4, 6),
-      tabs: categories.slice(0, 5).map((cat) => ({
-        label: cat.title,
-        value: cat.slug,
-        href: cat.href || `/category/${cat.slug}`,
-      })),
-      activeTab: category.slug,
-    };
-  });
 }
 
 function HomeSkeleton() {
   return (
-    <div className="flex justify-center bg-white home-safe">
-      <main className="min-h-screen w-full max-w-7xl border-x border-neutral-200">
+    <div className="flex justify-center bg-white home-safe overflow-hidden w-full">
+      <main className="min-h-screen w-full max-w-7xl border-x border-neutral-200 overflow-hidden">
         <div className="h-14 animate-pulse border-b border-neutral-200 bg-neutral-100" />
 
         <div className="flex flex-col lg:flex-row">
           <div className="w-full border-b border-neutral-200 lg:w-1/3 lg:border-e lg:border-b-0">
-            <div className="space-y-4 p-4">
+            <div className="space-y-4 p-3 sm:p-4">
               {[1, 2, 3, 4].map((i) => (
                 <div
                   key={i}
-                  className="h-40 animate-pulse rounded-xl bg-neutral-100"
+                  className="h-32 sm:h-40 animate-pulse rounded-xl bg-neutral-100"
                 />
               ))}
             </div>
           </div>
 
-          <div className="w-full space-y-6 p-4 md:p-6 lg:w-2/3">
-            <div className="h-96 animate-pulse rounded-2xl bg-neutral-100" />
+          <div className="w-full min-w-0 space-y-6 p-4 sm:p-6 lg:w-2/3">
+            <div className="h-72 sm:h-96 animate-pulse rounded-2xl bg-neutral-100" />
             <div className="grid gap-4 md:grid-cols-3">
               {[1, 2, 3].map((i) => (
                 <div
@@ -411,8 +502,8 @@ function HomeSkeleton() {
 
 function HomeError({ message, onRetry }) {
   return (
-    <div className="flex justify-center bg-white home-safe">
-      <main className="flex min-h-screen w-full max-w-7xl items-center justify-center border-x border-neutral-200 p-6">
+    <div className="flex justify-center bg-white home-safe overflow-hidden w-full">
+      <main className="flex min-h-screen w-full max-w-7xl items-center justify-center border-x border-neutral-200 p-6 overflow-hidden">
         <div className="w-full max-w-xl rounded-2xl border border-red-200 bg-red-50 p-6 text-center">
           <h2 className="text-xl font-bold text-red-700">
             خطا در بارگذاری صفحه
@@ -435,7 +526,7 @@ function HomeError({ message, onRetry }) {
 
 function EmptyBlock({ title }) {
   return (
-    <div className="rounded-xl border border-dashed border-neutral-300 bg-neutral-50 p-6 text-center text-sm text-neutral-500">
+    <div className="rounded-xl border border-dashed border-neutral-300 bg-neutral-50 p-4 sm:p-6 text-center text-sm text-neutral-500">
       {title}
     </div>
   );
@@ -764,8 +855,9 @@ export default function Home() {
 
     const inFocusItems = tags.slice(0, 7).map((tag) => ({
       id: tag.id,
-      label: tag.label,
-      href: tag.href,
+      title: tag.title,
+      slug: tag.slug,
+      href: tag.href || `/tags/${tag.slug}`,
     }));
 
     const hotNewsItems = uniqueByIdOrTitle([...popularPosts, ...videos])
@@ -829,10 +921,21 @@ export default function Home() {
     const categoriesForSections =
       sectionCategories?.length > 0 ? sectionCategories : categories;
 
+    const fallbackSectionPosts = uniqueByIdOrTitle([
+      ...latestNews,
+      ...homePosts,
+      ...popularPosts,
+    ]);
+
     const categorySections = makeCategorySections(
       categoriesForSections,
       postsByCategory,
-    ).filter((section) => section.featured || section.stories?.length);
+      fallbackSectionPosts,
+    ).filter((section) => {
+      return (
+        section.featured || section.stories?.length || section.sidebar?.length
+      );
+    });
 
     if (!isCategoryPage && videos.length) {
       categorySections.push({
@@ -894,12 +997,15 @@ export default function Home() {
   } = viewModel;
 
   return (
-    <div className="flex justify-center bg-white home-safe">
-      <main className="w-full max-w-7xl border-x border-neutral-200">
+    <div className="flex justify-center bg-white home-safe overflow-hidden w-full">
+      <main className="w-full max-w-7xl border-x border-neutral-200 overflow-hidden">
         <Stocks />
 
         {isCategoryPage && pageTitle && (
-          <div dir="rtl" className="border-t border-neutral-200 px-6 py-5">
+          <div
+            dir="rtl"
+            className="border-t border-neutral-200 px-4 py-5 sm:px-6"
+          >
             <h1 className="text-2xl font-extrabold text-neutral-950">
               {pageTitle}
             </h1>
@@ -909,20 +1015,30 @@ export default function Home() {
           </div>
         )}
 
-        <div className="flex flex-col border-t border-neutral-200 lg:flex-row">
-          <aside className="w-full border-b border-neutral-200 lg:w-1/3 lg:border-e lg:border-b-0">
+        {/* اضافه کردن flex-col-reverse برای نمایش بخش اخبار مهم در بالای موبایل */}
+        <div className="flex flex-col-reverse border-t border-neutral-200 lg:flex-row">
+          <aside className="w-full min-w-0 border-b border-neutral-200 lg:w-1/3 lg:border-e lg:border-b-0">
             <div className="divide-y divide-neutral-200">
-              {videoData.length > 0 ? (
-                <div className="p-4">
-                  <SnowflakeVideoCard videos={videoData} />
-                </div>
-              ) : (
-                <div className="p-4">
-                  <EmptyBlock title="ویدیویی برای نمایش وجود ندارد." />
-                </div>
-              )}
+              <div className="space-y-4 p-3 sm:p-4">
+                {ads?.home_bottom && (
+                  <AdBox
+                    image={ads.home_bottom.image_url || ads.home_bottom.image}
+                    label={ads.home_bottom.label || "تبلیغ"}
+                    title={ads.home_bottom.title}
+                    description={ads.home_bottom.description}
+                    buttonText={ads.home_bottom.button_text}
+                    href={ads.home_bottom.href}
+                  />
+                )}
 
-              <div className="p-4">
+                {videoData.length > 0 ? (
+                  <SnowflakeVideoCard videos={videoData} />
+                ) : (
+                  <EmptyBlock title="ویدیویی برای نمایش وجود ندارد." />
+                )}
+              </div>
+
+              <div className="p-3 sm:p-4">
                 {latestList.length > 0 ? (
                   <LatestNewsList items={latestList} href="/news" />
                 ) : (
@@ -931,7 +1047,7 @@ export default function Home() {
               </div>
 
               {ads?.home_sidebar && (
-                <div className="p-4">
+                <div className="p-3 sm:p-4">
                   <AdBox
                     image={ads.home_sidebar.image_url || ads.home_sidebar.image}
                     label={ads.home_sidebar.label || "تبلیغ"}
@@ -943,7 +1059,7 @@ export default function Home() {
                 </div>
               )}
 
-              <div className="p-4">
+              <div className="p-3 sm:p-4">
                 {inFocusItems.length > 0 ? (
                   <InFocusTopics items={inFocusItems} />
                 ) : (
@@ -951,7 +1067,7 @@ export default function Home() {
                 )}
               </div>
 
-              <div className="p-4">
+              <div className="p-3 sm:p-4">
                 <MarketPriceFeed
                   title="قیمت بازارها"
                   filterLabel="همه بازارها"
@@ -960,7 +1076,7 @@ export default function Home() {
                 />
               </div>
 
-              <div className="p-4">
+              <div className="p-3 sm:p-4">
                 {hotNewsItems.length > 0 ? (
                   <HotNews items={hotNewsItems} />
                 ) : (
@@ -970,19 +1086,19 @@ export default function Home() {
             </div>
           </aside>
 
-          <section className="w-full lg:w-2/3">
+          <section className="w-full min-w-0 lg:w-2/3">
             <LargNews {...largeNewsData} />
 
             {relatedNewsData.length > 0 ? (
               <RelatedNews news={relatedNewsData} />
             ) : (
-              <div className="border-t border-neutral-200 p-6">
+              <div className="border-t border-neutral-200 p-4 sm:p-6">
                 <EmptyBlock title="خبر مرتبطی برای نمایش وجود ندارد." />
               </div>
             )}
 
             <div className="flex flex-col border-t border-neutral-200 md:flex-row">
-              <div className="flex-1 border-b border-neutral-200 p-6 md:border-e md:border-b-0">
+              <div className="min-w-0 flex-1 border-b border-neutral-200 p-4 sm:p-6 md:border-e md:border-b-0">
                 <MediumNews {...mediumNewsData} />
 
                 {ads?.home_medium_news && (
@@ -1000,7 +1116,7 @@ export default function Home() {
                 )}
               </div>
 
-              <div className="p-6 md:w-[320px]">
+              <div className="w-full min-w-0 p-4 sm:p-6 md:w-[320px]">
                 {videos.length > 0 ? (
                   <MediumVideoNews {...mediumVideoNewsData} />
                 ) : (
@@ -1018,7 +1134,7 @@ export default function Home() {
                   )}
                 />
               ) : (
-                <div className="p-6">
+                <div className="p-4 sm:p-6">
                   <EmptyBlock title="خبر پربازدیدی برای نمایش وجود ندارد." />
                 </div>
               )}
@@ -1030,38 +1146,27 @@ export default function Home() {
           </section>
         </div>
 
-        {categorySections.length > 0 ? (
-          categorySections.map((section) => (
-            <CategoryNewsSection
-              key={section.title}
-              title={section.title}
-              href={section.href}
-              layout={section.layout}
-              featured={section.featured}
-              stories={section.stories}
-              sidebar={section.sidebar}
-              tabs={section.tabs}
-              activeTab={section.activeTab}
-            />
-          ))
-        ) : (
-          <div className="border-t border-neutral-200 p-6">
-            <EmptyBlock title="بخشی برای نمایش اخبار دسته‌بندی‌ها وجود ندارد." />
-          </div>
-        )}
-
-        {ads?.home_bottom && (
-          <div className="border-t border-neutral-200 p-6">
-            <AdBox
-              image={ads.home_bottom.image_url || ads.home_bottom.image}
-              label={ads.home_bottom.label || "تبلیغ"}
-              title={ads.home_bottom.title}
-              description={ads.home_bottom.description}
-              buttonText={ads.home_bottom.button_text}
-              href={ads.home_bottom.href}
-            />
-          </div>
-        )}
+        <div className="w-full min-w-0">
+          {categorySections.length > 0 ? (
+            categorySections.map((section) => (
+              <CategoryNewsSection
+                key={section.title}
+                title={section.title}
+                href={section.href}
+                layout={section.layout}
+                featured={section.featured}
+                stories={section.stories}
+                sidebar={section.sidebar}
+                tabs={section.tabs}
+                activeTab={section.activeTab}
+              />
+            ))
+          ) : (
+            <div className="border-t border-neutral-200 p-4 sm:p-6">
+              <EmptyBlock title="بخشی برای نمایش اخبار دسته‌بندی‌ها وجود ندارد." />
+            </div>
+          )}
+        </div>
 
         {isCategoryPage && categorySlug && (
           <CategoryPostsFeed

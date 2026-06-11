@@ -71,10 +71,10 @@ function HeaderSearch() {
   return (
     <div ref={wrapperRef} className="relative flex items-center">
       <div
-        className={`flex items-center overflow-hidden rounded-full bg-white origin-right will-change-[width] transition-all duration-300 ease-in-out ${
+        className={`flex items-center overflow-hidden rounded-full bg-white shadow-sm origin-right will-change-[width] transition-all duration-300 ease-in-out ${
           open
-            ? "w-[280px] md:w-[360px] px-3 py-2 opacity-100"
-            : "w-10 h-10 justify-center px-0 py-0 opacity-100"
+            ? "fixed left-4 right-4 top-20 z-[70] px-3 py-2 md:static md:w-[360px] md:left-auto md:right-auto md:top-auto"
+            : "h-10 w-10 justify-center px-0 py-0"
         }`}
       >
         {!open ? (
@@ -112,7 +112,7 @@ function HeaderSearch() {
       </div>
 
       {open && hasSearch && (
-        <div className="absolute top-12 right-0 z-50 w-[280px] md:w-[360px] overflow-hidden rounded-xl border border-neutral-200 bg-white shadow-2xl">
+        <div className="fixed left-4 right-4 top-34 z-[70] max-h-[70vh] overflow-hidden rounded-xl border border-neutral-200 bg-white shadow-2xl md:absolute md:left-auto md:right-0 md:top-12 md:w-[360px]">
           {loading && (
             <div className="space-y-3 p-4">
               {[1, 2, 3].map((item) => (
@@ -135,7 +135,7 @@ function HeaderSearch() {
           )}
 
           {!loading && !error && results.length > 0 && (
-            <div className="max-h-96 overflow-y-auto">
+            <div className="max-h-[70vh] overflow-y-auto md:max-h-96">
               {results.map((post) => {
                 const image =
                   post.image ||

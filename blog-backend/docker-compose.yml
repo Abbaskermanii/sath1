@@ -33,12 +33,17 @@ services:
     build: .
     container_name: blog_backend
     restart: unless-stopped
+    dns:
+      - 8.8.8.8
+      - 1.1.1.1
     depends_on:
       - db
       - minio
       - redis
+    volumes:
+      - .:/app # کدها و میگریشن‌ها را سینک می‌کند
     environment:
-      SECRET_KEY: django-production-secret
+      SECRET_KEY: "django-production-secret-key-must-be-long-enough-32-chars"
       DEBUG: "1"
       DB_NAME: blogdb
       DB_USER: bloguser
@@ -59,12 +64,17 @@ services:
     build: .
     container_name: blog_celery_worker
     restart: unless-stopped
+    dns:
+      - 8.8.8.8
+      - 1.1.1.1
     depends_on:
       - db
       - redis
       - backend
+    volumes:
+      - .:/app
     environment:
-      SECRET_KEY: django-production-secret
+      SECRET_KEY: "django-production-secret-key-must-be-long-enough-32-chars"
       DEBUG: "1"
       DB_NAME: blogdb
       DB_USER: bloguser
@@ -84,12 +94,17 @@ services:
     build: .
     container_name: blog_celery_beat
     restart: unless-stopped
+    dns:
+      - 8.8.8.8
+      - 1.1.1.1
     depends_on:
       - db
       - redis
       - celery_worker
+    volumes:
+      - .:/app
     environment:
-      SECRET_KEY: django-production-secret
+      SECRET_KEY: "django-production-secret-key-must-be-long-enough-32-chars"
       DEBUG: "1"
       DB_NAME: blogdb
       DB_USER: bloguser

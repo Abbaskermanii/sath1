@@ -28,6 +28,19 @@
   font-display: swap;
 }
 
+
+/* در فایل index.css */
+@layer utilities {
+  .no-scrollbar::-webkit-scrollbar {
+    display: none;
+  }
+  .no-scrollbar {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
+}
+
+
 /* اعمال روی کل پروژه */
 body {
   font-family: "AbarHigh", sans-serif;
