@@ -91,7 +91,10 @@ function SearchBox({ slot, label, selectedPost, onSelect, onClear }) {
         setSearching(true);
 
         const res = await api.get("/dashboard/post-search/", {
-          params: { q: query },
+          params: {
+            q: query,
+            status: "published",
+          },
           signal: controller.signal,
         });
 
@@ -172,7 +175,7 @@ function SearchBox({ slot, label, selectedPost, onSelect, onClear }) {
           </div>
         </div>
       ) : (
-        <div className="mb-5 flex h-[90px] flex-col items-center justify-center gap-2 rounded-2xl border-2 border-dashed border-zinc-800 bg-zinc-900/50 p-3 text-zinc-500 transition-colors hover:border-zinc-700">
+        <div className="mb-5 flex h-22.5 flex-col items-center justify-center gap-2 rounded-2xl border-2 border-dashed border-zinc-800 bg-zinc-900/50 p-3 text-zinc-500 transition-colors hover:border-zinc-700">
           <svg
             className="h-6 w-6 opacity-40"
             fill="none"

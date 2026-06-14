@@ -320,4 +320,8 @@ export const newsApi = {
     const { data } = await api.get("/dashboard/home-hero/");
     return data;
   },
+  async getHomeVideo() {
+    const { data } = await api.get("/dashboard/home-video/");
+    return data;
+  },
 };

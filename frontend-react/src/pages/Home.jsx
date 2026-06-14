@@ -32,6 +32,44 @@ const HERO_SLOT_ORDER = [
   "bottom_right",
 ];
 
+const VIDEO_SLOT_ORDER = ["main", "top", "middle", "bottom"];
+
+function mapVideoResults(results) {
+  const mapped = {
+    main: null,
+    top: null,
+    middle: null,
+    bottom: null,
+  };
+
+  if (!Array.isArray(results)) return mapped;
+
+  results.forEach((item) => {
+    if (!item?.slot || !VIDEO_SLOT_ORDER.includes(item.slot)) return;
+
+    if (!item?.post_id || item?.is_active === false) {
+      mapped[item.slot] = null;
+      return;
+    }
+
+    mapped[item.slot] = {
+      id: item.post_id,
+      title: item.post_title || "بدون عنوان",
+      slug: item.post_slug || "",
+      media_type: item.post_media_type || "video",
+      published_at: item.published_at || "",
+      cover: item.cover || "",
+      image: item.cover || "",
+      href: item.post_slug ? `/news/${item.post_slug}` : "#",
+      embed_url: item.embed_url || "",
+      video_file: item.video_file || "",
+      media_duration: item.media_duration || null,
+    };
+  });
+
+  return mapped;
+}
+
 function getApiErrorMessage(
   error,
   fallback = "خطا در دریافت اطلاعات صفحه اصلی",
@@ -543,8 +581,7 @@ function mapVideoPosts(posts = []) {
     isVideo: isVideoPost(post),
   }));
 }
-
-function useHomeData(categorySlug = null) {
+function useHomeData(categorySlug = null, postType = null) {
   const [data, setData] = useState(null);
   const [loading, setLoading] = useState(true);
   const [pageError, setPageError] = useState("");
@@ -555,9 +592,17 @@ function useHomeData(categorySlug = null) {
 
     try {
       const isCategoryPage = Boolean(categorySlug);
+      const isTypePage = Boolean(postType);
+      const isFiltered = isCategoryPage || isTypePage;
+
+      const baseQuery = {
+        category: categorySlug || undefined,
+        post_type: postType || undefined,
+      };
 
       const [
         heroResult,
+        videoSlotsResult,
         homeResult,
         latestResult,
         popularResult,
@@ -567,34 +612,38 @@ function useHomeData(categorySlug = null) {
         adsResult,
       ] = await Promise.allSettled([
         newsApi.getHomeHero(),
+        newsApi.getHomeVideo(),
 
-        isCategoryPage
+        isFiltered
           ? newsApi.getPosts({
-              category: categorySlug,
+              ...baseQuery,
               ordering: "-published_at",
             })
           : newsApi.getHomePosts(),
 
-        isCategoryPage
+        isFiltered
           ? newsApi.getPosts({
-              category: categorySlug,
+              ...baseQuery,
               ordering: "-published_at",
             })
           : newsApi.getLatestPosts(),
 
-        isCategoryPage
+        isFiltered
           ? newsApi.getPosts({
-              category: categorySlug,
+              ...baseQuery,
               ordering: "-views_count",
             })
           : newsApi.getPopularPosts(),
 
         newsApi.getCategories({ ordering: "title" }),
         newsApi.getTags({ ordering: "-posts_count" }),
+
         newsApi.getPosts({
           media_type: "video",
+          post_type: postType || undefined,
           ordering: "-published_at",
         }),
+
         api
           .get("/marketing/public-ads/")
           .then((res) => res.data)
@@ -610,6 +659,16 @@ function useHomeData(categorySlug = null) {
               bottom_left: null,
               bottom_center: null,
               bottom_right: null,
+            };
+
+      const videoSlots =
+        videoSlotsResult.status === "fulfilled"
+          ? mapVideoResults(videoSlotsResult.value?.results || [])
+          : {
+              main: null,
+              top: null,
+              middle: null,
+              bottom: null,
             };
 
       const homePosts =
@@ -647,39 +706,14 @@ function useHomeData(categorySlug = null) {
           ? adsResult.value
           : {};
 
-      const baseFeedCount =
-        homePosts.length +
-        latestNews.length +
-        popularPosts.length +
-        categories.length +
-        tags.length +
-        videos.length +
-        Object.values(heroSlots).filter(Boolean).length;
-
-      if (baseFeedCount === 0) {
-        const firstRejected = [
-          heroResult,
-          homeResult,
-          latestResult,
-          popularResult,
-          categoriesResult,
-          tagsResult,
-          videosResult,
-        ].find((r) => r.status === "rejected");
-
-        if (firstRejected?.reason) {
-          throw firstRejected.reason;
-        }
-      }
-
       const selectedCategory = isCategoryPage
-        ? categories.find((category) => category.slug === categorySlug)
+        ? categories.find((c) => c.slug === categorySlug)
         : null;
 
       const sectionCategories = isCategoryPage
         ? selectedCategory
           ? [selectedCategory]
-          : categories.filter((category) => category.slug === categorySlug)
+          : []
         : categories.slice(0, 4);
 
       const postsByCategory = await Promise.all(
@@ -687,6 +721,7 @@ function useHomeData(categorySlug = null) {
           try {
             const d = await newsApi.getPosts({
               category: category.slug,
+              post_type: postType || undefined,
               ordering: "-published_at",
             });
 
@@ -699,16 +734,19 @@ function useHomeData(categorySlug = null) {
 
       setData({
         heroSlots,
-        homePosts: safeArray(homePosts),
-        latestNews: safeArray(latestNews),
-        popularPosts: safeArray(popularPosts),
-        categories: safeArray(categories),
-        sectionCategories: safeArray(sectionCategories),
-        tags: safeArray(tags),
-        videos: safeArray(videos),
-        postsByCategory: safeArray(postsByCategory),
+        videoSlots,
+        homePosts,
+        latestNews,
+        popularPosts,
+        categories,
+        sectionCategories,
+        tags,
+        videos,
+        postsByCategory,
         currentCategory: selectedCategory,
         isCategoryPage,
+        isTypePage,
+        postType,
         ads,
       });
     } catch (error) {
@@ -718,7 +756,7 @@ function useHomeData(categorySlug = null) {
     } finally {
       setLoading(false);
     }
-  }, [categorySlug]);
+  }, [categorySlug, postType]);
 
   useEffect(() => {
     fetchAll();
@@ -733,8 +771,8 @@ function useHomeData(categorySlug = null) {
 }
 
 export default function Home() {
-  const { categorySlug } = useParams();
-  const { data, loading, error, refresh } = useHomeData(categorySlug);
+  const { categorySlug, postType } = useParams();
+  const { data, loading, error, refresh } = useHomeData(categorySlug, postType);
   const { marketItems, marketLoading } = useMarketData();
 
   const viewModel = useMemo(() => {
@@ -742,6 +780,7 @@ export default function Home() {
 
     const {
       heroSlots,
+      videoSlots,
       homePosts,
       latestNews,
       popularPosts,
@@ -757,32 +796,51 @@ export default function Home() {
 
     const postsForHero = homePosts.length ? homePosts : latestNews;
 
-    const mainPost = heroSlots?.main || pickFeatured(postsForHero) || null;
-    const topLeftPost =
-      heroSlots?.top_left ||
-      pickDifferentPost(postsForHero, [mainPost]) ||
-      null;
-    const bottomLeftPost =
-      heroSlots?.bottom_left ||
-      pickDifferentPost(postsForHero, [mainPost, topLeftPost]) ||
-      null;
-    const bottomCenterPost =
-      heroSlots?.bottom_center ||
-      pickDifferentPost(postsForHero, [
-        mainPost,
-        topLeftPost,
-        bottomLeftPost,
-      ]) ||
-      null;
-    const bottomRightPost =
-      heroSlots?.bottom_right ||
-      pickDifferentPost(postsForHero, [
-        mainPost,
-        topLeftPost,
-        bottomLeftPost,
-        bottomCenterPost,
-      ]) ||
-      null;
+    const mainPost = isCategoryPage
+      ? pickFeatured(postsForHero) || null
+      : heroSlots?.main || pickFeatured(postsForHero) || null;
+
+    const topLeftPost = isCategoryPage
+      ? pickDifferentPost(postsForHero, [mainPost]) || null
+      : heroSlots?.top_left ||
+        pickDifferentPost(postsForHero, [mainPost]) ||
+        null;
+
+    const bottomLeftPost = isCategoryPage
+      ? pickDifferentPost(postsForHero, [mainPost, topLeftPost]) || null
+      : heroSlots?.bottom_left ||
+        pickDifferentPost(postsForHero, [mainPost, topLeftPost]) ||
+        null;
+
+    const bottomCenterPost = isCategoryPage
+      ? pickDifferentPost(postsForHero, [
+          mainPost,
+          topLeftPost,
+          bottomLeftPost,
+        ]) || null
+      : heroSlots?.bottom_center ||
+        pickDifferentPost(postsForHero, [
+          mainPost,
+          topLeftPost,
+          bottomLeftPost,
+        ]) ||
+        null;
+
+    const bottomRightPost = isCategoryPage
+      ? pickDifferentPost(postsForHero, [
+          mainPost,
+          topLeftPost,
+          bottomLeftPost,
+          bottomCenterPost,
+        ]) || null
+      : heroSlots?.bottom_right ||
+        pickDifferentPost(postsForHero, [
+          mainPost,
+          topLeftPost,
+          bottomLeftPost,
+          bottomCenterPost,
+        ]) ||
+        null;
 
     const largeNewsData = toLargeNewsData(mainPost, topLeftPost);
 
@@ -825,33 +883,38 @@ export default function Home() {
 
     const mediumNewsData = toMediumNewsData(mediumMainPost, mediumBottomPost);
 
-    const videoData = videos.slice(0, 3).map((video) => ({
-      id: video.id,
-      image: getPostVisual(video),
-      title: video.title,
-      duration: video.duration || video.media_duration || "",
-      href: video.href || `/news/${video?.slug || ""}`,
-      embedUrl: getPostEmbedUrl(video),
-      videoFile: getPostVideoFile(video),
-      isVideo: isVideoPost(video),
-    }));
+    const mainVideo = videoSlots?.main || null;
+    const topVideo = videoSlots?.top || null;
+    const middleVideo = videoSlots?.middle || null;
+    const bottomVideo = videoSlots?.bottom || null;
 
-    const mediumVideoNewsData = {
-      title: videos[0]?.title || "ویدیوی امروز",
-      description: videos[0]?.description || videos[0]?.excerpt || "",
-      suggestedLabel: "ویدیوی پیشنهادی",
-      suggestedVideoThumbnail:
-        getPostVisual(videos[1]) || getPostVisual(videos[0]) || "",
-      suggestedVideoTitle: videos[1]?.title || videos[0]?.title || "",
-      suggestedVideoHref:
-        videos[1]?.href ||
-        videos[0]?.href ||
-        (videos[0]?.slug ? `/news/${videos[0].slug}` : "#"),
-      suggestedVideoAlt: videos[1]?.title || videos[0]?.title || "ویدیو",
-      embedUrl: getPostEmbedUrl(videos[0]),
-      videoFile: getPostVideoFile(videos[0]),
-      image: getPostVisual(videos[0]),
-    };
+    const videoData = [topVideo, middleVideo, bottomVideo]
+      .filter(Boolean)
+      .map((video) => ({
+        id: video.id,
+        image: getPostVisual(video),
+        title: video.title,
+        duration: video.media_duration || "",
+        href: video.href,
+        embedUrl: getPostEmbedUrl(video),
+        videoFile: getPostVideoFile(video),
+        isVideo: true,
+      }));
+
+    const mediumVideoNewsData = mainVideo
+      ? {
+          title: mainVideo.title,
+          description: mainVideo.description || "",
+          suggestedLabel: "ویدیوی پیشنهادی",
+          suggestedVideoThumbnail: getPostVisual(mainVideo),
+          suggestedVideoTitle: mainVideo.title,
+          suggestedVideoHref: mainVideo.href,
+          suggestedVideoAlt: mainVideo.title,
+          embedUrl: getPostEmbedUrl(mainVideo),
+          videoFile: getPostVideoFile(mainVideo),
+          image: getPostVisual(mainVideo),
+        }
+      : null;
 
     const inFocusItems = tags.slice(0, 7).map((tag) => ({
       id: tag.id,
@@ -1031,7 +1094,7 @@ export default function Home() {
                   />
                 )}
 
-                {videoData.length > 0 ? (
+                {Array.isArray(videoData) && videoData.length > 0 ? (
                   <SnowflakeVideoCard videos={videoData} />
                 ) : (
                   <EmptyBlock title="ویدیویی برای نمایش وجود ندارد." />
@@ -1099,7 +1162,13 @@ export default function Home() {
 
             <div className="flex flex-col border-t border-neutral-200 md:flex-row">
               <div className="min-w-0 flex-1 border-b border-neutral-200 p-4 sm:p-6 md:border-e md:border-b-0">
-                <MediumNews {...mediumNewsData} />
+                <div className="w-full min-w-0 p-4 sm:p-6 md:w-[320px]">
+                  {mediumVideoNewsData ? (
+                    <MediumVideoNews {...mediumVideoNewsData} />
+                  ) : (
+                    <EmptyBlock title="ویدیوی ویژه‌ای برای نمایش وجود ندارد." />
+                  )}
+                </div>
 
                 {ads?.home_medium_news && (
                   <AdBox

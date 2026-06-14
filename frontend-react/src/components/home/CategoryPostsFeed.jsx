@@ -250,7 +250,7 @@ export default function CategoryPostsFeed({
 
   return (
     <section className="py-4 sm:py-5" dir="rtl">
-      <div className="rounded-[22px] border border-neutral-200 bg-gradient-to-b from-neutral-50 to-white p-3 sm:p-4 lg:p-5">
+      <div className="rounded-[22px]  from-neutral-50 to-white p-3 sm:p-4 lg:p-5">
         {loading ? (
           <FeedSkeleton pageSize={Math.min(pageSize, 6)} />
         ) : pageError ? (

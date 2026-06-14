@@ -1,6 +1,13 @@
+from django.conf import settings
 from rest_framework import serializers
 
-from apps.news.models import HomeHeroSelection, HomeHeroSlot, Post
+from apps.news.models import (
+    HomeHeroSelection,
+    HomeHeroSlot,
+    HomeVideoSelection,
+    HomeVideoSlot,
+    Post,
+)
 
 
 class MyContentSerializer(serializers.Serializer):
@@ -15,9 +22,6 @@ class MyContentSerializer(serializers.Serializer):
     published_at = serializers.DateTimeField(required=False, allow_null=True)
     updated_at = serializers.DateTimeField(required=False, allow_null=True)
     cover = serializers.CharField(required=False, allow_blank=True, allow_null=True)
-
-
-from django.conf import settings
 
 
 def build_dashboard_file_url(file_field, request=None):
@@ -94,7 +98,6 @@ class HomeHeroSelectionUpdateSerializer(serializers.Serializer):
         if not post:
             raise serializers.ValidationError({"post_id": "Post not found."})
 
-        # اگر فقط published باید قابل انتخاب باشد این را نگه دار
         if post.status != "published":
             raise serializers.ValidationError(
                 {"post_id": "Only published posts can be assigned to hero slots."}
@@ -120,6 +123,114 @@ class HomeHeroSelectionBulkUpdateSerializer(serializers.Serializer):
         if len(post_ids) != len(set(post_ids)):
             raise serializers.ValidationError(
                 "A post cannot be assigned to multiple slots."
+            )
+
+        return attrs
+
+
+class HomeVideoSelectionItemSerializer(serializers.ModelSerializer):
+    post_id = serializers.IntegerField(source="post.id", read_only=True)
+    post_title = serializers.CharField(source="post.title", read_only=True)
+    post_slug = serializers.CharField(source="post.slug", read_only=True)
+    post_status = serializers.CharField(source="post.status", read_only=True)
+    post_media_type = serializers.CharField(source="post.media_type", read_only=True)
+    post_type = serializers.CharField(source="post.post_type", read_only=True)
+    published_at = serializers.DateTimeField(source="post.published_at", read_only=True)
+    cover = serializers.SerializerMethodField()
+    video_file = serializers.SerializerMethodField()
+    embed_url = serializers.CharField(source="post.embed_url", read_only=True)
+    media_duration = serializers.IntegerField(
+        source="post.media_duration", read_only=True
+    )
+
+    class Meta:
+        model = HomeVideoSelection
+        fields = (
+            "slot",
+            "is_active",
+            "post_id",
+            "post_title",
+            "post_slug",
+            "post_status",
+            "post_media_type",
+            "post_type",
+            "published_at",
+            "cover",
+            "video_file",
+            "embed_url",
+            "media_duration",
+        )
+
+    def get_cover(self, obj):
+        request = self.context.get("request")
+        post = getattr(obj, "post", None)
+        if not post:
+            return None
+        return build_dashboard_file_url(getattr(post, "cover", None), request=request)
+
+    def get_video_file(self, obj):
+        request = self.context.get("request")
+        post = getattr(obj, "post", None)
+        if not post:
+            return None
+        return build_dashboard_file_url(
+            getattr(post, "video_file", None), request=request
+        )
+
+
+class HomeVideoSelectionUpdateSerializer(serializers.Serializer):
+    slot = serializers.ChoiceField(choices=HomeVideoSlot.choices)
+    post_id = serializers.IntegerField(required=False, allow_null=True)
+    is_active = serializers.BooleanField(required=False, default=True)
+
+    def validate_post_id(self, value):
+        if value is None:
+            return value
+
+        if not Post.objects.filter(id=value).exists():
+            raise serializers.ValidationError("Post not found.")
+
+        return value
+
+    def validate(self, attrs):
+        post_id = attrs.get("post_id")
+        if post_id is None:
+            return attrs
+
+        post = Post.objects.filter(id=post_id).first()
+        if not post:
+            raise serializers.ValidationError({"post_id": "Post not found."})
+
+        if post.status != "published":
+            raise serializers.ValidationError(
+                {"post_id": "Only published posts can be assigned to video slots."}
+            )
+
+        if post.media_type != "video":
+            raise serializers.ValidationError(
+                {"post_id": "Only video posts can be assigned to video slots."}
+            )
+
+        return attrs
+
+
+class HomeVideoSelectionBulkUpdateSerializer(serializers.Serializer):
+    items = HomeVideoSelectionUpdateSerializer(many=True)
+
+    def validate(self, attrs):
+        items = attrs.get("items", [])
+
+        slots = [item["slot"] for item in items]
+        post_ids = [
+            item["post_id"] for item in items if item.get("post_id") is not None
+        ]
+
+        if len(slots) != len(set(slots)):
+            raise serializers.ValidationError("Duplicate slots are not allowed.")
+
+        if len(post_ids) != len(set(post_ids)):
+            raise serializers.ValidationError(
+                "A video post cannot be assigned to multiple slots."
             )
 
         return attrs

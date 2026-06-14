@@ -936,7 +936,7 @@ export default function SinglePostPage() {
                   </h1>
 
                   {(post?.excerpt || post?.description) && (
-                    <p className="max-w-3xl text-[15px] leading-8 text-neutral-600 md:text-base">
+                    <p className="max-w-3xl whitespace-pre-wrap text-[15px] leading-8 text-neutral-600 md:text-base">
                       {post?.excerpt || post?.description}
                     </p>
                   )}
@@ -975,19 +975,19 @@ export default function SinglePostPage() {
               <div className="border-b border-neutral-200 px-4 py-8 md:px-8 md:py-10">
                 <div
                   className="
-                    prose prose-neutral mx-auto max-w-3xl
-                    prose-headings:font-black
-                    prose-h2:mt-10 prose-h2:text-2xl
-                    prose-h3:mt-8 prose-h3:text-xl
-                    prose-p:text-[15px] prose-p:leading-[2.15] prose-p:text-neutral-800
-                    prose-li:text-[15px] prose-li:leading-8
-                    prose-a:font-bold prose-a:text-black prose-a:no-underline hover:prose-a:underline
-                    prose-img:mx-auto prose-img:max-h-[520px] prose-img:w-auto prose-img:max-w-full prose-img:rounded-2xl
-                    prose-video:mx-auto prose-video:w-full
-                    prose-iframe:mx-auto prose-iframe:aspect-video prose-iframe:w-full prose-iframe:rounded-2xl
-                    md:prose-p:text-[17px]
-                    md:prose-li:text-[17px]
-                  "
+    prose prose-neutral mx-auto max-w-3xl whitespace-pre-wrap leading-8
+    prose-headings:font-black
+    prose-h2:mt-10 prose-h2:text-2xl
+    prose-h3:mt-8 prose-h3:text-xl
+    prose-p:whitespace-pre-wrap prose-p:text-[15px] prose-p:leading-[2.15] prose-p:text-neutral-800
+    prose-li:text-[15px] prose-li:leading-8
+    prose-a:font-bold prose-a:text-black prose-a:no-underline hover:prose-a:underline
+    prose-img:mx-auto prose-img:max-h-[520px] prose-img:w-auto prose-img:max-w-full prose-img:rounded-2xl
+    prose-video:mx-auto prose-video:w-full
+    prose-iframe:mx-auto prose-iframe:aspect-video prose-iframe:w-full prose-iframe:rounded-2xl
+    md:prose-p:text-[17px]
+    md:prose-li:text-[17px]
+  "
                   dangerouslySetInnerHTML={{ __html: safeHtml }}
                 />
               </div>
@@ -1083,7 +1083,7 @@ export default function SinglePostPage() {
                             </div>
                           </div>
 
-                          <p className="pr-11 text-[14px] leading-8 text-neutral-700 md:text-[15px]">
+                          <p className="whitespace-pre-wrap pr-11 text-[14px] leading-8 text-neutral-700 md:text-[15px]">
                             {c.text}
                           </p>
                         </article>

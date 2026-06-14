@@ -4,9 +4,14 @@ from datetime import timedelta
 
 BASE_DIR = Path(__file__).resolve().parent.parent
 
+NERKH_API_URL = "https://api.nerkh.io/v1/prices/json/all"
+NERKH_API_TOKEN = os.getenv("NERKH_API_TOKEN")
+
+
 SECRET_KEY = os.getenv("SECRET_KEY", "django-insecure-dev-key")
 
-DEBUG = os.getenv("DEBUG", "1") == "1"
+# DEBUG = os.getenv("DEBUG", "1") == "1"
+DEBUG = True
 
 ALLOWED_HOSTS = ["*"]
 
@@ -32,7 +37,7 @@ INSTALLED_APPS = [
     "apps.marketing",
     "apps.dashboard",
     "apps.core",
-    "apps.markets",
+    "apps.market",
 ]
 
 # --------------------------------------------------
@@ -117,38 +122,25 @@ USE_TZ = True
 STATIC_URL = "/static/"
 STATIC_ROOT = BASE_DIR / "staticfiles"
 
-
 STORAGES = {
-    "default": {
-        "BACKEND": "storages.backends.s3boto3.S3Boto3Storage",
-    },
-    "staticfiles": {
-        "BACKEND": "django.contrib.staticfiles.storage.StaticFilesStorage",
-    },
+    "default": {"BACKEND": "storages.backends.s3boto3.S3Boto3Storage"},
+    "staticfiles": {"BACKEND": "django.contrib.staticfiles.storage.StaticFilesStorage"},
 }
 
 AWS_ACCESS_KEY_ID = os.getenv("AWS_ACCESS_KEY_ID")
 AWS_SECRET_ACCESS_KEY = os.getenv("AWS_SECRET_ACCESS_KEY")
 AWS_STORAGE_BUCKET_NAME = os.getenv("AWS_STORAGE_BUCKET_NAME")
-
-# داخل docker (برای اتصال)
-AWS_S3_ENDPOINT_URL = os.getenv("AWS_S3_ENDPOINT_URL")  # http://minio:9000
-
+AWS_S3_ENDPOINT_URL = os.getenv("AWS_S3_ENDPOINT_URL")
 AWS_S3_REGION_NAME = "us-east-1"
 AWS_S3_ADDRESSING_STYLE = "path"
 AWS_S3_SIGNATURE_VERSION = "s3v4"
-
 AWS_QUERYSTRING_AUTH = False
 AWS_DEFAULT_ACL = "public-read"
 AWS_S3_FILE_OVERWRITE = False
 
-
-# =========================
-# PUBLIC URL FIX (خیلی مهم)
-# =========================
-
 MINIO_INTERNAL_URL = "http://minio:9000"
 MINIO_PUBLIC_URL = "http://localhost:9000"
+
 # --------------------------------------------------
 # DEFAULTS
 # --------------------------------------------------
@@ -208,21 +200,29 @@ SPECTACULAR_SETTINGS = {
 }
 
 # --------------------------------------------------
-# CACHE
+# CACHE (Redis)
 # --------------------------------------------------
 
 CACHES = {
     "default": {
         "BACKEND": "django_redis.cache.RedisCache",
         "LOCATION": os.getenv("CELERY_BROKER_URL", "redis://redis:6379/0"),
-        "OPTIONS": {
-            "CLIENT_CLASS": "django_redis.client.DefaultClient",
-        },
+        "OPTIONS": {"CLIENT_CLASS": "django_redis.client.DefaultClient"},
     }
 }
-
 
 CELERY_BROKER_URL = os.getenv("CELERY_BROKER_URL", "redis://redis:6379/0")
 CELERY_RESULT_BACKEND = os.getenv("CELERY_RESULT_BACKEND", "redis://redis:6379/1")
 CELERY_TIMEZONE = TIME_ZONE
 CELERY_ENABLE_UTC = True
+
+
+CELERY_ACCEPT_CONTENT = ["json"]
+CELERY_TASK_SERIALIZER = "json"
+
+CELERY_BEAT_SCHEDULE = {
+    "fetch_gold_every_hour": {
+        "task": "apps.market.tasks.fetch_gold_data",
+        "schedule": 60 * 60,  # هر ۱ ساعت
+    },
+}

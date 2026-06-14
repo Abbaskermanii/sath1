@@ -7,13 +7,13 @@ import Menue from "./Menue";
 import {
   ChevronDown,
   User,
-  Settings,
   LayoutDashboard,
   LogOut,
   Menu,
   X,
-  Home,
-  Search,
+  Zap,
+  Tag,
+  ArrowLeft,
 } from "lucide-react";
 
 import { clearTokens, isLoggedIn } from "../../lib/tokens";
@@ -38,13 +38,13 @@ function HeaderMenue() {
   const { categories, loading: categoriesLoading } = useCategories(10);
 
   const topMenuItems = [
-    "مصاحبه",
-    "یادداشت",
-    "خبر",
-    "تحلیل",
-    "گفتگوهای شاخص",
-    "گزارش",
-    "نمودار",
+    { label: "مصاحبه", slug: "interview" },
+    { label: "یادداشت", slug: "note" },
+    { label: "خبر", slug: "news" },
+    { label: "تحلیل", slug: "analysis" },
+    { label: "گفتگوهای شاخص", slug: "talk" },
+    { label: "گزارش", slug: "report" },
+    { label: "نمودار", slug: "chart" },
   ];
 
   useEffect(() => {
@@ -54,7 +54,6 @@ function HeaderMenue() {
 
   useEffect(() => {
     document.body.style.overflow = mobileMenuOpen ? "hidden" : "";
-
     return () => {
       document.body.style.overflow = "";
     };
@@ -63,13 +62,11 @@ function HeaderMenue() {
   useEffect(() => {
     const handleScroll = () => {
       const currentScroll = window.scrollY;
-
       if (currentScroll > lastScroll && currentScroll > 80) {
         setShow(false);
       } else {
         setShow(true);
       }
-
       setLastScroll(currentScroll);
     };
 
@@ -83,7 +80,6 @@ function HeaderMenue() {
         setDropdownOpen(false);
       }
     };
-
     document.addEventListener("mousedown", handleClickOutside);
     return () => document.removeEventListener("mousedown", handleClickOutside);
   }, []);
@@ -109,12 +105,6 @@ function HeaderMenue() {
     navigate("/dashboard");
   };
 
-  const handleSettings = () => {
-    setDropdownOpen(false);
-    closeMobileMenu();
-    navigate("/settings");
-  };
-
   const shouldShowUserMenu = mounted && loggedIn;
 
   return (
@@ -132,18 +122,17 @@ function HeaderMenue() {
             <button
               type="button"
               onClick={() => setMobileMenuOpen(true)}
-              className="md:hidden flex h-10 w-10 items-center justify-center rounded-lg bg-neutral-800 text-white"
-              aria-label="باز کردن منو"
+              className="md:hidden flex h-10 w-10 items-center justify-center rounded-xl bg-neutral-800 text-white active:scale-95 transition"
             >
-              <Menu size={24} />
+              <Menu size={22} />
             </button>
 
             <button
               type="button"
               onClick={() => navigate("/")}
-              className="flex items-center gap-2 text-white cursor-pointer shrink-0"
+              className="flex items-center gap-2 text-white cursor-pointer"
             >
-              <span className="text-2xl sm:text-3xl md:text-4xl font-extrabold">
+              <span className="text-2xl sm:text-3xl font-black tracking-tighter">
                 شاخص اول
               </span>
             </button>
@@ -156,7 +145,7 @@ function HeaderMenue() {
               <button
                 type="button"
                 onClick={handleLoginClick}
-                className="hidden sm:block bg-white w-28 h-8 font-medium text-[14px] rounded-md text-black hover:bg-gray-200 transition cursor-pointer"
+                className="hidden sm:flex items-center justify-center bg-white w-32 h-9 font-bold text-[13px] rounded-lg text-black hover:bg-gray-100 transition cursor-pointer active:scale-95"
               >
                 ورود / ثبت نام
               </button>
@@ -165,46 +154,39 @@ function HeaderMenue() {
                 <button
                   type="button"
                   onClick={() => setDropdownOpen((prev) => !prev)}
-                  className="flex items-center gap-2 bg-white text-black px-3 h-9 rounded-md hover:bg-gray-200 transition cursor-pointer"
+                  className="flex items-center gap-2 bg-neutral-800 text-white px-3 h-9 rounded-lg hover:bg-neutral-700 transition cursor-pointer border border-white/10"
                 >
-                  <User size={18} />
-                  <span className="max-w-30 truncate">
-                    {loading
-                      ? "..."
-                      : user?.username || user?.full_name || "کاربر"}
+                  <div className="w-6 h-6 rounded-full bg-red-600 flex items-center justify-center text-[10px] font-bold">
+                    {user?.username?.charAt(0).toUpperCase()}
+                  </div>
+                  <span className="max-w-28 truncate text-sm">
+                    {loading ? "..." : user?.username || "کاربر"}
                   </span>
-                  <ChevronDown size={16} />
+                  <ChevronDown
+                    size={14}
+                    className={`transition-transform ${dropdownOpen ? "rotate-180" : ""}`}
+                  />
                 </button>
 
                 {dropdownOpen && (
-                  <div className="absolute left-0 mt-2 w-48 bg-white rounded-lg shadow-lg overflow-hidden border border-gray-200 z-50">
+                  <div className="absolute left-0 mt-2 w-52 bg-neutral-900 rounded-xl shadow-2xl overflow-hidden border border-white/10 z-50 animate-in fade-in slide-in-from-top-2">
                     {canAccessDashboard(user) && (
                       <button
                         type="button"
                         onClick={handleDashboard}
-                        className="w-full flex items-center gap-2 px-4 py-3 text-sm text-right hover:bg-gray-100 transition cursor-pointer"
+                        className="w-full flex items-center gap-3 px-4 py-3.5 text-sm text-right text-neutral-300 hover:bg-white/5 transition"
                       >
-                        <LayoutDashboard size={16} />
-                        داشبورد
+                        <LayoutDashboard size={16} className="text-red-500" />
+                        داشبورد مدیریت
                       </button>
                     )}
-
-                    <button
-                      type="button"
-                      onClick={handleSettings}
-                      className="w-full flex items-center gap-2 px-4 py-3 text-sm text-right hover:bg-gray-100 transition cursor-pointer"
-                    >
-                      <Settings size={16} />
-                      تنظیمات
-                    </button>
-
                     <button
                       type="button"
                       onClick={handleLogout}
-                      className="w-full flex items-center gap-2 px-4 py-3 text-sm text-right text-red-600 hover:bg-red-50 transition cursor-pointer"
+                      className="w-full flex items-center gap-3 px-4 py-3.5 text-sm text-right text-red-400 hover:bg-red-500/5 transition border-t border-white/5"
                     >
                       <LogOut size={16} />
-                      خروج
+                      خروج از حساب
                     </button>
                   </div>
                 )}
@@ -212,200 +194,145 @@ function HeaderMenue() {
             )}
           </div>
         </div>
-
         <Menue />
       </div>
 
-      {/* Mobile Mega Menu Overlay */}
+      {/* --- MOBILE SIDEBAR --- */}
       {mobileMenuOpen && (
         <div className="fixed inset-0 z-[100] md:hidden" dir="rtl">
-          {/* Backdrop with Blur */}
           <div
-            className="absolute inset-0 bg-black/40 backdrop-blur-sm transition-opacity duration-300"
+            className="absolute inset-0 bg-black/60 backdrop-blur-md transition-opacity"
             onClick={closeMobileMenu}
           />
 
-          {/* Menu Content */}
-          <aside className="absolute right-0 top-0 h-full w-[85%] max-w-[340px] flex flex-col bg-neutral-900 text-white shadow-2xl transition-transform duration-300 ease-out border-l border-white/10">
-            {/* Header of Menu */}
-            <div className="flex items-center justify-between px-5 py-5 border-b border-white/5 bg-neutral-900/50 backdrop-blur-md sticky top-0 z-20">
-              <div className="flex flex-col">
-                <span className="text-2xl font-black tracking-tighter text-white">
-                  شاخص اول
-                </span>
-                <span className="text-[10px] text-neutral-400 font-medium">
-                  نخستین مرجع تحلیل و خبر
-                </span>
-              </div>
+          <aside className="absolute right-0 top-0 h-full w-[82%] max-w-[320px] bg-neutral-950 flex flex-col shadow-2xl border-l border-white/10 animate-in slide-in-from-right duration-300">
+            {/* 1. Header Sidebar */}
+            <div className="flex items-center justify-between p-5 border-b border-white/5 bg-neutral-950/50">
+              <span className="text-xl font-black text-white">شاخص اول</span>
               <button
                 onClick={closeMobileMenu}
-                className="p-2 rounded-full bg-white/5 hover:bg-white/10 text-neutral-400 transition-colors"
+                className="p-2 rounded-lg bg-neutral-800 text-neutral-400"
               >
-                <X size={24} />
+                <X size={20} />
               </button>
             </div>
 
-            {/* Scrollable Area */}
-            <div className="flex-1 overflow-y-auto overflow-x-hidden custom-scrollbar pb-10">
-              {/* 1. User Section Card */}
-              <div className="px-4 py-6">
+            <div className="flex-1 overflow-y-auto px-4 py-6 space-y-8">
+              {/* 2. User Card */}
+              <section>
                 {shouldShowUserMenu ? (
-                  <div className="bg-gradient-to-br from-neutral-800 to-neutral-900 rounded-2xl p-4 border border-white/10 shadow-xl">
-                    <div className="flex items-center gap-4 mb-4">
-                      <div className="relative">
-                        <div className="w-12 h-12 rounded-full bg-red-600 flex items-center justify-center font-bold text-lg border-2 border-white/20">
-                          {user?.username?.charAt(0) || <User size={20} />}
-                        </div>
-                        <div className="absolute bottom-0 right-0 w-3 h-3 bg-green-500 border-2 border-neutral-900 rounded-full"></div>
+                  <div className="bg-neutral-900 rounded-2xl p-4 border border-white/10 shadow-inner">
+                    <div className="flex items-center gap-3 mb-4">
+                      <div className="w-12 h-12 rounded-2xl bg-gradient-to-tr from-red-600 to-red-400 flex items-center justify-center font-bold text-lg text-white shadow-lg">
+                        {user?.username?.charAt(0).toUpperCase()}
                       </div>
-                      <div className="flex-1 min-w-0">
-                        <p className="font-bold text-sm truncate">
-                          {user?.full_name || user?.username || "کاربر گرامی"}
-                        </p>
-                        <p className="text-[11px] text-neutral-400 truncate">
-                          خوش آمدید
+                      <div className="min-w-0">
+                        <h4 className="font-bold text-white text-sm truncate">
+                          {user?.full_name || user?.username}
+                        </h4>
+                        <p className="text-[10px] text-neutral-500">
+                          خوش آمدید به شاخص اول
                         </p>
                       </div>
                     </div>
-
-                    <div className="grid grid-cols-2 gap-2">
+                    <div className="grid grid-cols-2 gap-2 mt-2">
                       {canAccessDashboard(user) && (
                         <button
                           onClick={handleDashboard}
-                          className="flex items-center gap-2 px-3 py-2.5 rounded-xl bg-white/5 hover:bg-white/10 text-[12px] transition"
+                          className="flex items-center justify-center gap-2 py-2.5 rounded-xl bg-white/5 text-[11px] font-medium text-neutral-300"
                         >
-                          <LayoutDashboard size={16} className="text-red-500" />
-                          داشبورد
+                          <LayoutDashboard size={14} /> داشبورد
                         </button>
                       )}
                       <button
-                        onClick={handleSettings}
-                        className="flex items-center gap-2 px-3 py-2.5 rounded-xl bg-white/5 hover:bg-white/10 text-[12px] transition"
-                      >
-                        <Settings size={16} className="text-neutral-400" />
-                        تنظیمات
-                      </button>
-                      <button
                         onClick={handleLogout}
-                        className="col-span-2 flex items-center justify-center gap-2 px-3 py-2.5 rounded-xl bg-red-500/10 hover:bg-red-500/20 text-[12px] text-red-400 transition mt-1"
+                        className="flex items-center justify-center gap-2 py-2.5 rounded-xl bg-red-500/10 text-[11px] font-medium text-red-400"
                       >
-                        <LogOut size={16} />
-                        خروج از حساب
+                        <LogOut size={14} /> خروج
                       </button>
                     </div>
                   </div>
                 ) : (
                   <button
                     onClick={handleLoginClick}
-                    className="w-full group relative overflow-hidden rounded-2xl bg-white p-4 transition-all hover:scale-[0.98]"
+                    className="w-full flex items-center justify-center gap-2 bg-white text-black h-12 rounded-2xl font-bold text-sm active:scale-95 transition"
                   >
-                    <div className="relative z-10 flex items-center justify-center gap-2 font-bold text-black">
-                      <User size={18} />
-                      <span>ورود یا ثبت نام</span>
-                    </div>
+                    <User size={18} />
+                    ورود یا ثبت‌نام کاربر
                   </button>
                 )}
-              </div>
+              </section>
 
-              {/* 2. Quick Access Grid */}
-              <div className="px-4 mb-8">
-                <h3 className="text-[11px] font-bold text-neutral-500 uppercase tracking-widest mb-4 px-1">
-                  دسترسی سریع
-                </h3>
-                <div className="grid grid-cols-3 gap-3">
-                  <NavLink
-                    to="/"
-                    onClick={closeMobileMenu}
-                    className="flex flex-col items-center gap-2 p-3 rounded-2xl bg-neutral-800/40 border border-white/5 hover:bg-neutral-800 transition"
-                  >
-                    <Home size={20} className="text-blue-400" />
-                    <span className="text-[10px] font-medium">خانه</span>
-                  </NavLink>
-                  <div className="flex flex-col items-center gap-2 p-3 rounded-2xl bg-neutral-800/40 border border-white/5">
-                    <Search size={20} className="text-amber-400" />
-                    <span className="text-[10px] font-medium">جستجو</span>
-                  </div>
-                  <div className="flex flex-col items-center gap-2 p-3 rounded-2xl bg-neutral-800/40 border border-white/5">
-                    <div className="w-5 h-5 rounded bg-yellow-500 flex items-center justify-center text-[10px] text-black font-black">
-                      !
-                    </div>
-                    <span className="text-[10px] font-medium">مهم‌ترین‌ها</span>
-                  </div>
+              {/* 3. News Services (Grid) */}
+              <section>
+                <div className="flex items-center gap-2 mb-4 px-1 text-neutral-500">
+                  <Zap size={14} className="text-yellow-500" />
+                  <span className="text-[11px] font-bold uppercase tracking-widest">
+                    سرویس‌های خبری
+                  </span>
                 </div>
-              </div>
-
-              {/* 3. Main Sections (The Navbar items) */}
-              <div className="px-4 mb-8">
-                <h3 className="text-[11px] font-bold text-neutral-500 uppercase tracking-widest mb-3 px-1">
-                  سرویس‌های خبری
-                </h3>
-                <div className="flex flex-wrap gap-2">
+                <div className="grid grid-cols-2 gap-2">
                   {topMenuItems.map((item) => (
-                    <button
-                      key={item}
-                      className={`px-4 py-2 rounded-full text-xs font-medium border border-white/5 transition-all ${
-                        item === "گفتگوهای شاخص"
-                          ? "bg-yellow-500/10 text-yellow-500 border-yellow-500/20"
-                          : "bg-neutral-800/50 text-neutral-300 hover:bg-neutral-700"
-                      }`}
+                    <NavLink
+                      key={item.slug}
+                      to={`/type/${item.slug}`}
+                      onClick={closeMobileMenu}
+                      className={({ isActive }) =>
+                        `flex items-center justify-center h-11 rounded-xl text-xs font-semibold border transition-all ${
+                          isActive
+                            ? "bg-red-600 border-red-600 text-white shadow-lg shadow-red-600/20"
+                            : "bg-neutral-900 border-white/5 text-neutral-400 hover:bg-neutral-800"
+                        }`
+                      }
                     >
-                      {item}
-                    </button>
+                      {item.label}
+                    </NavLink>
                   ))}
                 </div>
-              </div>
+              </section>
 
-              {/* 4. Categories Section */}
-              <div className="px-4">
-                <h3 className="text-[11px] font-bold text-neutral-500 uppercase tracking-widest mb-3 px-1">
-                  دسته‌بندی موضوعی
-                </h3>
-                <nav className="space-y-1">
+              {/* 4. Categories (Modern List) */}
+              <section>
+                <div className="flex items-center gap-2 mb-4 px-1 text-neutral-500">
+                  <Tag size={14} className="text-red-500" />
+                  <span className="text-[11px] font-bold uppercase tracking-widest">
+                    دسته‌بندی موضوعی
+                  </span>
+                </div>
+                <div className="space-y-1.5">
                   {categoriesLoading
                     ? [1, 2, 3, 4].map((i) => (
                         <div
                           key={i}
-                          className="h-12 w-full bg-white/5 animate-pulse rounded-xl"
+                          className="h-12 w-full bg-neutral-900 animate-pulse rounded-xl"
                         />
                       ))
-                    : categories.map((category) => (
+                    : categories.map((cat) => (
                         <NavLink
-                          key={category.id || category.slug}
-                          to={`/category/${category.slug}`}
+                          key={cat.slug}
+                          to={`/category/${cat.slug}`}
                           onClick={closeMobileMenu}
                           className={({ isActive }) =>
-                            `flex items-center justify-between px-4 py-3.5 rounded-xl transition-all duration-200 group ${
+                            `flex items-center justify-between px-4 h-12 rounded-xl transition-all ${
                               isActive
-                                ? "bg-red-600 text-white shadow-lg shadow-red-600/20"
-                                : "hover:bg-white/5 text-neutral-400 hover:text-white"
+                                ? "bg-white text-black font-bold"
+                                : "bg-neutral-900/50 text-neutral-400 hover:text-white"
                             }`
                           }
                         >
-                          <span className="text-sm font-semibold">
-                            {category.title}
-                          </span>
-                          <ChevronDown
-                            size={14}
-                            className="-rotate-90 opacity-40 group-hover:opacity-100 transition-opacity"
-                          />
+                          <span className="text-sm">{cat.title}</span>
+                          <ArrowLeft size={14} className="opacity-30" />
                         </NavLink>
                       ))}
-                </nav>
-              </div>
+                </div>
+              </section>
             </div>
 
-            {/* Footer of Menu */}
-            <div className="p-5 border-t border-white/5 bg-neutral-900/80 backdrop-blur-md">
-              <div className="flex items-center justify-between text-[10px] text-neutral-500">
-                <span>نسخه 2.4.0</span>
-                <div className="flex gap-3">
-                  <span className="hover:text-white transition cursor-pointer">
-                    درباره ما
-                  </span>
-                  <span className="hover:text-white transition cursor-pointer">
-                    تماس
-                  </span>
-                </div>
+            {/* 5. Footer Info */}
+            <div className="p-6 border-t border-white/5 bg-neutral-950">
+              <div className="flex justify-between items-center opacity-40">
+                <span className="text-[10px] text-white">ShakhesAval News</span>
+                <span className="text-[10px] text-white font-mono">v2.4.5</span>
               </div>
             </div>
           </aside>

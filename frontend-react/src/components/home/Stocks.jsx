@@ -1,87 +1,99 @@
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useState } from "react";
+import { getMarketItems } from "../../lib/market/marketApi";
+
 import { Swiper, SwiperSlide } from "swiper/react";
-import { Autoplay, FreeMode } from "swiper/modules";
+import { FreeMode } from "swiper/modules";
+
 import "swiper/css";
 
-import {
-  getMarketItems,
-  FALLBACK_MARKET_ITEMS,
-} from "../../lib/market/marketApi";
+function formatPrice(value) {
+  if (!value) return "-";
+
+  const clean = String(value).replace(/,/g, "");
+  const number = parseFloat(clean);
+
+  if (isNaN(number)) return "-";
+
+  return new Intl.NumberFormat("fa-IR").format(number);
+}
 
 export default function Stocks() {
-  const [items, setItems] = useState(FALLBACK_MARKET_ITEMS);
+  const [items, setItems] = useState([]);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     let ignore = false;
 
-    async function loadMarketItems() {
+    async function load() {
       try {
         const result = await getMarketItems();
 
-        if (!ignore) {
+        if (!ignore && Array.isArray(result)) {
           setItems(result);
         }
+      } catch (err) {
+        console.error(err);
       } finally {
-        if (!ignore) {
-          setLoading(false);
-        }
+        if (!ignore) setLoading(false);
       }
     }
 
-    loadMarketItems();
+    load();
 
     return () => {
       ignore = true;
     };
   }, []);
 
-  const loopData = useMemo(() => {
-    const visibleItems = items.filter((item) => item.active !== false);
-    const safeItems =
-      visibleItems.length > 0 ? visibleItems : FALLBACK_MARKET_ITEMS;
-
-    return [...safeItems, ...safeItems];
-  }, [items]);
+  const data = Array.isArray(items) ? items : [];
 
   return (
-    <div className="w-full py-4 overflow-hidden bg-transparent">
-      <Swiper
-        modules={[Autoplay, FreeMode]}
-        loop
-        slidesPerView="auto"
-        spaceBetween={12}
-        freeMode
-        freeModeMomentum={false}
-        speed={8000}
-        autoplay={{
-          delay: 0,
-          disableOnInteraction: false,
-          pauseOnMouseEnter: true,
-        }}
-        className="[&_.swiper-wrapper]:!transition-timing-function-[linear]"
-      >
-        {loopData.map((item, index) => (
-          <SwiperSlide
-            key={`${item.id ?? item.symbol ?? item.title}-${index}`}
-            style={{ width: "auto" }}
+    <div className="w-full border-y border-neutral-800 py-3">
+      <div className="max-w-7xl mx-auto">
+        {loading && (
+          <div className="flex gap-2 px-4">
+            {Array.from({ length: 6 }).map((_, i) => (
+              <div
+                key={i}
+                className="animate-pulse bg-neutral-800 h-8 w-32 rounded-lg"
+              />
+            ))}
+          </div>
+        )}
+
+        {!loading && (
+          <Swiper
+            modules={[FreeMode]}
+            freeMode={true}
+            spaceBetween={12}
+            slidesPerView={"auto"}
+            className="px-4"
           >
-            <div className="flex items-center gap-2.5 bg-neutral-800 px-5 py-2 rounded-xl whitespace-nowrap text-[12px] text-gray-200 border border-gray-800 transform-gpu will-change-transform transition-transform duration-300 ease-out hover:scale-[1.02]">
-              <span className="font-semibold">{item.title}</span>
-              <span className="text-gray-400">{item.value || "-"}</span>
-              <span
-                className={
-                  item.active
-                    ? "font-semibold text-green-500"
-                    : "font-semibold text-red-500"
-                }
+            {data.map((item) => (
+              <SwiperSlide
+                key={item.id ?? item.symbol}
+                style={{ width: "140px" }}
               >
-                {loading ? "..." : item.subtitle || item.symbol || ""}
-              </span>
-            </div>
-          </SwiperSlide>
-        ))}
-      </Swiper>
+                <div className="h-9 flex items-center justify-between bg-neutral-800 border border-neutral-700 hover:border-neutral-500 transition rounded-md px-2 overflow-hidden">
+                  <div className="flex flex-col leading-tight overflow-hidden">
+                    <span className="text-[9px] text-gray-400 whitespace-nowrap truncate">
+                      {item.subtitle}
+                    </span>
+
+                    <span className="text-[11px] font-semibold text-white whitespace-nowrap truncate">
+                      {item.title}
+                    </span>
+                  </div>
+
+                  <span className="text-[11px] font-medium text-green-400 whitespace-nowrap">
+                    {formatPrice(item.value)}
+                  </span>
+                </div>
+              </SwiperSlide>
+            ))}
+          </Swiper>
+        )}
+      </div>
     </div>
   );
 }

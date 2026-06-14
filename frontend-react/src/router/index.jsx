@@ -19,7 +19,8 @@ import ProfilePage from "../pages/dashboard/Profile";
 import HomeHeroPage from "../pages/dashboard/HomeHeroPage";
 import AdsPage from "../pages/dashboard/AdsPage";
 import SinglePostPage from "../pages/SinglePostPage";
-import UsersPage from "../pages/dashboard/UsersPage"
+import UsersPage from "../pages/dashboard/UsersPage";
+import HomeVideoPage from "../pages/dashboard/HomeVideoPage";
 
 import PrivateRoute from "./PrivateRoute";
 
@@ -27,6 +28,10 @@ export const router = createBrowserRouter([
   {
     element: <SiteLayout />,
     children: [
+      {
+        path: "/type/:postType",
+        element: <HomePage />,
+      },
       {
         path: "/",
         element: <HomePage />,
@@ -93,6 +98,7 @@ export const router = createBrowserRouter([
         path: "/dashboard/home-hero",
         element: <HomeHeroPage />,
       },
+      { path: "/dashboard/home-video", element: <HomeVideoPage /> },
       {
         path: "/dashboard/ads",
         element: <AdsPage />,

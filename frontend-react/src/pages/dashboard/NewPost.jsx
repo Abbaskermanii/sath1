@@ -40,6 +40,15 @@ function isValidEmbedValue(value = "") {
   }
 }
 
+function normalizeMultilineText(value = "") {
+  return String(value || "")
+    .replace(/\r\n?/g, "\n")
+    .split("\n")
+    .map((line) => line.replace(/[ \t]+$/g, ""))
+    .join("\n")
+    .trim();
+}
+
 const initialForm = {
   title: "",
   slug: "",
@@ -179,9 +188,11 @@ export default function NewPostPage() {
     if (!form.title.trim()) return false;
     if (!form.slug.trim()) return false;
     if (!form.post_type) return false;
+    if (!form.category) return false;
+    if (!form.excerpt.trim()) return false;
+    if (!form.content.trim()) return false;
     if (!form.tags.length) return false;
     if (!coverFile) return false;
-    if (form.media_type === "none" && !form.content.trim()) return false;
     return true;
   }, [form, submitting, coverFile]);
 
@@ -415,12 +426,11 @@ export default function NewPostPage() {
     }
 
     if (!form.post_type) nextErrors.post_type = "قالب پست الزامی است.";
+    if (!form.category) nextErrors.category = "دسته‌بندی الزامی است.";
+    if (!form.excerpt.trim()) nextErrors.excerpt = "خلاصه الزامی است.";
+    if (!form.content.trim()) nextErrors.content = "محتوا الزامی است.";
     if (!form.tags.length) nextErrors.tags = "حداقل یک تگ انتخاب کنید.";
     if (!coverFile) nextErrors.cover = "کاور برای همه پست‌ها الزامی است.";
-
-    if (form.media_type === "none" && !form.content.trim()) {
-      nextErrors.content = "محتوا الزامی است.";
-    }
 
     if (form.embed_url.trim() && !isValidEmbedValue(form.embed_url)) {
       nextErrors.embed_url = "لینک یا کد embed معتبر نیست.";
@@ -456,8 +466,8 @@ export default function NewPostPage() {
 
     fd.append("title", form.title.trim());
     fd.append("slug", toSlug(form.slug));
-    fd.append("excerpt", form.excerpt.trim());
-    fd.append("content", form.content.trim());
+    fd.append("excerpt", normalizeMultilineText(form.excerpt));
+    fd.append("content", normalizeMultilineText(form.content));
     fd.append("status", form.status);
     fd.append("post_type", form.post_type);
     fd.append("media_type", form.media_type);
@@ -618,14 +628,14 @@ export default function NewPostPage() {
           </div>
 
           <div>
-            <Label>دسته‌بندی</Label>
+            <Label required>دسته‌بندی</Label>
             <select
               name="category"
               value={form.category}
               onChange={handleChange}
               className={baseInputClass(errors.category)}
             >
-              <option value="">بدون دسته‌بندی</option>
+              <option value="">انتخاب دسته‌بندی...</option>
               {categories.map((cat) => (
                 <option key={cat.id} value={String(cat.id)}>
                   {getItemTitle(cat)}
@@ -650,25 +660,25 @@ export default function NewPostPage() {
           </div>
 
           <div className="md:col-span-2">
-            <Label>خلاصه</Label>
+            <Label required>خلاصه</Label>
             <textarea
               name="excerpt"
               value={form.excerpt}
               onChange={handleChange}
               placeholder="خلاصه‌ای کوتاه برای نمایش در کارت خبر..."
-              className={`${baseInputClass(errors.excerpt)} min-h-24 resize-y leading-7`}
+              className={`${baseInputClass(errors.excerpt)} min-h-24 resize-y leading-7 whitespace-pre-wrap`}
             />
             <FieldError message={errors.excerpt} />
           </div>
 
           <div className="md:col-span-2">
-            <Label required={form.media_type === "none"}>محتوا</Label>
+            <Label required>محتوا</Label>
             <textarea
               name="content"
               value={form.content}
               onChange={handleChange}
               placeholder="متن کامل پست را وارد کنید..."
-              className={`${baseInputClass(errors.content)} min-h-56 resize-y leading-8`}
+              className={`${baseInputClass(errors.content)} min-h-56 resize-y leading-8 whitespace-pre-wrap`}
             />
             <FieldError message={errors.content} />
           </div>

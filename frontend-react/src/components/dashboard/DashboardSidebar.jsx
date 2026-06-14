@@ -8,7 +8,9 @@ const navItems = [
 
   { href: "/dashboard/categories", label: "دسته‌بندی‌ها", adminOnly: true },
   { href: "/dashboard/tags", label: "تگ‌ها", adminOnly: true },
-  { href: "/dashboard/home-hero", label: "هیرو صفحه اصلی", adminOnly: true },
+  { href: "/dashboard/home-hero", label: "خبر های منتخب", adminOnly: true },
+  { href: "/dashboard/home-video", label: "ویدیوهای منتخب", adminOnly: true },
+
   { href: "/dashboard/ads", label: "مدیریت تبلیغات", adminOnly: true },
   { href: "/dashboard/users", label: "کاربران", adminOnly: true },
 

@@ -1,9 +1,4 @@
 services:
-  redis:
-    image: redis:7-alpine
-    container_name: blog_redis
-    restart: unless-stopped
-
   db:
     image: postgres:16
     container_name: blog_db
@@ -14,6 +9,11 @@ services:
       POSTGRES_PASSWORD: blogpass
     volumes:
       - postgres_data:/var/lib/postgresql/data
+
+  redis:
+    image: redis:7-alpine
+    container_name: blog_redis
+    restart: unless-stopped
 
   minio:
     image: minio/minio:latest
@@ -33,91 +33,101 @@ services:
     build: .
     container_name: blog_backend
     restart: unless-stopped
-    dns:
-      - 8.8.8.8
-      - 1.1.1.1
     depends_on:
       - db
-      - minio
       - redis
-    volumes:
-      - .:/app # کدها و میگریشن‌ها را سینک می‌کند
+      - minio
     environment:
-      SECRET_KEY: "django-production-secret-key-must-be-long-enough-32-chars"
-      DEBUG: "1"
+      SECRET_KEY: django-production-secret
+      DEBUG: "0"
+
+      NERKH_API_TOKEN: 2jhh99VgC54y-09ZKDiUWaH2H_EyvSv7puwOVu7o830=
+
       DB_NAME: blogdb
       DB_USER: bloguser
       DB_PASSWORD: blogpass
       DB_HOST: db
       DB_PORT: "5432"
+
       AWS_ACCESS_KEY_ID: minioadmin
       AWS_SECRET_ACCESS_KEY: minioadmin123
       AWS_STORAGE_BUCKET_NAME: media
       AWS_S3_ENDPOINT_URL: http://minio:9000
-      ALPHA_VANTAGE_API_KEY: FS55KDZKAFVV7KLH
+      AWS_S3_CUSTOM_DOMAIN: shakhes1.ir/media
+
       CELERY_BROKER_URL: redis://redis:6379/0
       CELERY_RESULT_BACKEND: redis://redis:6379/1
+
     ports:
       - "8000:8000"
+
+    command: >
+      gunicorn config.wsgi:application
+       --bind 0.0.0.0:8000
+       --log-level debug
+       --access-logfile -
+       --error-logfile -
 
   celery_worker:
     build: .
     container_name: blog_celery_worker
     restart: unless-stopped
-    dns:
-      - 8.8.8.8
-      - 1.1.1.1
     depends_on:
       - db
       - redis
-      - backend
-    volumes:
-      - .:/app
+      - minio
     environment:
-      SECRET_KEY: "django-production-secret-key-must-be-long-enough-32-chars"
-      DEBUG: "1"
+      SECRET_KEY: django-production-secret
+      DEBUG: "0"
+
+      NERKH_API_TOKEN: 2jhh99VgC54y-09ZKDiUWaH2H_EyvSv7puwOVu7o830=
+
       DB_NAME: blogdb
       DB_USER: bloguser
       DB_PASSWORD: blogpass
       DB_HOST: db
       DB_PORT: "5432"
+
       AWS_ACCESS_KEY_ID: minioadmin
       AWS_SECRET_ACCESS_KEY: minioadmin123
       AWS_STORAGE_BUCKET_NAME: media
       AWS_S3_ENDPOINT_URL: http://minio:9000
-      ALPHA_VANTAGE_API_KEY: FS55KDZKAFVV7KLH
+      AWS_S3_CUSTOM_DOMAIN: shakhes1.ir/media
+
       CELERY_BROKER_URL: redis://redis:6379/0
       CELERY_RESULT_BACKEND: redis://redis:6379/1
+
     command: celery -A config worker -l info
 
   celery_beat:
     build: .
     container_name: blog_celery_beat
     restart: unless-stopped
-    dns:
-      - 8.8.8.8
-      - 1.1.1.1
     depends_on:
       - db
       - redis
-      - celery_worker
-    volumes:
-      - .:/app
+      - minio
     environment:
-      SECRET_KEY: "django-production-secret-key-must-be-long-enough-32-chars"
-      DEBUG: "1"
+      SECRET_KEY: django-production-secret
+      DEBUG: "0"
+
+      NERKH_API_TOKEN: 2jhh99VgC54y-09ZKDiUWaH2H_EyvSv7puwOVu7o830=
+
       DB_NAME: blogdb
       DB_USER: bloguser
       DB_PASSWORD: blogpass
       DB_HOST: db
       DB_PORT: "5432"
+
       AWS_ACCESS_KEY_ID: minioadmin
       AWS_SECRET_ACCESS_KEY: minioadmin123
       AWS_STORAGE_BUCKET_NAME: media
       AWS_S3_ENDPOINT_URL: http://minio:9000
-      ALPHA_VANTAGE_API_KEY: FS55KDZKAFVV7KLH
+      AWS_S3_CUSTOM_DOMAIN: shakhes1.ir/media
+
       CELERY_BROKER_URL: redis://redis:6379/0
       CELERY_RESULT_BACKEND: redis://redis:6379/1
+
     command: celery -A config beat -l info
 
 volumes:

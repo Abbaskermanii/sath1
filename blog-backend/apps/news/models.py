@@ -242,3 +242,30 @@ class HomeHeroSelection(TimeStampedModel):
 
     def __str__(self):
         return f"{self.slot} -> {self.post.title}"
+
+
+class HomeVideoSlot(models.TextChoices):
+    MAIN = "main", "Main Video"
+    TOP = "top", "Top Small Video"
+    MIDDLE = "middle", "Middle Small Video"
+    BOTTOM = "bottom", "Bottom Small Video"
+
+
+class HomeVideoSelection(TimeStampedModel):
+    slot = models.CharField(
+        max_length=30,
+        choices=HomeVideoSlot.choices,
+        unique=True,
+    )
+    post = models.ForeignKey(
+        "news.Post",
+        on_delete=models.CASCADE,
+        related_name="home_video_selections",
+    )
+    is_active = models.BooleanField(default=True)
+
+    class Meta:
+        ordering = ("slot",)
+
+    def __str__(self):
+        return f"{self.slot} -> {self.post.title}"

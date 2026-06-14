@@ -116,123 +116,11 @@
         "documentation": {}
     },
     {
-        "label": "migrations",
-        "importPath": "django.db",
-        "description": "django.db",
+        "label": "settings",
+        "importPath": "django.conf",
+        "description": "django.conf",
         "isExtraImport": true,
-        "detail": "django.db",
-        "documentation": {}
-    },
-    {
-        "label": "models",
-        "importPath": "django.db",
-        "description": "django.db",
-        "isExtraImport": true,
-        "detail": "django.db",
-        "documentation": {}
-    },
-    {
-        "label": "migrations",
-        "importPath": "django.db",
-        "description": "django.db",
-        "isExtraImport": true,
-        "detail": "django.db",
-        "documentation": {}
-    },
-    {
-        "label": "models",
-        "importPath": "django.db",
-        "description": "django.db",
-        "isExtraImport": true,
-        "detail": "django.db",
-        "documentation": {}
-    },
-    {
-        "label": "models",
-        "importPath": "django.db",
-        "description": "django.db",
-        "isExtraImport": true,
-        "detail": "django.db",
-        "documentation": {}
-    },
-    {
-        "label": "models",
-        "importPath": "django.db",
-        "description": "django.db",
-        "isExtraImport": true,
-        "detail": "django.db",
-        "documentation": {}
-    },
-    {
-        "label": "models",
-        "importPath": "django.db",
-        "description": "django.db",
-        "isExtraImport": true,
-        "detail": "django.db",
-        "documentation": {}
-    },
-    {
-        "label": "migrations",
-        "importPath": "django.db",
-        "description": "django.db",
-        "isExtraImport": true,
-        "detail": "django.db",
-        "documentation": {}
-    },
-    {
-        "label": "models",
-        "importPath": "django.db",
-        "description": "django.db",
-        "isExtraImport": true,
-        "detail": "django.db",
-        "documentation": {}
-    },
-    {
-        "label": "models",
-        "importPath": "django.db",
-        "description": "django.db",
-        "isExtraImport": true,
-        "detail": "django.db",
-        "documentation": {}
-    },
-    {
-        "label": "migrations",
-        "importPath": "django.db",
-        "description": "django.db",
-        "isExtraImport": true,
-        "detail": "django.db",
-        "documentation": {}
-    },
-    {
-        "label": "models",
-        "importPath": "django.db",
-        "description": "django.db",
-        "isExtraImport": true,
-        "detail": "django.db",
-        "documentation": {}
-    },
-    {
-        "label": "models",
-        "importPath": "django.db",
-        "description": "django.db",
-        "isExtraImport": true,
-        "detail": "django.db",
-        "documentation": {}
-    },
-    {
-        "label": "migrations",
-        "importPath": "django.db",
-        "description": "django.db",
-        "isExtraImport": true,
-        "detail": "django.db",
-        "documentation": {}
-    },
-    {
-        "label": "models",
-        "importPath": "django.db",
-        "description": "django.db",
-        "isExtraImport": true,
-        "detail": "django.db",
+        "detail": "django.conf",
         "documentation": {}
     },
     {
@@ -276,11 +164,147 @@
         "documentation": {}
     },
     {
-        "label": "admin",
-        "importPath": "django.contrib",
-        "description": "django.contrib",
+        "label": "models",
+        "importPath": "django.db",
+        "description": "django.db",
         "isExtraImport": true,
-        "detail": "django.contrib",
+        "detail": "django.db",
+        "documentation": {}
+    },
+    {
+        "label": "models",
+        "importPath": "django.db",
+        "description": "django.db",
+        "isExtraImport": true,
+        "detail": "django.db",
+        "documentation": {}
+    },
+    {
+        "label": "migrations",
+        "importPath": "django.db",
+        "description": "django.db",
+        "isExtraImport": true,
+        "detail": "django.db",
+        "documentation": {}
+    },
+    {
+        "label": "models",
+        "importPath": "django.db",
+        "description": "django.db",
+        "isExtraImport": true,
+        "detail": "django.db",
+        "documentation": {}
+    },
+    {
+        "label": "models",
+        "importPath": "django.db",
+        "description": "django.db",
+        "isExtraImport": true,
+        "detail": "django.db",
+        "documentation": {}
+    },
+    {
+        "label": "transaction",
+        "importPath": "django.db",
+        "description": "django.db",
+        "isExtraImport": true,
+        "detail": "django.db",
+        "documentation": {}
+    },
+    {
+        "label": "migrations",
+        "importPath": "django.db",
+        "description": "django.db",
+        "isExtraImport": true,
+        "detail": "django.db",
+        "documentation": {}
+    },
+    {
+        "label": "models",
+        "importPath": "django.db",
+        "description": "django.db",
+        "isExtraImport": true,
+        "detail": "django.db",
+        "documentation": {}
+    },
+    {
+        "label": "models",
+        "importPath": "django.db",
+        "description": "django.db",
+        "isExtraImport": true,
+        "detail": "django.db",
+        "documentation": {}
+    },
+    {
+        "label": "migrations",
+        "importPath": "django.db",
+        "description": "django.db",
+        "isExtraImport": true,
+        "detail": "django.db",
+        "documentation": {}
+    },
+    {
+        "label": "models",
+        "importPath": "django.db",
+        "description": "django.db",
+        "isExtraImport": true,
+        "detail": "django.db",
+        "documentation": {}
+    },
+    {
+        "label": "migrations",
+        "importPath": "django.db",
+        "description": "django.db",
+        "isExtraImport": true,
+        "detail": "django.db",
+        "documentation": {}
+    },
+    {
+        "label": "models",
+        "importPath": "django.db",
+        "description": "django.db",
+        "isExtraImport": true,
+        "detail": "django.db",
+        "documentation": {}
+    },
+    {
+        "label": "migrations",
+        "importPath": "django.db",
+        "description": "django.db",
+        "isExtraImport": true,
+        "detail": "django.db",
+        "documentation": {}
+    },
+    {
+        "label": "models",
+        "importPath": "django.db",
+        "description": "django.db",
+        "isExtraImport": true,
+        "detail": "django.db",
+        "documentation": {}
+    },
+    {
+        "label": "migrations",
+        "importPath": "django.db",
+        "description": "django.db",
+        "isExtraImport": true,
+        "detail": "django.db",
+        "documentation": {}
+    },
+    {
+        "label": "models",
+        "importPath": "django.db",
+        "description": "django.db",
+        "isExtraImport": true,
+        "detail": "django.db",
+        "documentation": {}
+    },
+    {
+        "label": "models",
+        "importPath": "django.db",
+        "description": "django.db",
+        "isExtraImport": true,
+        "detail": "django.db",
         "documentation": {}
     },
     {
@@ -337,6 +361,14 @@
         "description": "django.contrib.auth.admin",
         "isExtraImport": true,
         "detail": "django.contrib.auth.admin",
+        "documentation": {}
+    },
+    {
+        "label": "AppConfig",
+        "importPath": "django.apps",
+        "description": "django.apps",
+        "isExtraImport": true,
+        "detail": "django.apps",
         "documentation": {}
     },
     {
@@ -484,14 +516,6 @@
         "documentation": {}
     },
     {
-        "label": "AllowAny",
-        "importPath": "rest_framework.permissions",
-        "description": "rest_framework.permissions",
-        "isExtraImport": true,
-        "detail": "rest_framework.permissions",
-        "documentation": {}
-    },
-    {
         "label": "IsAuthenticated",
         "importPath": "rest_framework.permissions",
         "description": "rest_framework.permissions",
@@ -605,14 +629,6 @@
     },
     {
         "label": "viewsets",
-        "importPath": "rest_framework",
-        "description": "rest_framework",
-        "isExtraImport": true,
-        "detail": "rest_framework",
-        "documentation": {}
-    },
-    {
-        "label": "serializers",
         "importPath": "rest_framework",
         "description": "rest_framework",
         "isExtraImport": true,
@@ -748,7 +764,7 @@
         "documentation": {}
     },
     {
-        "label": "include",
+        "label": "path",
         "importPath": "django.urls",
         "description": "django.urls",
         "isExtraImport": true,
@@ -756,7 +772,7 @@
         "documentation": {}
     },
     {
-        "label": "path",
+        "label": "include",
         "importPath": "django.urls",
         "description": "django.urls",
         "isExtraImport": true,
@@ -860,6 +876,22 @@
         "documentation": {}
     },
     {
+        "label": "Response",
+        "importPath": "rest_framework.response",
+        "description": "rest_framework.response",
+        "isExtraImport": true,
+        "detail": "rest_framework.response",
+        "documentation": {}
+    },
+    {
+        "label": "APIView",
+        "importPath": "rest_framework.views",
+        "description": "rest_framework.views",
+        "isExtraImport": true,
+        "detail": "rest_framework.views",
+        "documentation": {}
+    },
+    {
         "label": "APIView",
         "importPath": "rest_framework.views",
         "description": "rest_framework.views",
@@ -956,6 +988,22 @@
         "documentation": {}
     },
     {
+        "label": "HomeVideoSelection",
+        "importPath": "apps.news.models",
+        "description": "apps.news.models",
+        "isExtraImport": true,
+        "detail": "apps.news.models",
+        "documentation": {}
+    },
+    {
+        "label": "HomeVideoSlot",
+        "importPath": "apps.news.models",
+        "description": "apps.news.models",
+        "isExtraImport": true,
+        "detail": "apps.news.models",
+        "documentation": {}
+    },
+    {
         "label": "Post",
         "importPath": "apps.news.models",
         "description": "apps.news.models",
@@ -988,7 +1036,15 @@
         "documentation": {}
     },
     {
-        "label": "Post",
+        "label": "HomeVideoSelection",
+        "importPath": "apps.news.models",
+        "description": "apps.news.models",
+        "isExtraImport": true,
+        "detail": "apps.news.models",
+        "documentation": {}
+    },
+    {
+        "label": "HomeVideoSlot",
         "importPath": "apps.news.models",
         "description": "apps.news.models",
         "isExtraImport": true,
@@ -997,6 +1053,14 @@
     },
     {
         "label": "MediaType",
+        "importPath": "apps.news.models",
+        "description": "apps.news.models",
+        "isExtraImport": true,
+        "detail": "apps.news.models",
+        "documentation": {}
+    },
+    {
+        "label": "Post",
         "importPath": "apps.news.models",
         "description": "apps.news.models",
         "isExtraImport": true,
@@ -1388,6 +1452,47 @@
         "documentation": {}
     },
     {
+        "label": "requests",
+        "kind": 6,
+        "isExtraImport": true,
+        "importPath": "requests",
+        "description": "requests",
+        "detail": "requests",
+        "documentation": {}
+    },
+    {
+        "label": "Decimal",
+        "importPath": "decimal",
+        "description": "decimal",
+        "isExtraImport": true,
+        "detail": "decimal",
+        "documentation": {}
+    },
+    {
+        "label": "MarketItem",
+        "importPath": "apps.market.models",
+        "description": "apps.market.models",
+        "isExtraImport": true,
+        "detail": "apps.market.models",
+        "documentation": {}
+    },
+    {
+        "label": "shared_task",
+        "importPath": "celery",
+        "description": "celery",
+        "isExtraImport": true,
+        "detail": "celery",
+        "documentation": {}
+    },
+    {
+        "label": "Celery",
+        "importPath": "celery",
+        "description": "celery",
+        "isExtraImport": true,
+        "detail": "celery",
+        "documentation": {}
+    },
+    {
         "label": "ValidationError",
         "importPath": "django.core.exceptions",
         "description": "django.core.exceptions",
@@ -1465,169 +1570,6 @@
         "description": "rest_framework.parsers",
         "isExtraImport": true,
         "detail": "rest_framework.parsers",
-        "documentation": {}
-    },
-    {
-        "label": "BaseCommand",
-        "importPath": "django.core.management.base",
-        "description": "django.core.management.base",
-        "isExtraImport": true,
-        "detail": "django.core.management.base",
-        "documentation": {}
-    },
-    {
-        "label": "sync_market_prices_task",
-        "importPath": "apps.markets.tasks",
-        "description": "apps.markets.tasks",
-        "isExtraImport": true,
-        "detail": "apps.markets.tasks",
-        "documentation": {}
-    },
-    {
-        "label": "os",
-        "kind": 6,
-        "isExtraImport": true,
-        "importPath": "os",
-        "description": "os",
-        "detail": "os",
-        "documentation": {}
-    },
-    {
-        "label": "time",
-        "kind": 6,
-        "isExtraImport": true,
-        "importPath": "time",
-        "description": "time",
-        "detail": "time",
-        "documentation": {}
-    },
-    {
-        "label": "Decimal",
-        "importPath": "decimal",
-        "description": "decimal",
-        "isExtraImport": true,
-        "detail": "decimal",
-        "documentation": {}
-    },
-    {
-        "label": "InvalidOperation",
-        "importPath": "decimal",
-        "description": "decimal",
-        "isExtraImport": true,
-        "detail": "decimal",
-        "documentation": {}
-    },
-    {
-        "label": "requests",
-        "kind": 6,
-        "isExtraImport": true,
-        "importPath": "requests",
-        "description": "requests",
-        "detail": "requests",
-        "documentation": {}
-    },
-    {
-        "label": "timezone",
-        "importPath": "django.utils",
-        "description": "django.utils",
-        "isExtraImport": true,
-        "detail": "django.utils",
-        "documentation": {}
-    },
-    {
-        "label": "MarketSymbol",
-        "importPath": "apps.markets.models",
-        "description": "apps.markets.models",
-        "isExtraImport": true,
-        "detail": "apps.markets.models",
-        "documentation": {}
-    },
-    {
-        "label": "MarketSymbol",
-        "importPath": "apps.markets.models",
-        "description": "apps.markets.models",
-        "isExtraImport": true,
-        "detail": "apps.markets.models",
-        "documentation": {}
-    },
-    {
-        "label": "MarketPrice",
-        "importPath": "apps.markets.models",
-        "description": "apps.markets.models",
-        "isExtraImport": true,
-        "detail": "apps.markets.models",
-        "documentation": {}
-    },
-    {
-        "label": "MarketPrice",
-        "importPath": "apps.markets.models",
-        "description": "apps.markets.models",
-        "isExtraImport": true,
-        "detail": "apps.markets.models",
-        "documentation": {}
-    },
-    {
-        "label": "MarketPrice",
-        "importPath": "apps.markets.models",
-        "description": "apps.markets.models",
-        "isExtraImport": true,
-        "detail": "apps.markets.models",
-        "documentation": {}
-    },
-    {
-        "label": "MarketPrice",
-        "importPath": "apps.markets.models",
-        "description": "apps.markets.models",
-        "isExtraImport": true,
-        "detail": "apps.markets.models",
-        "documentation": {}
-    },
-    {
-        "label": "shared_task",
-        "importPath": "celery",
-        "description": "celery",
-        "isExtraImport": true,
-        "detail": "celery",
-        "documentation": {}
-    },
-    {
-        "label": "Celery",
-        "importPath": "celery",
-        "description": "celery",
-        "isExtraImport": true,
-        "detail": "celery",
-        "documentation": {}
-    },
-    {
-        "label": "get_market_prices_from_alpha_vantage",
-        "importPath": "apps.markets.services.alpha_vantage",
-        "description": "apps.markets.services.alpha_vantage",
-        "isExtraImport": true,
-        "detail": "apps.markets.services.alpha_vantage",
-        "documentation": {}
-    },
-    {
-        "label": "MarketPriceListView",
-        "importPath": "apps.markets.views",
-        "description": "apps.markets.views",
-        "isExtraImport": true,
-        "detail": "apps.markets.views",
-        "documentation": {}
-    },
-    {
-        "label": "ListAPIView",
-        "importPath": "rest_framework.generics",
-        "description": "rest_framework.generics",
-        "isExtraImport": true,
-        "detail": "rest_framework.generics",
-        "documentation": {}
-    },
-    {
-        "label": "MarketPriceSerializer",
-        "importPath": "apps.markets.serializers",
-        "description": "apps.markets.serializers",
-        "isExtraImport": true,
-        "detail": "apps.markets.serializers",
         "documentation": {}
     },
     {
@@ -1721,19 +1663,20 @@
         "documentation": {}
     },
     {
+        "label": "os",
+        "kind": 6,
+        "isExtraImport": true,
+        "importPath": "os",
+        "description": "os",
+        "detail": "os",
+        "documentation": {}
+    },
+    {
         "label": "get_asgi_application",
         "importPath": "django.core.asgi",
         "description": "django.core.asgi",
         "isExtraImport": true,
         "detail": "django.core.asgi",
-        "documentation": {}
-    },
-    {
-        "label": "crontab",
-        "importPath": "celery.schedules",
-        "description": "celery.schedules",
-        "isExtraImport": true,
-        "detail": "celery.schedules",
         "documentation": {}
     },
     {
@@ -2160,6 +2103,33 @@
         "documentation": {}
     },
     {
+        "label": "HomeVideoSelectionItemSerializer",
+        "kind": 6,
+        "importPath": "apps.dashboard.serializers",
+        "description": "apps.dashboard.serializers",
+        "peekOfCode": "class HomeVideoSelectionItemSerializer(serializers.ModelSerializer):\n    post_id = serializers.IntegerField(source=\"post.id\", read_only=True)\n    post_title = serializers.CharField(source=\"post.title\", read_only=True)\n    post_slug = serializers.CharField(source=\"post.slug\", read_only=True)\n    post_status = serializers.CharField(source=\"post.status\", read_only=True)\n    post_media_type = serializers.CharField(source=\"post.media_type\", read_only=True)\n    post_type = serializers.CharField(source=\"post.post_type\", read_only=True)\n    published_at = serializers.DateTimeField(source=\"post.published_at\", read_only=True)\n    cover = serializers.SerializerMethodField()\n    video_file = serializers.SerializerMethodField()",
+        "detail": "apps.dashboard.serializers",
+        "documentation": {}
+    },
+    {
+        "label": "HomeVideoSelectionUpdateSerializer",
+        "kind": 6,
+        "importPath": "apps.dashboard.serializers",
+        "description": "apps.dashboard.serializers",
+        "peekOfCode": "class HomeVideoSelectionUpdateSerializer(serializers.Serializer):\n    slot = serializers.ChoiceField(choices=HomeVideoSlot.choices)\n    post_id = serializers.IntegerField(required=False, allow_null=True)\n    is_active = serializers.BooleanField(required=False, default=True)\n    def validate_post_id(self, value):\n        if value is None:\n            return value\n        if not Post.objects.filter(id=value).exists():\n            raise serializers.ValidationError(\"Post not found.\")\n        return value",
+        "detail": "apps.dashboard.serializers",
+        "documentation": {}
+    },
+    {
+        "label": "HomeVideoSelectionBulkUpdateSerializer",
+        "kind": 6,
+        "importPath": "apps.dashboard.serializers",
+        "description": "apps.dashboard.serializers",
+        "peekOfCode": "class HomeVideoSelectionBulkUpdateSerializer(serializers.Serializer):\n    items = HomeVideoSelectionUpdateSerializer(many=True)\n    def validate(self, attrs):\n        items = attrs.get(\"items\", [])\n        slots = [item[\"slot\"] for item in items]\n        post_ids = [\n            item[\"post_id\"] for item in items if item.get(\"post_id\") is not None\n        ]\n        if len(slots) != len(set(slots)):\n            raise serializers.ValidationError(\"Duplicate slots are not allowed.\")",
+        "detail": "apps.dashboard.serializers",
+        "documentation": {}
+    },
+    {
         "label": "DashboardPostSearchSerializer",
         "kind": 6,
         "importPath": "apps.dashboard.serializers",
@@ -2209,7 +2179,7 @@
         "kind": 6,
         "importPath": "apps.dashboard.views",
         "description": "apps.dashboard.views",
-        "peekOfCode": "class PendingCommentsModerationView(APIView):\n    \"\"\"\n    کامنت‌های در انتظار تایید.\n    - ادمین: همه pending ها\n    - نویسنده: pending های پست‌های خودش\n    \"\"\"\n    permission_classes = [IsAuthenticated, IsAdminOrAuthor]\n    def get(self, request):\n        user = request.user\n        is_admin = getattr(user, \"role\", None) == \"admin\"",
+        "peekOfCode": "class PendingCommentsModerationView(APIView):\n    permission_classes = [IsAuthenticated, IsAdminOrAuthor]\n    def get(self, request):\n        user = request.user\n        is_admin = getattr(user, \"role\", None) == \"admin\"\n        qs = Comment.objects.select_related(\"post\", \"user\").filter(is_approved=False)\n        if not is_admin:\n            qs = qs.filter(post__author=user)\n        qs = qs.order_by(\"-created_at\")[:300]\n        data = []",
         "detail": "apps.dashboard.views",
         "documentation": {}
     },
@@ -2218,7 +2188,16 @@
         "kind": 6,
         "importPath": "apps.dashboard.views",
         "description": "apps.dashboard.views",
-        "peekOfCode": "class HomeHeroManagementView(APIView):\n    \"\"\"\n    GET  /api/dashboard/home-hero/\n    POST /api/dashboard/home-hero/\n    GET: عمومی\n    POST: فقط ادمین\n    \"\"\"\n    def get_permissions(self):\n        if self.request.method == \"GET\":\n            return [AllowAny()]",
+        "peekOfCode": "class HomeHeroManagementView(APIView):\n    \"\"\"\n    GET  /api/dashboard/home-hero/\n    POST /api/dashboard/home-hero/\n    \"\"\"\n    def get_permissions(self):\n        if self.request.method == \"GET\":\n            return [AllowAny()]\n        return [IsAuthenticated(), IsAdminOnly()]\n    def get(self, request):",
+        "detail": "apps.dashboard.views",
+        "documentation": {}
+    },
+    {
+        "label": "HomeVideoManagementView",
+        "kind": 6,
+        "importPath": "apps.dashboard.views",
+        "description": "apps.dashboard.views",
+        "peekOfCode": "class HomeVideoManagementView(APIView):\n    \"\"\"\n    GET  /api/dashboard/home-video/\n    POST /api/dashboard/home-video/\n    \"\"\"\n    def get_permissions(self):\n        if self.request.method == \"GET\":\n            return [AllowAny()]\n        return [IsAuthenticated(), IsAdminOnly()]\n    def get(self, request):",
         "detail": "apps.dashboard.views",
         "documentation": {}
     },
@@ -2227,7 +2206,7 @@
         "kind": 6,
         "importPath": "apps.dashboard.views",
         "description": "apps.dashboard.views",
-        "peekOfCode": "class DashboardPostSearchView(APIView):\n    \"\"\"\n    GET /api/dashboard/post-search/?q=...\n    فقط ادمین.\n    برای پیدا کردن پست‌ها جهت انتخاب در Hero Homepage.\n    \"\"\"\n    permission_classes = [IsAuthenticated, IsAdminOnly]\n    def get(self, request):\n        q = request.query_params.get(\"q\", \"\").strip()\n        status_param = request.query_params.get(\"status\")",
+        "peekOfCode": "class DashboardPostSearchView(APIView):\n    \"\"\"\n    GET /api/dashboard/post-search/?q=...\n    \"\"\"\n    permission_classes = [IsAuthenticated, IsAdminOnly]\n    def get(self, request):\n        q = request.query_params.get(\"q\", \"\").strip()\n        status_param = request.query_params.get(\"status\")\n        media_type = request.query_params.get(\"media_type\")\n        limit = safe_int(request.query_params.get(\"limit\", 20), 20)",
         "detail": "apps.dashboard.views",
         "documentation": {}
     },
@@ -2255,6 +2234,33 @@
         "importPath": "apps.dashboard.views",
         "description": "apps.dashboard.views",
         "peekOfCode": "def serialize_home_hero_results(request):\n    selections = HomeHeroSelection.objects.select_related(\n        \"post\",\n        \"post__author\",\n        \"post__category\",\n    ).all()\n    by_slot = {item.slot: item for item in selections}\n    results = []\n    for slot in ordered_home_hero_slots():\n        obj = by_slot.get(slot)",
+        "detail": "apps.dashboard.views",
+        "documentation": {}
+    },
+    {
+        "label": "empty_home_video_slot",
+        "kind": 2,
+        "importPath": "apps.dashboard.views",
+        "description": "apps.dashboard.views",
+        "peekOfCode": "def empty_home_video_slot(slot):\n    return {\n        \"slot\": slot,\n        \"is_active\": False,\n        \"post_id\": None,\n        \"post_title\": None,\n        \"post_slug\": None,\n        \"post_status\": None,\n        \"post_media_type\": None,\n        \"post_type\": None,",
+        "detail": "apps.dashboard.views",
+        "documentation": {}
+    },
+    {
+        "label": "ordered_home_video_slots",
+        "kind": 2,
+        "importPath": "apps.dashboard.views",
+        "description": "apps.dashboard.views",
+        "peekOfCode": "def ordered_home_video_slots():\n    return [\n        HomeVideoSlot.MAIN,\n        HomeVideoSlot.TOP,\n        HomeVideoSlot.MIDDLE,\n        HomeVideoSlot.BOTTOM,\n    ]\ndef serialize_home_video_results(request):\n    selections = HomeVideoSelection.objects.select_related(\n        \"post\",",
+        "detail": "apps.dashboard.views",
+        "documentation": {}
+    },
+    {
+        "label": "serialize_home_video_results",
+        "kind": 2,
+        "importPath": "apps.dashboard.views",
+        "description": "apps.dashboard.views",
+        "peekOfCode": "def serialize_home_video_results(request):\n    selections = HomeVideoSelection.objects.select_related(\n        \"post\",\n        \"post__author\",\n        \"post__category\",\n    ).all()\n    by_slot = {item.slot: item for item in selections}\n    results = []\n    for slot in ordered_home_video_slots():\n        obj = by_slot.get(slot)",
         "detail": "apps.dashboard.views",
         "documentation": {}
     },
@@ -2301,6 +2307,105 @@
         "description": "apps.dashboard.views",
         "peekOfCode": "def safe_int(value, default):\n    try:\n        return int(value)\n    except (TypeError, ValueError):\n        return default\nclass OverviewView(APIView):\n    permission_classes = [IsAuthenticated, IsAdminOrAuthor]\n    def get(self, request):\n        user = request.user\n        is_admin = getattr(user, \"role\", None) == \"admin\"",
         "detail": "apps.dashboard.views",
+        "documentation": {}
+    },
+    {
+        "label": "Migration",
+        "kind": 6,
+        "importPath": "apps.market.migrations.0001_initial",
+        "description": "apps.market.migrations.0001_initial",
+        "peekOfCode": "class Migration(migrations.Migration):\n    initial = True\n    dependencies = [\n    ]\n    operations = [\n        migrations.CreateModel(\n            name='MarketItem',\n            fields=[\n                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),\n                ('symbol', models.CharField(max_length=32, unique=True)),",
+        "detail": "apps.market.migrations.0001_initial",
+        "documentation": {}
+    },
+    {
+        "label": "MarketConfig",
+        "kind": 6,
+        "importPath": "apps.market.admin",
+        "description": "apps.market.admin",
+        "peekOfCode": "class MarketConfig(AppConfig):\n    default_auto_field = \"django.db.models.BigAutoField\"\n    name = \"apps.market\"",
+        "detail": "apps.market.admin",
+        "documentation": {}
+    },
+    {
+        "label": "MarketConfig",
+        "kind": 6,
+        "importPath": "apps.market.apps",
+        "description": "apps.market.apps",
+        "peekOfCode": "class MarketConfig(AppConfig):\n    default_auto_field = \"django.db.models.BigAutoField\"\n    name = \"apps.market\"",
+        "detail": "apps.market.apps",
+        "documentation": {}
+    },
+    {
+        "label": "MarketItem",
+        "kind": 6,
+        "importPath": "apps.market.models",
+        "description": "apps.market.models",
+        "peekOfCode": "class MarketItem(models.Model):\n    symbol = models.CharField(max_length=32, unique=True)\n    title = models.CharField(max_length=100)\n    subtitle = models.CharField(max_length=50, default=\"تومان\")\n    value = models.DecimalField(max_digits=20, decimal_places=2, null=True, blank=True)\n    active = models.BooleanField(default=False)\n    type = models.CharField(max_length=50, default=\"currency\")\n    raw_symbol = models.CharField(max_length=50, blank=True)\n    source = models.CharField(max_length=50, default=\"fastforex\")\n    updated_at = models.DateTimeField(auto_now=True)",
+        "detail": "apps.market.models",
+        "documentation": {}
+    },
+    {
+        "label": "fetch_nerkh_prices",
+        "kind": 2,
+        "importPath": "apps.market.services",
+        "description": "apps.market.services",
+        "peekOfCode": "def fetch_nerkh_prices():\n    response = requests.get(\n        settings.NERKH_API_URL,\n        headers={\n            \"Authorization\": f\"Bearer {settings.NERKH_API_TOKEN}\",\n            \"Content-Type\": \"application/json\",\n            \"User-Agent\": \"django-market-service\",\n        },\n        timeout=20,\n    )",
+        "detail": "apps.market.services",
+        "documentation": {}
+    },
+    {
+        "label": "build_market_items_from_nerkh",
+        "kind": 2,
+        "importPath": "apps.market.services",
+        "description": "apps.market.services",
+        "peekOfCode": "def build_market_items_from_nerkh():\n    response = fetch_nerkh_prices()\n    data = response.get(\"data\", {})\n    sections = [\"currency\", \"gold\", \"crypto\"]\n    for section in sections:\n        section_data = data.get(section, {})\n        for symbol, info in section_data.items():\n            price = info.get(\"current\")\n            if not price:\n                continue",
+        "detail": "apps.market.services",
+        "documentation": {}
+    },
+    {
+        "label": "fetch_iran_market_data",
+        "kind": 2,
+        "importPath": "apps.market.tasks",
+        "description": "apps.market.tasks",
+        "peekOfCode": "def fetch_iran_market_data():\n    return build_market_items_from_nerkh()",
+        "detail": "apps.market.tasks",
+        "documentation": {}
+    },
+    {
+        "label": "urlpatterns",
+        "kind": 5,
+        "importPath": "apps.market.urls",
+        "description": "apps.market.urls",
+        "peekOfCode": "urlpatterns = [\n    path(\"\", MarketItemsAPIView.as_view(), name=\"market-items\"),\n]",
+        "detail": "apps.market.urls",
+        "documentation": {}
+    },
+    {
+        "label": "MarketItemsAPIView",
+        "kind": 6,
+        "importPath": "apps.market.views",
+        "description": "apps.market.views",
+        "peekOfCode": "class MarketItemsAPIView(APIView):\n    def get(self, request):\n        items = MarketItem.objects.all().order_by(\"id\")\n        data = [\n            {\n                \"id\": item.id,\n                \"symbol\": item.symbol,\n                \"title\": item.title,\n                \"subtitle\": item.subtitle,\n                \"value\": format_toman(item.value),",
+        "detail": "apps.market.views",
+        "documentation": {}
+    },
+    {
+        "label": "GoldChartAPIView",
+        "kind": 6,
+        "importPath": "apps.market.views",
+        "description": "apps.market.views",
+        "peekOfCode": "class GoldChartAPIView(APIView):\n    def get(self, request):\n        return Response([])",
+        "detail": "apps.market.views",
+        "documentation": {}
+    },
+    {
+        "label": "format_toman",
+        "kind": 2,
+        "importPath": "apps.market.views",
+        "description": "apps.market.views",
+        "peekOfCode": "def format_toman(value):\n    if value is None:\n        return \"—\"\n    return f\"{value:,.0f}\"\nclass MarketItemsAPIView(APIView):\n    def get(self, request):\n        items = MarketItem.objects.all().order_by(\"id\")\n        data = [\n            {\n                \"id\": item.id,",
+        "detail": "apps.market.views",
         "documentation": {}
     },
     {
@@ -2394,249 +2499,6 @@
         "documentation": {}
     },
     {
-        "label": "Command",
-        "kind": 6,
-        "importPath": "apps.markets.management.commands.sync_market_prices",
-        "description": "apps.markets.management.commands.sync_market_prices",
-        "peekOfCode": "class Command(BaseCommand):\n    help = \"Sync market prices from Alpha Vantage\"\n    def handle(self, *args, **options):\n        result = sync_market_prices_task()\n        self.stdout.write(\n            self.style.SUCCESS(\n                f\"{result['synced']} market prices synced successfully.\"\n            )\n        )",
-        "detail": "apps.markets.management.commands.sync_market_prices",
-        "documentation": {}
-    },
-    {
-        "label": "Migration",
-        "kind": 6,
-        "importPath": "apps.markets.migrations.0001_initial",
-        "description": "apps.markets.migrations.0001_initial",
-        "peekOfCode": "class Migration(migrations.Migration):\n    initial = True\n    dependencies = [\n    ]\n    operations = [\n        migrations.CreateModel(\n            name='MarketPrice',\n            fields=[\n                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),\n                ('symbol', models.CharField(max_length=30, unique=True)),",
-        "detail": "apps.markets.migrations.0001_initial",
-        "documentation": {}
-    },
-    {
-        "label": "to_decimal",
-        "kind": 2,
-        "importPath": "apps.markets.services.alpha_vantage",
-        "description": "apps.markets.services.alpha_vantage",
-        "peekOfCode": "def to_decimal(value):\n    if value is None:\n        return None\n    try:\n        return Decimal(str(value))\n    except (InvalidOperation, TypeError, ValueError):\n        return None\ndef to_persian_digits(value):\n    if value is None:\n        return \"\"",
-        "detail": "apps.markets.services.alpha_vantage",
-        "documentation": {}
-    },
-    {
-        "label": "to_persian_digits",
-        "kind": 2,
-        "importPath": "apps.markets.services.alpha_vantage",
-        "description": "apps.markets.services.alpha_vantage",
-        "peekOfCode": "def to_persian_digits(value):\n    if value is None:\n        return \"\"\n    english = \"0123456789\"\n    persian = \"۰۱۲۳۴۵۶۷۸۹\"\n    text = str(value)\n    for e, p in zip(english, persian):\n        text = text.replace(e, p)\n    return text\ndef format_number(value, decimal_places=2):",
-        "detail": "apps.markets.services.alpha_vantage",
-        "documentation": {}
-    },
-    {
-        "label": "format_number",
-        "kind": 2,
-        "importPath": "apps.markets.services.alpha_vantage",
-        "description": "apps.markets.services.alpha_vantage",
-        "peekOfCode": "def format_number(value, decimal_places=2):\n    decimal_value = to_decimal(value)\n    if decimal_value is None:\n        return \"-\"\n    formatted = f\"{decimal_value:,.{decimal_places}f}\"\n    if decimal_places > 0:\n        formatted = formatted.rstrip(\"0\").rstrip(\".\")\n    return to_persian_digits(formatted)\ndef get_api_key():\n    api_key = os.getenv(\"ALPHA_VANTAGE_API_KEY\", \"\").strip()",
-        "detail": "apps.markets.services.alpha_vantage",
-        "documentation": {}
-    },
-    {
-        "label": "get_api_key",
-        "kind": 2,
-        "importPath": "apps.markets.services.alpha_vantage",
-        "description": "apps.markets.services.alpha_vantage",
-        "peekOfCode": "def get_api_key():\n    api_key = os.getenv(\"ALPHA_VANTAGE_API_KEY\", \"\").strip()\n    if not api_key:\n        raise RuntimeError(\"ALPHA_VANTAGE_API_KEY is missing\")\n    return api_key\ndef call_alpha_vantage(function_name, params=None, retries=MAX_RETRIES):\n    request_params = {\n        \"function\": function_name,\n        \"apikey\": get_api_key(),\n    }",
-        "detail": "apps.markets.services.alpha_vantage",
-        "documentation": {}
-    },
-    {
-        "label": "call_alpha_vantage",
-        "kind": 2,
-        "importPath": "apps.markets.services.alpha_vantage",
-        "description": "apps.markets.services.alpha_vantage",
-        "peekOfCode": "def call_alpha_vantage(function_name, params=None, retries=MAX_RETRIES):\n    request_params = {\n        \"function\": function_name,\n        \"apikey\": get_api_key(),\n    }\n    if params:\n        request_params.update(params)\n    last_error = None\n    for attempt in range(retries + 1):\n        try:",
-        "detail": "apps.markets.services.alpha_vantage",
-        "documentation": {}
-    },
-    {
-        "label": "fetch_exchange_rate",
-        "kind": 2,
-        "importPath": "apps.markets.services.alpha_vantage",
-        "description": "apps.markets.services.alpha_vantage",
-        "peekOfCode": "def fetch_exchange_rate(from_currency, to_currency):\n    data = call_alpha_vantage(\n        \"CURRENCY_EXCHANGE_RATE\",\n        {\n            \"from_currency\": from_currency,\n            \"to_currency\": to_currency,\n        },\n    )\n    rate_data = data.get(\"Realtime Currency Exchange Rate\") or {}\n    rate = rate_data.get(\"5. Exchange Rate\")",
-        "detail": "apps.markets.services.alpha_vantage",
-        "documentation": {}
-    },
-    {
-        "label": "fetch_commodity_rate",
-        "kind": 2,
-        "importPath": "apps.markets.services.alpha_vantage",
-        "description": "apps.markets.services.alpha_vantage",
-        "peekOfCode": "def fetch_commodity_rate(provider_function):\n    data = call_alpha_vantage(provider_function)\n    records = data.get(\"data\") or []\n    if not records:\n        raise RuntimeError(f\"No data returned for {provider_function}\")\n    latest = records[0]\n    value = latest.get(\"value\")\n    if not value or value == \".\":\n        raise RuntimeError(f\"Value not found for {provider_function}\")\n    return {",
-        "detail": "apps.markets.services.alpha_vantage",
-        "documentation": {}
-    },
-    {
-        "label": "fetch_usd_to_irr_rate",
-        "kind": 2,
-        "importPath": "apps.markets.services.alpha_vantage",
-        "description": "apps.markets.services.alpha_vantage",
-        "peekOfCode": "def fetch_usd_to_irr_rate():\n    return fetch_exchange_rate(\"USD\", \"IRR\")\ndef fetch_stock_rate(symbol):\n    # این تابع برای دریافت قیمت لحظه‌ای سهام است\n    data = call_alpha_vantage(\"GLOBAL_QUOTE\", {\"symbol\": symbol})\n    quote = data.get(\"Global Quote\") or {}\n    price = quote.get(\"05. price\")\n    if not price:\n        raise RuntimeError(f\"Stock price not found for {symbol}\")\n    return {",
-        "detail": "apps.markets.services.alpha_vantage",
-        "documentation": {}
-    },
-    {
-        "label": "fetch_stock_rate",
-        "kind": 2,
-        "importPath": "apps.markets.services.alpha_vantage",
-        "description": "apps.markets.services.alpha_vantage",
-        "peekOfCode": "def fetch_stock_rate(symbol):\n    # این تابع برای دریافت قیمت لحظه‌ای سهام است\n    data = call_alpha_vantage(\"GLOBAL_QUOTE\", {\"symbol\": symbol})\n    quote = data.get(\"Global Quote\") or {}\n    price = quote.get(\"05. price\")\n    if not price:\n        raise RuntimeError(f\"Stock price not found for {symbol}\")\n    return {\n        \"rate\": to_decimal(price),\n        \"quote_currency\": \"USD\",",
-        "detail": "apps.markets.services.alpha_vantage",
-        "documentation": {}
-    },
-    {
-        "label": "fetch_market_rate",
-        "kind": 2,
-        "importPath": "apps.markets.services.alpha_vantage",
-        "description": "apps.markets.services.alpha_vantage",
-        "peekOfCode": "def fetch_market_rate(market):\n    provider_function = (\n        (market.provider_function or \"CURRENCY_EXCHANGE_RATE\").strip().upper()\n    )\n    # فارکس و کریپتو\n    if provider_function == \"CURRENCY_EXCHANGE_RATE\":\n        # ... همان کدی که داشتی ...\n        return fetch_exchange_rate(market.from_currency, market.to_currency)\n    # سهام\n    if provider_function == \"GLOBAL_QUOTE\":",
-        "detail": "apps.markets.services.alpha_vantage",
-        "documentation": {}
-    },
-    {
-        "label": "resolve_market_rate",
-        "kind": 2,
-        "importPath": "apps.markets.services.alpha_vantage",
-        "description": "apps.markets.services.alpha_vantage",
-        "peekOfCode": "def resolve_market_rate(market, usd_to_irr_rate=None, usd_to_irr_raw=None):\n    target_currency = (market.target_currency or \"USD\").strip().upper()\n    result = fetch_market_rate(market)\n    rate = result[\"rate\"]\n    quote_currency = (result[\"quote_currency\"] or \"\").strip().upper()\n    if rate is None:\n        raise RuntimeError(f\"Invalid rate for {market.symbol}\")\n    if target_currency == quote_currency:\n        return {\n            \"value\": rate,",
-        "detail": "apps.markets.services.alpha_vantage",
-        "documentation": {}
-    },
-    {
-        "label": "get_market_prices_from_alpha_vantage",
-        "kind": 2,
-        "importPath": "apps.markets.services.alpha_vantage",
-        "description": "apps.markets.services.alpha_vantage",
-        "peekOfCode": "def get_market_prices_from_alpha_vantage():\n    symbols = list(\n        MarketSymbol.objects.filter(enabled_for_sync=True, active=True).order_by(\n            \"sort_order\", \"id\"\n        )\n    )\n    items = []\n    now = timezone.now()\n    needs_irr_conversion = any(\n        (symbol.target_currency or \"\").strip().upper() == \"IRR\" for symbol in symbols",
-        "detail": "apps.markets.services.alpha_vantage",
-        "documentation": {}
-    },
-    {
-        "label": "BASE_URL",
-        "kind": 5,
-        "importPath": "apps.markets.services.alpha_vantage",
-        "description": "apps.markets.services.alpha_vantage",
-        "peekOfCode": "BASE_URL = \"https://www.alphavantage.co/query\"\nREQUEST_TIMEOUT = 20\nREQUEST_DELAY_SECONDS = 1.3\nMAX_RETRIES = 2\ndef to_decimal(value):\n    if value is None:\n        return None\n    try:\n        return Decimal(str(value))\n    except (InvalidOperation, TypeError, ValueError):",
-        "detail": "apps.markets.services.alpha_vantage",
-        "documentation": {}
-    },
-    {
-        "label": "REQUEST_TIMEOUT",
-        "kind": 5,
-        "importPath": "apps.markets.services.alpha_vantage",
-        "description": "apps.markets.services.alpha_vantage",
-        "peekOfCode": "REQUEST_TIMEOUT = 20\nREQUEST_DELAY_SECONDS = 1.3\nMAX_RETRIES = 2\ndef to_decimal(value):\n    if value is None:\n        return None\n    try:\n        return Decimal(str(value))\n    except (InvalidOperation, TypeError, ValueError):\n        return None",
-        "detail": "apps.markets.services.alpha_vantage",
-        "documentation": {}
-    },
-    {
-        "label": "REQUEST_DELAY_SECONDS",
-        "kind": 5,
-        "importPath": "apps.markets.services.alpha_vantage",
-        "description": "apps.markets.services.alpha_vantage",
-        "peekOfCode": "REQUEST_DELAY_SECONDS = 1.3\nMAX_RETRIES = 2\ndef to_decimal(value):\n    if value is None:\n        return None\n    try:\n        return Decimal(str(value))\n    except (InvalidOperation, TypeError, ValueError):\n        return None\ndef to_persian_digits(value):",
-        "detail": "apps.markets.services.alpha_vantage",
-        "documentation": {}
-    },
-    {
-        "label": "MAX_RETRIES",
-        "kind": 5,
-        "importPath": "apps.markets.services.alpha_vantage",
-        "description": "apps.markets.services.alpha_vantage",
-        "peekOfCode": "MAX_RETRIES = 2\ndef to_decimal(value):\n    if value is None:\n        return None\n    try:\n        return Decimal(str(value))\n    except (InvalidOperation, TypeError, ValueError):\n        return None\ndef to_persian_digits(value):\n    if value is None:",
-        "detail": "apps.markets.services.alpha_vantage",
-        "documentation": {}
-    },
-    {
-        "label": "MarketSymbolAdmin",
-        "kind": 6,
-        "importPath": "apps.markets.admin",
-        "description": "apps.markets.admin",
-        "peekOfCode": "class MarketSymbolAdmin(admin.ModelAdmin):\n    list_display = (\n        \"title\",\n        \"symbol\",\n        \"type\",\n        \"from_currency\",\n        \"to_currency\",\n        \"target_currency\",\n        \"enabled_for_sync\",\n        \"active\",",
-        "detail": "apps.markets.admin",
-        "documentation": {}
-    },
-    {
-        "label": "MarketPriceAdmin",
-        "kind": 6,
-        "importPath": "apps.markets.admin",
-        "description": "apps.markets.admin",
-        "peekOfCode": "class MarketPriceAdmin(admin.ModelAdmin):\n    list_display = (\n        \"title\",\n        \"symbol\",\n        \"type\",\n        \"display_value\",\n        \"active\",\n        \"fetched_at\",\n        \"sort_order\",\n    )",
-        "detail": "apps.markets.admin",
-        "documentation": {}
-    },
-    {
-        "label": "MarketsConfig",
-        "kind": 6,
-        "importPath": "apps.markets.apps",
-        "description": "apps.markets.apps",
-        "peekOfCode": "class MarketsConfig(AppConfig):\n    default_auto_field = \"django.db.models.BigAutoField\"\n    name = \"apps.markets\"",
-        "detail": "apps.markets.apps",
-        "documentation": {}
-    },
-    {
-        "label": "MarketSymbol",
-        "kind": 6,
-        "importPath": "apps.markets.models",
-        "description": "apps.markets.models",
-        "peekOfCode": "class MarketSymbol(models.Model):\n    PROVIDER_ALPHA_VANTAGE = \"alpha_vantage\"\n    TYPE_CRYPTO = \"crypto\"\n    TYPE_FOREX = \"forex\"\n    TYPE_COMMODITY = \"commodity\"\n    TYPE_INDEX = \"index\"\n    TYPE_CHOICES = [\n        (TYPE_CRYPTO, \"Crypto\"),\n        (TYPE_FOREX, \"Forex\"),\n        (TYPE_COMMODITY, \"Commodity\"),",
-        "detail": "apps.markets.models",
-        "documentation": {}
-    },
-    {
-        "label": "MarketPrice",
-        "kind": 6,
-        "importPath": "apps.markets.models",
-        "description": "apps.markets.models",
-        "peekOfCode": "class MarketPrice(models.Model):\n    TYPE_CRYPTO = \"crypto\"\n    TYPE_FOREX = \"forex\"\n    TYPE_COMMODITY = \"commodity\"\n    TYPE_INDEX = \"index\"\n    TYPE_CHOICES = [\n        (TYPE_CRYPTO, \"Crypto\"),\n        (TYPE_FOREX, \"Forex\"),\n        (TYPE_COMMODITY, \"Commodity\"),\n        (TYPE_INDEX, \"Index\"),",
-        "detail": "apps.markets.models",
-        "documentation": {}
-    },
-    {
-        "label": "MarketPriceSerializer",
-        "kind": 6,
-        "importPath": "apps.markets.serializers",
-        "description": "apps.markets.serializers",
-        "peekOfCode": "class MarketPriceSerializer(serializers.ModelSerializer):\n    value = serializers.CharField(source=\"display_value\", read_only=True)\n    class Meta:\n        model = MarketPrice\n        fields = [\n            \"id\",\n            \"symbol\",\n            \"title\",\n            \"subtitle\",\n            \"type\",",
-        "detail": "apps.markets.serializers",
-        "documentation": {}
-    },
-    {
-        "label": "sync_market_prices_task",
-        "kind": 2,
-        "importPath": "apps.markets.tasks",
-        "description": "apps.markets.tasks",
-        "peekOfCode": "def sync_market_prices_task():\n    items = get_market_prices_from_alpha_vantage()\n    MarketPrice.objects.all().delete()\n    MarketPrice.objects.bulk_create(\n        [\n            MarketPrice(\n                symbol=item[\"symbol\"],\n                title=item[\"title\"],\n                subtitle=item[\"subtitle\"],\n                type=item[\"type\"],",
-        "detail": "apps.markets.tasks",
-        "documentation": {}
-    },
-    {
-        "label": "urlpatterns",
-        "kind": 5,
-        "importPath": "apps.markets.urls",
-        "description": "apps.markets.urls",
-        "peekOfCode": "urlpatterns = [\n    path(\"\", MarketPriceListView.as_view(), name=\"market-price-list\"),\n]",
-        "detail": "apps.markets.urls",
-        "documentation": {}
-    },
-    {
-        "label": "MarketPriceListView",
-        "kind": 6,
-        "importPath": "apps.markets.views",
-        "description": "apps.markets.views",
-        "peekOfCode": "class MarketPriceListView(ListAPIView):\n    permission_classes = [AllowAny]\n    serializer_class = MarketPriceSerializer\n    queryset = MarketPrice.objects.all().order_by(\"sort_order\", \"id\")\n    pagination_class = None",
-        "detail": "apps.markets.views",
-        "documentation": {}
-    },
-    {
         "label": "Migration",
         "kind": 6,
         "importPath": "apps.news.migrations.0001_initial",
@@ -2661,6 +2523,15 @@
         "description": "apps.news.migrations.0003_homeheroselection_post_audio_file_post_embed_url_and_more",
         "peekOfCode": "class Migration(migrations.Migration):\n    dependencies = [\n        ('news', '0002_alter_post_options_post_homepage_order_and_more'),\n        migrations.swappable_dependency(settings.AUTH_USER_MODEL),\n    ]\n    operations = [\n        migrations.CreateModel(\n            name='HomeHeroSelection',\n            fields=[\n                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),",
         "detail": "apps.news.migrations.0003_homeheroselection_post_audio_file_post_embed_url_and_more",
+        "documentation": {}
+    },
+    {
+        "label": "Migration",
+        "kind": 6,
+        "importPath": "apps.news.migrations.0004_homevideoselection",
+        "description": "apps.news.migrations.0004_homevideoselection",
+        "peekOfCode": "class Migration(migrations.Migration):\n    dependencies = [\n        ('news', '0003_homeheroselection_post_audio_file_post_embed_url_and_more'),\n    ]\n    operations = [\n        migrations.CreateModel(\n            name='HomeVideoSelection',\n            fields=[\n                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),\n                ('created_at', models.DateTimeField(auto_now_add=True)),",
+        "detail": "apps.news.migrations.0004_homevideoselection",
         "documentation": {}
     },
     {
@@ -2831,6 +2702,24 @@
         "importPath": "apps.news.models",
         "description": "apps.news.models",
         "peekOfCode": "class HomeHeroSelection(TimeStampedModel):\n    slot = models.CharField(\n        max_length=30,\n        choices=HomeHeroSlot.choices,\n        unique=True,\n    )\n    post = models.ForeignKey(\n        \"news.Post\",\n        on_delete=models.CASCADE,\n        related_name=\"home_hero_selections\",",
+        "detail": "apps.news.models",
+        "documentation": {}
+    },
+    {
+        "label": "HomeVideoSlot",
+        "kind": 6,
+        "importPath": "apps.news.models",
+        "description": "apps.news.models",
+        "peekOfCode": "class HomeVideoSlot(models.TextChoices):\n    MAIN = \"main\", \"Main Video\"\n    TOP = \"top\", \"Top Small Video\"\n    MIDDLE = \"middle\", \"Middle Small Video\"\n    BOTTOM = \"bottom\", \"Bottom Small Video\"\nclass HomeVideoSelection(TimeStampedModel):\n    slot = models.CharField(\n        max_length=30,\n        choices=HomeVideoSlot.choices,\n        unique=True,",
+        "detail": "apps.news.models",
+        "documentation": {}
+    },
+    {
+        "label": "HomeVideoSelection",
+        "kind": 6,
+        "importPath": "apps.news.models",
+        "description": "apps.news.models",
+        "peekOfCode": "class HomeVideoSelection(TimeStampedModel):\n    slot = models.CharField(\n        max_length=30,\n        choices=HomeVideoSlot.choices,\n        unique=True,\n    )\n    post = models.ForeignKey(\n        \"news.Post\",\n        on_delete=models.CASCADE,\n        related_name=\"home_video_selections\",",
         "detail": "apps.news.models",
         "documentation": {}
     },
@@ -3073,16 +2962,7 @@
         "kind": 5,
         "importPath": "config.celery",
         "description": "config.celery",
-        "peekOfCode": "app = Celery(\"blog_backend\")\napp.config_from_object(\"django.conf:settings\", namespace=\"CELERY\")\napp.autodiscover_tasks()\napp.conf.beat_schedule = {\n    \"sync-market-prices-hourly\": {\n        \"task\": \"apps.markets.tasks.sync_market_prices_task\",\n        \"schedule\": crontab(minute=0),\n    },\n}",
-        "detail": "config.celery",
-        "documentation": {}
-    },
-    {
-        "label": "app.conf.beat_schedule",
-        "kind": 5,
-        "importPath": "config.celery",
-        "description": "config.celery",
-        "peekOfCode": "app.conf.beat_schedule = {\n    \"sync-market-prices-hourly\": {\n        \"task\": \"apps.markets.tasks.sync_market_prices_task\",\n        \"schedule\": crontab(minute=0),\n    },\n}",
+        "peekOfCode": "app = Celery(\"config\")\napp.config_from_object(\"django.conf:settings\", namespace=\"CELERY\")\napp.autodiscover_tasks()",
         "detail": "config.celery",
         "documentation": {}
     },
@@ -3091,7 +2971,25 @@
         "kind": 5,
         "importPath": "config.settings",
         "description": "config.settings",
-        "peekOfCode": "BASE_DIR = Path(__file__).resolve().parent.parent\nSECRET_KEY = os.getenv(\"SECRET_KEY\", \"django-insecure-dev-key\")\nDEBUG = os.getenv(\"DEBUG\", \"1\") == \"1\"\nALLOWED_HOSTS = [\"*\"]\n# --------------------------------------------------\n# INSTALLED APPS\n# --------------------------------------------------\nINSTALLED_APPS = [\n    \"django.contrib.admin\",\n    \"django.contrib.auth\",",
+        "peekOfCode": "BASE_DIR = Path(__file__).resolve().parent.parent\nNERKH_API_URL = \"https://api.nerkh.io/v1/prices/json/all\"\nNERKH_API_TOKEN = os.getenv(\"NERKH_API_TOKEN\")\nSECRET_KEY = os.getenv(\"SECRET_KEY\", \"django-insecure-dev-key\")\n# DEBUG = os.getenv(\"DEBUG\", \"1\") == \"1\"\nDEBUG = True\nALLOWED_HOSTS = [\"*\"]\n# --------------------------------------------------\n# INSTALLED APPS\n# --------------------------------------------------",
+        "detail": "config.settings",
+        "documentation": {}
+    },
+    {
+        "label": "NERKH_API_URL",
+        "kind": 5,
+        "importPath": "config.settings",
+        "description": "config.settings",
+        "peekOfCode": "NERKH_API_URL = \"https://api.nerkh.io/v1/prices/json/all\"\nNERKH_API_TOKEN = os.getenv(\"NERKH_API_TOKEN\")\nSECRET_KEY = os.getenv(\"SECRET_KEY\", \"django-insecure-dev-key\")\n# DEBUG = os.getenv(\"DEBUG\", \"1\") == \"1\"\nDEBUG = True\nALLOWED_HOSTS = [\"*\"]\n# --------------------------------------------------\n# INSTALLED APPS\n# --------------------------------------------------\nINSTALLED_APPS = [",
+        "detail": "config.settings",
+        "documentation": {}
+    },
+    {
+        "label": "NERKH_API_TOKEN",
+        "kind": 5,
+        "importPath": "config.settings",
+        "description": "config.settings",
+        "peekOfCode": "NERKH_API_TOKEN = os.getenv(\"NERKH_API_TOKEN\")\nSECRET_KEY = os.getenv(\"SECRET_KEY\", \"django-insecure-dev-key\")\n# DEBUG = os.getenv(\"DEBUG\", \"1\") == \"1\"\nDEBUG = True\nALLOWED_HOSTS = [\"*\"]\n# --------------------------------------------------\n# INSTALLED APPS\n# --------------------------------------------------\nINSTALLED_APPS = [\n    \"django.contrib.admin\",",
         "detail": "config.settings",
         "documentation": {}
     },
@@ -3100,7 +2998,7 @@
         "kind": 5,
         "importPath": "config.settings",
         "description": "config.settings",
-        "peekOfCode": "SECRET_KEY = os.getenv(\"SECRET_KEY\", \"django-insecure-dev-key\")\nDEBUG = os.getenv(\"DEBUG\", \"1\") == \"1\"\nALLOWED_HOSTS = [\"*\"]\n# --------------------------------------------------\n# INSTALLED APPS\n# --------------------------------------------------\nINSTALLED_APPS = [\n    \"django.contrib.admin\",\n    \"django.contrib.auth\",\n    \"django.contrib.contenttypes\",",
+        "peekOfCode": "SECRET_KEY = os.getenv(\"SECRET_KEY\", \"django-insecure-dev-key\")\n# DEBUG = os.getenv(\"DEBUG\", \"1\") == \"1\"\nDEBUG = True\nALLOWED_HOSTS = [\"*\"]\n# --------------------------------------------------\n# INSTALLED APPS\n# --------------------------------------------------\nINSTALLED_APPS = [\n    \"django.contrib.admin\",\n    \"django.contrib.auth\",",
         "detail": "config.settings",
         "documentation": {}
     },
@@ -3109,7 +3007,7 @@
         "kind": 5,
         "importPath": "config.settings",
         "description": "config.settings",
-        "peekOfCode": "DEBUG = os.getenv(\"DEBUG\", \"1\") == \"1\"\nALLOWED_HOSTS = [\"*\"]\n# --------------------------------------------------\n# INSTALLED APPS\n# --------------------------------------------------\nINSTALLED_APPS = [\n    \"django.contrib.admin\",\n    \"django.contrib.auth\",\n    \"django.contrib.contenttypes\",\n    \"django.contrib.sessions\",",
+        "peekOfCode": "DEBUG = True\nALLOWED_HOSTS = [\"*\"]\n# --------------------------------------------------\n# INSTALLED APPS\n# --------------------------------------------------\nINSTALLED_APPS = [\n    \"django.contrib.admin\",\n    \"django.contrib.auth\",\n    \"django.contrib.contenttypes\",\n    \"django.contrib.sessions\",",
         "detail": "config.settings",
         "documentation": {}
     },
@@ -3199,7 +3097,7 @@
         "kind": 5,
         "importPath": "config.settings",
         "description": "config.settings",
-        "peekOfCode": "TIME_ZONE = \"Asia/Tehran\"\nUSE_I18N = True\nUSE_TZ = True\n# --------------------------------------------------\n# STATIC FILES\n# --------------------------------------------------\nSTATIC_URL = \"/static/\"\nSTATIC_ROOT = BASE_DIR / \"staticfiles\"\nSTORAGES = {\n    \"default\": {",
+        "peekOfCode": "TIME_ZONE = \"Asia/Tehran\"\nUSE_I18N = True\nUSE_TZ = True\n# --------------------------------------------------\n# STATIC FILES\n# --------------------------------------------------\nSTATIC_URL = \"/static/\"\nSTATIC_ROOT = BASE_DIR / \"staticfiles\"\nSTORAGES = {\n    \"default\": {\"BACKEND\": \"storages.backends.s3boto3.S3Boto3Storage\"},",
         "detail": "config.settings",
         "documentation": {}
     },
@@ -3208,7 +3106,7 @@
         "kind": 5,
         "importPath": "config.settings",
         "description": "config.settings",
-        "peekOfCode": "USE_I18N = True\nUSE_TZ = True\n# --------------------------------------------------\n# STATIC FILES\n# --------------------------------------------------\nSTATIC_URL = \"/static/\"\nSTATIC_ROOT = BASE_DIR / \"staticfiles\"\nSTORAGES = {\n    \"default\": {\n        \"BACKEND\": \"storages.backends.s3boto3.S3Boto3Storage\",",
+        "peekOfCode": "USE_I18N = True\nUSE_TZ = True\n# --------------------------------------------------\n# STATIC FILES\n# --------------------------------------------------\nSTATIC_URL = \"/static/\"\nSTATIC_ROOT = BASE_DIR / \"staticfiles\"\nSTORAGES = {\n    \"default\": {\"BACKEND\": \"storages.backends.s3boto3.S3Boto3Storage\"},\n    \"staticfiles\": {\"BACKEND\": \"django.contrib.staticfiles.storage.StaticFilesStorage\"},",
         "detail": "config.settings",
         "documentation": {}
     },
@@ -3217,7 +3115,7 @@
         "kind": 5,
         "importPath": "config.settings",
         "description": "config.settings",
-        "peekOfCode": "USE_TZ = True\n# --------------------------------------------------\n# STATIC FILES\n# --------------------------------------------------\nSTATIC_URL = \"/static/\"\nSTATIC_ROOT = BASE_DIR / \"staticfiles\"\nSTORAGES = {\n    \"default\": {\n        \"BACKEND\": \"storages.backends.s3boto3.S3Boto3Storage\",\n    },",
+        "peekOfCode": "USE_TZ = True\n# --------------------------------------------------\n# STATIC FILES\n# --------------------------------------------------\nSTATIC_URL = \"/static/\"\nSTATIC_ROOT = BASE_DIR / \"staticfiles\"\nSTORAGES = {\n    \"default\": {\"BACKEND\": \"storages.backends.s3boto3.S3Boto3Storage\"},\n    \"staticfiles\": {\"BACKEND\": \"django.contrib.staticfiles.storage.StaticFilesStorage\"},\n}",
         "detail": "config.settings",
         "documentation": {}
     },
@@ -3226,7 +3124,7 @@
         "kind": 5,
         "importPath": "config.settings",
         "description": "config.settings",
-        "peekOfCode": "STATIC_URL = \"/static/\"\nSTATIC_ROOT = BASE_DIR / \"staticfiles\"\nSTORAGES = {\n    \"default\": {\n        \"BACKEND\": \"storages.backends.s3boto3.S3Boto3Storage\",\n    },\n    \"staticfiles\": {\n        \"BACKEND\": \"django.contrib.staticfiles.storage.StaticFilesStorage\",\n    },\n}",
+        "peekOfCode": "STATIC_URL = \"/static/\"\nSTATIC_ROOT = BASE_DIR / \"staticfiles\"\nSTORAGES = {\n    \"default\": {\"BACKEND\": \"storages.backends.s3boto3.S3Boto3Storage\"},\n    \"staticfiles\": {\"BACKEND\": \"django.contrib.staticfiles.storage.StaticFilesStorage\"},\n}\nAWS_ACCESS_KEY_ID = os.getenv(\"AWS_ACCESS_KEY_ID\")\nAWS_SECRET_ACCESS_KEY = os.getenv(\"AWS_SECRET_ACCESS_KEY\")\nAWS_STORAGE_BUCKET_NAME = os.getenv(\"AWS_STORAGE_BUCKET_NAME\")\nAWS_S3_ENDPOINT_URL = os.getenv(\"AWS_S3_ENDPOINT_URL\")",
         "detail": "config.settings",
         "documentation": {}
     },
@@ -3235,7 +3133,7 @@
         "kind": 5,
         "importPath": "config.settings",
         "description": "config.settings",
-        "peekOfCode": "STATIC_ROOT = BASE_DIR / \"staticfiles\"\nSTORAGES = {\n    \"default\": {\n        \"BACKEND\": \"storages.backends.s3boto3.S3Boto3Storage\",\n    },\n    \"staticfiles\": {\n        \"BACKEND\": \"django.contrib.staticfiles.storage.StaticFilesStorage\",\n    },\n}\nAWS_ACCESS_KEY_ID = os.getenv(\"AWS_ACCESS_KEY_ID\")",
+        "peekOfCode": "STATIC_ROOT = BASE_DIR / \"staticfiles\"\nSTORAGES = {\n    \"default\": {\"BACKEND\": \"storages.backends.s3boto3.S3Boto3Storage\"},\n    \"staticfiles\": {\"BACKEND\": \"django.contrib.staticfiles.storage.StaticFilesStorage\"},\n}\nAWS_ACCESS_KEY_ID = os.getenv(\"AWS_ACCESS_KEY_ID\")\nAWS_SECRET_ACCESS_KEY = os.getenv(\"AWS_SECRET_ACCESS_KEY\")\nAWS_STORAGE_BUCKET_NAME = os.getenv(\"AWS_STORAGE_BUCKET_NAME\")\nAWS_S3_ENDPOINT_URL = os.getenv(\"AWS_S3_ENDPOINT_URL\")\nAWS_S3_REGION_NAME = \"us-east-1\"",
         "detail": "config.settings",
         "documentation": {}
     },
@@ -3244,7 +3142,7 @@
         "kind": 5,
         "importPath": "config.settings",
         "description": "config.settings",
-        "peekOfCode": "STORAGES = {\n    \"default\": {\n        \"BACKEND\": \"storages.backends.s3boto3.S3Boto3Storage\",\n    },\n    \"staticfiles\": {\n        \"BACKEND\": \"django.contrib.staticfiles.storage.StaticFilesStorage\",\n    },\n}\nAWS_ACCESS_KEY_ID = os.getenv(\"AWS_ACCESS_KEY_ID\")\nAWS_SECRET_ACCESS_KEY = os.getenv(\"AWS_SECRET_ACCESS_KEY\")",
+        "peekOfCode": "STORAGES = {\n    \"default\": {\"BACKEND\": \"storages.backends.s3boto3.S3Boto3Storage\"},\n    \"staticfiles\": {\"BACKEND\": \"django.contrib.staticfiles.storage.StaticFilesStorage\"},\n}\nAWS_ACCESS_KEY_ID = os.getenv(\"AWS_ACCESS_KEY_ID\")\nAWS_SECRET_ACCESS_KEY = os.getenv(\"AWS_SECRET_ACCESS_KEY\")\nAWS_STORAGE_BUCKET_NAME = os.getenv(\"AWS_STORAGE_BUCKET_NAME\")\nAWS_S3_ENDPOINT_URL = os.getenv(\"AWS_S3_ENDPOINT_URL\")\nAWS_S3_REGION_NAME = \"us-east-1\"\nAWS_S3_ADDRESSING_STYLE = \"path\"",
         "detail": "config.settings",
         "documentation": {}
     },
@@ -3253,7 +3151,7 @@
         "kind": 5,
         "importPath": "config.settings",
         "description": "config.settings",
-        "peekOfCode": "AWS_ACCESS_KEY_ID = os.getenv(\"AWS_ACCESS_KEY_ID\")\nAWS_SECRET_ACCESS_KEY = os.getenv(\"AWS_SECRET_ACCESS_KEY\")\nAWS_STORAGE_BUCKET_NAME = os.getenv(\"AWS_STORAGE_BUCKET_NAME\")\n# داخل docker (برای اتصال)\nAWS_S3_ENDPOINT_URL = os.getenv(\"AWS_S3_ENDPOINT_URL\")  # http://minio:9000\nAWS_S3_REGION_NAME = \"us-east-1\"\nAWS_S3_ADDRESSING_STYLE = \"path\"\nAWS_S3_SIGNATURE_VERSION = \"s3v4\"\nAWS_QUERYSTRING_AUTH = False\nAWS_DEFAULT_ACL = \"public-read\"",
+        "peekOfCode": "AWS_ACCESS_KEY_ID = os.getenv(\"AWS_ACCESS_KEY_ID\")\nAWS_SECRET_ACCESS_KEY = os.getenv(\"AWS_SECRET_ACCESS_KEY\")\nAWS_STORAGE_BUCKET_NAME = os.getenv(\"AWS_STORAGE_BUCKET_NAME\")\nAWS_S3_ENDPOINT_URL = os.getenv(\"AWS_S3_ENDPOINT_URL\")\nAWS_S3_REGION_NAME = \"us-east-1\"\nAWS_S3_ADDRESSING_STYLE = \"path\"\nAWS_S3_SIGNATURE_VERSION = \"s3v4\"\nAWS_QUERYSTRING_AUTH = False\nAWS_DEFAULT_ACL = \"public-read\"\nAWS_S3_FILE_OVERWRITE = False",
         "detail": "config.settings",
         "documentation": {}
     },
@@ -3262,7 +3160,7 @@
         "kind": 5,
         "importPath": "config.settings",
         "description": "config.settings",
-        "peekOfCode": "AWS_SECRET_ACCESS_KEY = os.getenv(\"AWS_SECRET_ACCESS_KEY\")\nAWS_STORAGE_BUCKET_NAME = os.getenv(\"AWS_STORAGE_BUCKET_NAME\")\n# داخل docker (برای اتصال)\nAWS_S3_ENDPOINT_URL = os.getenv(\"AWS_S3_ENDPOINT_URL\")  # http://minio:9000\nAWS_S3_REGION_NAME = \"us-east-1\"\nAWS_S3_ADDRESSING_STYLE = \"path\"\nAWS_S3_SIGNATURE_VERSION = \"s3v4\"\nAWS_QUERYSTRING_AUTH = False\nAWS_DEFAULT_ACL = \"public-read\"\nAWS_S3_FILE_OVERWRITE = False",
+        "peekOfCode": "AWS_SECRET_ACCESS_KEY = os.getenv(\"AWS_SECRET_ACCESS_KEY\")\nAWS_STORAGE_BUCKET_NAME = os.getenv(\"AWS_STORAGE_BUCKET_NAME\")\nAWS_S3_ENDPOINT_URL = os.getenv(\"AWS_S3_ENDPOINT_URL\")\nAWS_S3_REGION_NAME = \"us-east-1\"\nAWS_S3_ADDRESSING_STYLE = \"path\"\nAWS_S3_SIGNATURE_VERSION = \"s3v4\"\nAWS_QUERYSTRING_AUTH = False\nAWS_DEFAULT_ACL = \"public-read\"\nAWS_S3_FILE_OVERWRITE = False\nMINIO_INTERNAL_URL = \"http://minio:9000\"",
         "detail": "config.settings",
         "documentation": {}
     },
@@ -3271,7 +3169,7 @@
         "kind": 5,
         "importPath": "config.settings",
         "description": "config.settings",
-        "peekOfCode": "AWS_STORAGE_BUCKET_NAME = os.getenv(\"AWS_STORAGE_BUCKET_NAME\")\n# داخل docker (برای اتصال)\nAWS_S3_ENDPOINT_URL = os.getenv(\"AWS_S3_ENDPOINT_URL\")  # http://minio:9000\nAWS_S3_REGION_NAME = \"us-east-1\"\nAWS_S3_ADDRESSING_STYLE = \"path\"\nAWS_S3_SIGNATURE_VERSION = \"s3v4\"\nAWS_QUERYSTRING_AUTH = False\nAWS_DEFAULT_ACL = \"public-read\"\nAWS_S3_FILE_OVERWRITE = False\n# =========================",
+        "peekOfCode": "AWS_STORAGE_BUCKET_NAME = os.getenv(\"AWS_STORAGE_BUCKET_NAME\")\nAWS_S3_ENDPOINT_URL = os.getenv(\"AWS_S3_ENDPOINT_URL\")\nAWS_S3_REGION_NAME = \"us-east-1\"\nAWS_S3_ADDRESSING_STYLE = \"path\"\nAWS_S3_SIGNATURE_VERSION = \"s3v4\"\nAWS_QUERYSTRING_AUTH = False\nAWS_DEFAULT_ACL = \"public-read\"\nAWS_S3_FILE_OVERWRITE = False\nMINIO_INTERNAL_URL = \"http://minio:9000\"\nMINIO_PUBLIC_URL = \"http://localhost:9000\"",
         "detail": "config.settings",
         "documentation": {}
     },
@@ -3280,7 +3178,7 @@
         "kind": 5,
         "importPath": "config.settings",
         "description": "config.settings",
-        "peekOfCode": "AWS_S3_ENDPOINT_URL = os.getenv(\"AWS_S3_ENDPOINT_URL\")  # http://minio:9000\nAWS_S3_REGION_NAME = \"us-east-1\"\nAWS_S3_ADDRESSING_STYLE = \"path\"\nAWS_S3_SIGNATURE_VERSION = \"s3v4\"\nAWS_QUERYSTRING_AUTH = False\nAWS_DEFAULT_ACL = \"public-read\"\nAWS_S3_FILE_OVERWRITE = False\n# =========================\n# PUBLIC URL FIX (خیلی مهم)\n# =========================",
+        "peekOfCode": "AWS_S3_ENDPOINT_URL = os.getenv(\"AWS_S3_ENDPOINT_URL\")\nAWS_S3_REGION_NAME = \"us-east-1\"\nAWS_S3_ADDRESSING_STYLE = \"path\"\nAWS_S3_SIGNATURE_VERSION = \"s3v4\"\nAWS_QUERYSTRING_AUTH = False\nAWS_DEFAULT_ACL = \"public-read\"\nAWS_S3_FILE_OVERWRITE = False\nMINIO_INTERNAL_URL = \"http://minio:9000\"\nMINIO_PUBLIC_URL = \"http://localhost:9000\"\n# --------------------------------------------------",
         "detail": "config.settings",
         "documentation": {}
     },
@@ -3289,7 +3187,7 @@
         "kind": 5,
         "importPath": "config.settings",
         "description": "config.settings",
-        "peekOfCode": "AWS_S3_REGION_NAME = \"us-east-1\"\nAWS_S3_ADDRESSING_STYLE = \"path\"\nAWS_S3_SIGNATURE_VERSION = \"s3v4\"\nAWS_QUERYSTRING_AUTH = False\nAWS_DEFAULT_ACL = \"public-read\"\nAWS_S3_FILE_OVERWRITE = False\n# =========================\n# PUBLIC URL FIX (خیلی مهم)\n# =========================\nMINIO_INTERNAL_URL = \"http://minio:9000\"",
+        "peekOfCode": "AWS_S3_REGION_NAME = \"us-east-1\"\nAWS_S3_ADDRESSING_STYLE = \"path\"\nAWS_S3_SIGNATURE_VERSION = \"s3v4\"\nAWS_QUERYSTRING_AUTH = False\nAWS_DEFAULT_ACL = \"public-read\"\nAWS_S3_FILE_OVERWRITE = False\nMINIO_INTERNAL_URL = \"http://minio:9000\"\nMINIO_PUBLIC_URL = \"http://localhost:9000\"\n# --------------------------------------------------\n# DEFAULTS",
         "detail": "config.settings",
         "documentation": {}
     },
@@ -3298,7 +3196,7 @@
         "kind": 5,
         "importPath": "config.settings",
         "description": "config.settings",
-        "peekOfCode": "AWS_S3_ADDRESSING_STYLE = \"path\"\nAWS_S3_SIGNATURE_VERSION = \"s3v4\"\nAWS_QUERYSTRING_AUTH = False\nAWS_DEFAULT_ACL = \"public-read\"\nAWS_S3_FILE_OVERWRITE = False\n# =========================\n# PUBLIC URL FIX (خیلی مهم)\n# =========================\nMINIO_INTERNAL_URL = \"http://minio:9000\"\nMINIO_PUBLIC_URL = \"http://localhost:9000\"",
+        "peekOfCode": "AWS_S3_ADDRESSING_STYLE = \"path\"\nAWS_S3_SIGNATURE_VERSION = \"s3v4\"\nAWS_QUERYSTRING_AUTH = False\nAWS_DEFAULT_ACL = \"public-read\"\nAWS_S3_FILE_OVERWRITE = False\nMINIO_INTERNAL_URL = \"http://minio:9000\"\nMINIO_PUBLIC_URL = \"http://localhost:9000\"\n# --------------------------------------------------\n# DEFAULTS\n# --------------------------------------------------",
         "detail": "config.settings",
         "documentation": {}
     },
@@ -3307,7 +3205,7 @@
         "kind": 5,
         "importPath": "config.settings",
         "description": "config.settings",
-        "peekOfCode": "AWS_S3_SIGNATURE_VERSION = \"s3v4\"\nAWS_QUERYSTRING_AUTH = False\nAWS_DEFAULT_ACL = \"public-read\"\nAWS_S3_FILE_OVERWRITE = False\n# =========================\n# PUBLIC URL FIX (خیلی مهم)\n# =========================\nMINIO_INTERNAL_URL = \"http://minio:9000\"\nMINIO_PUBLIC_URL = \"http://localhost:9000\"\n# --------------------------------------------------",
+        "peekOfCode": "AWS_S3_SIGNATURE_VERSION = \"s3v4\"\nAWS_QUERYSTRING_AUTH = False\nAWS_DEFAULT_ACL = \"public-read\"\nAWS_S3_FILE_OVERWRITE = False\nMINIO_INTERNAL_URL = \"http://minio:9000\"\nMINIO_PUBLIC_URL = \"http://localhost:9000\"\n# --------------------------------------------------\n# DEFAULTS\n# --------------------------------------------------\nDEFAULT_AUTO_FIELD = \"django.db.models.BigAutoField\"",
         "detail": "config.settings",
         "documentation": {}
     },
@@ -3316,7 +3214,7 @@
         "kind": 5,
         "importPath": "config.settings",
         "description": "config.settings",
-        "peekOfCode": "AWS_QUERYSTRING_AUTH = False\nAWS_DEFAULT_ACL = \"public-read\"\nAWS_S3_FILE_OVERWRITE = False\n# =========================\n# PUBLIC URL FIX (خیلی مهم)\n# =========================\nMINIO_INTERNAL_URL = \"http://minio:9000\"\nMINIO_PUBLIC_URL = \"http://localhost:9000\"\n# --------------------------------------------------\n# DEFAULTS",
+        "peekOfCode": "AWS_QUERYSTRING_AUTH = False\nAWS_DEFAULT_ACL = \"public-read\"\nAWS_S3_FILE_OVERWRITE = False\nMINIO_INTERNAL_URL = \"http://minio:9000\"\nMINIO_PUBLIC_URL = \"http://localhost:9000\"\n# --------------------------------------------------\n# DEFAULTS\n# --------------------------------------------------\nDEFAULT_AUTO_FIELD = \"django.db.models.BigAutoField\"\nAUTH_USER_MODEL = \"accounts.User\"",
         "detail": "config.settings",
         "documentation": {}
     },
@@ -3325,7 +3223,7 @@
         "kind": 5,
         "importPath": "config.settings",
         "description": "config.settings",
-        "peekOfCode": "AWS_DEFAULT_ACL = \"public-read\"\nAWS_S3_FILE_OVERWRITE = False\n# =========================\n# PUBLIC URL FIX (خیلی مهم)\n# =========================\nMINIO_INTERNAL_URL = \"http://minio:9000\"\nMINIO_PUBLIC_URL = \"http://localhost:9000\"\n# --------------------------------------------------\n# DEFAULTS\n# --------------------------------------------------",
+        "peekOfCode": "AWS_DEFAULT_ACL = \"public-read\"\nAWS_S3_FILE_OVERWRITE = False\nMINIO_INTERNAL_URL = \"http://minio:9000\"\nMINIO_PUBLIC_URL = \"http://localhost:9000\"\n# --------------------------------------------------\n# DEFAULTS\n# --------------------------------------------------\nDEFAULT_AUTO_FIELD = \"django.db.models.BigAutoField\"\nAUTH_USER_MODEL = \"accounts.User\"\n# --------------------------------------------------",
         "detail": "config.settings",
         "documentation": {}
     },
@@ -3334,7 +3232,7 @@
         "kind": 5,
         "importPath": "config.settings",
         "description": "config.settings",
-        "peekOfCode": "AWS_S3_FILE_OVERWRITE = False\n# =========================\n# PUBLIC URL FIX (خیلی مهم)\n# =========================\nMINIO_INTERNAL_URL = \"http://minio:9000\"\nMINIO_PUBLIC_URL = \"http://localhost:9000\"\n# --------------------------------------------------\n# DEFAULTS\n# --------------------------------------------------\nDEFAULT_AUTO_FIELD = \"django.db.models.BigAutoField\"",
+        "peekOfCode": "AWS_S3_FILE_OVERWRITE = False\nMINIO_INTERNAL_URL = \"http://minio:9000\"\nMINIO_PUBLIC_URL = \"http://localhost:9000\"\n# --------------------------------------------------\n# DEFAULTS\n# --------------------------------------------------\nDEFAULT_AUTO_FIELD = \"django.db.models.BigAutoField\"\nAUTH_USER_MODEL = \"accounts.User\"\n# --------------------------------------------------\n# CORS",
         "detail": "config.settings",
         "documentation": {}
     },
@@ -3406,7 +3304,7 @@
         "kind": 5,
         "importPath": "config.settings",
         "description": "config.settings",
-        "peekOfCode": "SPECTACULAR_SETTINGS = {\n    \"TITLE\": \"News Blog API\",\n    \"DESCRIPTION\": \"Professional modular Django REST API\",\n    \"VERSION\": \"1.0.0\",\n    \"SERVE_INCLUDE_SCHEMA\": False,\n    \"COMPONENT_SPLIT_REQUEST\": True,\n}\n# --------------------------------------------------\n# CACHE\n# --------------------------------------------------",
+        "peekOfCode": "SPECTACULAR_SETTINGS = {\n    \"TITLE\": \"News Blog API\",\n    \"DESCRIPTION\": \"Professional modular Django REST API\",\n    \"VERSION\": \"1.0.0\",\n    \"SERVE_INCLUDE_SCHEMA\": False,\n    \"COMPONENT_SPLIT_REQUEST\": True,\n}\n# --------------------------------------------------\n# CACHE (Redis)\n# --------------------------------------------------",
         "detail": "config.settings",
         "documentation": {}
     },
@@ -3415,7 +3313,7 @@
         "kind": 5,
         "importPath": "config.settings",
         "description": "config.settings",
-        "peekOfCode": "CACHES = {\n    \"default\": {\n        \"BACKEND\": \"django_redis.cache.RedisCache\",\n        \"LOCATION\": os.getenv(\"CELERY_BROKER_URL\", \"redis://redis:6379/0\"),\n        \"OPTIONS\": {\n            \"CLIENT_CLASS\": \"django_redis.client.DefaultClient\",\n        },\n    }\n}\nCELERY_BROKER_URL = os.getenv(\"CELERY_BROKER_URL\", \"redis://redis:6379/0\")",
+        "peekOfCode": "CACHES = {\n    \"default\": {\n        \"BACKEND\": \"django_redis.cache.RedisCache\",\n        \"LOCATION\": os.getenv(\"CELERY_BROKER_URL\", \"redis://redis:6379/0\"),\n        \"OPTIONS\": {\"CLIENT_CLASS\": \"django_redis.client.DefaultClient\"},\n    }\n}\nCELERY_BROKER_URL = os.getenv(\"CELERY_BROKER_URL\", \"redis://redis:6379/0\")\nCELERY_RESULT_BACKEND = os.getenv(\"CELERY_RESULT_BACKEND\", \"redis://redis:6379/1\")\nCELERY_TIMEZONE = TIME_ZONE",
         "detail": "config.settings",
         "documentation": {}
     },
@@ -3424,7 +3322,7 @@
         "kind": 5,
         "importPath": "config.settings",
         "description": "config.settings",
-        "peekOfCode": "CELERY_BROKER_URL = os.getenv(\"CELERY_BROKER_URL\", \"redis://redis:6379/0\")\nCELERY_RESULT_BACKEND = os.getenv(\"CELERY_RESULT_BACKEND\", \"redis://redis:6379/1\")\nCELERY_TIMEZONE = TIME_ZONE\nCELERY_ENABLE_UTC = True",
+        "peekOfCode": "CELERY_BROKER_URL = os.getenv(\"CELERY_BROKER_URL\", \"redis://redis:6379/0\")\nCELERY_RESULT_BACKEND = os.getenv(\"CELERY_RESULT_BACKEND\", \"redis://redis:6379/1\")\nCELERY_TIMEZONE = TIME_ZONE\nCELERY_ENABLE_UTC = True\nCELERY_ACCEPT_CONTENT = [\"json\"]\nCELERY_TASK_SERIALIZER = \"json\"\nCELERY_BEAT_SCHEDULE = {\n    \"fetch_gold_every_hour\": {\n        \"task\": \"apps.market.tasks.fetch_gold_data\",\n        \"schedule\": 60 * 60,  # هر ۱ ساعت",
         "detail": "config.settings",
         "documentation": {}
     },
@@ -3433,7 +3331,7 @@
         "kind": 5,
         "importPath": "config.settings",
         "description": "config.settings",
-        "peekOfCode": "CELERY_RESULT_BACKEND = os.getenv(\"CELERY_RESULT_BACKEND\", \"redis://redis:6379/1\")\nCELERY_TIMEZONE = TIME_ZONE\nCELERY_ENABLE_UTC = True",
+        "peekOfCode": "CELERY_RESULT_BACKEND = os.getenv(\"CELERY_RESULT_BACKEND\", \"redis://redis:6379/1\")\nCELERY_TIMEZONE = TIME_ZONE\nCELERY_ENABLE_UTC = True\nCELERY_ACCEPT_CONTENT = [\"json\"]\nCELERY_TASK_SERIALIZER = \"json\"\nCELERY_BEAT_SCHEDULE = {\n    \"fetch_gold_every_hour\": {\n        \"task\": \"apps.market.tasks.fetch_gold_data\",\n        \"schedule\": 60 * 60,  # هر ۱ ساعت\n    },",
         "detail": "config.settings",
         "documentation": {}
     },
@@ -3442,7 +3340,7 @@
         "kind": 5,
         "importPath": "config.settings",
         "description": "config.settings",
-        "peekOfCode": "CELERY_TIMEZONE = TIME_ZONE\nCELERY_ENABLE_UTC = True",
+        "peekOfCode": "CELERY_TIMEZONE = TIME_ZONE\nCELERY_ENABLE_UTC = True\nCELERY_ACCEPT_CONTENT = [\"json\"]\nCELERY_TASK_SERIALIZER = \"json\"\nCELERY_BEAT_SCHEDULE = {\n    \"fetch_gold_every_hour\": {\n        \"task\": \"apps.market.tasks.fetch_gold_data\",\n        \"schedule\": 60 * 60,  # هر ۱ ساعت\n    },\n}",
         "detail": "config.settings",
         "documentation": {}
     },
@@ -3451,7 +3349,34 @@
         "kind": 5,
         "importPath": "config.settings",
         "description": "config.settings",
-        "peekOfCode": "CELERY_ENABLE_UTC = True",
+        "peekOfCode": "CELERY_ENABLE_UTC = True\nCELERY_ACCEPT_CONTENT = [\"json\"]\nCELERY_TASK_SERIALIZER = \"json\"\nCELERY_BEAT_SCHEDULE = {\n    \"fetch_gold_every_hour\": {\n        \"task\": \"apps.market.tasks.fetch_gold_data\",\n        \"schedule\": 60 * 60,  # هر ۱ ساعت\n    },\n}",
+        "detail": "config.settings",
+        "documentation": {}
+    },
+    {
+        "label": "CELERY_ACCEPT_CONTENT",
+        "kind": 5,
+        "importPath": "config.settings",
+        "description": "config.settings",
+        "peekOfCode": "CELERY_ACCEPT_CONTENT = [\"json\"]\nCELERY_TASK_SERIALIZER = \"json\"\nCELERY_BEAT_SCHEDULE = {\n    \"fetch_gold_every_hour\": {\n        \"task\": \"apps.market.tasks.fetch_gold_data\",\n        \"schedule\": 60 * 60,  # هر ۱ ساعت\n    },\n}",
+        "detail": "config.settings",
+        "documentation": {}
+    },
+    {
+        "label": "CELERY_TASK_SERIALIZER",
+        "kind": 5,
+        "importPath": "config.settings",
+        "description": "config.settings",
+        "peekOfCode": "CELERY_TASK_SERIALIZER = \"json\"\nCELERY_BEAT_SCHEDULE = {\n    \"fetch_gold_every_hour\": {\n        \"task\": \"apps.market.tasks.fetch_gold_data\",\n        \"schedule\": 60 * 60,  # هر ۱ ساعت\n    },\n}",
+        "detail": "config.settings",
+        "documentation": {}
+    },
+    {
+        "label": "CELERY_BEAT_SCHEDULE",
+        "kind": 5,
+        "importPath": "config.settings",
+        "description": "config.settings",
+        "peekOfCode": "CELERY_BEAT_SCHEDULE = {\n    \"fetch_gold_every_hour\": {\n        \"task\": \"apps.market.tasks.fetch_gold_data\",\n        \"schedule\": 60 * 60,  # هر ۱ ساعت\n    },\n}",
         "detail": "config.settings",
         "documentation": {}
     },

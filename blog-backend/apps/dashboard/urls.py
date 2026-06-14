@@ -3,6 +3,7 @@ from django.urls import path
 from .views import (
     DashboardPostSearchView,
     HomeHeroManagementView,
+    HomeVideoManagementView,
     MyContentView,
     OverviewView,
     PendingCommentsModerationView,
@@ -20,6 +21,11 @@ urlpatterns = [
         "home-hero/",
         HomeHeroManagementView.as_view(),
         name="dashboard-home-hero",
+    ),
+    path(
+        "home-video/",
+        HomeVideoManagementView.as_view(),
+        name="dashboard-home-video",
     ),
     path(
         "post-search/",

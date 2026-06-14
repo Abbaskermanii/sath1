@@ -7,7 +7,7 @@ export function getImageUrl(path) {
     if (typeof window === "undefined") {
       const publicUrl =
         // eslint-disable-next-line no-undef
-        process.env.NEXT_PUBLIC_API_URL || "http://localhost:8000/api";
+        process.env.NEXT_PUBLIC_API_URL || "/api";
       const internalUrl =
         // eslint-disable-next-line no-undef
         process.env.INTERNAL_API_URL || "http://backend:8000";

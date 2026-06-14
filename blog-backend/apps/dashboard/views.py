@@ -1,14 +1,16 @@
 from django.db.models import Sum, Count, Q
-from rest_framework.views import APIView
-from rest_framework.response import Response
 from rest_framework.permissions import AllowAny, IsAuthenticated
+from rest_framework.response import Response
+from rest_framework.views import APIView
 
 from apps.news.models import (
     Comment,
     HomeHeroSelection,
     HomeHeroSlot,
-    Post,
+    HomeVideoSelection,
+    HomeVideoSlot,
     MediaType,
+    Post,
     PostStatus,
 )
 
@@ -17,6 +19,8 @@ from .serializers import (
     DashboardPostSearchSerializer,
     HomeHeroSelectionBulkUpdateSerializer,
     HomeHeroSelectionItemSerializer,
+    HomeVideoSelectionBulkUpdateSerializer,
+    HomeVideoSelectionItemSerializer,
     build_dashboard_file_url,
 )
 
@@ -68,6 +72,59 @@ def serialize_home_hero_results(request):
             )
         else:
             results.append(empty_home_hero_slot(slot))
+
+    return results
+
+
+def empty_home_video_slot(slot):
+    return {
+        "slot": slot,
+        "is_active": False,
+        "post_id": None,
+        "post_title": None,
+        "post_slug": None,
+        "post_status": None,
+        "post_media_type": None,
+        "post_type": None,
+        "published_at": None,
+        "cover": None,
+        "video_file": None,
+        "embed_url": "",
+        "media_duration": None,
+    }
+
+
+def ordered_home_video_slots():
+    return [
+        HomeVideoSlot.MAIN,
+        HomeVideoSlot.TOP,
+        HomeVideoSlot.MIDDLE,
+        HomeVideoSlot.BOTTOM,
+    ]
+
+
+def serialize_home_video_results(request):
+    selections = HomeVideoSelection.objects.select_related(
+        "post",
+        "post__author",
+        "post__category",
+    ).all()
+
+    by_slot = {item.slot: item for item in selections}
+    results = []
+
+    for slot in ordered_home_video_slots():
+        obj = by_slot.get(slot)
+
+        if obj:
+            results.append(
+                HomeVideoSelectionItemSerializer(
+                    obj,
+                    context={"request": request},
+                ).data
+            )
+        else:
+            results.append(empty_home_video_slot(slot))
 
     return results
 
@@ -253,12 +310,6 @@ class MyContentView(APIView):
 
 
 class PendingCommentsModerationView(APIView):
-    """
-    کامنت‌های در انتظار تایید.
-    - ادمین: همه pending ها
-    - نویسنده: pending های پست‌های خودش
-    """
-
     permission_classes = [IsAuthenticated, IsAdminOrAuthor]
 
     def get(self, request):
@@ -293,9 +344,6 @@ class HomeHeroManagementView(APIView):
     """
     GET  /api/dashboard/home-hero/
     POST /api/dashboard/home-hero/
-
-    GET: عمومی
-    POST: فقط ادمین
     """
 
     def get_permissions(self):
@@ -349,12 +397,66 @@ class HomeHeroManagementView(APIView):
         )
 
 
+class HomeVideoManagementView(APIView):
+    """
+    GET  /api/dashboard/home-video/
+    POST /api/dashboard/home-video/
+    """
+
+    def get_permissions(self):
+        if self.request.method == "GET":
+            return [AllowAny()]
+        return [IsAuthenticated(), IsAdminOnly()]
+
+    def get(self, request):
+        results = serialize_home_video_results(request)
+
+        return Response(
+            {
+                "count": len(results),
+                "results": results,
+            }
+        )
+
+    def post(self, request):
+        serializer = HomeVideoSelectionBulkUpdateSerializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
+
+        items = serializer.validated_data["items"]
+
+        for item in items:
+            slot = item["slot"]
+            post_id = item.get("post_id")
+            is_active = item.get("is_active", True)
+
+            if post_id is None:
+                HomeVideoSelection.objects.filter(slot=slot).delete()
+                continue
+
+            post = Post.objects.get(id=post_id)
+
+            HomeVideoSelection.objects.update_or_create(
+                slot=slot,
+                defaults={
+                    "post": post,
+                    "is_active": is_active,
+                },
+            )
+
+        results = serialize_home_video_results(request)
+
+        return Response(
+            {
+                "message": "Home video slots updated successfully.",
+                "count": len(results),
+                "results": results,
+            }
+        )
+
+
 class DashboardPostSearchView(APIView):
     """
     GET /api/dashboard/post-search/?q=...
-
-    فقط ادمین.
-    برای پیدا کردن پست‌ها جهت انتخاب در Hero Homepage.
     """
 
     permission_classes = [IsAuthenticated, IsAdminOnly]

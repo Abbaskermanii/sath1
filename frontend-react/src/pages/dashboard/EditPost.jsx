@@ -24,6 +24,46 @@ const initialForm = {
   audio_file: "",
 };
 
+function extractEmbedUrl(value = "") {
+  const input = String(value || "").trim();
+  if (!input) return "";
+
+  const scriptSrcMatch = input.match(/src=["']([^"']+)["']/i);
+  const rawUrl = scriptSrcMatch ? scriptSrcMatch[1] : input;
+
+  const aparatMatch = rawUrl.match(
+    /(?:https?:\/\/)?(?:www\.)?aparat\.com\/embed\/([^/?&"']+)/i,
+  );
+
+  if (aparatMatch) {
+    const videoHash = aparatMatch[1];
+    return `https://www.aparat.com/video/video/embed/videohash/${videoHash}/vt/frame`;
+  }
+
+  return rawUrl;
+}
+
+function isValidEmbedValue(value = "") {
+  const normalized = extractEmbedUrl(value);
+  if (!normalized) return true;
+
+  try {
+    new URL(normalized);
+    return true;
+  } catch {
+    return false;
+  }
+}
+
+function normalizeMultilineText(value = "") {
+  return String(value || "")
+    .replace(/\r\n?/g, "\n")
+    .split("\n")
+    .map((line) => line.replace(/[ \t]+$/g, ""))
+    .join("\n")
+    .trim();
+}
+
 function normalizeList(data) {
   if (Array.isArray(data)) return data;
   if (Array.isArray(data?.results)) return data.results;
@@ -175,9 +215,12 @@ export default function EditPostPage() {
     if (!form.title.trim()) return false;
     if (!form.slug.trim()) return false;
     if (!form.post_type) return false;
+    if (!form.category) return false;
+    if (!form.excerpt.trim()) return false;
+    if (!form.content.trim()) return false;
     if (!form.tags.length) return false;
     if (!form.cover && !coverFile) return false;
-    if (form.media_type === "none" && !form.content.trim()) return false;
+
     return true;
   }, [form, saving, coverFile]);
 
@@ -423,6 +466,7 @@ export default function EditPostPage() {
 
   function validateForm() {
     const nextErrors = {};
+    const normalizedEmbed = extractEmbedUrl(form.embed_url);
 
     if (!form.title.trim()) nextErrors.title = "عنوان الزامی است.";
 
@@ -434,20 +478,23 @@ export default function EditPostPage() {
     }
 
     if (!form.post_type) nextErrors.post_type = "قالب پست الزامی است.";
+    if (!form.category) nextErrors.category = "دسته‌بندی الزامی است.";
+    if (!form.excerpt.trim()) nextErrors.excerpt = "خلاصه الزامی است.";
+    if (!form.content.trim()) nextErrors.content = "محتوا الزامی است.";
     if (!form.tags.length) nextErrors.tags = "حداقل یک تگ انتخاب کنید.";
 
     if (!form.cover && !coverFile) {
       nextErrors.cover = "کاور برای همه پست‌ها الزامی است.";
     }
 
-    if (form.media_type === "none" && !form.content.trim()) {
-      nextErrors.content = "محتوا الزامی است.";
+    if (form.embed_url.trim() && !isValidEmbedValue(form.embed_url)) {
+      nextErrors.embed_url = "لینک یا کد embed معتبر نیست.";
     }
 
     if (form.media_type === "video") {
       const hasCurrentVideo = Boolean(form.video_file);
       const hasNewVideo = Boolean(videoFile);
-      const hasEmbed = Boolean(form.embed_url.trim());
+      const hasEmbed = Boolean(normalizedEmbed);
 
       if (!hasCurrentVideo && !hasNewVideo && !hasEmbed) {
         nextErrors.video_file =
@@ -458,7 +505,7 @@ export default function EditPostPage() {
     if (form.media_type === "podcast") {
       const hasCurrentAudio = Boolean(form.audio_file);
       const hasNewAudio = Boolean(audioFile);
-      const hasEmbed = Boolean(form.embed_url.trim());
+      const hasEmbed = Boolean(normalizedEmbed);
 
       if (!hasCurrentAudio && !hasNewAudio && !hasEmbed) {
         nextErrors.audio_file =
@@ -478,23 +525,22 @@ export default function EditPostPage() {
 
   function buildPayload() {
     const fd = new FormData();
+    const normalizedEmbed = extractEmbedUrl(form.embed_url);
 
     fd.append("title", form.title.trim());
     fd.append("slug", toSlug(form.slug));
-    fd.append("excerpt", form.excerpt.trim());
-    fd.append("content", form.content.trim());
+    fd.append("excerpt", normalizeMultilineText(form.excerpt));
+    fd.append("content", normalizeMultilineText(form.content));
     fd.append("status", form.status);
     fd.append("post_type", form.post_type);
     fd.append("media_type", form.media_type);
 
-    if (form.category) {
-      fd.append("category", String(form.category));
-    } else {
-      fd.append("category", "");
-    }
+    fd.append("category", String(form.category));
 
-    if (form.embed_url.trim()) {
-      fd.append("embed_url", form.embed_url.trim());
+    if (normalizedEmbed) {
+      fd.append("embed_url", normalizedEmbed);
+    } else {
+      fd.append("embed_url", "");
     }
 
     form.tags.forEach((tagId) => {
@@ -683,14 +729,14 @@ export default function EditPostPage() {
           </div>
 
           <div>
-            <Label>دسته‌بندی</Label>
+            <Label required>دسته‌بندی</Label>
             <select
               name="category"
               value={form.category}
               onChange={handleChange}
               className={baseInputClass(errors.category)}
             >
-              <option value="">بدون دسته‌بندی</option>
+              <option value="">انتخاب دسته‌بندی...</option>
               {categories.map((cat) => (
                 <option key={cat.id} value={String(cat.id)}>
                   {getItemTitle(cat)}
@@ -715,13 +761,13 @@ export default function EditPostPage() {
           </div>
 
           <div className="md:col-span-2">
-            <Label>خلاصه</Label>
+            <Label required>خلاصه</Label>
             <textarea
               name="excerpt"
               value={form.excerpt}
               onChange={handleChange}
               placeholder="خلاصه‌ای کوتاه برای نمایش در کارت خبر..."
-              className={`${baseInputClass(errors.excerpt)} min-h-24 resize-y leading-7`}
+              className={`${baseInputClass(errors.excerpt)} min-h-24 resize-y leading-7 whitespace-pre-wrap`}
             />
             <div className="mt-1.5 flex justify-between text-xs text-zinc-500">
               <FieldError message={errors.excerpt} />
@@ -730,13 +776,13 @@ export default function EditPostPage() {
           </div>
 
           <div className="md:col-span-2">
-            <Label required={form.media_type === "none"}>محتوا</Label>
+            <Label required>محتوا</Label>
             <textarea
               name="content"
               value={form.content}
               onChange={handleChange}
               placeholder="متن کامل پست را وارد کنید..."
-              className={`${baseInputClass(errors.content)} min-h-56 resize-y leading-8`}
+              className={`${baseInputClass(errors.content)} min-h-56 resize-y leading-8 whitespace-pre-wrap`}
             />
             <div className="mt-1.5 flex justify-between text-xs text-zinc-500">
               <FieldError message={errors.content} />
@@ -748,14 +794,17 @@ export default function EditPostPage() {
             <div className="md:col-span-2">
               <Label>لینک Embed</Label>
               <input
-                type="url"
+                type="text"
                 name="embed_url"
                 value={form.embed_url}
                 onChange={handleChange}
-                placeholder="https://..."
+                placeholder="لینک یا کد embed آپارات را وارد کنید"
                 dir="ltr"
                 className={`${baseInputClass(errors.embed_url)} text-left`}
               />
+              <p className="mt-1.5 text-xs text-zinc-500">
+                می‌توانید URL مستقیم یا کد embed آپارات را وارد کنید.
+              </p>
               <FieldError message={errors.embed_url} />
             </div>
           )}
@@ -832,8 +881,8 @@ export default function EditPostPage() {
               />
 
               <p className="mt-2 text-xs text-zinc-500">
-                کاور برای همه پست‌ها الزامی است. حداکثر حجم:{" "}
-                {MAX_COVER_SIZE_MB}MB
+                کاور برای همه پست‌ها الزامی است. حداکثر حجم: {MAX_COVER_SIZE_MB}
+                MB
               </p>
 
               {form.cover && !coverPreview && (
