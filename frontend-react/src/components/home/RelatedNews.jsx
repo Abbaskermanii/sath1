@@ -55,10 +55,7 @@ function RelatedNews({ news = [] }) {
       dir="rtl"
     >
       <div className="mx-auto max-w-6xl px-4 sm:px-6">
-        {/* HEADER */}
-        <h2 className="mb-4 text-sm sm:text-base font-bold text-neutral-900">
-          خبرهای مرتبط
-        </h2>
+      
 
         {/* GRID */}
         <div

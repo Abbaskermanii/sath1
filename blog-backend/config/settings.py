@@ -220,9 +220,14 @@ CELERY_ENABLE_UTC = True
 CELERY_ACCEPT_CONTENT = ["json"]
 CELERY_TASK_SERIALIZER = "json"
 
+from celery.schedules import crontab
+
 CELERY_BEAT_SCHEDULE = {
-    "fetch_gold_every_hour": {
-        "task": "apps.market.tasks.fetch_gold_data",
-        "schedule": 60 * 60,  # هر ۱ ساعت
+    "fetch_iran_market_every_hour": {
+        "task": "apps.market.tasks.fetch_iran_market_data",
+        "schedule": crontab(minute=0),
     },
 }
+
+
+

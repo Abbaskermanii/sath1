@@ -4,27 +4,14 @@ import useCategories from "../../hooks/useCategories";
 export default function SiteFooter() {
   const { categories } = useCategories(12);
 
-  const staticColumns = [
-    {
-      title: "رسانه",
-      links: [
-        { label: "ویدیو", to: "/videos" },
-        { label: "پادکست", to: "/podcasts" },
-        { label: "گزارش ویژه", to: "/special-reports" },
-        { label: "خبرنامه", to: "/newsletter" },
-        { label: "آرشیو", to: "/archive" },
-      ],
-    },
-    {
-      title: "سرویس‌ها",
-      links: [
-        { label: "درباره ما", to: "/about" },
-        { label: "تماس", to: "/contact" },
-        { label: "تبلیغات", to: "/ads" },
-        { label: "قوانین", to: "/terms" },
-        { label: "حریم خصوصی", to: "/privacy" },
-      ],
-    },
+  const newsLinks = [
+    { label: "مصاحبه", to: "/type/interview" },
+    { label: "یادداشت", to: "/type/note" },
+    { label: "خبر", to: "/type/news" },
+    { label: "تحلیل", to: "/type/analysis" },
+    { label: "گفتگوهای شاخص", to: "/type/talk" },
+    { label: "گزارش", to: "/type/report" },
+    { label: "نمودار", to: "/type/chart" },
   ];
 
   const categoryLinks = categories.map((category) => ({
@@ -37,7 +24,10 @@ export default function SiteFooter() {
       title: "دسته‌بندی‌ها",
       links: categoryLinks.slice(0, 6),
     },
-    ...staticColumns,
+    {
+      title: "سرویس‌های خبری",
+      links: newsLinks,
+    },
   ];
 
   return (
@@ -48,7 +38,7 @@ export default function SiteFooter() {
             to="/"
             className="block text-3xl font-extrabold tracking-tight text-right"
           >
-            شاخص اول{" "}
+            شاخص اول
           </Link>
 
           <div className="mt-8 grid gap-8 sm:grid-cols-2 lg:grid-cols-4">
@@ -81,22 +71,8 @@ export default function SiteFooter() {
           </div>
         </div>
 
-        <div className="flex flex-col gap-3 py-5 text-[11px] text-neutral-500 md:flex-row md:items-center md:justify-between">
-          <p>© 2026 News Platform. All rights reserved.</p>
-
-          <div className="flex flex-wrap gap-4">
-            <Link to="/terms" className="hover:text-white">
-              Terms
-            </Link>
-
-            <Link to="/privacy" className="hover:text-white">
-              Privacy
-            </Link>
-
-            <Link to="/cookies" className="hover:text-white">
-              Cookies
-            </Link>
-          </div>
+        <div className="py-5 text-[11px] text-neutral-500">
+          <p>تمام حقوق این سایت متعلق به شاخص یک میباشد.</p>
         </div>
       </div>
     </footer>

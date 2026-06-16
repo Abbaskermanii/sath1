@@ -6,7 +6,6 @@ import {
   clearTokens,
 } from "./tokens";
 
-// eslint-disable-next-line no-undef
 const baseURL = "http://localhost:8000/api";
 
 export const api = axios.create({
@@ -17,23 +16,27 @@ function isAuthEndpoint(url = "") {
   return (
     url.includes("/accounts/login/") ||
     url.includes("/accounts/register/") ||
-    url.includes("/accounts/token/refresh/")
+    url.includes("/accounts/token/refresh/") ||
+    url.includes("/accounts/me/") === false && url.includes("/auth/")
   );
 }
 
-api.interceptors.request.use((config) => {
-  const token = getAccessToken();
+api.interceptors.request.use(
+  (config) => {
+    const token = getAccessToken();
 
-  if (!config.headers) {
-    config.headers = {};
-  }
+    if (!config.headers) {
+      config.headers = {};
+    }
 
-  if (token && !isAuthEndpoint(config.url || "")) {
-    config.headers.Authorization = `Bearer ${token}`;
-  }
+    if (token && !isAuthEndpoint(config.url || "")) {
+      config.headers.Authorization = `Bearer ${token}`;
+    }
 
-  return config;
-});
+    return config;
+  },
+  (error) => Promise.reject(error)
+);
 
 api.interceptors.response.use(
   (response) => response,
@@ -44,7 +47,6 @@ api.interceptors.response.use(
     const method = originalRequest?.method || "get";
     const responseData = error?.response?.data;
 
-    // برای دیباگ دقیق
     console.error("API ERROR:", {
       status,
       method,
@@ -52,14 +54,10 @@ api.interceptors.response.use(
       response: responseData,
     });
 
-    // هندل کردن 403
     if (status === 403) {
-      // فعلاً فقط لاگ می‌کنیم
-      // اگر خواستی بعداً می‌توانیم redirect کنیم به /forbidden
       return Promise.reject(error);
     }
 
-    // هندل کردن 401 با refresh token
     if (
       status === 401 &&
       originalRequest &&
@@ -72,35 +70,33 @@ api.interceptors.response.use(
 
       if (!refresh) {
         clearTokens();
-        if (typeof window !== "undefined") {
-          window.location.assign("/auth");
-        }
         return Promise.reject(error);
       }
 
       try {
         const { data } = await axios.post(
           `${baseURL}/accounts/token/refresh/`,
-          { refresh },
+          { refresh }
         );
 
-        setTokens({ access: data.access, refresh });
+        setTokens({
+          access: data.access,
+          refresh,
+        });
 
         if (!originalRequest.headers) {
           originalRequest.headers = {};
         }
 
         originalRequest.headers.Authorization = `Bearer ${data.access}`;
+
         return api(originalRequest);
       } catch (refreshError) {
         clearTokens();
-        if (typeof window !== "undefined") {
-          window.location.assign("/auth");
-        }
         return Promise.reject(refreshError);
       }
     }
 
     return Promise.reject(error);
-  },
+  }
 );

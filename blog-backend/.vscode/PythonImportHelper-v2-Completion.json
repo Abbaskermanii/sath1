@@ -1696,6 +1696,14 @@
         "documentation": {}
     },
     {
+        "label": "crontab",
+        "importPath": "celery.schedules",
+        "description": "celery.schedules",
+        "isExtraImport": true,
+        "detail": "celery.schedules",
+        "documentation": {}
+    },
+    {
         "label": "static",
         "importPath": "django.conf.urls.static",
         "description": "django.conf.urls.static",
@@ -2080,7 +2088,7 @@
         "kind": 6,
         "importPath": "apps.dashboard.serializers",
         "description": "apps.dashboard.serializers",
-        "peekOfCode": "class HomeHeroSelectionItemSerializer(serializers.ModelSerializer):\n    post_id = serializers.IntegerField(source=\"post.id\", read_only=True)\n    post_title = serializers.CharField(source=\"post.title\", read_only=True)\n    post_slug = serializers.CharField(source=\"post.slug\", read_only=True)\n    post_status = serializers.CharField(source=\"post.status\", read_only=True)\n    post_media_type = serializers.CharField(source=\"post.media_type\", read_only=True)\n    post_type = serializers.CharField(source=\"post.post_type\", read_only=True)\n    published_at = serializers.DateTimeField(source=\"post.published_at\", read_only=True)\n    cover = serializers.SerializerMethodField()\n    class Meta:",
+        "peekOfCode": "class HomeHeroSelectionItemSerializer(serializers.ModelSerializer):\n    post_id = serializers.IntegerField(source=\"post.id\", read_only=True)\n    post_title = serializers.CharField(source=\"post.title\", read_only=True)\n    post_slug = serializers.CharField(source=\"post.slug\", read_only=True)\n    post_status = serializers.CharField(source=\"post.status\", read_only=True)\n    post_media_type = serializers.CharField(source=\"post.media_type\", read_only=True)\n    post_type = serializers.CharField(source=\"post.post_type\", read_only=True)\n    published_at = serializers.DateTimeField(source=\"post.published_at\", read_only=True)\n    # ↓ فیلدهای جدید\n    post_excerpt = serializers.CharField(source=\"post.excerpt\", read_only=True)",
         "detail": "apps.dashboard.serializers",
         "documentation": {}
     },
@@ -3322,7 +3330,7 @@
         "kind": 5,
         "importPath": "config.settings",
         "description": "config.settings",
-        "peekOfCode": "CELERY_BROKER_URL = os.getenv(\"CELERY_BROKER_URL\", \"redis://redis:6379/0\")\nCELERY_RESULT_BACKEND = os.getenv(\"CELERY_RESULT_BACKEND\", \"redis://redis:6379/1\")\nCELERY_TIMEZONE = TIME_ZONE\nCELERY_ENABLE_UTC = True\nCELERY_ACCEPT_CONTENT = [\"json\"]\nCELERY_TASK_SERIALIZER = \"json\"\nCELERY_BEAT_SCHEDULE = {\n    \"fetch_gold_every_hour\": {\n        \"task\": \"apps.market.tasks.fetch_gold_data\",\n        \"schedule\": 60 * 60,  # هر ۱ ساعت",
+        "peekOfCode": "CELERY_BROKER_URL = os.getenv(\"CELERY_BROKER_URL\", \"redis://redis:6379/0\")\nCELERY_RESULT_BACKEND = os.getenv(\"CELERY_RESULT_BACKEND\", \"redis://redis:6379/1\")\nCELERY_TIMEZONE = TIME_ZONE\nCELERY_ENABLE_UTC = True\nCELERY_ACCEPT_CONTENT = [\"json\"]\nCELERY_TASK_SERIALIZER = \"json\"\nfrom celery.schedules import crontab\nCELERY_BEAT_SCHEDULE = {\n    \"fetch_iran_market_every_hour\": {\n        \"task\": \"apps.market.tasks.fetch_iran_market_data\",",
         "detail": "config.settings",
         "documentation": {}
     },
@@ -3331,7 +3339,7 @@
         "kind": 5,
         "importPath": "config.settings",
         "description": "config.settings",
-        "peekOfCode": "CELERY_RESULT_BACKEND = os.getenv(\"CELERY_RESULT_BACKEND\", \"redis://redis:6379/1\")\nCELERY_TIMEZONE = TIME_ZONE\nCELERY_ENABLE_UTC = True\nCELERY_ACCEPT_CONTENT = [\"json\"]\nCELERY_TASK_SERIALIZER = \"json\"\nCELERY_BEAT_SCHEDULE = {\n    \"fetch_gold_every_hour\": {\n        \"task\": \"apps.market.tasks.fetch_gold_data\",\n        \"schedule\": 60 * 60,  # هر ۱ ساعت\n    },",
+        "peekOfCode": "CELERY_RESULT_BACKEND = os.getenv(\"CELERY_RESULT_BACKEND\", \"redis://redis:6379/1\")\nCELERY_TIMEZONE = TIME_ZONE\nCELERY_ENABLE_UTC = True\nCELERY_ACCEPT_CONTENT = [\"json\"]\nCELERY_TASK_SERIALIZER = \"json\"\nfrom celery.schedules import crontab\nCELERY_BEAT_SCHEDULE = {\n    \"fetch_iran_market_every_hour\": {\n        \"task\": \"apps.market.tasks.fetch_iran_market_data\",\n        \"schedule\": crontab(minute=0),",
         "detail": "config.settings",
         "documentation": {}
     },
@@ -3340,7 +3348,7 @@
         "kind": 5,
         "importPath": "config.settings",
         "description": "config.settings",
-        "peekOfCode": "CELERY_TIMEZONE = TIME_ZONE\nCELERY_ENABLE_UTC = True\nCELERY_ACCEPT_CONTENT = [\"json\"]\nCELERY_TASK_SERIALIZER = \"json\"\nCELERY_BEAT_SCHEDULE = {\n    \"fetch_gold_every_hour\": {\n        \"task\": \"apps.market.tasks.fetch_gold_data\",\n        \"schedule\": 60 * 60,  # هر ۱ ساعت\n    },\n}",
+        "peekOfCode": "CELERY_TIMEZONE = TIME_ZONE\nCELERY_ENABLE_UTC = True\nCELERY_ACCEPT_CONTENT = [\"json\"]\nCELERY_TASK_SERIALIZER = \"json\"\nfrom celery.schedules import crontab\nCELERY_BEAT_SCHEDULE = {\n    \"fetch_iran_market_every_hour\": {\n        \"task\": \"apps.market.tasks.fetch_iran_market_data\",\n        \"schedule\": crontab(minute=0),\n    },",
         "detail": "config.settings",
         "documentation": {}
     },
@@ -3349,7 +3357,7 @@
         "kind": 5,
         "importPath": "config.settings",
         "description": "config.settings",
-        "peekOfCode": "CELERY_ENABLE_UTC = True\nCELERY_ACCEPT_CONTENT = [\"json\"]\nCELERY_TASK_SERIALIZER = \"json\"\nCELERY_BEAT_SCHEDULE = {\n    \"fetch_gold_every_hour\": {\n        \"task\": \"apps.market.tasks.fetch_gold_data\",\n        \"schedule\": 60 * 60,  # هر ۱ ساعت\n    },\n}",
+        "peekOfCode": "CELERY_ENABLE_UTC = True\nCELERY_ACCEPT_CONTENT = [\"json\"]\nCELERY_TASK_SERIALIZER = \"json\"\nfrom celery.schedules import crontab\nCELERY_BEAT_SCHEDULE = {\n    \"fetch_iran_market_every_hour\": {\n        \"task\": \"apps.market.tasks.fetch_iran_market_data\",\n        \"schedule\": crontab(minute=0),\n    },\n}",
         "detail": "config.settings",
         "documentation": {}
     },
@@ -3358,7 +3366,7 @@
         "kind": 5,
         "importPath": "config.settings",
         "description": "config.settings",
-        "peekOfCode": "CELERY_ACCEPT_CONTENT = [\"json\"]\nCELERY_TASK_SERIALIZER = \"json\"\nCELERY_BEAT_SCHEDULE = {\n    \"fetch_gold_every_hour\": {\n        \"task\": \"apps.market.tasks.fetch_gold_data\",\n        \"schedule\": 60 * 60,  # هر ۱ ساعت\n    },\n}",
+        "peekOfCode": "CELERY_ACCEPT_CONTENT = [\"json\"]\nCELERY_TASK_SERIALIZER = \"json\"\nfrom celery.schedules import crontab\nCELERY_BEAT_SCHEDULE = {\n    \"fetch_iran_market_every_hour\": {\n        \"task\": \"apps.market.tasks.fetch_iran_market_data\",\n        \"schedule\": crontab(minute=0),\n    },\n}",
         "detail": "config.settings",
         "documentation": {}
     },
@@ -3367,7 +3375,7 @@
         "kind": 5,
         "importPath": "config.settings",
         "description": "config.settings",
-        "peekOfCode": "CELERY_TASK_SERIALIZER = \"json\"\nCELERY_BEAT_SCHEDULE = {\n    \"fetch_gold_every_hour\": {\n        \"task\": \"apps.market.tasks.fetch_gold_data\",\n        \"schedule\": 60 * 60,  # هر ۱ ساعت\n    },\n}",
+        "peekOfCode": "CELERY_TASK_SERIALIZER = \"json\"\nfrom celery.schedules import crontab\nCELERY_BEAT_SCHEDULE = {\n    \"fetch_iran_market_every_hour\": {\n        \"task\": \"apps.market.tasks.fetch_iran_market_data\",\n        \"schedule\": crontab(minute=0),\n    },\n}",
         "detail": "config.settings",
         "documentation": {}
     },
@@ -3376,7 +3384,7 @@
         "kind": 5,
         "importPath": "config.settings",
         "description": "config.settings",
-        "peekOfCode": "CELERY_BEAT_SCHEDULE = {\n    \"fetch_gold_every_hour\": {\n        \"task\": \"apps.market.tasks.fetch_gold_data\",\n        \"schedule\": 60 * 60,  # هر ۱ ساعت\n    },\n}",
+        "peekOfCode": "CELERY_BEAT_SCHEDULE = {\n    \"fetch_iran_market_every_hour\": {\n        \"task\": \"apps.market.tasks.fetch_iran_market_data\",\n        \"schedule\": crontab(minute=0),\n    },\n}",
         "detail": "config.settings",
         "documentation": {}
     },

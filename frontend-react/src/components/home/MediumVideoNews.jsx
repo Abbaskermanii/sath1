@@ -79,7 +79,7 @@ function MediumVideoNews({ title, description, embedUrl, videoFile, image }) {
     <article className="w-full bg-white" dir="rtl">
       <div className="mx-auto max-w-md px-4 sm:px-0 space-y-4">
         {/* ================= MEDIA ================= */}
-        <div className="relative overflow-hidden rounded-2xl bg-black aspect-video group">
+        <div className="relative overflow-hidden rounded-2xl bg-black aspect-4/6 group">
           {/* PREVIEW */}
           {!isPlaying && (
             <>

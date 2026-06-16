@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useMemo, useState } from "react";
-import { useParams } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 import CategoryPostsFeed from "../components/home/CategoryPostsFeed";
 import { newsApi } from "../lib/news/newsApi";
 import { useMarketData } from "../hooks/useMarketData";
@@ -13,7 +13,6 @@ import {
 import Stocks from "../components/home/Stocks";
 import LargNews from "../components/home/LargNews";
 import RelatedNews from "../components/home/RelatedNews";
-import MediumNews from "../components/home/MediumNews";
 import SnowflakeVideoCard from "../components/home/SnowflakeVideoCard";
 import MarketPriceFeed from "../components/home/MarketPriceFeed";
 import HotNews from "../components/home/HotNews";
@@ -34,143 +33,109 @@ const HERO_SLOT_ORDER = [
 
 const VIDEO_SLOT_ORDER = ["main", "top", "middle", "bottom"];
 
-function mapVideoResults(results) {
-  const mapped = {
-    main: null,
-    top: null,
-    middle: null,
-    bottom: null,
-  };
-
-  if (!Array.isArray(results)) return mapped;
-
-  results.forEach((item) => {
-    if (!item?.slot || !VIDEO_SLOT_ORDER.includes(item.slot)) return;
-
-    if (!item?.post_id || item?.is_active === false) {
-      mapped[item.slot] = null;
-      return;
-    }
-
-    mapped[item.slot] = {
-      id: item.post_id,
-      title: item.post_title || "بدون عنوان",
-      slug: item.post_slug || "",
-      media_type: item.post_media_type || "video",
-      published_at: item.published_at || "",
-      cover: item.cover || "",
-      image: item.cover || "",
-      href: item.post_slug ? `/news/${item.post_slug}` : "#",
-      embed_url: item.embed_url || "",
-      video_file: item.video_file || "",
-      media_duration: item.media_duration || null,
-    };
-  });
-
-  return mapped;
-}
-
-function getApiErrorMessage(
-  error,
-  fallback = "خطا در دریافت اطلاعات صفحه اصلی",
-) {
-  const data = error?.response?.data;
-
-  if (!data) return error?.message || fallback;
-  if (typeof data === "string") return data;
-  if (data.detail) return data.detail;
-  if (data.message) return data.message;
-  if (data.error) return data.error;
-
-  if (typeof data === "object") {
-    const firstKey = Object.keys(data)[0];
-    const firstValue = data[firstKey];
-
-    if (Array.isArray(firstValue)) return firstValue[0];
-    if (typeof firstValue === "string") return firstValue;
-  }
-
-  return fallback;
-}
-
 function safeArray(value) {
   return Array.isArray(value) ? value : [];
 }
 
-function uniqueByIdOrTitle(items = []) {
-  const seen = new Set();
-
-  return items.filter((item) => {
-    const key =
-      item?.id ?? item?.slug ?? item?.title ?? item?.name ?? item?.href;
-
-    if (!key || seen.has(key)) return false;
-
-    seen.add(key);
-    return true;
-  });
+function getPostTitle(post) {
+  return post?.title || post?.post_title || "بدون عنوان";
 }
 
-function pickFeatured(items = []) {
+function getPostSlug(post) {
+  return post?.slug || post?.post_slug || "";
+}
+
+function getPostHref(post) {
+  const slug = getPostSlug(post);
+
+  return post?.href || (slug ? `/news/${slug}` : "#");
+}
+
+function getPostDescription(post) {
   return (
-    items.find((item) => item?.isHero) ||
-    items.find((item) => item?.isFeatured) ||
-    items[0] ||
-    null
+    post?.description ||
+    post?.excerpt ||
+    post?.summary ||
+    post?.post_description ||
+    post?.post_excerpt ||
+    post?.post_summary ||
+    ""
   );
 }
 
-function isSamePost(a, b) {
-  if (!a || !b) return false;
-
-  if (a.id && b.id) return a.id === b.id;
-  if (a.slug && b.slug) return a.slug === b.slug;
-
-  return a.title === b.title;
-}
-
-function pickDifferentPost(posts = [], excludedPosts = []) {
+function getPostTypeText(post) {
   return (
-    posts.find((post) =>
-      excludedPosts.every((excluded) => !isSamePost(post, excluded)),
-    ) || null
+    post?.post_type_label ||
+    post?.media_type_label ||
+    post?.type_label ||
+    post?.postTypeLabel ||
+    post?.mediaTypeLabel ||
+    post?.post_type ||
+    post?.media_type ||
+    post?.type ||
+    ""
   );
 }
 
-function isVideoPost(post) {
+function getPostCategoryTitle(post) {
+  const category = post?.category;
+
+  if (typeof category === "string") return category;
+  if (category?.title) return category.title;
+  if (category?.name) return category.name;
+
   return (
-    post?.media_type === "video" ||
-    post?.post_type === "video" ||
-    !!post?.video_file ||
-    !!post?.videoFile ||
-    !!post?.embed_url ||
-    !!post?.embedUrl
+    post?.categoryTitle ||
+    post?.category_title ||
+    post?.categoryName ||
+    post?.category_name ||
+    getPostTypeText(post) ||
+    "خبر"
   );
 }
 
-function isAudioPost(post) {
+function getPostAuthorName(post) {
+  const author = post?.author;
+
+  if (typeof author === "string") return author;
+  if (author?.full_name) return author.full_name;
+  if (author?.name) return author.name;
+  if (author?.first_name || author?.last_name) {
+    return `${author.first_name || ""} ${author.last_name || ""}`.trim();
+  }
+  if (author?.email) return author.email;
+
   return (
-    post?.media_type === "audio" ||
-    post?.media_type === "podcast" ||
-    post?.post_type === "audio" ||
-    post?.post_type === "podcast" ||
-    post?.post_type === "voice" ||
-    post?.post_type === "sound" ||
-    !!post?.audio_file ||
-    !!post?.audioFile ||
-    !!post?.podcast_file ||
-    !!post?.podcastFile
+    post?.authorName ||
+    post?.author_name ||
+    post?.user?.full_name ||
+    post?.user?.name ||
+    "نویسنده شاخص‌یک"
   );
 }
 
-function getVideoPoster(post) {
+function getPostAuthorId(post, fallback = 0) {
   return (
-    post?.video_thumbnail ||
-    post?.videoThumbnail ||
-    post?.thumbnail ||
-    post?.poster ||
-    post?.poster_image ||
-    post?.posterImage ||
+    post?.authorId ||
+    post?.author_id ||
+    post?.author?.id ||
+    post?.user?.id ||
+    fallback
+  );
+}
+
+function getPostAuthorAvatar(post) {
+  return (
+    post?.authorAvatar ||
+    post?.author_avatar ||
+    post?.authorImage ||
+    post?.author_image ||
+    post?.author?.avatar ||
+    post?.author?.image ||
+    post?.author?.profile_image ||
+    post?.user?.avatar ||
+    post?.user?.image ||
+    post?.user?.profile_image ||
     ""
   );
 }
@@ -208,6 +173,47 @@ function getPostPodcastFile(post) {
   return post?.podcastFile || post?.podcast_file || "";
 }
 
+function isVideoPost(post) {
+  return (
+    post?.media_type === "video" ||
+    post?.post_media_type === "video" ||
+    post?.post_type === "video" ||
+    !!post?.video_file ||
+    !!post?.videoFile ||
+    !!post?.embed_url ||
+    !!post?.embedUrl
+  );
+}
+
+function isAudioPost(post) {
+  return (
+    post?.media_type === "audio" ||
+    post?.media_type === "podcast" ||
+    post?.post_media_type === "audio" ||
+    post?.post_media_type === "podcast" ||
+    post?.post_type === "audio" ||
+    post?.post_type === "podcast" ||
+    post?.post_type === "voice" ||
+    post?.post_type === "sound" ||
+    !!post?.audio_file ||
+    !!post?.audioFile ||
+    !!post?.podcast_file ||
+    !!post?.podcastFile
+  );
+}
+
+function getVideoPoster(post) {
+  return (
+    post?.video_thumbnail ||
+    post?.videoThumbnail ||
+    post?.thumbnail ||
+    post?.poster ||
+    post?.poster_image ||
+    post?.posterImage ||
+    ""
+  );
+}
+
 function getPostVisual(post) {
   if (!post) return "";
 
@@ -223,7 +229,108 @@ function getPostVisual(post) {
 }
 
 function getPostIdentity(item) {
-  return item?.id ?? item?.slug ?? item?.href ?? item?.title ?? null;
+  return (
+    item?.id ??
+    item?.post_id ??
+    item?.slug ??
+    item?.post_slug ??
+    item?.href ??
+    item?.title ??
+    item?.post_title ??
+    null
+  );
+}
+
+function normalizePostForDisplay(post) {
+  if (!post) return null;
+
+  const title = getPostTitle(post);
+  const slug = getPostSlug(post);
+  const href = getPostHref(post);
+  const description = getPostDescription(post);
+  const categoryTitle = getPostCategoryTitle(post);
+  const typeText = getPostTypeText(post);
+  const authorName = getPostAuthorName(post);
+
+  return {
+    ...post,
+    id: post?.id || post?.post_id || slug || title,
+    post_id: post?.post_id || post?.id,
+    title,
+    post_title: title,
+    slug,
+    post_slug: slug,
+    href,
+    description,
+    excerpt: post?.excerpt || post?.post_excerpt || description,
+    summary: post?.summary || post?.post_summary || description,
+    image: getPostImage(post),
+    cover: getPostVisual(post),
+    category: categoryTitle,
+    categoryTitle,
+    category_title: categoryTitle,
+    typeText,
+    postTypeText: typeText,
+    author: authorName,
+    authorName,
+    author_name: authorName,
+    embedUrl: getPostEmbedUrl(post),
+    embed_url: getPostEmbedUrl(post),
+    videoFile: getPostVideoFile(post),
+    video_file: getPostVideoFile(post),
+    audioFile: getPostAudioFile(post),
+    audio_file: getPostAudioFile(post),
+    podcastFile: getPostPodcastFile(post),
+    podcast_file: getPostPodcastFile(post),
+    isVideo: isVideoPost(post),
+    isAudio: isAudioPost(post),
+  };
+}
+
+function uniqueByIdOrTitle(items = []) {
+  const seen = new Set();
+
+  return safeArray(items).filter((item) => {
+    const key = getPostIdentity(item);
+
+    if (!key || seen.has(key)) return false;
+
+    seen.add(key);
+    return true;
+  });
+}
+
+function pickFeatured(items = []) {
+  return (
+    items.find((item) => item?.isHero || item?.is_hero) ||
+    items.find((item) => item?.isFeatured || item?.is_featured) ||
+    items[0] ||
+    null
+  );
+}
+
+function isSamePost(a, b) {
+  if (!a || !b) return false;
+
+  const aId = a.id || a.post_id;
+  const bId = b.id || b.post_id;
+  const aSlug = a.slug || a.post_slug;
+  const bSlug = b.slug || b.post_slug;
+  const aTitle = a.title || a.post_title;
+  const bTitle = b.title || b.post_title;
+
+  if (aId && bId) return aId === bId;
+  if (aSlug && bSlug) return aSlug === bSlug;
+
+  return Boolean(aTitle && bTitle && aTitle === bTitle);
+}
+
+function pickDifferentPost(posts = [], excludedPosts = []) {
+  return (
+    safeArray(posts).find((post) =>
+      excludedPosts.every((excluded) => !isSamePost(post, excluded)),
+    ) || null
+  );
 }
 
 function filterUniquePosts(
@@ -265,6 +372,53 @@ function takePosts(
   return selected;
 }
 
+function mapVideoResults(results) {
+  const mapped = {
+    main: null,
+    top: null,
+    middle: null,
+    bottom: null,
+  };
+
+  if (!Array.isArray(results)) return mapped;
+
+  results.forEach((item) => {
+    if (!item?.slot || !VIDEO_SLOT_ORDER.includes(item.slot)) return;
+
+    if (!item?.post_id || item?.is_active === false) {
+      mapped[item.slot] = null;
+      return;
+    }
+
+    mapped[item.slot] = normalizePostForDisplay({
+      id: item.post_id,
+      post_id: item.post_id,
+      title: item.post_title || "بدون عنوان",
+      post_title: item.post_title || "بدون عنوان",
+      slug: item.post_slug || "",
+      post_slug: item.post_slug || "",
+      media_type: item.post_media_type || "video",
+      post_media_type: item.post_media_type || "video",
+      post_type: item.post_type || "",
+      post_type_label: item.post_type_label || "",
+      media_type_label: item.media_type_label || "",
+      published_at: item.published_at || "",
+      cover: item.cover || "",
+      image: item.cover || "",
+      href: item.post_slug ? `/news/${item.post_slug}` : "#",
+      description:
+        item.post_description || item.post_excerpt || item.post_summary || "",
+      excerpt: item.post_excerpt || item.post_summary || "",
+      summary: item.post_summary || item.post_excerpt || "",
+      embed_url: item.embed_url || "",
+      video_file: item.video_file || "",
+      media_duration: item.media_duration || null,
+    });
+  });
+
+  return mapped;
+}
+
 function mapHeroResults(results) {
   const mapped = {
     main: null,
@@ -284,26 +438,43 @@ function mapHeroResults(results) {
       return;
     }
 
-    mapped[item.slot] = {
+    mapped[item.slot] = normalizePostForDisplay({
       id: item.post_id,
+      post_id: item.post_id,
       title: item.post_title || "بدون عنوان",
+      post_title: item.post_title || "بدون عنوان",
       slug: item.post_slug || "",
+      post_slug: item.post_slug || "",
       status: item.post_status || "",
-      media_type: item.post_media_type || "",
+      media_type: item.post_media_type || "none",
+      post_media_type: item.post_media_type || "none",
       post_type: item.post_type || "",
+      post_type_label: item.post_type_label || "",
+      media_type_label: item.media_type_label || "",
       published_at: item.published_at || "",
       cover: item.cover || "",
       image: item.cover || "",
       href: item.post_slug ? `/news/${item.post_slug}` : "#",
-      description: item.post_description || "",
-      excerpt: item.post_excerpt || "",
-      categoryTitle: item.category_title || item.category || "خبر",
-      category: item.category || item.category_title || "خبر",
+      description:
+        item.post_description || item.post_excerpt || item.post_summary || "",
+      excerpt: item.post_excerpt || item.post_summary || "",
+      summary: item.post_summary || item.post_excerpt || "",
+      category: item.category || item.category_title || "",
+      categoryTitle:
+        item.category_title ||
+        item.category?.title ||
+        item.category?.name ||
+        "",
+      category_title:
+        item.category_title ||
+        item.category?.title ||
+        item.category?.name ||
+        "",
       video_file: item.video_file || "",
       embed_url: item.embed_url || "",
       audio_file: item.audio_file || "",
       podcast_file: item.podcast_file || "",
-    };
+    });
   });
 
   return mapped;
@@ -315,6 +486,7 @@ function toLargeNewsData(post, bottomPost = null) {
       title: "محتوایی برای نمایش وجود ندارد",
       description: "",
       categoryText: "خبر",
+      typeText: "",
       image: "",
       cover: "",
       href: "#",
@@ -330,81 +502,21 @@ function toLargeNewsData(post, bottomPost = null) {
   }
 
   return {
-    title: post?.title || "بدون عنوان",
-    description: post?.description || post?.excerpt || "",
-    categoryText: post?.categoryTitle || post?.category || "خبر",
+    title: getPostTitle(post),
+    description: getPostDescription(post),
+    categoryText: getPostCategoryTitle(post),
+    typeText: getPostTypeText(post),
     image: getPostImage(post),
     cover: getPostVisual(post),
-    href: post?.href || `/news/${post?.slug || ""}`,
-    bottomNewsTitle: bottomPost?.title || "",
-    bottomNewsDescription: bottomPost?.description || bottomPost?.excerpt || "",
-    bottomNewsHref: bottomPost?.href || `/news/${bottomPost?.slug || ""}`,
+    href: getPostHref(post),
+    bottomNewsTitle: bottomPost ? getPostTitle(bottomPost) : "",
+    bottomNewsDescription: bottomPost ? getPostDescription(bottomPost) : "",
+    bottomNewsHref: bottomPost ? getPostHref(bottomPost) : "#",
     embedUrl: getPostEmbedUrl(post),
     videoFile: getPostVideoFile(post),
     audioFile: getPostAudioFile(post),
     podcastFile: getPostPodcastFile(post),
     isVideo: isVideoPost(post),
-  };
-}
-
-function toMediumNewsData(post, bottomPost = null) {
-  if (!post) {
-    return {
-      title: "محتوایی برای نمایش وجود ندارد",
-      description: "",
-      categoryText: "خبر",
-      image: "",
-      cover: "",
-      href: "#",
-      bottomNewsTitle: "",
-      bottomNewsDescription: "",
-      bottomNewsHref: "#",
-      bottomNewsImage: "",
-      bottomNewsCover: "",
-      bottomNewsMediaType: "",
-      bottomNewsAudioFile: "",
-      bottomNewsAudio_file: "",
-      bottomNewsPodcastFile: "",
-      bottomNewsPodcast_file: "",
-      embedUrl: "",
-      videoFile: "",
-      audioFile: "",
-      podcastFile: "",
-      isVideo: false,
-      isAudio: false,
-    };
-  }
-
-  return {
-    title: post?.title || "بدون عنوان",
-    description: post?.description || post?.excerpt || "",
-    categoryText: post?.categoryTitle || post?.category || "خبر",
-    image: getPostImage(post),
-    cover: getPostVisual(post),
-    href: post?.href || `/news/${post?.slug || ""}`,
-    bottomNewsTitle: bottomPost?.title || "",
-    bottomNewsDescription: bottomPost?.description || bottomPost?.excerpt || "",
-    bottomNewsHref: bottomPost?.href || `/news/${bottomPost?.slug || ""}`,
-    bottomNewsImage: bottomPost ? getPostImage(bottomPost) : "",
-    bottomNewsCover: bottomPost ? getPostVisual(bottomPost) : "",
-    bottomNewsMediaType:
-      bottomPost?.media_type ||
-      bottomPost?.mediaType ||
-      bottomPost?.post_type ||
-      "",
-    bottomNewsAudioFile: bottomPost?.audioFile || bottomPost?.audio_file || "",
-    bottomNewsAudio_file: bottomPost?.audio_file || bottomPost?.audioFile || "",
-    bottomNewsPodcastFile:
-      bottomPost?.podcastFile || bottomPost?.podcast_file || "",
-    bottomNewsPodcast_file:
-      bottomPost?.podcast_file || bottomPost?.podcastFile || "",
-
-    embedUrl: getPostEmbedUrl(post),
-    videoFile: getPostVideoFile(post),
-    audioFile: getPostAudioFile(post),
-    podcastFile: getPostPodcastFile(post),
-    isVideo: isVideoPost(post),
-    isAudio: isAudioPost(post),
   };
 }
 
@@ -412,18 +524,16 @@ function makeRelatedNews(posts = []) {
   return uniqueByIdOrTitle(posts)
     .slice(0, 3)
     .map((item) => ({
-      id: item?.id || item?.slug || item?.href || item?.title,
-      title: item?.title || "",
-      href: item?.href || `/news/${item?.slug || ""}`,
+      id: item?.id || item?.post_id || getPostSlug(item) || getPostTitle(item),
+      title: getPostTitle(item),
+      href: getPostHref(item),
+      typeText: getPostTypeText(item),
+      category: getPostCategoryTitle(item),
     }))
     .filter((item) => item.title);
 }
 
-function makeCategorySections(
-  categories = [],
-  postsByCategory = [],
-  fallbackPosts = [],
-) {
+function makeCategorySections(categories = [], postsByCategory = []) {
   const layouts = [
     "grid-4",
     "feature-list-sidebar",
@@ -432,74 +542,51 @@ function makeCategorySections(
     "feature-list-sidebar",
   ];
 
-  const usedKeys = new Set();
-  const sharedFallback = uniqueByIdOrTitle(safeArray(fallbackPosts));
+  return safeArray(categories).map((category, index) => {
+    const layout = layouts[index % layouts.length];
+    const categoryPosts = safeArray(postsByCategory[index])
+      .slice(0, 8)
+      .map(normalizePostForDisplay)
+      .filter(Boolean);
 
-  return safeArray(categories)
-    .slice(0, 4)
-    .map((category, index) => {
-      const layout = layouts[index % layouts.length];
-      const categoryPosts = uniqueByIdOrTitle(
-        safeArray(postsByCategory[index]),
-      );
-      const featured = pickFeatured(categoryPosts);
+    return {
+      title: category?.title || "دسته‌بندی",
+      href: category?.href || `/category/${category?.slug || ""}`,
+      layout,
+      featured: categoryPosts[0] || null,
+      stories: categoryPosts,
+      sidebar: categoryPosts.slice(4, 8),
+      tabs: safeArray(categories).map((cat) => ({
+        label: cat?.title,
+        value: cat?.slug,
+        href: cat?.href || `/category/${cat?.slug || ""}`,
+      })),
+      activeTab: category?.slug,
+    };
+  });
+}
 
-      const excludedForSection = featured ? [featured] : [];
-      const availableCategoryPosts = filterUniquePosts(
-        categoryPosts,
-        excludedForSection,
-        usedKeys,
-      );
-      const availableFallbackPosts = filterUniquePosts(
-        sharedFallback,
-        [...excludedForSection, ...availableCategoryPosts],
-        usedKeys,
-      );
-      const sectionPool = [
-        ...availableCategoryPosts,
-        ...availableFallbackPosts,
-      ];
+function getApiErrorMessage(
+  error,
+  fallback = "خطا در دریافت اطلاعات صفحه اصلی",
+) {
+  const data = error?.response?.data;
 
-      let stories = [];
-      let sidebar = [];
+  if (!data) return error?.message || fallback;
+  if (typeof data === "string") return data;
+  if (data.detail) return data.detail;
+  if (data.message) return data.message;
+  if (data.error) return data.error;
 
-      if (featured) {
-        const featuredKey = getPostIdentity(featured);
-        if (featuredKey && !usedKeys.has(featuredKey)) {
-          usedKeys.add(featuredKey);
-        }
-      }
+  if (typeof data === "object") {
+    const firstKey = Object.keys(data)[0];
+    const firstValue = data[firstKey];
 
-      if (layout === "grid-4") {
-        stories = takePosts(sectionPool, 7, usedKeys);
-      }
+    if (Array.isArray(firstValue)) return firstValue[0];
+    if (typeof firstValue === "string") return firstValue;
+  }
 
-      if (layout === "feature-list-sidebar") {
-        stories = takePosts(sectionPool, 8, usedKeys);
-        sidebar = stories.slice(4, 6);
-      }
-
-      if (layout === "magazine") {
-        stories = takePosts(sectionPool, 7, usedKeys);
-      }
-
-      return {
-        title: category?.title || "دسته‌بندی",
-        href: category?.href || `/category/${category?.slug || ""}`,
-        layout,
-        featured,
-        stories,
-        sidebar,
-        tabs: safeArray(categories)
-          .slice(0, 5)
-          .map((cat) => ({
-            label: cat?.title,
-            value: cat?.slug,
-            href: cat?.href || `/category/${cat?.slug || ""}`,
-          })),
-        activeTab: category?.slug,
-      };
-    });
+  return fallback;
 }
 
 function HomeSkeleton() {
@@ -571,16 +658,16 @@ function EmptyBlock({ title }) {
 }
 
 function mapVideoPosts(posts = []) {
-  return safeArray(posts).map((post) => ({
-    ...post,
-    image: getPostVisual(post),
-    duration: post?.media_duration || "",
-    href: post?.href || `/news/${post?.slug || ""}`,
-    embedUrl: getPostEmbedUrl(post),
-    videoFile: getPostVideoFile(post),
-    isVideo: isVideoPost(post),
-  }));
+  return safeArray(posts)
+    .map(normalizePostForDisplay)
+    .filter(Boolean)
+    .map((post) => ({
+      ...post,
+      duration: post?.media_duration || "",
+      isVideo: isVideoPost(post),
+    }));
 }
+
 function useHomeData(categorySlug = null, postType = null) {
   const [data, setData] = useState(null);
   const [loading, setLoading] = useState(true);
@@ -673,17 +760,17 @@ function useHomeData(categorySlug = null, postType = null) {
 
       const homePosts =
         homeResult.status === "fulfilled"
-          ? normalizePosts(homeResult.value)
+          ? normalizePosts(homeResult.value).map(normalizePostForDisplay)
           : [];
 
       const latestNews =
         latestResult.status === "fulfilled"
-          ? normalizePosts(latestResult.value)
+          ? normalizePosts(latestResult.value).map(normalizePostForDisplay)
           : [];
 
       const popularPosts =
         popularResult.status === "fulfilled"
-          ? normalizePosts(popularResult.value)
+          ? normalizePosts(popularResult.value).map(normalizePostForDisplay)
           : [];
 
       const categories =
@@ -714,7 +801,7 @@ function useHomeData(categorySlug = null, postType = null) {
         ? selectedCategory
           ? [selectedCategory]
           : []
-        : categories.slice(0, 4);
+        : categories;
 
       const postsByCategory = await Promise.all(
         sectionCategories.map(async (category) => {
@@ -725,7 +812,7 @@ function useHomeData(categorySlug = null, postType = null) {
               ordering: "-published_at",
             });
 
-            return normalizePosts(d);
+            return normalizePosts(d).map(normalizePostForDisplay);
           } catch {
             return [];
           }
@@ -735,9 +822,9 @@ function useHomeData(categorySlug = null, postType = null) {
       setData({
         heroSlots,
         videoSlots,
-        homePosts,
-        latestNews,
-        popularPosts,
+        homePosts: homePosts.filter(Boolean),
+        latestNews: latestNews.filter(Boolean),
+        popularPosts: popularPosts.filter(Boolean),
         categories,
         sectionCategories,
         tags,
@@ -881,8 +968,6 @@ export default function Home() {
       mediumMainPost,
     ]);
 
-    const mediumNewsData = toMediumNewsData(mediumMainPost, mediumBottomPost);
-
     const mainVideo = videoSlots?.main || null;
     const topVideo = videoSlots?.top || null;
     const middleVideo = videoSlots?.middle || null;
@@ -891,28 +976,57 @@ export default function Home() {
     const videoData = [topVideo, middleVideo, bottomVideo]
       .filter(Boolean)
       .map((video) => ({
-        id: video.id,
+        id: video.id || video.post_id || getPostSlug(video),
         image: getPostVisual(video),
-        title: video.title,
+        title: getPostTitle(video),
         duration: video.media_duration || "",
-        href: video.href,
+        href: getPostHref(video),
         embedUrl: getPostEmbedUrl(video),
         videoFile: getPostVideoFile(video),
+        typeText: getPostTypeText(video),
+        category: getPostCategoryTitle(video),
         isVideo: true,
       }));
 
     const mediumVideoNewsData = mainVideo
       ? {
-          title: mainVideo.title,
-          description: mainVideo.description || "",
-          suggestedLabel: "ویدیوی پیشنهادی",
+          title: getPostTitle(mainVideo),
+          description: getPostDescription(mainVideo),
+          suggestedLabel: getPostTypeText(mainVideo) || "ویدیوی پیشنهادی",
           suggestedVideoThumbnail: getPostVisual(mainVideo),
-          suggestedVideoTitle: mainVideo.title,
-          suggestedVideoHref: mainVideo.href,
-          suggestedVideoAlt: mainVideo.title,
+          suggestedVideoTitle: getPostTitle(mainVideo),
+          suggestedVideoHref: getPostHref(mainVideo),
+          suggestedVideoAlt: getPostTitle(mainVideo),
           embedUrl: getPostEmbedUrl(mainVideo),
           videoFile: getPostVideoFile(mainVideo),
           image: getPostVisual(mainVideo),
+          href: getPostHref(mainVideo),
+          typeText: getPostTypeText(mainVideo),
+          category: getPostCategoryTitle(mainVideo),
+          isVideo: true,
+        }
+      : null;
+
+    const normalPostPool = uniqueByIdOrTitle([
+      ...homePosts,
+      ...latestNews,
+      ...popularPosts,
+    ]).filter((post) => !isVideoPost(post));
+
+    const normalMediumPost = pickDifferentPost(normalPostPool, [
+      ...excludedForRelated,
+      mediumMainPost,
+      mediumBottomPost,
+    ]);
+
+    const normalLargeItem = normalMediumPost
+      ? {
+          title: getPostTitle(normalMediumPost),
+          description: getPostDescription(normalMediumPost),
+          category: getPostCategoryTitle(normalMediumPost),
+          typeText: getPostTypeText(normalMediumPost),
+          cover: getPostVisual(normalMediumPost),
+          href: getPostHref(normalMediumPost),
         }
       : null;
 
@@ -926,56 +1040,39 @@ export default function Home() {
     const hotNewsItems = uniqueByIdOrTitle([...popularPosts, ...videos])
       .slice(0, 6)
       .map((item) => ({
-        id: item.id,
-        label: item.title,
-        href: item.href || `/news/${item.slug || ""}`,
+        id: item.id || item.post_id || getPostSlug(item),
+        label: getPostTitle(item),
+        href: getPostHref(item),
         isVideo: isVideoPost(item),
         mediaType: item.media_type || item.post_type || "",
+        typeText: getPostTypeText(item),
+        category: getPostCategoryTitle(item),
         videoFile: getPostVideoFile(item),
         embedUrl: getPostEmbedUrl(item),
       }));
 
-    const latestList = uniqueByIdOrTitle(latestNews).slice(0, 10);
+    const latestList = uniqueByIdOrTitle(latestNews)
+      .slice(0, 10)
+      .map(normalizePostForDisplay)
+      .filter(Boolean);
 
     const authors = uniqueByIdOrTitle(
       latestNews
         .filter((item) => item.author || item.authorName || item.user)
         .slice(0, 10)
         .map((item, index) => {
-          const authorName =
-            item.authorName ||
-            item.author_name ||
-            item.author ||
-            item.user?.name ||
-            item.user?.full_name ||
-            "نویسنده شاخص‌یک";
-
-          const authorId =
-            item.authorId ||
-            item.author_id ||
-            item.user?.id ||
-            item.id ||
-            index;
+          const authorId = getPostAuthorId(item, index);
 
           return {
             id: authorId,
-            name: authorName,
-            role: item.categoryTitle || item.category || "نویسنده",
+            name: getPostAuthorName(item),
+            role: getPostCategoryTitle(item),
             bio:
               item.authorBio ||
               item.author_bio ||
-              item.description ||
-              item.excerpt ||
+              getPostDescription(item) ||
               "نویسنده و تحلیلگر خبرهای روز در شاخص‌یک.",
-            avatar:
-              item.authorAvatar ||
-              item.author_avatar ||
-              item.authorImage ||
-              item.author_image ||
-              item.user?.avatar ||
-              item.user?.image ||
-              item.user?.profile_image ||
-              "",
+            avatar: getPostAuthorAvatar(item),
             href: item.authorHref || item.author_href || `/authors/${authorId}`,
           };
         }),
@@ -984,16 +1081,9 @@ export default function Home() {
     const categoriesForSections =
       sectionCategories?.length > 0 ? sectionCategories : categories;
 
-    const fallbackSectionPosts = uniqueByIdOrTitle([
-      ...latestNews,
-      ...homePosts,
-      ...popularPosts,
-    ]);
-
     const categorySections = makeCategorySections(
       categoriesForSections,
       postsByCategory,
-      fallbackSectionPosts,
     ).filter((section) => {
       return (
         section.featured || section.stories?.length || section.sidebar?.length
@@ -1014,10 +1104,10 @@ export default function Home() {
       pageTitle: isCategoryPage ? currentCategory?.title || "دسته‌بندی" : null,
       isCategoryPage,
       largeNewsData,
-      mediumNewsData,
       relatedNewsData,
       videoData,
       mediumVideoNewsData,
+      normalLargeItem,
       inFocusItems,
       hotNewsItems,
       authors,
@@ -1045,17 +1135,16 @@ export default function Home() {
     pageTitle,
     isCategoryPage,
     largeNewsData,
-    mediumNewsData,
     relatedNewsData,
     videoData,
     mediumVideoNewsData,
+    normalLargeItem,
     inFocusItems,
     hotNewsItems,
     authors,
     categorySections,
     latestList,
     popularPosts,
-    videos,
     ads,
   } = viewModel;
 
@@ -1078,7 +1167,6 @@ export default function Home() {
           </div>
         )}
 
-        {/* اضافه کردن flex-col-reverse برای نمایش بخش اخبار مهم در بالای موبایل */}
         <div className="flex flex-col-reverse border-t border-neutral-200 lg:flex-row">
           <aside className="w-full min-w-0 border-b border-neutral-200 lg:w-1/3 lg:border-e lg:border-b-0">
             <div className="divide-y divide-neutral-200">
@@ -1161,14 +1249,56 @@ export default function Home() {
             )}
 
             <div className="flex flex-col border-t border-neutral-200 md:flex-row">
-              <div className="min-w-0 flex-1 border-b border-neutral-200 p-4 sm:p-6 md:border-e md:border-b-0">
-                <div className="w-full min-w-0 p-4 sm:p-6 md:w-[320px]">
-                  {mediumVideoNewsData ? (
-                    <MediumVideoNews {...mediumVideoNewsData} />
-                  ) : (
-                    <EmptyBlock title="ویدیوی ویژه‌ای برای نمایش وجود ندارد." />
-                  )}
-                </div>
+              <div className="flex-1 border-b border-neutral-200 p-4 sm:p-6 md:border-e md:border-b-0">
+                {normalLargeItem ? (
+                  <Link
+                    to={normalLargeItem.href}
+                    className="group flex flex-col gap-4"
+                  >
+                    {normalLargeItem.cover && (
+                      <div className="aspect-[2/1] w-full overflow-hidden rounded-md bg-neutral-100 sm:h-56">
+                        <img
+                          src={normalLargeItem.cover}
+                          alt={normalLargeItem.title}
+                          className="h-full w-full object-cover transition-transform duration-700 group-hover:scale-105"
+                        />
+                      </div>
+                    )}
+
+                    <div dir="rtl">
+                      {(normalLargeItem.category ||
+                        normalLargeItem.typeText) && (
+                        <div className="mb-2 flex flex-wrap items-center gap-2">
+                          {normalLargeItem.category && (
+                            <span className="block text-[12px] font-black uppercase text-red-600">
+                              {normalLargeItem.category}
+                            </span>
+                          )}
+
+                          {normalLargeItem.typeText &&
+                            normalLargeItem.typeText !==
+                              normalLargeItem.category && (
+                              <span className="rounded-full bg-neutral-100 px-2 py-1 text-[11px] font-bold text-neutral-500">
+                                {normalLargeItem.typeText}
+                              </span>
+                            )}
+                        </div>
+                      )}
+
+                      <h2 className="text-[22px] font-black leading-[1.4] text-neutral-900 transition-colors group-hover:text-red-700 sm:text-[26px]">
+                        {normalLargeItem.title}
+                      </h2>
+
+                      {normalLargeItem.description && (
+                        <p className="mt-3 line-clamp-3 text-[14px] leading-relaxed text-neutral-600">
+                          {normalLargeItem.description}
+                        </p>
+                      )}
+                    </div>
+                  </Link>
+                ) : (
+                  <EmptyBlock title="خبری برای نمایش وجود ندارد." />
+                )}
 
                 {ads?.home_medium_news && (
                   <AdBox
@@ -1185,8 +1315,8 @@ export default function Home() {
                 )}
               </div>
 
-              <div className="w-full min-w-0 p-4 sm:p-6 md:w-[320px]">
-                {videos.length > 0 ? (
+              <div className="h-full w-full min-w-0 p-4 sm:p-6 md:w-[320px]">
+                {mediumVideoNewsData ? (
                   <MediumVideoNews {...mediumVideoNewsData} />
                 ) : (
                   <EmptyBlock title="ویدیوی ویژه‌ای برای نمایش وجود ندارد." />

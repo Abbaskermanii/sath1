@@ -68,7 +68,7 @@ function LargNews({
               fallback="div"
               className="
                 group relative overflow-hidden rounded-xl
-                aspect-[16/10]
+                aspect-[7/8]
                 w-full
                 md:w-[380px] md:shrink-0
               "
@@ -116,7 +116,8 @@ function LargNews({
                   className="
                     text-sm leading-relaxed text-neutral-600
                     sm:text-base
-                    line-clamp-3
+                    pt-2
+                    line-clamp-7
                     transition-colors duration-200
                     group-hover:text-neutral-800
                   "

@@ -50,6 +50,11 @@ class HomeHeroSelectionItemSerializer(serializers.ModelSerializer):
     post_media_type = serializers.CharField(source="post.media_type", read_only=True)
     post_type = serializers.CharField(source="post.post_type", read_only=True)
     published_at = serializers.DateTimeField(source="post.published_at", read_only=True)
+
+    # ↓ فیلدهای جدید
+    post_excerpt = serializers.CharField(source="post.excerpt", read_only=True)
+    post_summary = serializers.SerializerMethodField()
+
     cover = serializers.SerializerMethodField()
 
     class Meta:
@@ -64,7 +69,21 @@ class HomeHeroSelectionItemSerializer(serializers.ModelSerializer):
             "post_media_type",
             "post_type",
             "published_at",
+            "post_excerpt",  # ← اضافه شد
+            "post_summary",  # ← اضافه شد
             "cover",
+        )
+
+    def get_post_summary(self, obj):
+        post = getattr(obj, "post", None)
+        if not post:
+            return ""
+        # هر فیلدی که توی مدل Post واقعا وجود داره رو امتحان کن
+        return (
+            getattr(post, "summary", "")
+            or getattr(post, "lead", "")
+            or getattr(post, "excerpt", "")
+            or ""
         )
 
     def get_cover(self, obj):
