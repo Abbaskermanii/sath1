@@ -38,6 +38,7 @@ INSTALLED_APPS = [
     "apps.dashboard",
     "apps.core",
     "apps.market",
+    "apps.info",
 ]
 
 # --------------------------------------------------
@@ -228,6 +229,3 @@ CELERY_BEAT_SCHEDULE = {
         "schedule": crontab(minute=0),
     },
 }
-
-
-

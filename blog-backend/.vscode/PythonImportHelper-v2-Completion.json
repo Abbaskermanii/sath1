@@ -180,6 +180,14 @@
         "documentation": {}
     },
     {
+        "label": "models",
+        "importPath": "django.db",
+        "description": "django.db",
+        "isExtraImport": true,
+        "detail": "django.db",
+        "documentation": {}
+    },
+    {
         "label": "migrations",
         "importPath": "django.db",
         "description": "django.db",
@@ -356,11 +364,27 @@
         "documentation": {}
     },
     {
+        "label": "admin",
+        "importPath": "django.contrib",
+        "description": "django.contrib",
+        "isExtraImport": true,
+        "detail": "django.contrib",
+        "documentation": {}
+    },
+    {
         "label": "UserAdmin",
         "importPath": "django.contrib.auth.admin",
         "description": "django.contrib.auth.admin",
         "isExtraImport": true,
         "detail": "django.contrib.auth.admin",
+        "documentation": {}
+    },
+    {
+        "label": "AppConfig",
+        "importPath": "django.apps",
+        "description": "django.apps",
+        "isExtraImport": true,
+        "detail": "django.apps",
         "documentation": {}
     },
     {
@@ -469,6 +493,22 @@
     },
     {
         "label": "IsAuthenticated",
+        "importPath": "rest_framework.permissions",
+        "description": "rest_framework.permissions",
+        "isExtraImport": true,
+        "detail": "rest_framework.permissions",
+        "documentation": {}
+    },
+    {
+        "label": "AllowAny",
+        "importPath": "rest_framework.permissions",
+        "description": "rest_framework.permissions",
+        "isExtraImport": true,
+        "detail": "rest_framework.permissions",
+        "documentation": {}
+    },
+    {
+        "label": "IsAdminUser",
         "importPath": "rest_framework.permissions",
         "description": "rest_framework.permissions",
         "isExtraImport": true,
@@ -589,6 +629,14 @@
     },
     {
         "label": "filters",
+        "importPath": "rest_framework",
+        "description": "rest_framework",
+        "isExtraImport": true,
+        "detail": "rest_framework",
+        "documentation": {}
+    },
+    {
+        "label": "serializers",
         "importPath": "rest_framework",
         "description": "rest_framework",
         "isExtraImport": true,
@@ -740,6 +788,22 @@
         "documentation": {}
     },
     {
+        "label": "TestCase",
+        "importPath": "django.test",
+        "description": "django.test",
+        "isExtraImport": true,
+        "detail": "django.test",
+        "documentation": {}
+    },
+    {
+        "label": "path",
+        "importPath": "django.urls",
+        "description": "django.urls",
+        "isExtraImport": true,
+        "detail": "django.urls",
+        "documentation": {}
+    },
+    {
         "label": "path",
         "importPath": "django.urls",
         "description": "django.urls",
@@ -881,6 +945,22 @@
         "description": "rest_framework.response",
         "isExtraImport": true,
         "detail": "rest_framework.response",
+        "documentation": {}
+    },
+    {
+        "label": "Response",
+        "importPath": "rest_framework.response",
+        "description": "rest_framework.response",
+        "isExtraImport": true,
+        "detail": "rest_framework.response",
+        "documentation": {}
+    },
+    {
+        "label": "APIView",
+        "importPath": "rest_framework.views",
+        "description": "rest_framework.views",
+        "isExtraImport": true,
+        "detail": "rest_framework.views",
         "documentation": {}
     },
     {
@@ -2315,6 +2395,96 @@
         "description": "apps.dashboard.views",
         "peekOfCode": "def safe_int(value, default):\n    try:\n        return int(value)\n    except (TypeError, ValueError):\n        return default\nclass OverviewView(APIView):\n    permission_classes = [IsAuthenticated, IsAdminOrAuthor]\n    def get(self, request):\n        user = request.user\n        is_admin = getattr(user, \"role\", None) == \"admin\"",
         "detail": "apps.dashboard.views",
+        "documentation": {}
+    },
+    {
+        "label": "ContactUsSettingsAdmin",
+        "kind": 6,
+        "importPath": "apps.info.admin",
+        "description": "apps.info.admin",
+        "peekOfCode": "class ContactUsSettingsAdmin(admin.ModelAdmin):\n    list_display = [\"title\", \"email\", \"phone\", \"updated_at\"]\n    readonly_fields = [\"updated_at\"]\n@admin.register(AboutUsSettings)\nclass AboutUsSettingsAdmin(admin.ModelAdmin):\n    list_display = [\"title\", \"subtitle\", \"updated_at\"]\n    readonly_fields = [\"updated_at\"]",
+        "detail": "apps.info.admin",
+        "documentation": {}
+    },
+    {
+        "label": "AboutUsSettingsAdmin",
+        "kind": 6,
+        "importPath": "apps.info.admin",
+        "description": "apps.info.admin",
+        "peekOfCode": "class AboutUsSettingsAdmin(admin.ModelAdmin):\n    list_display = [\"title\", \"subtitle\", \"updated_at\"]\n    readonly_fields = [\"updated_at\"]",
+        "detail": "apps.info.admin",
+        "documentation": {}
+    },
+    {
+        "label": "InfoConfig",
+        "kind": 6,
+        "importPath": "apps.info.apps",
+        "description": "apps.info.apps",
+        "peekOfCode": "class InfoConfig(AppConfig):\n    default_auto_field = 'django.db.models.BigAutoField'\n    name = 'apps.info'",
+        "detail": "apps.info.apps",
+        "documentation": {}
+    },
+    {
+        "label": "ContactUsSettings",
+        "kind": 6,
+        "importPath": "apps.info.models",
+        "description": "apps.info.models",
+        "peekOfCode": "class ContactUsSettings(models.Model):\n    title = models.CharField(max_length=255, blank=True, default=\"\")\n    description = models.TextField(blank=True, default=\"\")\n    phone = models.CharField(max_length=100, blank=True, default=\"\")\n    mobile = models.CharField(max_length=100, blank=True, default=\"\")\n    email = models.EmailField(blank=True, default=\"\")\n    ads_email = models.EmailField(blank=True, default=\"\")\n    work_days = models.CharField(max_length=255, blank=True, default=\"\")\n    work_hours = models.CharField(max_length=255, blank=True, default=\"\")\n    address = models.TextField(blank=True, default=\"\")",
+        "detail": "apps.info.models",
+        "documentation": {}
+    },
+    {
+        "label": "AboutUsSettings",
+        "kind": 6,
+        "importPath": "apps.info.models",
+        "description": "apps.info.models",
+        "peekOfCode": "class AboutUsSettings(models.Model):\n    title = models.CharField(max_length=255, blank=True, default=\"\")\n    subtitle = models.CharField(max_length=500, blank=True, default=\"\")\n    description = models.TextField(blank=True, default=\"\")\n    mission_title = models.CharField(max_length=255, blank=True, default=\"\")\n    mission_text = models.TextField(blank=True, default=\"\")\n    vision_title = models.CharField(max_length=255, blank=True, default=\"\")\n    vision_text = models.TextField(blank=True, default=\"\")\n    values_title = models.CharField(max_length=255, blank=True, default=\"\")\n    values_text = models.TextField(blank=True, default=\"\")",
+        "detail": "apps.info.models",
+        "documentation": {}
+    },
+    {
+        "label": "ContactUsSettingsSerializer",
+        "kind": 6,
+        "importPath": "apps.info.serializers",
+        "description": "apps.info.serializers",
+        "peekOfCode": "class ContactUsSettingsSerializer(serializers.ModelSerializer):\n    class Meta:\n        model = ContactUsSettings\n        fields = [\n            \"title\",\n            \"description\",\n            \"phone\",\n            \"mobile\",\n            \"email\",\n            \"ads_email\",",
+        "detail": "apps.info.serializers",
+        "documentation": {}
+    },
+    {
+        "label": "AboutUsSettingsSerializer",
+        "kind": 6,
+        "importPath": "apps.info.serializers",
+        "description": "apps.info.serializers",
+        "peekOfCode": "class AboutUsSettingsSerializer(serializers.ModelSerializer):\n    class Meta:\n        model = AboutUsSettings\n        fields = [\n            \"title\",\n            \"subtitle\",\n            \"description\",\n            \"mission_title\",\n            \"mission_text\",\n            \"vision_title\",",
+        "detail": "apps.info.serializers",
+        "documentation": {}
+    },
+    {
+        "label": "urlpatterns",
+        "kind": 5,
+        "importPath": "apps.info.urls",
+        "description": "apps.info.urls",
+        "peekOfCode": "urlpatterns = [\n    path(\"contact-us/\", ContactUsSettingsView.as_view(), name=\"contact-us-settings\"),\n    path(\"about-us/\", AboutUsSettingsView.as_view(), name=\"about-us-settings\"),\n]",
+        "detail": "apps.info.urls",
+        "documentation": {}
+    },
+    {
+        "label": "ContactUsSettingsView",
+        "kind": 6,
+        "importPath": "apps.info.views",
+        "description": "apps.info.views",
+        "peekOfCode": "class ContactUsSettingsView(APIView):\n    def get_permissions(self):\n        if self.request.method in [\"PATCH\", \"PUT\"]:\n            return [IsAdminUser()]\n        return [AllowAny()]\n    def get_object(self):\n        obj, _ = ContactUsSettings.objects.get_or_create(\n            id=1,\n            defaults={\n                \"title\": \"تماس با ما\",",
+        "detail": "apps.info.views",
+        "documentation": {}
+    },
+    {
+        "label": "AboutUsSettingsView",
+        "kind": 6,
+        "importPath": "apps.info.views",
+        "description": "apps.info.views",
+        "peekOfCode": "class AboutUsSettingsView(APIView):\n    def get_permissions(self):\n        if self.request.method in [\"PATCH\", \"PUT\"]:\n            return [IsAdminUser()]\n        return [AllowAny()]\n    def get_object(self):\n        obj, _ = AboutUsSettings.objects.get_or_create(\n            id=1,\n            defaults={\n                \"title\": \"درباره ما\",",
+        "detail": "apps.info.views",
         "documentation": {}
     },
     {
