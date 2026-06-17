@@ -1,52 +1,48 @@
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import { useEffect, useMemo, useState } from "react";
 
-/* ========================= EMBED ========================= */
+/* ========================= EMBED (ثابت) ========================= */
 function normalizeEmbedUrl(url = "") {
   if (!url) return "";
-
   const trimmed = String(url).trim();
   const match = trimmed.match(/src=["']([^"']+)["']/i);
   const raw = match ? match[1] : trimmed;
-
   if (!raw) return "";
-
   if (raw.includes("youtube.com/watch?v=")) {
     const id = raw.split("v=")[1]?.split("&")[0];
     return id ? `https://www.youtube.com/embed/${id}?rel=0` : raw;
   }
-
   if (raw.includes("youtu.be/")) {
     const id = raw.split("youtu.be/")[1]?.split("?")[0];
     return id ? `https://www.youtube.com/embed/${id}?rel=0` : raw;
   }
-
   if (raw.includes("youtube.com/embed/")) return raw;
-
   const aparatMatch = raw.match(/aparat\.com\/v\/([^/?&]+)/i);
   if (aparatMatch) {
     return `https://www.aparat.com/video/video/embed/videohash/${aparatMatch[1]}/vt/frame`;
   }
-
   return raw;
 }
 
-/* ========================= COMPONENT ========================= */
-export default function SnowflakeVideoCard({
-  videos = [],
-  mode = "widget", // 🔥 NEW (widget | page)
-}) {
+export default function SnowflakeVideoCard({ videos = [], mode = "widget" }) {
   const safeVideos = useMemo(
-    () => (Array.isArray(videos) ? videos : []),
+    () => (Array.isArray(videos) ? videos.slice(0, 10) : []),
     [videos],
   );
 
   const [index, setIndex] = useState(0);
   const [isPlaying, setIsPlaying] = useState(false);
 
+  // اتو اسلاید (Auto-slide)
   useEffect(() => {
-    if (index >= safeVideos.length) setIndex(0);
-  }, [index, safeVideos.length]);
+    if (isPlaying || safeVideos.length <= 1) return;
+
+    const timer = setInterval(() => {
+      setIndex((prev) => (prev + 1) % safeVideos.length);
+    }, 3000); // 🚀 تغییر از 5000 به 3000 (هر 3 ثانیه ورق می‌خورد)
+
+    return () => clearInterval(timer);
+  }, [isPlaying, safeVideos.length]);
 
   const current = safeVideos[index];
 
@@ -65,40 +61,33 @@ export default function SnowflakeVideoCard({
   const embedSrc = normalizeEmbedUrl(
     current.embedUrl || current.embed_url || "",
   );
-
   const videoFile = current.videoFile || current.video_file || "";
-
   const preview =
     current.image || current.cover || current.thumbnail || current.poster || "";
-
   const isWidget = mode === "widget";
 
   return (
     <section
       dir="rtl"
-      className={`w-full ${
-        isWidget ? "max-w-md mx-auto" : "max-w-5xl mx-auto"
-      }`}
+      className={`w-full ${isWidget ? "max-w-md mx-auto" : "max-w-5xl mx-auto"}`}
     >
-      {/* HEADER */}
       <div className="flex items-center justify-between border-b px-4 py-3 sm:px-5">
         <h2 className="text-base sm:text-lg font-bold text-gray-900">
           ویدیوهای امروز
         </h2>
       </div>
 
-      {/* VIDEO */}
       <div
-        className={`relative bg-black ${
-          isWidget ? "m-3 rounded-xl" : "my-6 rounded-2xl"
-        }`}
+        className={`relative bg-black ${isWidget ? "m-3 rounded-xl" : "my-6 rounded-2xl"}`}
       >
         <div className="relative aspect-video">
-          {/* PREVIEW */}
           {!isPlaying && preview && (
             <>
-              <img src={preview} className="h-full w-full object-cover" />
-
+              <img
+                src={preview}
+                className="h-full w-full object-cover"
+                alt="thumbnail"
+              />
               <button
                 onClick={() => setIsPlaying(true)}
                 className="absolute inset-0 flex items-center justify-center"
@@ -109,8 +98,6 @@ export default function SnowflakeVideoCard({
               </button>
             </>
           )}
-
-          {/* VIDEO FILE */}
           {isPlaying && videoFile && (
             <video
               src={videoFile}
@@ -119,38 +106,24 @@ export default function SnowflakeVideoCard({
               className="h-full w-full"
             />
           )}
-
-          {/* EMBED */}
           {isPlaying && !videoFile && embedSrc && (
-            <iframe src={embedSrc} className="h-full w-full" allowFullScreen />
-          )}
-
-          {/* EMPTY */}
-          {!preview && !videoFile && !embedSrc && (
-            <div className="flex h-full items-center justify-center text-white">
-              ویدیویی وجود ندارد
-            </div>
-          )}
-
-          {/* DURATION */}
-          {current.duration && (
-            <span className="absolute bottom-3 right-3 bg-black/70 px-2 py-1 text-xs text-white rounded">
-              {current.duration}
-            </span>
+            <iframe
+              src={embedSrc}
+              className="h-full w-full"
+              allowFullScreen
+              title="video"
+            />
           )}
         </div>
       </div>
 
-      {/* TITLE */}
       <div className="px-4 sm:px-5 text-right">
-        <h3 className="text-sm sm:text-base lg:text-lg font-bold leading-snug line-clamp-2 text-gray-900">
+        <h3 className="text-sm sm:text-base lg:text-lg font-bold leading-snug line-clamp-2 text-gray-900 mb-4">
           {current.title}
         </h3>
       </div>
 
-      {/* CONTROLS */}
       <div className="flex flex-col gap-4 px-4 pb-5 sm:px-5">
-        {/* DOTS */}
         <div className="flex justify-center gap-2">
           {safeVideos.map((_, i) => (
             <button
@@ -159,16 +132,10 @@ export default function SnowflakeVideoCard({
                 setIndex(i);
                 setIsPlaying(false);
               }}
-              className={`transition-all ${
-                i === index
-                  ? "w-3 h-3 bg-gray-900 scale-110 rounded-full"
-                  : "w-2.5 h-2.5 bg-gray-300 rounded-full"
-              }`}
+              className={`transition-all duration-300 ${i === index ? "w-3 h-3 bg-gray-900 scale-110 rounded-full" : "w-2.5 h-2.5 bg-gray-300 rounded-full"}`}
             />
           ))}
         </div>
-
-        {/* ARROWS */}
         <div className="flex justify-between">
           <button
             onClick={prev}
@@ -176,7 +143,6 @@ export default function SnowflakeVideoCard({
           >
             <ChevronRight size={18} />
           </button>
-
           <button
             onClick={next}
             className="flex h-9 w-9 items-center justify-center rounded-full border hover:bg-gray-100"

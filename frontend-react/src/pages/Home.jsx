@@ -969,24 +969,33 @@ export default function Home() {
     ]);
 
     const mainVideo = videoSlots?.main || null;
-    const topVideo = videoSlots?.top || null;
-    const middleVideo = videoSlots?.middle || null;
-    const bottomVideo = videoSlots?.bottom || null;
 
-    const videoData = [topVideo, middleVideo, bottomVideo]
-      .filter(Boolean)
-      .map((video) => ({
-        id: video.id || video.post_id || getPostSlug(video),
-        image: getPostVisual(video),
-        title: getPostTitle(video),
-        duration: video.media_duration || "",
-        href: getPostHref(video),
-        embedUrl: getPostEmbedUrl(video),
-        videoFile: getPostVideoFile(video),
-        typeText: getPostTypeText(video),
-        category: getPostCategoryTitle(video),
-        isVideo: true,
-      }));
+    // 🚀 اصلاح منطق ویدیوها: انتخاب دقیق ۳ اسلات هیرو و ترکیب با لیست ویدیوها تا ۱۰ عدد
+    const heroVideos = [
+      heroSlots?.main,
+      heroSlots?.top_left,
+      heroSlots?.bottom_left,
+    ].filter((post) => post && isVideoPost(post));
+
+    const rawVideos = videos || [];
+
+    const combinedVideos = [
+      ...heroVideos,
+      ...rawVideos.filter((v) => !heroVideos.some((hv) => isSamePost(hv, v))),
+    ];
+
+    const videoData = combinedVideos.slice(0, 10).map((video) => ({
+      id: video.id || video.post_id || getPostSlug(video),
+      image: getPostVisual(video),
+      title: getPostTitle(video),
+      duration: video.media_duration || "",
+      href: getPostHref(video),
+      embedUrl: getPostEmbedUrl(video),
+      videoFile: getPostVideoFile(video),
+      typeText: getPostTypeText(video),
+      category: getPostCategoryTitle(video),
+      isVideo: true,
+    }));
 
     const mediumVideoNewsData = mainVideo
       ? {
